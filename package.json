@@ -1,0 +1,19 @@
+{
+  "name": "threejs-shader-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npx parcel ./index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^2.3.2",
+    "three": "^0.138.3",
+    "tweakpane": "^3.0.7"
+  },
+  "devDependencies": {
+    "@parcel/transformer-glsl": "^2.3.2"
+  }
+}
