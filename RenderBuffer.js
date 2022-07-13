@@ -6,6 +6,8 @@ export default class RenderBuffer {
 
     this.texture = { value: null };
 
+    this.scene = new THREE.Scene();
+
     this.geometry = new THREE.PlaneGeometry(2, 2);
 
     this.rtOptions = {
@@ -37,11 +39,6 @@ export default class RenderBuffer {
     this.read = this.write;
     this.write = temp;
     this.texture.value = this.read.texture;
-  }
-
-  resize(width, height) {
-    this.read.setSize(width, height);
-    this.write.setSize(width, height);
   }
 
   update(renderer, camera) {

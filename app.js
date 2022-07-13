@@ -5,6 +5,8 @@ import Sky from "./Sky";
 import CurlBubble from "./CurlBubble";
 import Water from "./Water";
 
+//******ADD CAMERA SHAKE FROM ALIEN */
+
 export class World {
   constructor() {
     if (World.instance) {
@@ -38,11 +40,14 @@ export class World {
       65,
       this.width / this.height,
       0.1,
-      200
+      900
     );
-    this.camera.position.z = 1;
     this.camera.position.set(0, 0.2196, 0.9749);
     this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
+    // this.camera.position.set(4.0079, 185.7269, 358.4039);
+    // this.camera.rotation.set(-0.4781, 0.0099, 0.0051);
+    // this.camera.position.set(0.0237, 1.886, 3.7548);
+    // this.camera.rotation.set(-0.4655, 0.0056, 0.0028);
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",

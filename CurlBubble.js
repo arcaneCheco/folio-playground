@@ -48,15 +48,15 @@ export default class CurlBubble {
         uNoise: { value: this.noise },
         uTime: { value: 0.0 },
         uColor: { value: new THREE.Color("#240a00") },
-        uSteps: { value: 200 },
+        uSteps: { value: 90 },
         // vertex-distortion
         uVertexDistortionSpeed: { value: 0.9 },
         uVertexDistortionAmplitude: { value: 0.06 },
         // lines
         uCut: { value: 0.5 },
         uRotationSpeed: { value: 1 },
-        uColorStrength: { value: 0.002 },
-        uColorIntensity: { value: 0.02 },
+        uColorStrength: { value: 0.03 },
+        uColorIntensity: { value: 0.0082 },
         uLightPosition: {
           value: new THREE.Vector3(0.0000001, 0.00000001, 0.0000001),
         },

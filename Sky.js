@@ -225,8 +225,7 @@ export default class Sky {
         uMountain1Height: { value: 0.3 },
         uMountain1Color: { value: new THREE.Color("#4C3326") },
         uMountain2Height: { value: 0.2 },
-        uMountain2Color: { value: new THREE.Color("#00fff4") },
-        // uMountain2Color: { value: new THREE.Color("#010101") },
+        uMountain2Color: { value: new THREE.Color("#010101") },
         // clouds
         uCloudColor: { value: new THREE.Color("#010101") },
         uCloudsLowerBound: { value: 0 },

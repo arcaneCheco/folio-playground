@@ -1,11 +1,23 @@
 uniform sampler2D uHeightMap;
 
+uniform vec3 uBaseColor;
+uniform vec3 uFresnelColor;
+uniform float uFresnelPower;
+
 varying vec2 vUv;
+varying vec3 vWorldNormal;
+varying vec3 vViewDirection;
 
 void main() {
-    // gl_FragColor = vec4(1., 1., 1., 1.);
-    // float t = texture2D(uHeightMap, vUv).r;
-    // // gl_FragColor = vec4(t, 0., 0., 1.);
     vec4 i = texture2D(uHeightMap, vUv);
-    gl_FragColor = vec4(i.r, 0., 0., 1.);
+    gl_FragColor = vec4(0., 0., i.r, 1.);
+
+    gl_FragColor = vec4(vWorldNormal, 1.);
+    
+    float fresnelFactor = abs(dot(vViewDirection, vWorldNormal));
+    float inversefresnelFactor = 1.0 - fresnelFactor;
+    // Shaping function
+    fresnelFactor = pow(fresnelFactor, uFresnelPower);
+    inversefresnelFactor = pow(inversefresnelFactor, uFresnelPower);
+    gl_FragColor = vec4(fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor, 1.0);
 }
