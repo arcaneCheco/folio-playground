@@ -16,8 +16,8 @@ void main() {
     
     float fresnelFactor = abs(dot(vViewDirection, vWorldNormal));
     float inversefresnelFactor = 1.0 - fresnelFactor;
-    // Shaping function
+
     fresnelFactor = pow(fresnelFactor, uFresnelPower);
     inversefresnelFactor = pow(inversefresnelFactor, uFresnelPower);
-    gl_FragColor = vec4(fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor, 1.0);
+    gl_FragColor = vec4(fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor, 1.);
 }

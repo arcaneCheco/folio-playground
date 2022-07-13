@@ -23,12 +23,7 @@ export default class Water {
     this.setMaterial();
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    // this.mesh.scale.set(
-    //   this.scale / this.bounds,
-    //   this.scale / this.bounds,
-    //   this.scale / this.bounds
-    // );
-    this.mesh.scale.set(this.scale / this.bounds, 1, this.scale / this.bounds); // maybe chnge yvalue too
+    this.mesh.scale.set(this.scale / this.bounds, 1, this.scale / this.bounds);
     this.mesh.matrixAutoUpdate = false;
     this.mesh.updateMatrix();
     this.setIntersectionPlane();
@@ -49,7 +44,6 @@ export default class Water {
 
   setMaterial() {
     this.uniforms = {
-      // waves
       uHeightMap: this.heightMap.texture,
       uBaseColor: { value: new THREE.Color("#f9f9f9") },
       uFresnelColor: { value: new THREE.Color("#141414") },
@@ -69,13 +63,12 @@ export default class Water {
 
   setIntersectionPlane() {
     this.intersectionPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(this.bounds, this.bounds, 1, 1).applyMatrix4(
+      new THREE.PlaneGeometry(this.scale, this.scale, 1, 1).applyMatrix4(
         this.geometryTransform
       ),
       new THREE.ShaderMaterial({ visible: false })
     );
     this.scene.add(this.intersectionPlane);
-    this.intersectionPlane.scale.copy(this.mesh.scale);
     this.intersectionPlane.matrixAutoUpdate = false;
     this.intersectionPlane.updateMatrix();
   }

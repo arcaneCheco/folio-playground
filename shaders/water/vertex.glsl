@@ -14,7 +14,6 @@ vec3 getNormal() {
     vec3 e = vec3(cellSize, 0.);
 
     float unitResolution = RESOLUTION / BOUNDS;
-    // unitResolution = 2. / RESOLUTION;
 
     return  normalize(vec3(
 					(mySample(uv - e.xz) - mySample(uv + e.xz)) * unitResolution,
