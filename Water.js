@@ -3,6 +3,7 @@ import * as THREE from "three";
 import vertexShader from "./shaders/water/vertex.glsl";
 import fragmentShader from "./shaders/water/fragment.glsl";
 import WaterHeightMap from "./WaterHeightMap";
+import WaterReflectionMap from "./WaterReflectionMap";
 
 export default class Water {
   constructor() {
@@ -13,13 +14,20 @@ export default class Water {
     this.raycaster = this.world.raycaster;
 
     this.bounds = 512; // large system units for normal calculation
-    this.scale = this.bounds;
-    this.scale = 5.12;
     this.scale = 2;
 
     this.heightMap = new WaterHeightMap(this.bounds);
-
     this.setGeometry();
+    this.mirrorMap = new WaterReflectionMap(
+      new THREE.PlaneGeometry(this.scale, this.scale),
+      128,
+      128,
+      0,
+      {}
+    );
+    this.mirrorMap.applyMatrix4(this.geometryTransform);
+    this.scene.add(this.mirrorMap);
+
     this.setMaterial();
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -45,8 +53,9 @@ export default class Water {
   setMaterial() {
     this.uniforms = {
       uHeightMap: this.heightMap.texture,
+      uMirrorMap: this.mirrorMap.renderTarget.texture,
       uBaseColor: { value: new THREE.Color("#f9f9f9") },
-      uFresnelColor: { value: new THREE.Color("#141414") },
+      uFresnelColor: { value: new THREE.Color("#67ffda") },
       uFresnelPower: { value: 3 },
     };
     this.material = new THREE.ShaderMaterial({
@@ -153,5 +162,6 @@ export default class Water {
 
   update() {
     this.heightMap.update(this.renderer, this.camera);
+    this.mirrorMap.update(this.renderer, this.scene, this.camera);
   }
 }

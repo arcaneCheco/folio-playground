@@ -132,14 +132,18 @@ void mountains(inout vec3 col, vec2 pos) {
 	float mount1 = trigFBM(pos, val);
 	float m1ss = (smoothstep(mount1,mount1 + 0.003, 1.-pos.y));
 	col = mix(col, uMountain1Color, m1ss);
-	float bound1 = (smoothstep(mount1,mount1 + 0.003, 1.005-pos.y)) - m1ss;
-	col = mix(col, vec3(1.), bound1);
+
+	// border
+	// float bound1 = (smoothstep(mount1,mount1 + 0.003, 1.005-pos.y)) - m1ss;
+	// col = mix(col, vec3(1.), bound1);
 
 	float mount2 = trigFBM2(pos, val);
 	float m2ss = (smoothstep(mount2,mount2+0.002, 1.-pos.y));
 	col = mix(col, uMountain2Color, m2ss);
-	float bound2 = (smoothstep(mount2,mount2 + 0.003, 1.005-pos.y)) - m2ss;
-	col = mix(col, vec3(1.), bound2);
+
+	// border
+	// float bound2 = (smoothstep(mount2,mount2 + 0.003, 1.005-pos.y)) - m2ss;
+	// col = mix(col, vec3(1.), bound2);
 }
 
 void cloudStuff(inout vec3 col, vec2 pos) {

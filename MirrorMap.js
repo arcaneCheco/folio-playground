@@ -2,7 +2,7 @@ import * as THREE from "three";
 import vertexShader from "./shaders/mirror/vertex.glsl";
 import fragmentShader from "./shaders/mirror/fragment.glsl";
 
-export default class WaterReflectionMap extends THREE.Mesh {
+export default class MirrorMap extends THREE.Mesh {
   constructor(geometry, textureWidth, textureHeight, clipBias, rtOptions) {
     super(geometry);
     this.scope = this;

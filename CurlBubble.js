@@ -4,7 +4,8 @@ import fragmentShader from "./shaders/curlBubble/fragment.glsl";
 import vertexShader from "./shaders/curlBubble/vertex.glsl";
 import { randFloat, clamp } from "three/src/math/MathUtils";
 import { perlin3 } from "./perlin";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+/******move light position inside bubble to mouse */
 
 export default class CurlBubble {
   constructor() {
@@ -47,7 +48,7 @@ export default class CurlBubble {
         uShape: { value: this.shape },
         uNoise: { value: this.noise },
         uTime: { value: 0.0 },
-        uColor: { value: new THREE.Color("#240a00") },
+        uColor: { value: new THREE.Color("#5676ff") },
         uSteps: { value: 90 },
         // vertex-distortion
         uVertexDistortionSpeed: { value: 0.9 },
@@ -55,7 +56,7 @@ export default class CurlBubble {
         // lines
         uCut: { value: 0.5 },
         uRotationSpeed: { value: 1 },
-        uColorStrength: { value: 0.03 },
+        uColorStrength: { value: 0.02 },
         uColorIntensity: { value: 0.0082 },
         uLightPosition: {
           value: new THREE.Vector3(0.0000001, 0.00000001, 0.0000001),

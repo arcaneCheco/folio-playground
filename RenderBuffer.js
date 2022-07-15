@@ -18,6 +18,7 @@ export default class RenderBuffer {
       generateMipmaps: false,
       depthBuffer: false,
       stencilBuffer: false,
+      //depthwrite?
       ...rtOptions,
     };
 
