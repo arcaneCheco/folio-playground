@@ -4,9 +4,6 @@ import { Pane } from "tweakpane";
 import Sky from "./Sky";
 import CurlBubble from "./CurlBubble";
 import Water from "./Water";
-import MirrorMap from "./MirrorMap";
-import { Reflector } from "three/examples/jsm/objects/Reflector";
-import WaterReflectionMap from "./WaterReflectionMap";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -64,34 +61,6 @@ export class World {
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
-    this.mirrorTest();
-  }
-
-  mirrorTest() {
-    // this.mirrorTest = new WaterReflectionMap(
-    //   new THREE.PlaneGeometry(2, 2),
-    //   512,
-    //   512
-    // );
-    // this.mirrorTest.applyMatrix4(
-    //   new THREE.Matrix4().makeRotationX(-Math.PI / 2)
-    // );
-    // this.mirrorTest.matrixAutoUpdate = false;
-    // this.mirrorTest.updateMatrix();
-    // this.scene.add(this.mirrorTest);
-    // this.mirrorUpdate = () => {
-    //   this.mirrorTest.update(this.renderer, this.scene, this.camera);
-    // };
-    // const me = new THREE.Mesh(
-    //   new THREE.PlaneGeometry(1, 1),
-    //   new THREE.MeshBasicMaterial({
-    //     map: this.mirrorTest.renderTarget.texture,
-    //     color: "#44545ff",
-    //   })
-    // );
-    // me.position.set(-1, 0.5, 0);
-    // me.rotation.y = Math.PI / 4;
-    // this.scene.add(me);
   }
 
   worldDebug() {
@@ -141,6 +110,10 @@ export class World {
         this.scene.add(this.water.mesh);
       }
     });
+
+    // temp
+    // this.components.curlBubble = false;
+    // this.scene.remove(this.curlBubble.mesh);
   }
 
   debugCamera() {
@@ -250,7 +223,6 @@ export class World {
 
   update() {
     this.updateWorld();
-    // this.mirrorUpdate();
     this.components.sky && this.sky.update();
     this.components.curlBubble && this.curlBubble.update();
     this.components.water && this.water.update();

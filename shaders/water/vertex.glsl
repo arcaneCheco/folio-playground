@@ -1,37 +1,36 @@
 uniform sampler2D uHeightMap;
+uniform mat4 uTextureMatrix;
 
-varying vec2 vUv;
+varying vec4 vMirrorCoord;
 varying vec3 vWorldNormal;
 varying vec3 vViewDirection;
 
-float mySample(vec2 st) {
+float heightSample(vec2 st) {
     return texture2D(uHeightMap, st).x;
 }
-
 
 vec3 getNormal() {
     vec2 cellSize = 1. / vec2(RESOLUTION);
     vec3 e = vec3(cellSize, 0.);
-
     float unitResolution = RESOLUTION / BOUNDS;
-
     return  normalize(vec3(
-					(mySample(uv - e.xz) - mySample(uv + e.xz)) * unitResolution,
-					SCALE,
-					(mySample(uv - e.yz) - mySample(uv + e.yz)) * unitResolution));
+					(heightSample(uv - e.xz) - heightSample(uv + e.xz)) * unitResolution,
+                    (heightSample(uv - e.yz) - heightSample(uv + e.yz)) * unitResolution,
+					SCALE));
 }
 
 void main() {
+    vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+
+    vMirrorCoord = uTextureMatrix * worldPosition;
+
     vec3 objectNormal = getNormal();
 
-    vec4 worldPosition = modelMatrix * vec4(position, 1.0);
     vWorldNormal = normalize(modelMatrix * vec4(objectNormal, 0.0)).xyz;
     vViewDirection = normalize(cameraPosition - worldPosition.xyz);
     // vViewDirection = normalize(vec3(1., 1.74, -0.9) - worldPosition.xyz);
 
-    float heightValue = texture2D(uHeightMap, uv).x * SCALE;
-    vec3 newPos = vec3(position.x, heightValue, position.z);
+    float heightValue = heightSample(uv) * SCALE;
+    vec3 newPos = vec3(position.x, position.y, heightValue);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);
-
-    vUv = uv;
 }

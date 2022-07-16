@@ -1,12 +1,13 @@
 import { World } from "./app";
 import * as THREE from "three";
+import Mirror from "./Mirror";
+import WaterHeightMap from "./WaterHeightMap";
 import vertexShader from "./shaders/water/vertex.glsl";
 import fragmentShader from "./shaders/water/fragment.glsl";
-import WaterHeightMap from "./WaterHeightMap";
-import WaterReflectionMap from "./WaterReflectionMap";
 
-export default class Water {
+export default class Water extends Mirror {
   constructor() {
+    super();
     this.world = new World();
     this.renderer = this.world.renderer;
     this.camera = this.world.camera;
@@ -17,47 +18,23 @@ export default class Water {
     this.scale = 2;
 
     this.heightMap = new WaterHeightMap(this.bounds);
-    this.setGeometry();
-    this.mirrorMap = new WaterReflectionMap(
-      new THREE.PlaneGeometry(this.scale, this.scale),
-      128,
-      128,
-      0,
-      {}
-    );
-    this.mirrorMap.applyMatrix4(this.geometryTransform);
-    this.scene.add(this.mirrorMap);
 
-    this.setMaterial();
-
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.scale.set(this.scale / this.bounds, 1, this.scale / this.bounds);
-    this.mesh.matrixAutoUpdate = false;
-    this.mesh.updateMatrix();
-    this.setIntersectionPlane();
-    this.mesh.renderOrder = -1;
-    this.scene.add(this.mesh);
-  }
-
-  setGeometry() {
     this.geometry = new THREE.PlaneGeometry(
       this.bounds,
       this.bounds,
       this.heightMap.size - 1,
       this.heightMap.size - 1
     );
-    this.geometryTransform = new THREE.Matrix4().makeRotationX(-Math.PI / 2);
-    this.geometry.applyMatrix4(this.geometryTransform);
-  }
 
-  setMaterial() {
     this.uniforms = {
       uHeightMap: this.heightMap.texture,
-      uMirrorMap: this.mirrorMap.renderTarget.texture,
       uBaseColor: { value: new THREE.Color("#f9f9f9") },
       uFresnelColor: { value: new THREE.Color("#67ffda") },
       uFresnelPower: { value: 3 },
+      uTextureMatrix: { value: this.textureMatrix },
+      uMirrorMap: { value: this.renderTarget.texture },
     };
+
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -68,19 +45,40 @@ export default class Water {
         SCALE: (this.scale / this.bounds).toFixed(10),
       },
     });
+
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.scale.set(this.scale / this.bounds, this.scale / this.bounds, 1);
+    this.mesh.rotation.x = -Math.PI / 2;
+    this.mesh.matrixAutoUpdate = false;
+    this.mesh.updateMatrix();
+    this.mesh.renderOrder = -1;
+    this.scene.add(this.mesh);
+    this.setIntersectionPlane();
   }
 
   setIntersectionPlane() {
     this.intersectionPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(this.scale, this.scale, 1, 1).applyMatrix4(
-        this.geometryTransform
-      ),
+      new THREE.PlaneGeometry(this.scale, this.scale, 1, 1),
       new THREE.ShaderMaterial({ visible: false })
     );
+    this.intersectionPlane.rotation.x = -Math.PI / 2;
     this.scene.add(this.intersectionPlane);
     this.intersectionPlane.matrixAutoUpdate = false;
     this.intersectionPlane.updateMatrix();
   }
+
+  resize() {}
+
+  onPointerdown() {}
+
+  onPointermove() {
+    const [intersect] = this.raycaster.intersectObject(this.intersectionPlane);
+    if (intersect) {
+      this.heightMap.onPointermove(intersect.uv);
+    }
+  }
+
+  onPointerup() {}
 
   setDebug() {
     this.debug = this.world.pane.addFolder({ title: "water" });
@@ -147,21 +145,8 @@ export default class Water {
     });
   }
 
-  onPointermove() {
-    const [intersect] = this.raycaster.intersectObject(this.intersectionPlane);
-    if (intersect) {
-      this.heightMap.onPointermove(intersect.uv);
-    }
-  }
-
-  onPointerdown() {}
-
-  onPointerup() {}
-
-  resize() {}
-
   update() {
+    super.update(this.mesh, this.renderer, this.camera, this.scene);
     this.heightMap.update(this.renderer, this.camera);
-    this.mirrorMap.update(this.renderer, this.scene, this.camera);
   }
 }
