@@ -22,7 +22,12 @@ export class World {
     this.water = new Water();
 
     this.post && this.setPost();
-    this.setDebug();
+    this.components = {
+      sky: true,
+      curlBubble: true,
+      water: true,
+    }; // for debug purposes
+    // this.setDebug();
     window.addEventListener("resize", this.resize.bind(this));
     window.addEventListener("pointermove", this.onPointermove.bind(this));
     this.resize();
@@ -42,12 +47,10 @@ export class World {
       0.1,
       900
     );
-    this.camera.position.set(0, 0.2196, 0.9749);
-    this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
-    // this.camera.position.set(4.0079, 185.7269, 358.4039);
-    // this.camera.rotation.set(-0.4781, 0.0099, 0.0051);
-    // this.camera.position.set(0.0237, 1.886, 3.7548);
-    // this.camera.rotation.set(-0.4655, 0.0056, 0.0028);
+    // this.camera.position.set(0, 0.2196, 0.9749);
+    // this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
+    this.camera.position.set(0.0331, 0.1395, 1.097);
+    this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",
@@ -74,11 +77,6 @@ export class World {
   }
 
   debugComponents() {
-    this.components = {
-      sky: true,
-      curlBubble: true,
-      water: true,
-    };
     const components = this.debug.addFolder({
       title: " toggle components",
       expanded: false,
@@ -141,6 +139,9 @@ export class World {
 
   setDebug() {
     this.pane = new Pane();
+    // this.pane.addButton({ title: "show/hide" }).on("click", () => {
+    //   this.debug.hidden = !this.debug.hidden;
+    // });
     this.worldDebug();
     this.sky.setDebug();
     this.curlBubble.setDebug();

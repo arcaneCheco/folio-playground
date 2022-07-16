@@ -216,19 +216,20 @@ export default class Sky {
         uTime: { value: 0 },
         // sky
         uSkyColor: { value: new THREE.Color("#ff9f21") },
-        uSkyBrightness: { value: 0.52 },
+        uSkyBrightness: { value: 0.92 },
         // horizon
-        uHorizonBrightness: { value: 0.35 },
+        uHorizonBrightness: { value: 0.45 },
         uHorizonIntensity: { value: 9 },
-        uHorizonHeight: { value: 0.21 },
+        uHorizonHeight: { value: 0.23 },
         // mountain
         uMountain1Height: { value: 0.3 },
         uMountain1Color: { value: new THREE.Color("#4C3326") },
         uMountain2Height: { value: 0.2 },
-        uMountain2Color: { value: new THREE.Color("#7f6d1d") },
-        // uMountain2Color: { value: new THREE.Color("#010101") },
+        // uMountain2Color: { value: new THREE.Color("#7f6d1d") },
+        uMountain2Color: { value: new THREE.Color("#010101") },
         // clouds
-        uCloudColor: { value: new THREE.Color("#010101") },
+        // uCloudColor: { value: new THREE.Color("#010101") },
+        uCloudColor: { value: new THREE.Color("#ff012a") },
         uCloudsLowerBound: { value: 0 },
         uCloudsGradient: { value: 0.8 },
         uCloudSpeed: { value: 3 },

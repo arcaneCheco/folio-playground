@@ -81,7 +81,7 @@ export default class Water extends Mirror {
   onPointerup() {}
 
   setDebug() {
-    this.debug = this.world.pane.addFolder({ title: "water" });
+    this.debug = this.world.pane.addFolder({ title: "water", expanded: false });
 
     this.debug.addButton({ title: "toggle wireframe" }).on("click", () => {
       this.material.wireframe = !this.material.wireframe;

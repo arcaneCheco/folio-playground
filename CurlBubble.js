@@ -68,7 +68,8 @@ export default class CurlBubble {
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.scale.set(0.5, 0.5, 0.5);
+    // this.mesh.scale.set(0.5, 0.5, 0.5);
+    this.mesh.scale.set(0.4, 0.4, 0.4);
     this.mesh.position.set(0, 0.3, 0);
     this.scene.add(this.mesh);
 
@@ -263,7 +264,7 @@ export default class CurlBubble {
       max: 2,
       step: 0.001,
     });
-    position.addInput(this.mesh.position, "x", {
+    position.addInput(this.mesh.position, "z", {
       min: -2,
       max: 2,
       step: 0.001,

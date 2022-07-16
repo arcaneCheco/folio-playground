@@ -21,8 +21,8 @@ export default class WaterHeightMap extends RenderBuffer {
       uBuffer: this.texture,
       uMouse: { value: new THREE.Vector2(-1, -1) },
       uAddWave: { value: false },
-      uViscosity: { value: 0.98 },
-      uAmplitude: { value: 0.28 },
+      uViscosity: { value: 0.985 },
+      uAmplitude: { value: 0.48 },
       uMouseSize: { value: 20 },
     };
     this.material = new THREE.ShaderMaterial({
