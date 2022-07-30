@@ -68,7 +68,6 @@ export default class CurlBubble {
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    // this.mesh.scale.set(0.5, 0.5, 0.5);
     this.mesh.scale.set(0.4, 0.4, 0.4);
     this.mesh.position.set(0, 0.3, 0);
     this.scene.add(this.mesh);
@@ -144,6 +143,10 @@ export default class CurlBubble {
       max: 6,
       step: 0.001,
     });
+  }
+
+  projectsState() {
+    this.mesh.position.set(-0.5, 0.2, 0.09);
   }
 
   debugShapeData() {
@@ -527,6 +530,8 @@ export default class CurlBubble {
   onPointerdown() {}
 
   onPointerup() {}
+
+  onWheel() {}
 
   resize() {}
 

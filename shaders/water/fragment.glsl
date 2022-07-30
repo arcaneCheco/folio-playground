@@ -34,6 +34,10 @@ void main() {
     vec3 fresnel = fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor;
 
     vec3 color = blendOverlay(fresnel, mirrorSample);
+
     
+    // vec3 fresnel = fresnelFactor * uBaseColor + inversefresnelFactor * mirrorSample * uFresnelColor * 0.5;
+    // vec3 color = fresnel;
+
     gl_FragColor = vec4(color, 1.);
 }

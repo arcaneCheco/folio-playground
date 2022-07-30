@@ -7,7 +7,7 @@ import fragmentShader from "./shaders/water/fragment.glsl";
 
 export default class Water extends Mirror {
   constructor() {
-    super();
+    super({});
     this.world = new World();
     this.renderer = this.world.renderer;
     this.camera = this.world.camera;
@@ -51,7 +51,6 @@ export default class Water extends Mirror {
     this.mesh.rotation.x = -Math.PI / 2;
     this.mesh.matrixAutoUpdate = false;
     this.mesh.updateMatrix();
-    this.mesh.renderOrder = -1;
     this.scene.add(this.mesh);
     this.setIntersectionPlane();
   }
@@ -144,6 +143,8 @@ export default class Water extends Mirror {
       label: "fresnel power",
     });
   }
+
+  onWheel() {}
 
   update() {
     super.update(this.mesh, this.renderer, this.camera, this.scene);

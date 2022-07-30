@@ -10,6 +10,8 @@ void main() {
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
     // gl_Position.z = gl_Position.w; // set z to camera.far;
     vUv = uv;// - vec2(0.5);
+    // vUv.x *=2.;
+    // vUv.y *=0.5;
 
     // vPosition = position;
     // vOrigin = vec3(inverse(modelMatrix) * vec4(uCameraPos, 1.)).xyz;

@@ -4,6 +4,9 @@ import { Pane } from "tweakpane";
 import Sky from "./Sky";
 import CurlBubble from "./CurlBubble";
 import Water from "./Water";
+import ProjectScreen from "./ProjectScreen";
+import ProjectsViewManager from "./ProjectsViewManager";
+import ProjectTitles from "./ProjectTitles";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -20,16 +23,34 @@ export class World {
     this.sky = new Sky();
     this.curlBubble = new CurlBubble();
     this.water = new Water();
+    this.projectScreen = new ProjectScreen();
+    this.projectTitles = new ProjectTitles();
+    this.projectsViewManager = new ProjectsViewManager();
 
     this.post && this.setPost();
     this.components = {
       sky: true,
       curlBubble: true,
       water: true,
+      projectScreen: true,
     }; // for debug purposes
-    // this.setDebug();
+    this.view = {
+      home: false,
+      projects: false,
+    };
+    /****
+     *
+     */
+    this.water.mesh.renderOrder = -1;
+    /***
+     *
+     */
+    this.setDebug();
     window.addEventListener("resize", this.resize.bind(this));
     window.addEventListener("pointermove", this.onPointermove.bind(this));
+    window.addEventListener("pointerup", this.onPointerup.bind(this));
+    window.addEventListener("pointerdown", this.onPointerdown.bind(this));
+    window.addEventListener("wheel", this.onWheel.bind(this));
     this.resize();
     this.render();
   }
@@ -54,6 +75,7 @@ export class World {
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",
+      antialias: true,
     });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -61,13 +83,36 @@ export class World {
     this.renderer.setClearColor(0x333333);
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
   }
 
   worldDebug() {
-    this.debug = this.pane.addFolder({ title: "world", expanded: false });
+    this.debug = this.pane.addFolder({ title: "world", expanded: true });
+
+    this.debug
+      .addBlade({
+        view: "list",
+        options: [
+          { text: "home", value: "home" },
+          { text: "projects", value: "projects" },
+        ],
+        value: "view",
+      })
+      .on("change", ({ value }) => {
+        Object.keys(this.view).map((key) => (this.view[key] = false));
+        this.view[value] = true;
+        console.log(this.view);
+        if (value === "home") {
+          this.projectsViewManager.hide();
+        }
+        if (value === "projects") {
+          this.projectsViewManager.show();
+        }
+      });
+
     this.debugCamera();
     this.debugComponents();
 
@@ -81,33 +126,27 @@ export class World {
       title: " toggle components",
       expanded: false,
     });
-    components.addButton({ title: "sky" }).on("click", () => {
-      if (this.components.sky) {
-        this.components.sky = false;
-        this.scene.remove(this.sky.mesh);
+    const toggleComponent = (component) => {
+      if (this.components[component]) {
+        this.components[component] = false;
+        this.scene.remove(this[component].mesh);
       } else {
-        this.components.sky = true;
-        this.scene.add(this.sky.mesh);
+        this.components[component] = true;
+        this.scene.add(this[component].mesh);
       }
+    };
+    components.addButton({ title: "sky" }).on("click", () => {
+      toggleComponent("sky");
     });
     components.addButton({ title: "curlBubble" }).on("click", () => {
-      if (this.components.curlBubble) {
-        this.components.curlBubble = false;
-        this.scene.remove(this.curlBubble.mesh);
-      } else {
-        this.components.curlBubble = true;
-        this.scene.add(this.curlBubble.mesh);
-      }
+      toggleComponent("curlBubble");
     });
     components.addButton({ title: "water" }).on("click", () => {
-      if (this.components.water) {
-        this.components.water = false;
-        this.scene.remove(this.water.mesh);
-      } else {
-        this.components.water = true;
-        this.scene.add(this.water.mesh);
-      }
+      toggleComponent("water");
     });
+    // components.addButton({ title: "projectScreen" }).on("click", () => {
+    //   toggleComponent("projectScreen");
+    // });
 
     // temp
     // this.components.curlBubble = false;
@@ -146,6 +185,9 @@ export class World {
     this.sky.setDebug();
     this.curlBubble.setDebug();
     this.water.setDebug();
+    this.projectScreen.setDebug();
+    this.projectTitles.setDebug();
+    this.projectsViewManager.setDebug();
   }
 
   setPost() {
@@ -173,18 +215,32 @@ export class World {
     this.components.sky && this.sky.onPointermove();
     this.components.curlBubble && this.curlBubble.onPointermove();
     this.components.water && this.water.onPointermove();
+
+    if (this.view.projects) this.projectsViewManager.onPointermove();
   }
 
   onPointerdown() {
     this.components.sky && this.sky.onPointerdown();
     this.components.curlBubble && this.curlBubble.onPointerdown();
     this.components.water && this.water.onPointerdown();
+
+    if (this.view.projects) this.projectsViewManager.onPointerdown();
   }
 
   onPointerup() {
     this.components.sky && this.sky.onPointerup();
     this.components.curlBubble && this.curlBubble.onPointerup();
     this.components.water && this.water.onPointerup();
+
+    if (this.view.projects) this.projectsViewManager.onPointerup();
+  }
+
+  onWheel(ev) {
+    this.components.sky && this.sky.onWheel();
+    this.components.curlBubble && this.curlBubble.onWheel();
+    this.components.water && this.water.onWheel();
+
+    if (this.view.projects) this.projectsViewManager.onWheel(ev);
   }
 
   resize() {
@@ -197,6 +253,8 @@ export class World {
     this.components.sky && this.sky.resize();
     this.components.curlBubble && this.curlBubble.resize();
     this.components.water && this.water.resize();
+
+    if (this.view.projects) this.projectsViewManager.resize();
   }
 
   setParallax() {
@@ -227,6 +285,8 @@ export class World {
     this.components.sky && this.sky.update();
     this.components.curlBubble && this.curlBubble.update();
     this.components.water && this.water.update();
+
+    if (this.view.projects) this.projectsViewManager.update();
   }
 
   render() {

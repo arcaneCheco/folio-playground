@@ -203,10 +203,19 @@ export default class Sky {
     this.mountainDebug();
     this.cloudsDebug();
     this.moonDebug();
+
+    this.debug.addInput(this.mesh.scale, "x", {
+      min: 1,
+      max: 3,
+      step: 0.001,
+      label: "xscale",
+    });
   }
 
   addObject() {
+    // this.geometry = new THREE.BoxGeometry(5, 5, 5);
     this.geometry = new THREE.SphereGeometry(1);
+    // this.geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, 1, 2));
     this.geometry.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
 
     this.material = new THREE.ShaderMaterial({
@@ -249,21 +258,8 @@ export default class Sky {
       depthWrite: false,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    // this.mesh.scale.set(2, 2, 1);
     this.scene.add(this.mesh);
-
-    // const groundG = new THREE.CircleGeometry(1, 50);
-    // const groundM = new THREE.MeshBasicMaterial({ color: "#1286d7" });
-    // const ground = new THREE.Mesh(groundG, groundM);
-    // ground.rotation.x = -Math.PI / 2;
-    // this.scene.add(ground);
-
-    // const plane = new THREE.PlaneGeometry(1, 1);
-    // let m = new THREE.MeshNormalMaterial();
-    // m = this.material.clone();
-    // m.side = THREE.FrontSide;
-    // this.plane = new THREE.Mesh(plane, this.material);
-
-    // this.scene.add(this.plane);
   }
 
   setPost() {
@@ -292,6 +288,8 @@ export default class Sky {
   onPointerdown() {}
 
   onPointerup() {}
+
+  onWheel() {}
 
   resize() {}
 
