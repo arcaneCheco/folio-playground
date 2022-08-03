@@ -29,7 +29,7 @@ export default class Water extends Mirror {
     this.uniforms = {
       uHeightMap: this.heightMap.texture,
       uBaseColor: { value: new THREE.Color("#f9f9f9") },
-      uFresnelColor: { value: new THREE.Color("#67ffda") },
+      uFresnelColor: { value: new THREE.Color("#b754ff") },
       uFresnelPower: { value: 3 },
       uTextureMatrix: { value: this.textureMatrix },
       uMirrorMap: { value: this.renderTarget.texture },

@@ -224,7 +224,7 @@ export default class Sky {
       uniforms: {
         uTime: { value: 0 },
         // sky
-        uSkyColor: { value: new THREE.Color("#ff9f21") },
+        uSkyColor: { value: new THREE.Color("#b754ff") },
         uSkyBrightness: { value: 0.6 },
         // horizon
         uHorizonBrightness: { value: 0.55 },
@@ -246,9 +246,9 @@ export default class Sky {
         uCloudHardEdgeDensity: { value: 0.6 },
         uCloudHardEdgeCut: { value: 0.3 },
         // moon
-        uMoonSize: { value: 0.026 },
+        uMoonSize: { value: 0.139 },
         // uMoonPosition: { value: new THREE.Vector3(0, 0, -1) },
-        uMoonPosition: { value: new THREE.Vector3(1, 1.74, -0.9) },
+        uMoonPosition: { value: new THREE.Vector3(2.39, 1.52, -0.43) },
         uMoonHaloSize: { value: 0.3 },
         uMoonHaloGradient: { value: 1.9 },
         uMoonColor: { value: new THREE.Color("#ffffff") },

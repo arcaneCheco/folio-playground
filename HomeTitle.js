@@ -4,7 +4,7 @@ import Flowmap from "./Flowmap";
 import TextTexture from "./TextTexture";
 import vertexShader from "./shaders/homeTitle/vertex.glsl";
 import fragmentShader from "./shaders/homeTitle/fragment.glsl";
-
+// import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
 export default class HomeTitle {
   constructor() {
     this.world = new World();
@@ -21,6 +21,7 @@ export default class HomeTitle {
     // at this point can destroy textTexture;
 
     this.geometry = new THREE.PlaneGeometry(this.textTexture.geometryAspect, 1);
+    // this.geometry = new THREE.PlaneGeometry(2, 2);
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -34,7 +35,9 @@ export default class HomeTitle {
       // blending: THREE.NoBlending,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.position.set(0, 0, 0.5);
+    this.mesh.renderOrder = 100;
+    // this.mesh.scale.setScalar(2);
+    this.mesh.position.set(-0.3, 0.3, 0);
     this.scene.add(this.mesh);
   }
 
@@ -46,7 +49,6 @@ export default class HomeTitle {
   }
 
   update() {
-    // this.textTexture.createTexture(this.renderer, this.camera);
     this.flowmap.update(this.renderer, this.camera);
   }
 }

@@ -45,6 +45,7 @@ export class World {
     };
 
     this.setWorld();
+    this.pane.refresh();
   }
 
   init() {
@@ -64,8 +65,10 @@ export class World {
     // this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
     // this.camera.position.set(0.0331, 0.1395, 1.097);
     // this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
-    this.camera.position.set(0, 0.0925, 1.0484);
-    this.camera.rotation.set(-0.0514, 0.061, 0);
+    this.camera.position.set(0.0331, 0.1395, 0.85);
+    this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
+    // this.camera.position.set(0, 0.0925, 1.0484);
+    // this.camera.rotation.set(-0.0514, 0.061, 0);
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",
@@ -73,11 +76,11 @@ export class World {
     });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.autoClear = false;
+    // this.renderer.autoClear = false;
     // this.renderer.setClearColor(0x333333);
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    // this.controls.enabled = false;
+    this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
@@ -450,10 +453,10 @@ export class World {
 
   setParallax() {
     this.parallax = {
-      lerp: 0.1,
-      magX: 0.1,
-      magY: 0.2,
-      enabled: false,
+      lerp: 0.03,
+      magX: 0.05,
+      magY: 0.1,
+      enabled: true,
       target: new THREE.Vector2(),
     };
   }
@@ -464,6 +467,16 @@ export class World {
         (this.parallax.target.x - this.camera.rotation.x) * this.parallax.lerp;
       this.camera.rotation.y +=
         (this.parallax.target.y - this.camera.rotation.y) * this.parallax.lerp;
+
+      // this.camera.position.z =
+      //   1.097 +
+      //   Math.sign(this.parallax.target.x) * this.parallax.target.length();
+      // this.camera.position.z +=
+      //   (0.9 +
+      //     (Math.sign(this.parallax.target.y) * this.parallax.target.length() -
+      //       this.camera.position.z)) *
+      //   this.parallax.lerp *
+      //   0.1;
     }
   }
 
