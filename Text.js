@@ -257,6 +257,15 @@ export default class Text {
     this.layout();
     this.populateBuffers();
   }
+
+  updateSize(size, lineWidth = undefined) {
+    if (lineWidth) this.lineWidth = lineWidth;
+    this.size = size;
+    const heightA = this.glyphs["A"].height;
+    this.scale = this.size / heightA;
+    this.layout();
+    this.populateBuffers();
+  }
 }
 
 class Line {

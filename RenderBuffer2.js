@@ -10,14 +10,12 @@ export default class RenderBuffer {
 
     this.geometry = new THREE.PlaneGeometry(2, 2);
 
-    this.camera = new THREE.PerspectiveCamera();
-
     this.rtOptions = {
-      minFilter: THREE.LinearFilter,
-      type: THREE.FloatType,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-      generateMipmaps: false,
+      // minFilter: THREE.LinearFilter,
+      // type: THREE.FloatType,
+      // magFilter: THREE.LinearFilter,
+      // format: THREE.RGBAFormat,
+      // generateMipmaps: false,
       stencilBuffer: false,
       depthBuffer: false,
       //depthwrite?
@@ -47,9 +45,9 @@ export default class RenderBuffer {
   update(renderer, camera) {
     const currentRenderTarget = renderer.getRenderTarget();
     renderer.setRenderTarget(this.write);
-    renderer.render(this.scene, this.camera);
+    renderer.render(this.scene, camera);
+    this.swap();
     renderer.setRenderTarget(currentRenderTarget);
     renderer.clear();
-    this.swap();
   }
 }

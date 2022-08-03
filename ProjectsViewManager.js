@@ -10,89 +10,15 @@ export default class ProjectsViewManager {
     this.projectScreen = this.world.projectScreen;
     this.projectTitles = this.world.projectTitles;
     this.curlBubble = this.world.curlBubble;
-    this.activeProject = 0;
-    this.textureLoader = this.world.textureLoader;
-
-    this.setData();
-
-    this.projectScreen.uniforms.uImage1.value =
-      this.projectsData[this.activeProject].texture;
-    this.projectScreen.uniforms.uImage2.value =
-      this.projectsData[this.activeProject + 1].texture;
-
-    this.projectTitles.setMeshes2();
-    this.projectTitles.setGroupPosition();
-    this.filterAll();
-
-    this.onActiveChange(this.activeProject);
+    this.activeProjectState = this.world.activeProjectState;
 
     // this.setOverlay();
-  }
-
-  setData() {
-    this.projectsData = [
-      {
-        title: "Elastic Mesh",
-        image: new THREE.Color("#ff0000"),
-        category: "site",
-        imageUrl: "images/t1.jpeg",
-      },
-      {
-        title: "Mandelbrot Explorer",
-        image: new THREE.Color("#00ff00"),
-        category: "sketch",
-        imageUrl: "images/t2.jpeg",
-      },
-      {
-        title: "A.P.O.D. Snippets",
-        image: new THREE.Color("#0000ff"),
-        category: "sketch",
-        imageUrl: "images/t3.jpeg",
-      },
-      {
-        title: "Infinite Tunnel",
-        image: new THREE.Color("#ff00ff"),
-        category: "publication",
-        imageUrl: "images/t4.jpeg",
-      },
-      {
-        title: "Elastic Mesh 4",
-        image: new THREE.Color("#ffff00"),
-        category: "publication",
-        imageUrl: "images/t5.jpeg",
-      },
-      {
-        title: "Elastic Mesh 5",
-        image: new THREE.Color("#00ffff"),
-        category: "publication",
-        imageUrl: "images/t6.jpeg",
-      },
-    ];
-
-    this.projectsData = this.projectsData.map((entry) => {
-      return {
-        ...entry,
-        color: entry.image,
-        texture: this.textureLoader.load(entry.imageUrl),
-      };
-    });
-
-    this.projectScreen.data = this.projectsData.map((entry) => ({
-      color: entry.image,
-      texture: entry.texture,
-    }));
-
-    this.projectTitles.titles = this.projectsData.map((entry) => ({
-      title: entry.title,
-      category: entry.category,
-      color: entry.image,
-    }));
   }
 
   setDebug() {
     this.debug = this.world.pane.addFolder({ title: "projectsViewManager" });
     this.debug
-      .addInput(this, "activeProject", { min: 0, max: 5, step: 1 })
+      .addInput(this.activeProjectState, "active", { min: 0, max: 5, step: 1 })
       .on("change", () => {
         this.onActiveChange();
       });
@@ -210,8 +136,8 @@ export default class ProjectsViewManager {
   }
 
   onActiveChange() {
-    this.projectScreen.onActiveChange(this.activeProject);
-    this.projectTitles.onActiveChange(this.activeProject);
+    this.projectTitles.onActiveChange(this.activeProjectState.active);
+    this.projectScreen.onActiveChange(this.activeProjectState.active);
   }
 
   onPointerdown() {
@@ -238,6 +164,8 @@ export default class ProjectsViewManager {
     this.scene.add(this.projectTitles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
     this.curlBubble.projectsState();
+    this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
+    this.projectScreen.mesh.position.set(0.18, 0.22, 0.47);
   }
 
   hide() {

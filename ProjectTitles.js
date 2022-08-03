@@ -24,6 +24,28 @@ export default class ProjectTitles {
     };
     this.gap = 0.2;
     this.active = 0;
+
+    this.setMaterial();
+  }
+
+  setMaterial() {
+    this.uniforms = {
+      uColor: { value: new THREE.Vector3() },
+      uActive: { value: false },
+      uMap: { value: null },
+      uStroke: { value: 0.1 },
+      uPadding: { value: 0.1 },
+      uTime: { value: 0 },
+    };
+
+    this.material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: this.uniforms,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+    });
   }
 
   setDebug() {
@@ -59,23 +81,20 @@ export default class ProjectTitles {
       );
   }
 
-  meshHelper(mesh) {
-    // const box = new THREE.BoxHelper(mesh, 0xff0000);
-    // mesh.add(box);
-    // console.log(box);
-    const t = new THREE.Mesh(
-      new THREE.PlaneGeometry(
-        mesh.geometry.worldWidth,
-        mesh.geometry.worldHeight
-      ),
-      new THREE.MeshBasicMaterial({
-        opacity: 0.5,
-        transparent: true,
-        color: new THREE.Color(Math.random(), Math.random(), Math.random()),
-      })
+  setTextBoundingUv(textGeometry) {
+    const count = textGeometry.attributes.uv.count;
+    const bUvArray = new Float32Array(count * 2);
+    const positions = textGeometry.attributes.position.array;
+    for (let i = 0; i < count; i++) {
+      const posX = positions[i * 3];
+      bUvArray[i * 2] = posX / textGeometry.worldWidth + 0.5;
+      const posY = positions[i * 3 + 1];
+      bUvArray[i * 2 + 1] = posY / textGeometry.worldHeight + 0.5;
+    }
+    textGeometry.setAttribute(
+      "boundingUv",
+      new THREE.BufferAttribute(bUvArray, 2)
     );
-    mesh.add(t);
-    console.log(mesh);
   }
 
   setTextGeometry(text) {
@@ -102,25 +121,7 @@ export default class ProjectTitles {
     const dummy3 = new THREE.Matrix4().makeTranslation(0, offset, 0);
     textG.applyMatrix4(dummy3);
 
-    // bounding uv's
-    const count = textG.attributes.uv.count;
-    const bUvArray = new Float32Array(count * 2);
-    const positions = textG.attributes.position.array;
-    for (let i = 0; i < count; i++) {
-      const posX = positions[i * 3];
-      bUvArray[i * 2] = posX / textG.worldWidth + 0.5;
-
-      //
-      const posY = positions[i * 3 + 1];
-      bUvArray[i * 2 + 1] = posY / textG.worldHeight + 0.5;
-    }
-    textG.setAttribute("boundingUv", new THREE.BufferAttribute(bUvArray, 2));
-    // console.log({
-    //   worldWidth: textG.worldWidth,
-    //   worldHeight: textG.worldHeight,
-    //   uvs: textG.attributes.uv.array,
-    //   pos: textG.attributes.position.array,
-    // });
+    this.setTextBoundingUv(textG);
 
     return textG;
   }
@@ -137,33 +138,16 @@ export default class ProjectTitles {
       "fonts/audiowide/Audiowide-Regular.ttf.png"
     );
 
-    this.uniforms = {
-      uColor: { value: new THREE.Vector3() },
-      uActive: { value: false },
-      uMap: { value: this.fontTexture },
-      uStroke: { value: 0.1 },
-      uPadding: { value: 0.1 },
-      uTime: { value: 0 },
-    };
+    this.uniforms.uMap.value = this.fontTexture;
 
-    const material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: this.uniforms,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-    });
-
-    this.titles.map(({ title, category, color }, index) => {
-      const mat = material.clone();
+    this.data.map(({ title, category, color }, index) => {
+      const mat = this.material.clone();
       const geometry = this.setTextGeometry(title);
       const mesh = new THREE.Mesh(geometry, mat);
       mat.uniforms.uColor.value = color;
       mesh.userData.index = index;
       mesh.userData.category = category;
       this.meshes.push(mesh);
-      // this.meshHelper(mesh);
     });
   }
 

@@ -4,6 +4,9 @@ precision highp sampler3D;
 uniform float uTime;
 uniform sampler3D uNoise;
 
+attribute vec3 position2;
+uniform float uBubblePos;
+
 // distortion
 uniform float uVertexDistortionSpeed;
 uniform float uVertexDistortionAmplitude;
@@ -11,7 +14,6 @@ uniform float uVertexDistortionAmplitude;
 varying vec3 vPosition;
 varying vec3 vDirection;
 varying vec3 vNormal;
-varying vec3 vLightPos;
 
 mat4 rotationMatrix(vec3 axis, float angle) {
     axis = normalize(axis);
@@ -35,27 +37,21 @@ vec3 rotateY(vec3 v, float angle) {
 }
 
 void main() {
-  vPosition = position;
+  vec3 bubblePos = mix(position, position2, uBubblePos);
+  vPosition = bubblePos;
   vec3 origin = vec3(inverse(modelMatrix) * vec4(cameraPosition, 1.)).xyz;
-  vDirection = position - origin;
+  vDirection = bubblePos - origin;
   vNormal = normal;
-
-  vLightPos = vec3(inverse(modelMatrix) * vec4(vec3(1, 1.74, -0.9), 1.)).xyz;
 
   float t = uTime * uVertexDistortionSpeed;
   float distortion = texture(uNoise, 
                               vec3(
-                                  position.x + sin(t) * 0.5 + 0.5, 
-                                  position.y + sin(2. * t) * 0.5 + 0.5, 
+                                  bubblePos.x + sin(t) * 0.5 + 0.5, 
+                                  bubblePos.y + sin(2. * t) * 0.5 + 0.5, 
                                   0.4)
                               ).r 
                       * uVertexDistortionAmplitude;
-  vec3 newPos = position + normal * distortion;
-
-  // float uFrequency = 10.;
-  // float uAmplitude = .4;
-  // float angle = sin(uv.y * uFrequency + uTime * 1.) * uAmplitude;
-  // newPos = rotateY(newPos, angle);   
+  vec3 newPos = bubblePos + normal * distortion;  
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);
 }

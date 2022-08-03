@@ -42,6 +42,9 @@ export default class CurlBubble {
     this.noise.unpackAlignment = 1;
 
     this.geometry = new THREE.SphereGeometry(0.5, 30, 30);
+    // this.geometry = new THREE.SphereGeometry(1, 30, 30);
+    const geometry2 = new THREE.SphereGeometry(2, 30, 30);
+    this.geometry.setAttribute("position2", geometry2.attributes.position);
 
     this.material = new THREE.ShaderMaterial({
       uniforms: {
@@ -61,6 +64,7 @@ export default class CurlBubble {
         uLightPosition: {
           value: new THREE.Vector3(0.0000001, 0.00000001, 0.0000001),
         },
+        uBubblePos: { value: 0.12 },
       },
       transparent: true,
       vertexShader,
@@ -81,6 +85,12 @@ export default class CurlBubble {
       ox: 43.745944838361396,
       oy: -52.33405246736149,
       oz: -70.8000496386397,
+    };
+    this.noiseSeed = {
+      s: 7.404537184903421,
+      ox: 6.195020470368192,
+      oy: 27.17863608024014,
+      oz: -42.06134238725863,
     };
     this.generateNoise();
   }
@@ -134,15 +144,20 @@ export default class CurlBubble {
       //   label: "color intensity",
     });
     this.debug.addInput(this.uniforms.uLightPosition.value, "y", {
-      min: -0.5,
-      max: 0.5,
+      min: -1,
+      max: 1,
       step: 0.0001,
     });
-    this.debug.addInput(this.mesh.rotation, "y", {
-      min: 0,
-      max: 6,
-      step: 0.001,
+    this.debug.addInput(this.uniforms.uLightPosition.value, "z", {
+      min: -1,
+      max: 1,
+      step: 0.0001,
     });
+    // this.debug.addInput(this.mesh.rotation, "y", {
+    //   min: 0,
+    //   max: 6,
+    //   step: 0.001,
+    // });
   }
 
   projectsState() {
@@ -295,16 +310,12 @@ export default class CurlBubble {
         label: "amplitude",
       }
     );
-    // vertexDistortion.addInput(
-    //   this.uniforms.uVertexDistortionFrequency,
-    //   "value",
-    //   {
-    //     min: 0,
-    //     max: 1,
-    //     step: 0.001,
-    //     label: "frequency",
-    //   }
-    // );
+    vertexDistortion.addInput(this.uniforms.uBubblePos, "value", {
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "bubblePos",
+    });
   }
 
   mapData(data, fn) {
@@ -351,7 +362,8 @@ export default class CurlBubble {
   generateSphere() {
     this.mapData(this.shapeArray, (p) => {
       //   return 0.95 - p.length();
-      return 0.9 - (1.25 * p.length() - 0.05);
+      return (0.9 - (1.25 * p.length() - 0.05)) * 1;
+      // return 0.9 - (1.25 * p.length() - 0.05);
     });
   }
 
@@ -450,7 +462,8 @@ export default class CurlBubble {
 
   generateNoise() {
     const perlin = (x, y, z) => {
-      return 0.5 + 0.5 * perlin3(x, y, z);
+      return (0.5 + 0.5 * perlin3(x, y, z)) * 1;
+      // return 0.5 + 0.5 * perlin3(x, y, z);
     };
 
     this.mapData(this.noiseArray, (p) => {
@@ -525,7 +538,11 @@ export default class CurlBubble {
     });
   }
 
-  onPointermove() {}
+  onPointermove() {
+    const coords = this.world.mouse;
+    this.material.uniforms.uLightPosition.value.x = coords.x;
+    this.material.uniforms.uLightPosition.value.y = coords.y;
+  }
 
   onPointerdown() {}
 

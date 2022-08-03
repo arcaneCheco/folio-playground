@@ -225,11 +225,11 @@ export default class Sky {
         uTime: { value: 0 },
         // sky
         uSkyColor: { value: new THREE.Color("#ff9f21") },
-        uSkyBrightness: { value: 0.92 },
+        uSkyBrightness: { value: 0.6 },
         // horizon
-        uHorizonBrightness: { value: 0.45 },
-        uHorizonIntensity: { value: 9 },
-        uHorizonHeight: { value: 0.23 },
+        uHorizonBrightness: { value: 0.55 },
+        uHorizonIntensity: { value: 8 },
+        uHorizonHeight: { value: 0.2 },
         // mountain
         uMountain1Height: { value: 0.3 },
         uMountain1Color: { value: new THREE.Color("#4C3326") },
@@ -238,9 +238,9 @@ export default class Sky {
         uMountain2Color: { value: new THREE.Color("#010101") },
         // clouds
         // uCloudColor: { value: new THREE.Color("#010101") },
-        uCloudColor: { value: new THREE.Color("#ff012a") },
+        uCloudColor: { value: new THREE.Color("#33012a") },
         uCloudsLowerBound: { value: 0 },
-        uCloudsGradient: { value: 0.8 },
+        uCloudsGradient: { value: 0.3 },
         uCloudSpeed: { value: 3 },
         uCloudHardEdges: { value: true },
         uCloudHardEdgeDensity: { value: 0.6 },
@@ -253,6 +253,10 @@ export default class Sky {
         uMoonHaloGradient: { value: 1.9 },
         uMoonColor: { value: new THREE.Color("#ffffff") },
         uMoonGradient: { value: 1.0111 },
+        // uGreyNoise
+        uGreyNoise: {
+          value: this.world.textureLoader.load("images/greyNoise.webp"),
+        },
       },
       side: THREE.BackSide,
       depthWrite: false,

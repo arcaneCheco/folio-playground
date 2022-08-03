@@ -52,5 +52,5 @@ void main() {
     if (stY > 1.) stY = 0.;
 
     gl_FragColor = vec4(uColor + uActive, alpha);
-    // gl_FragColor = vec4(vec3(st, stY, fract(uTime * 2.)), 1.);
+    // gl_FragColor = vec4(vec3(st, stY, 0.), 1.);
 }

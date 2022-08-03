@@ -7,6 +7,9 @@ import Water from "./Water";
 import ProjectScreen from "./ProjectScreen";
 import ProjectsViewManager from "./ProjectsViewManager";
 import ProjectTitles from "./ProjectTitles";
+import HomeViewManager from "./HomeViewManager";
+import ProjectDetailViewManager from "./ProjectDetailViewManager";
+import HomeTitle from "./HomeTitle";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -20,39 +23,28 @@ export class World {
     this.post = false;
     this.init();
 
-    this.sky = new Sky();
-    this.curlBubble = new CurlBubble();
-    this.water = new Water();
-    this.projectScreen = new ProjectScreen();
-    this.projectTitles = new ProjectTitles();
-    this.projectsViewManager = new ProjectsViewManager();
+    this.activeProjectState = {
+      active: 0,
+      progress: 0,
+      min: 0,
+      max: 5,
+    };
 
-    this.post && this.setPost();
     this.components = {
       sky: true,
       curlBubble: true,
       water: true,
       projectScreen: true,
+      homeTitle: true,
     }; // for debug purposes
+
     this.view = {
       home: false,
       projects: false,
+      projectDetail: false,
     };
-    /****
-     *
-     */
-    this.water.mesh.renderOrder = -1;
-    /***
-     *
-     */
-    this.setDebug();
-    window.addEventListener("resize", this.resize.bind(this));
-    window.addEventListener("pointermove", this.onPointermove.bind(this));
-    window.addEventListener("pointerup", this.onPointerup.bind(this));
-    window.addEventListener("pointerdown", this.onPointerdown.bind(this));
-    window.addEventListener("wheel", this.onWheel.bind(this));
-    this.resize();
-    this.render();
+
+    this.setWorld();
   }
 
   init() {
@@ -70,8 +62,10 @@ export class World {
     );
     // this.camera.position.set(0, 0.2196, 0.9749);
     // this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
-    this.camera.position.set(0.0331, 0.1395, 1.097);
-    this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
+    // this.camera.position.set(0.0331, 0.1395, 1.097);
+    // this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
+    this.camera.position.set(0, 0.0925, 1.0484);
+    this.camera.rotation.set(-0.0514, 0.061, 0);
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",
@@ -80,13 +74,212 @@ export class World {
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.autoClear = false;
-    this.renderer.setClearColor(0x333333);
+    // this.renderer.setClearColor(0x333333);
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = false;
+    // this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
+  }
+
+  async setWorld() {
+    this.setComponents();
+
+    this.setViewManagers();
+
+    this.setData();
+    // await this.setData();
+
+    this.onDataLoaded();
+
+    this.post && this.setPost();
+
+    this.water && (this.water.mesh.renderOrder = -1);
+
+    this.setDebug();
+
+    this.addListeners();
+
+    this.resize();
+    this.render();
+  }
+
+  addListeners() {
+    window.addEventListener("resize", this.resize.bind(this));
+    window.addEventListener("pointermove", this.onPointermove.bind(this));
+    window.addEventListener("pointerup", this.onPointerup.bind(this));
+    window.addEventListener("pointerdown", this.onPointerdown.bind(this));
+    window.addEventListener("wheel", this.onWheel.bind(this));
+  }
+
+  setComponents() {
+    this.sky = new Sky();
+    this.curlBubble = new CurlBubble();
+    this.projectTitles = new ProjectTitles();
+    this.projectScreen = new ProjectScreen();
+    this.water = new Water();
+    this.homeTitle = new HomeTitle();
+  }
+
+  setViewManagers() {
+    this.projectsViewManager = new ProjectsViewManager();
+    this.projectDetailViewManager = new ProjectDetailViewManager();
+    this.homeViewManager = new HomeViewManager();
+  }
+
+  onDataLoaded() {
+    this.projectScreen.data = this.data;
+    this.projectTitles.data = this.data;
+    this.projectTitles.setMeshes2();
+    this.projectTitles.setGroupPosition();
+    this.projectsViewManager.filterAll();
+
+    const location = window.location.pathname;
+
+    this.pathViewMap = {
+      "/": "home",
+      "/projects": "projects",
+    };
+
+    this.dataCount = this.data.length;
+
+    for (let i = 0; i < this.dataCount; i++) {
+      const key = this.data[i].path;
+      this.pathViewMap[key] = "projectDetail";
+    }
+
+    const view = this.pathViewMap[location];
+
+    if (view === "projectDetail") {
+      for (let i = 0; i < this.dataCount; i++) {
+        const dataPath = this.data[i].path;
+        if (location === dataPath) {
+          this.activeProjectState.active = i;
+          break;
+        }
+      }
+    }
+
+    this.projectScreen.uniforms.uImage1.value =
+      this.data[this.activeProjectState.active].texture;
+    this.projectScreen.uniforms.uImage2.value =
+      this.data[
+        Math.min(
+          this.activeProjectState.active + 1,
+          this.activeProjectState.max
+        )
+      ].texture;
+
+    this.changeView(view);
+  }
+
+  async setData() {
+    const rawData = [
+      {
+        title: "Elastic Mesh",
+        color: new THREE.Color("#ff0000"),
+        category: "site",
+        imageUrl: "images/t1.jpeg",
+        link: "http://goggle.com/elasticMesh",
+      },
+      {
+        title: "Mandelbrot Explorer",
+        color: new THREE.Color("#00ff00"),
+        category: "sketch",
+        imageUrl: "images/t2.jpeg",
+        link: "http://goggle.com/Mandelbrot",
+      },
+      {
+        title: "A.P.O.D. Snippets",
+        color: new THREE.Color("#0000ff"),
+        category: "sketch",
+        imageUrl: "images/t3.jpeg",
+        link: "https://apod-snippets.vercel.app/",
+      },
+      {
+        title: "Infinite Tunnel",
+        color: new THREE.Color("#ff00ff"),
+        category: "publication",
+        imageUrl: "images/t4.jpeg",
+        link: "http://goggle.com/Infinite",
+      },
+      {
+        title: "Elastic Mesh 4",
+        color: new THREE.Color("#ffff00"),
+        category: "publication",
+        imageUrl: "images/t5.jpeg",
+        link: "http://goggle.com/Elastic4",
+      },
+      {
+        title: "Elastic Mesh 5",
+        color: new THREE.Color("#00ffff"),
+        category: "publication",
+        imageUrl: "images/t6.jpeg",
+        link: "http://goggle.com/Mesh5",
+      },
+    ];
+
+    // const loadData = async () => {
+    //   return new Promise((resolve) => {
+    //     const loadedData = rawData.map(async (entry) => {
+    //       const tex = await new Promise((resolve) => {
+    //         this.textureLoader.load(entry.imageUrl, (text) => {
+    //           resolve(text);
+    //         });
+    //       });
+
+    //       return {
+    //         ...entry,
+    //         texture: tex,
+    //         path: "/projects-".concat(
+    //           entry.title.toLowerCase().split(" ").join("-").replaceAll(".", "")
+    //         ),
+    //       };
+    //     });
+
+    //     Promise.all(loadedData).then((dat) => {
+    //       this.data = dat;
+    //       resolve();
+    //     });
+    //   });
+    // };
+
+    // await loadData();
+
+    this.data = rawData.map((entry) => {
+      return {
+        ...entry,
+        texture: this.textureLoader.load(entry.imageUrl),
+        path: "/projects-".concat(
+          entry.title.toLowerCase().split(" ").join("-").replaceAll(".", "")
+        ),
+      };
+    });
+  }
+
+  changeView(view) {
+    Object.keys(this.view).map((key) => (this.view[key] = false));
+    this.view[view] = true;
+    if (view === "home") {
+      this.projectsViewManager.hide();
+      this.projectDetailViewManager.hide();
+      this.homeViewManager.show();
+      window.history.pushState({}, "", "/");
+    }
+    if (view === "projects") {
+      this.projectDetailViewManager.hide();
+      this.homeViewManager.hide();
+      this.projectsViewManager.show();
+      window.history.pushState({}, "", "/projects");
+    }
+    if (view === "projectDetail") {
+      this.projectsViewManager.hide();
+      this.homeViewManager.hide();
+      this.projectDetailViewManager.show();
+      const path = this.data[this.activeProjectState.active].path;
+      window.history.pushState({}, "", path);
+    }
   }
 
   worldDebug() {
@@ -98,20 +291,11 @@ export class World {
         options: [
           { text: "home", value: "home" },
           { text: "projects", value: "projects" },
+          { text: "projectDetail", value: "projectDetail" },
         ],
         value: "view",
       })
-      .on("change", ({ value }) => {
-        Object.keys(this.view).map((key) => (this.view[key] = false));
-        this.view[value] = true;
-        console.log(this.view);
-        if (value === "home") {
-          this.projectsViewManager.hide();
-        }
-        if (value === "projects") {
-          this.projectsViewManager.show();
-        }
-      });
+      .on("change", ({ value }) => this.changeView(value));
 
     this.debugCamera();
     this.debugComponents();
@@ -182,12 +366,13 @@ export class World {
     //   this.debug.hidden = !this.debug.hidden;
     // });
     this.worldDebug();
-    this.sky.setDebug();
-    this.curlBubble.setDebug();
-    this.water.setDebug();
+    this.sky && this.sky.setDebug();
+    this.curlBubble && this.curlBubble.setDebug();
+    this.water && this.water.setDebug();
     this.projectScreen.setDebug();
     this.projectTitles.setDebug();
     this.projectsViewManager.setDebug();
+    this.projectDetailViewManager.setDebug();
   }
 
   setPost() {
@@ -211,12 +396,14 @@ export class World {
     this.updateParallaxTarget();
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
+    this.components.homeTitle && this.homeTitle.onPointermove(e);
 
     this.components.sky && this.sky.onPointermove();
     this.components.curlBubble && this.curlBubble.onPointermove();
     this.components.water && this.water.onPointermove();
 
     if (this.view.projects) this.projectsViewManager.onPointermove();
+    if (this.view.projectDetail) this.projectDetailViewManager.onPointermove();
   }
 
   onPointerdown() {
@@ -225,6 +412,7 @@ export class World {
     this.components.water && this.water.onPointerdown();
 
     if (this.view.projects) this.projectsViewManager.onPointerdown();
+    if (this.view.projectDetail) this.projectDetailViewManager.onPointerdown();
   }
 
   onPointerup() {
@@ -233,6 +421,7 @@ export class World {
     this.components.water && this.water.onPointerup();
 
     if (this.view.projects) this.projectsViewManager.onPointerup();
+    if (this.view.projectDetail) this.projectDetailViewManager.onPointerup();
   }
 
   onWheel(ev) {
@@ -241,6 +430,7 @@ export class World {
     this.components.water && this.water.onWheel();
 
     if (this.view.projects) this.projectsViewManager.onWheel(ev);
+    if (this.view.projectDetail) this.projectDetailViewManager.onWheel(ev);
   }
 
   resize() {
@@ -255,6 +445,7 @@ export class World {
     this.components.water && this.water.resize();
 
     if (this.view.projects) this.projectsViewManager.resize();
+    if (this.view.projectDetail) this.projectDetailViewManager.resize();
   }
 
   setParallax() {
@@ -282,11 +473,13 @@ export class World {
 
   update() {
     this.updateWorld();
+    this.components.homeTitle && this.homeTitle.update();
     this.components.sky && this.sky.update();
     this.components.curlBubble && this.curlBubble.update();
     this.components.water && this.water.update();
 
     if (this.view.projects) this.projectsViewManager.update();
+    if (this.view.projectDetail) this.projectDetailViewManager.update();
   }
 
   render() {

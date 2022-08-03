@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { World } from "./app";
 import vertexShader from "./shaders/projectScreen/vertex.glsl";
 import fragmentShader from "./shaders/projectScreen/fragment.glsl";
+import img from "./data/images/t1.jpeg";
 
 /*****
  * figure out how to update active project when transition is already in progress
@@ -19,8 +20,12 @@ export default class ProjectScreen {
       uTransition: { value: false },
       uTransitionStart: { value: 0 },
       uTransitionDuration: { value: 0.5 },
-      uImage1: { value: null },
-      uImage2: { value: null },
+      uImage1: {
+        value: null,
+      },
+      uImage2: {
+        value: null,
+      },
       uBorderColor: { value: new THREE.Vector3() },
       uAbstract: {
         value: this.world.textureLoader.load("images/abstract2.jpeg"),
@@ -164,12 +169,16 @@ export default class ProjectScreen {
   }
 
   onActiveChange(activeProject) {
-    console.log(this.data[activeProject].texture);
+    console.log({
+      one: this.uniforms.uImage1.value,
+      two: this.uniforms.uImage2.value,
+    });
+    console.log("ONACTIVECHANGE");
     this.uniforms.uColor.value = this.data[activeProject].color;
     this.uniforms.uTransition.value = true;
     this.uniforms.uImage2.value = this.data[activeProject].texture;
     this.uniforms.uTransitionStart.value = this.world.time;
-    const deactivate = window.setTimeout(() => {
+    window.setTimeout(() => {
       this.uniforms.uImage1.value = this.data[activeProject].texture;
       this.uniforms.uTransition.value = false;
     }, this.uniforms.uTransitionDuration.value * 1000);

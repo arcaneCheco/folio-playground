@@ -128,4 +128,15 @@ void main() {
     // gl_FragColor = vec4(vec3(vig), 1.);
 
     // gl_FragColor = vec4(angleS, 0., 0., 1.);
+    // gl_FragColor = texture2D(uImage2, vUv);
 }
+
+
+// uniform sampler2D uAbstract;
+// uniform sampler2D uImage1;
+// varying vec2 vUv;
+
+// void main() {
+//     gl_FragColor = vec4(vUv, 0., 1.);
+//     gl_FragColor = texture2D(uImage1, vUv);
+// }

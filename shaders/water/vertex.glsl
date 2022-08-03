@@ -5,6 +5,7 @@ varying vec4 vMirrorCoord;
 varying vec3 vWorldNormal;
 varying vec3 vViewDirection;
 
+
 float heightSample(vec2 st) {
     return texture2D(uHeightMap, st).x;
 }
@@ -28,7 +29,7 @@ void main() {
 
     vWorldNormal = normalize(modelMatrix * vec4(objectNormal, 0.0)).xyz;
     vViewDirection = normalize(cameraPosition - worldPosition.xyz);
-    // vViewDirection = normalize(vec3(1., 1.74, -0.9) - worldPosition.xyz);
+    // vViewDirection = normalize(vec3(1., 0.65, -0.9) - worldPosition.xyz);
 
     float heightValue = heightSample(uv) * SCALE;
     vec3 newPos = vec3(position.x, position.y, heightValue);

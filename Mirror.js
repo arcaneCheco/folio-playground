@@ -4,7 +4,7 @@ export default class Mirror {
   constructor(options = {}) {
     this.textureWidth = options.textureWidth || 512;
     this.textureHeight = options.textureHeight || 512;
-    this.clipBias = options.clipBias || 0.0;
+    this.clipBias = options.clipBias || 0;
     this.mirrorPlane = new THREE.Plane();
     this.normal = new THREE.Vector3();
     this.mirrorWorldPosition = new THREE.Vector3();
