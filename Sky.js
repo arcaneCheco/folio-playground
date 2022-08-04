@@ -295,7 +295,10 @@ export default class Sky {
 
   onWheel() {}
 
-  resize() {}
+  resize() {
+    // const aspect = window.innerWidth / window.innerHeight;
+    // this.mesh.scale.setScalar(window.innerWidth);
+  }
 
   update() {
     this.material.uniforms.uTime.value = this.world.time;

@@ -27,7 +27,7 @@ vec4 getRGB(sampler2D image, vec2 uv, float angle, float amount) {
 
 	vec3 col = vec3(r.r, g.g, b.b);
 	col = rgb2hsv(col);
-	col.z -= 0.1;
+	col.z += 0.4;
 	col.x += 0.4;
 	col = hsv2rgb(col);
     return vec4(col, g.a);
@@ -51,12 +51,17 @@ void main() {
 	vec3 flow = texture2D(uFlowmap, vUv).rgb;
 
 	vec2 nUv = vUv;
+
+	// nUv += 0.15;
+	// nUv *= 1.5;
+
+
 	nUv += flow.rg * -0.05;
 
 
 	float angle = length(vUv - 0.5);
 
-	float amount = length(flow.rg) * 0.025;
+	float amount = length(flow.rg) * 0.029;
 
 	vec4 final = getRGB(uTextImage, nUv, angle, amount).rgba;
 	gl_FragColor = final;
@@ -65,7 +70,8 @@ void main() {
 
 	float tvN = tvNoise(nUv);
 	
-	col = mix(col, vec3(183./255., 84./255., 255./255.), tvN * 0.3);
+	col = mix(col, vec3(0.4,0.1,0.8), tvN * 0.3);
+	// col = mix(col, vec3(183./255., 84./255., 255./255.), tvN * 0.3);
 	// col = mix(col, vec3(0.8, 0.2, 0.1), tvN * 0.3);
 	// col = mix(vec3(1.), col, tvN * 0.3);
 

@@ -258,8 +258,9 @@ export default class Text {
     this.populateBuffers();
   }
 
-  updateSize(size, lineWidth = undefined) {
+  updateSize(size, lineWidth = undefined, lineHeight = this.lineHeight) {
     if (lineWidth) this.lineWidth = lineWidth;
+    this.lineHeight = lineHeight;
     this.size = size;
     const heightA = this.glyphs["A"].height;
     this.scale = this.size / heightA;

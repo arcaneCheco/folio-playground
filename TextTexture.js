@@ -6,13 +6,14 @@ import vertexShader from "./shaders/basicText/vertex.glsl";
 import fragmentShader from "./shaders/basicText/fragment.glsl";
 
 export default class TextTexture {
-  constructor({ lineHeight = 1.4, padding = 0.3 }) {
+  constructor({ lineHeight = 1.4, padding = 0.25 }) {
     this.geometry = new TextGeometry();
     this.geometry.setText({
       font,
       text: "Creative\nWeb\nDeveloper",
       align: "left",
       lineHeight,
+      letterSpacing: -0.05,
     });
 
     this.geometry.computeBoundingBox();
@@ -41,6 +42,8 @@ export default class TextTexture {
     this.mesh.scale.y = this.geometryAspect;
 
     this.mesh.scale.multiplyScalar(1 - padding);
+
+    // this.mesh.scale.set
 
     this.mesh.position.x = -1 + padding;
     this.mesh.position.y = 1 - padding - this.scale * 0.5 * this.geometryAspect;

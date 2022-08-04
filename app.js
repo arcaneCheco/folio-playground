@@ -10,6 +10,7 @@ import ProjectTitles from "./ProjectTitles";
 import HomeViewManager from "./HomeViewManager";
 import ProjectDetailViewManager from "./ProjectDetailViewManager";
 import HomeTitle from "./HomeTitle";
+import HomeContact from "./homeContact";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -21,6 +22,7 @@ export class World {
     World.instance = this;
     this.splitScreen = false;
     this.post = false;
+    // screen.orientation.lock("landscape");
     this.init();
 
     this.activeProjectState = {
@@ -45,7 +47,6 @@ export class World {
     };
 
     this.setWorld();
-    this.pane.refresh();
   }
 
   init() {
@@ -123,6 +124,7 @@ export class World {
     this.projectScreen = new ProjectScreen();
     this.water = new Water();
     this.homeTitle = new HomeTitle();
+    this.homeContact = new HomeContact();
   }
 
   setViewManagers() {
@@ -364,7 +366,8 @@ export class World {
   }
 
   setDebug() {
-    this.pane = new Pane();
+    this.paneContainer = new Pane();
+    this.pane = this.paneContainer.addFolder({ title: "", expanded: false });
     // this.pane.addButton({ title: "show/hide" }).on("click", () => {
     //   this.debug.hidden = !this.debug.hidden;
     // });
@@ -406,7 +409,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointermove();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointermove();
-    if (this.view.home) this.homeViewManager.onPointermove(e);
+    if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
   }
 
   onPointerdown() {

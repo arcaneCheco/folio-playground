@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "npx parcel ./index.html",
+    "dev": "npx parcel ./index.pug",
     "updateResources": "cp -r ./data/* ./dist/"
   },
   "author": "",
@@ -16,6 +16,7 @@
     "tweakpane": "^3.0.7"
   },
   "devDependencies": {
-    "@parcel/transformer-glsl": "^2.3.2"
+    "@parcel/transformer-glsl": "^2.3.2",
+    "@parcel/transformer-pug": "^2.3.2"
   }
 }
