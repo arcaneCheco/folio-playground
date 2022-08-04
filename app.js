@@ -399,7 +399,6 @@ export class World {
     this.updateParallaxTarget();
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
-    this.components.homeTitle && this.homeTitle.onPointermove(e);
 
     this.components.sky && this.sky.onPointermove();
     this.components.curlBubble && this.curlBubble.onPointermove();
@@ -407,6 +406,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointermove();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointermove();
+    if (this.view.home) this.homeViewManager.onPointermove(e);
   }
 
   onPointerdown() {
@@ -416,6 +416,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointerdown();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerdown();
+    if (this.view.home) this.homeViewManager.onPointerdown();
   }
 
   onPointerup() {
@@ -425,6 +426,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointerup();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerup();
+    if (this.view.home) this.homeViewManager.onPointerup();
   }
 
   onWheel(ev) {
@@ -434,6 +436,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onWheel(ev);
     if (this.view.projectDetail) this.projectDetailViewManager.onWheel(ev);
+    if (this.view.home) this.homeViewManager.onWheel(ev);
   }
 
   resize() {
@@ -449,13 +452,14 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.resize();
     if (this.view.projectDetail) this.projectDetailViewManager.resize();
+    if (this.view.home) this.homeViewManager.resize();
   }
 
   setParallax() {
     this.parallax = {
       lerp: 0.03,
-      magX: 0.05,
-      magY: 0.1,
+      magX: 0.03,
+      magY: 0.05,
       enabled: true,
       target: new THREE.Vector2(),
     };
@@ -486,13 +490,13 @@ export class World {
 
   update() {
     this.updateWorld();
-    this.components.homeTitle && this.homeTitle.update();
     this.components.sky && this.sky.update();
     this.components.curlBubble && this.curlBubble.update();
     this.components.water && this.water.update();
 
     if (this.view.projects) this.projectsViewManager.update();
     if (this.view.projectDetail) this.projectDetailViewManager.update();
+    if (this.view.home) this.homeViewManager.update();
   }
 
   render() {

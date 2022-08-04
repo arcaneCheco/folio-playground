@@ -38,7 +38,6 @@ export default class HomeTitle {
     this.mesh.renderOrder = 100;
     // this.mesh.scale.setScalar(2);
     this.mesh.position.set(-0.3, 0.3, 0);
-    this.scene.add(this.mesh);
   }
 
   onPointermove(e) {

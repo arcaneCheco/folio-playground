@@ -539,6 +539,7 @@ export default class CurlBubble {
   }
 
   onPointermove() {
+    // fix this at some point
     const coords = this.world.mouse;
     this.material.uniforms.uLightPosition.value.x = coords.x;
     this.material.uniforms.uLightPosition.value.y = coords.y;
