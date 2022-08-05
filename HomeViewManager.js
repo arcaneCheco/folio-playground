@@ -50,11 +50,16 @@ export default class HomeViewManager {
 
   onPointermove(e, mouse) {
     this.homeTitle.onPointermove(e, mouse);
+    this.curlBubble.onPointermove();
   }
 
-  onPointerdown() {}
+  onPointerdown() {
+    this.curlBubble.onPointerdown();
+  }
 
-  onPointerup() {}
+  onPointerup() {
+    this.curlBubble.onPointerup();
+  }
 
   getSizes(device) {
     const widthRatio = 2 / window.innerWidth;
@@ -102,23 +107,29 @@ export default class HomeViewManager {
 
     this.homeTitle.resize(homeTitle);
     this.homeContact.resize(homeContact);
+    this.curlBubble.resize();
   }
 
-  onWheel() {}
+  onWheel() {
+    this.curlBubble.onWheel();
+  }
 
   update() {
     this.homeTitle.update();
     this.homeContact.update(this.world.time);
+    this.curlBubble.update();
   }
 
   show() {
     this.scene.add(this.homeTitle.group);
     this.scene.add(this.homeContact.group);
-    this.curlBubble && this.curlBubble.mesh.position.set(0, 0.3, 0);
+    this.curlBubble && this.scene.add(this.curlBubble.mesh);
+    // this.curlBubble && this.curlBubble.mesh.position.set(0, 0.3, 0);
   }
 
   hide() {
     this.scene.remove(this.homeTitle.group);
     this.scene.remove(this.homeContact.group);
+    this.curlBubble && this.scene.remove(this.curlBubble.mesh);
   }
 }

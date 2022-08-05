@@ -43,14 +43,12 @@ export default class HomeTitle {
   }
 
   onPointermove(e, mouse) {
-    // const [hit] = this.raycaster.intersectObject(this.mesh);
     this.raycaster.set(
       new THREE.Vector3(0, 0, 1),
       new THREE.Vector3(mouse.x, mouse.y, -1).normalize()
     );
     const [hit] = this.raycaster.intersectObject(this.mesh);
     if (hit) {
-      console.log(hit.uv);
       this.flowmap.onPointermove(e, hit.uv);
     }
   }

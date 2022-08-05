@@ -405,7 +405,6 @@ export class World {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     this.components.sky && this.sky.onPointermove();
-    this.components.curlBubble && this.curlBubble.onPointermove();
     this.components.water && this.water.onPointermove();
 
     if (this.view.projects) this.projectsViewManager.onPointermove();
@@ -415,7 +414,6 @@ export class World {
 
   onPointerdown() {
     this.components.sky && this.sky.onPointerdown();
-    this.components.curlBubble && this.curlBubble.onPointerdown();
     this.components.water && this.water.onPointerdown();
 
     if (this.view.projects) this.projectsViewManager.onPointerdown();
@@ -425,7 +423,6 @@ export class World {
 
   onPointerup() {
     this.components.sky && this.sky.onPointerup();
-    this.components.curlBubble && this.curlBubble.onPointerup();
     this.components.water && this.water.onPointerup();
 
     if (this.view.projects) this.projectsViewManager.onPointerup();
@@ -435,7 +432,6 @@ export class World {
 
   onWheel(ev) {
     this.components.sky && this.sky.onWheel();
-    this.components.curlBubble && this.curlBubble.onWheel();
     this.components.water && this.water.onWheel();
 
     if (this.view.projects) this.projectsViewManager.onWheel(ev);
@@ -451,7 +447,6 @@ export class World {
     this.camera.updateProjectionMatrix();
 
     this.components.sky && this.sky.resize();
-    this.components.curlBubble && this.curlBubble.resize();
     this.components.water && this.water.resize();
 
     if (this.view.projects) this.projectsViewManager.resize();
@@ -475,16 +470,6 @@ export class World {
         (this.parallax.target.x - this.camera.rotation.x) * this.parallax.lerp;
       this.camera.rotation.y +=
         (this.parallax.target.y - this.camera.rotation.y) * this.parallax.lerp;
-
-      // this.camera.position.z =
-      //   1.097 +
-      //   Math.sign(this.parallax.target.x) * this.parallax.target.length();
-      // this.camera.position.z +=
-      //   (0.9 +
-      //     (Math.sign(this.parallax.target.y) * this.parallax.target.length() -
-      //       this.camera.position.z)) *
-      //   this.parallax.lerp *
-      //   0.1;
     }
   }
 
@@ -495,7 +480,6 @@ export class World {
   update() {
     this.updateWorld();
     this.components.sky && this.sky.update();
-    this.components.curlBubble && this.curlBubble.update();
     this.components.water && this.water.update();
 
     if (this.view.projects) this.projectsViewManager.update();

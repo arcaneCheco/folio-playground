@@ -9,7 +9,6 @@ export default class ProjectsViewManager {
     this.scene = this.world.scene;
     this.projectScreen = this.world.projectScreen;
     this.projectTitles = this.world.projectTitles;
-    this.curlBubble = this.world.curlBubble;
     this.activeProjectState = this.world.activeProjectState;
 
     // this.setOverlay();
@@ -166,7 +165,6 @@ export default class ProjectsViewManager {
   show() {
     this.scene.add(this.projectTitles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
-    this.curlBubble.projectsState();
     this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
     this.projectScreen.mesh.position.set(0.18, 0.22, 0.47);
   }
