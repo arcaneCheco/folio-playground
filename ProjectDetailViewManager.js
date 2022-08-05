@@ -27,6 +27,7 @@ export default class ProjectDetailViewManager {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "projectDetailViewManager",
+      expanded: false,
     });
     this.debug.addButton({ title: "next" }).on("click", () => {
       this.activeProjectState.active = Math.min(

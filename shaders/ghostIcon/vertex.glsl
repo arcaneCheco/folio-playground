@@ -5,7 +5,7 @@ varying float vProgress;
 
 void main() {
     vec3 pos = position;
-    // pos.x += 0.7;
+    pos.x += 0.2;
 
     float amp = .4;
     float duration = 3.;

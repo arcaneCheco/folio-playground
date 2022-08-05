@@ -288,7 +288,7 @@ export class World {
   }
 
   worldDebug() {
-    this.debug = this.pane.addFolder({ title: "world", expanded: true });
+    this.debug = this.pane.addFolder({ title: "world", expanded: false });
 
     this.debug
       .addBlade({
@@ -379,6 +379,7 @@ export class World {
     this.projectTitles.setDebug();
     this.projectsViewManager.setDebug();
     this.projectDetailViewManager.setDebug();
+    this.homeViewManager.setDebug();
   }
 
   setPost() {
