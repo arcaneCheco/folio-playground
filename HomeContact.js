@@ -4,6 +4,8 @@ import font from "./data/fonts/audiowide/Audiowide-Regular.json";
 import fontMap from "./data/fonts/audiowide/Audiowide-Regular.ttf.png";
 import vertexShader from "./shaders/homeContact/vertex.glsl";
 import fragmentShader from "./shaders/homeContact/fragment.glsl";
+import vertexTouchPlane from "./shaders/homeContact/touchPlane/vertex.glsl";
+import fragmentTouchPlane from "./shaders/homeContact/touchPlane/fragment.glsl";
 import vertexIcon from "./shaders/ghostIcon/vertex.glsl";
 import fragmentIcon from "./shaders/ghostIcon/fragment.glsl";
 import ghostSrc from "./data/images/ghostIcon.png";
@@ -38,7 +40,23 @@ export default class HomeContact {
       new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
     );
     this.email = new THREE.Mesh(geometry, this.material);
+    // this.email.name = "email";
+    this.email.renderOrder = 150;
     this.group.add(this.email);
+
+    // set touchPlane
+    const height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    const g = new THREE.PlaneGeometry(1, height);
+    const m = new THREE.ShaderMaterial({
+      vertexShader: vertexTouchPlane,
+      fragmentShader: fragmentTouchPlane,
+    });
+    this.touchPlane = new THREE.Mesh(g, m);
+    this.touchPlane.visible = false;
+    this.touchPlane.position.x = 0.5;
+    this.email.add(this.touchPlane);
+    this.touchPlane.name = "email";
+    this.touchPlane.renderOrder = 250;
   }
 
   setCTAText() {

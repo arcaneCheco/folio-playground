@@ -38,6 +38,7 @@ export default class HomeTitle {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.name = "homeTitle";
     this.mesh.renderOrder = 100;
+    this.mesh.position.z = -0.01;
     this.group.add(this.mesh);
   }
 

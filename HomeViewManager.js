@@ -10,6 +10,8 @@ export default class HomeViewManager {
     this.homeContact = this.world.homeContact;
     this.homeNav = this.world.homeNav;
     this.raycaster = this.world.raycaster;
+    this.rayOrigin = new THREE.Vector3(0, 0, 1);
+    this.rayTarget = new THREE.Vector3();
 
     this.resizeSettings = {
       offsetTop: 50,
@@ -53,30 +55,40 @@ export default class HomeViewManager {
   }
 
   onPointermove(e, mouse) {
-    this.raycaster.set(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(mouse.x, mouse.y, -1).normalize()
-    );
+    this.rayTarget.set(mouse.x, mouse.y, -1);
+    this.raycaster.set(this.rayOrigin, this.rayTarget.normalize());
+
     const [hit] = this.raycaster.intersectObjects([
       this.homeTitle.mesh,
       this.homeNav.mesh,
+      this.homeContact.touchPlane,
     ]);
     if (hit) {
       const { name } = hit.object;
 
       if (name === "homeTitle") {
         this.homeTitle.onPointermove(e, hit.uv);
-      }
 
-      if (name === "homeNav") {
+        if (this.homeNav.hover || this.homeContact.hover) {
+          this.homeNav.hover = false;
+          this.homeContact.hover = false;
+          document.body.style.cursor = "";
+        }
+      } else if (name === "homeNav") {
         if (!this.homeNav.hover) {
           this.homeNav.hover = true;
           document.body.style.cursor = "pointer";
         }
+      } else if (name === "email") {
+        if (!this.homeContact.hover) {
+          document.body.style.cursor = "pointer";
+          this.homeContact.hover = true;
+        }
       }
     } else {
-      if (this.homeNav.hover) {
+      if (this.homeNav.hover || this.homeContact.hover) {
         this.homeNav.hover = false;
+        this.homeContact.hover = false;
         document.body.style.cursor = "";
       }
     }
@@ -87,6 +99,7 @@ export default class HomeViewManager {
 
   onPointerdown() {
     this.homeNav.hover && (this.homeNav.down = true);
+    this.homeContact.hover && (this.homeContact.down = true);
     this.homeNav.onPointerdown();
     this.curlBubble.onPointerdown();
   }
@@ -96,6 +109,11 @@ export default class HomeViewManager {
       document.body.style.cursor = "";
       this.world.changeView("projects");
     }
+
+    if (this.homeContact.hover && this.homeContact.down) {
+      parent.location = "mailto:abc@abc.com";
+    }
+
     this.homeNav.onPointerup();
     this.curlBubble.onPointerup();
   }
