@@ -92,9 +92,10 @@ export default class HomeViewManager {
   }
 
   onPointerup() {
-    this.homeNav.hover &&
-      this.homeNav.down &&
+    if (this.homeNav.hover && this.homeNav.down) {
+      document.body.style.cursor = "";
       this.world.changeView("projects");
+    }
     this.homeNav.onPointerup();
     this.curlBubble.onPointerup();
   }
