@@ -11,6 +11,7 @@ import HomeViewManager from "./HomeViewManager";
 import ProjectDetailViewManager from "./ProjectDetailViewManager";
 import HomeTitle from "./HomeTitle";
 import HomeContact from "./homeContact";
+import HomeNav from "./HomeNav";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -125,6 +126,7 @@ export class World {
     this.water = new Water();
     this.homeTitle = new HomeTitle();
     this.homeContact = new HomeContact();
+    this.homeNav = new HomeNav();
   }
 
   setViewManagers() {

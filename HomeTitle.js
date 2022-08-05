@@ -36,21 +36,13 @@ export default class HomeTitle {
       // blending: THREE.NoBlending,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.name = "homeTitle";
     this.mesh.renderOrder = 100;
     this.group.add(this.mesh);
-    // this.mesh.scale.setScalar(0.75);
-    // this.mesh.position.set(-0.25, 0.35, 0);
   }
 
-  onPointermove(e, mouse) {
-    this.raycaster.set(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(mouse.x, mouse.y, -1).normalize()
-    );
-    const [hit] = this.raycaster.intersectObject(this.mesh);
-    if (hit) {
-      this.flowmap.onPointermove(e, hit.uv);
-    }
+  onPointermove(e, uv) {
+    this.flowmap.onPointermove(e, uv);
   }
 
   resize(sizes) {

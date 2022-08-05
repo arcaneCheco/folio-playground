@@ -149,9 +149,11 @@ export default class Water extends Mirror {
   update() {
     this.world.homeTitle.mesh.visible = false;
     this.world.homeContact.group.visible = false;
+    this.world.homeNav.group.visible = false;
     super.update(this.mesh, this.renderer, this.camera, this.scene);
     this.world.homeTitle.mesh.visible = true;
     this.world.homeContact.group.visible = true;
+    this.world.homeNav.group.visible = true;
     this.heightMap.update(this.renderer, this.camera);
   }
 }

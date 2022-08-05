@@ -1,4 +1,5 @@
 import { World } from "./app";
+import * as THREE from "three";
 
 export default class HomeViewManager {
   constructor() {
@@ -7,9 +8,12 @@ export default class HomeViewManager {
     this.curlBubble = this.world.curlBubble;
     this.homeTitle = this.world.homeTitle;
     this.homeContact = this.world.homeContact;
+    this.homeNav = this.world.homeNav;
+    this.raycaster = this.world.raycaster;
 
     this.resizeSettings = {
       offsetTop: 50,
+      offsetTopPerc: 0.4,
       posX: -0.1,
       maxScale: 749,
       scale: 0.4,
@@ -49,15 +53,49 @@ export default class HomeViewManager {
   }
 
   onPointermove(e, mouse) {
-    this.homeTitle.onPointermove(e, mouse);
+    this.raycaster.set(
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(mouse.x, mouse.y, -1).normalize()
+    );
+    const [hit] = this.raycaster.intersectObjects([
+      this.homeTitle.mesh,
+      this.homeNav.mesh,
+    ]);
+    if (hit) {
+      const { name } = hit.object;
+
+      if (name === "homeTitle") {
+        this.homeTitle.onPointermove(e, hit.uv);
+      }
+
+      if (name === "homeNav") {
+        if (!this.homeNav.hover) {
+          this.homeNav.hover = true;
+          document.body.style.cursor = "pointer";
+        }
+      }
+    } else {
+      if (this.homeNav.hover) {
+        this.homeNav.hover = false;
+        document.body.style.cursor = "";
+      }
+    }
+
+    this.homeNav.onPointermove();
     this.curlBubble.onPointermove();
   }
 
   onPointerdown() {
+    this.homeNav.hover && (this.homeNav.down = true);
+    this.homeNav.onPointerdown();
     this.curlBubble.onPointerdown();
   }
 
   onPointerup() {
+    this.homeNav.hover &&
+      this.homeNav.down &&
+      this.world.changeView("projects");
+    this.homeNav.onPointerup();
     this.curlBubble.onPointerup();
   }
 
@@ -68,6 +106,7 @@ export default class HomeViewManager {
 
     let homeTitle = {};
     let homeContact = {};
+    let homeNav = {};
 
     // homeTitle
     homeTitle.scaleX = Math.min(
@@ -78,6 +117,8 @@ export default class HomeViewManager {
     homeTitle.posX = this.resizeSettings.posX;
     homeTitle.posY =
       1 - homeTitle.scaleY * 0.65 - this.resizeSettings.offsetTop * heightRatio;
+    homeTitle.posY =
+      1 - homeTitle.scaleY * 0.65 - this.resizeSettings.offsetTopPerc / aspect;
     //homeContact
     homeContact.posX = this.resizeSettings.posX - homeTitle.scaleX * 0.7;
     homeContact.posY = homeTitle.posY - homeTitle.scaleY * 0.9;
@@ -89,7 +130,15 @@ export default class HomeViewManager {
     homeContact.iconScaleX = homeContact.emailOffset;
     homeContact.iconScaleY = homeContact.iconScaleX * aspect;
 
-    return { homeTitle, homeContact };
+    homeNav.scaleY = 200 * widthRatio;
+    homeNav.scaleY = Math.min(0.3, homeNav.scaleY);
+    homeNav.scaleX = homeNav.scaleY * aspect;
+
+    homeNav.posX = -0.5;
+    homeNav.posX = -homeTitle.scaleX + homeTitle.posX;
+    homeNav.posY = -0.5;
+
+    return { homeTitle, homeContact, homeNav };
   }
 
   resize() {
@@ -103,10 +152,11 @@ export default class HomeViewManager {
         ? "ipad"
         : "mobile";
 
-    const { homeTitle, homeContact } = this.getSizes(device);
+    const { homeTitle, homeContact, homeNav } = this.getSizes(device);
 
     this.homeTitle.resize(homeTitle);
     this.homeContact.resize(homeContact);
+    this.homeNav.resize(homeNav);
     this.curlBubble.resize();
   }
 
@@ -123,6 +173,7 @@ export default class HomeViewManager {
   show() {
     this.scene.add(this.homeTitle.group);
     this.scene.add(this.homeContact.group);
+    this.scene.add(this.homeNav.group);
     this.curlBubble && this.scene.add(this.curlBubble.mesh);
     // this.curlBubble && this.curlBubble.mesh.position.set(0, 0.3, 0);
   }
@@ -130,6 +181,7 @@ export default class HomeViewManager {
   hide() {
     this.scene.remove(this.homeTitle.group);
     this.scene.remove(this.homeContact.group);
+    this.scene.remove(this.homeNav.group);
     this.curlBubble && this.scene.remove(this.curlBubble.mesh);
   }
 }
