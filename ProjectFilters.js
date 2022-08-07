@@ -13,13 +13,13 @@ export default class ProjectsFilters {
     this.group = new THREE.Group();
     this.outerGroup.add(this.group);
 
-    this.size = 200;
+    this.size = 150;
 
     this.underlineThickness = 0.1;
 
     this.gap = 0.8;
 
-    this.outerGroup.position.x = -0.95;
+    this.outerGroup.position.x = -0.9;
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,

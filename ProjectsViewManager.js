@@ -9,6 +9,7 @@ export default class ProjectsViewManager {
     this.projectTitles = this.world.projectTitles;
     this.activeProjectState = this.world.activeProjectState;
     this.projectFilters = this.world.projectFilters;
+    this.projectsNav = this.world.projectsNav;
 
     this.raycaster = this.world.raycaster;
     this.rayOrigin = new THREE.Vector3(0, 0, 1);
@@ -88,27 +89,30 @@ export default class ProjectsViewManager {
 
   onPointerdown() {
     this.projectScreen.onPointerdown();
-    if (this.hoverFilters) {
+    if (this.hover) {
       this.down = true;
     }
   }
 
   onPointermove(mouse) {
     if (this.down) return;
+
     this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
     this.raycaster.set(this.rayOrigin, this.rayTarget);
 
-    const [hit] = this.raycaster.intersectObjects(
-      this.projectFilters.group.children
-    );
+    const [hit] = this.raycaster.intersectObjects([
+      ...this.projectFilters.group.children,
+      this.projectsNav.homeNav,
+      this.projectsNav.aboutNav,
+    ]);
 
     if (hit) {
-      this.hoveredFilter = hit.object.name;
-      this.hoverFilters = true;
+      this.target = hit.object.name;
+      this.hover = true;
       document.body.style.cursor = "pointer";
     } else {
       document.body.style.cursor = "";
-      this.hoverFilters = false;
+      this.hover = false;
     }
 
     this.projectScreen.onPointermove();
@@ -119,9 +123,9 @@ export default class ProjectsViewManager {
 
     this.projectScreen.onPointerup();
 
-    if (this.hoverFilters && this.down) {
+    if (this.hover && this.down) {
       this.down = false;
-      switch (this.hoveredFilter) {
+      switch (this.target) {
         case "All":
           this.filterAll();
           break;
@@ -134,16 +138,46 @@ export default class ProjectsViewManager {
         case "Publications":
           this.filterPublications();
           break;
+        case "home":
+          this.world.changeView("home");
+          break;
+        case "about":
+          this.world.changeView("about");
+          break;
         default:
           break;
       }
     }
+
+    console.log({
+      hover: this.hover,
+      down: this.down,
+      target: this.target,
+    });
+  }
+
+  getSizes() {
+    const widthRatio = 2 / window.innerWidth;
+    const aspect = window.innerWidth / window.innerHeight;
+
+    const projectsNav = {};
+
+    projectsNav.scaleY = 30 * widthRatio;
+    projectsNav.scaleY = Math.min(0.3, projectsNav.scaleY);
+    projectsNav.scaleX = projectsNav.scaleY * aspect;
+
+    return {
+      projectsNav,
+    };
   }
 
   resize() {
+    const { projectsNav } = this.getSizes();
+
     this.projectScreen.resize();
     this.projectTitles.onResize();
     this.projectFilters.onResize();
+    this.projectsNav.onResize(projectsNav);
   }
 
   onWheel({ deltaY }) {
@@ -154,6 +188,7 @@ export default class ProjectsViewManager {
     this.scene.add(this.projectTitles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
     this.scene.add(this.projectFilters.outerGroup);
+    this.scene.add(this.projectsNav.group);
     this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
     this.projectScreen.mesh.position.set(0.18, 0.22, 0.1);
   }
@@ -162,6 +197,7 @@ export default class ProjectsViewManager {
     this.scene.remove(this.projectTitles.outerGroup);
     this.scene.remove(this.projectScreen.mesh);
     this.scene.remove(this.projectFilters.outerGroup);
+    this.scene.remove(this.projectsNav.group);
   }
 
   update() {

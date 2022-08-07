@@ -13,8 +13,17 @@ import HomeTitle from "./HomeTitle";
 import HomeContact from "./homeContact";
 import HomeNav from "./HomeNav";
 import ProjectsFilters from "./ProjectFilters";
+import ProjectsNav from "./ProjectsNav";
 
-//******ADD CAMERA SHAKE FROM ALIEN */
+const debounce = (func, timeout = 50) => {
+  let timer;
+  return (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, timeout);
+  };
+};
 
 export class World {
   constructor() {
@@ -46,6 +55,7 @@ export class World {
       home: false,
       projects: false,
       projectDetail: false,
+      about: false,
     };
 
     this.setWorld();
@@ -116,6 +126,11 @@ export class World {
     window.addEventListener("pointermove", this.onPointermove.bind(this));
     window.addEventListener("pointerup", this.onPointerup.bind(this));
     window.addEventListener("pointerdown", this.onPointerdown.bind(this));
+    // window.addEventListener("pointerup", debounce(this.onPointerup.bind(this)));
+    // window.addEventListener(
+    //   "pointerdown",
+    //   debounce(this.onPointerdown.bind(this))
+    // );
     window.addEventListener("wheel", this.onWheel.bind(this));
   }
 
@@ -129,6 +144,7 @@ export class World {
     this.homeContact = new HomeContact();
     this.homeNav = new HomeNav();
     this.projectFilters = new ProjectsFilters();
+    this.projectsNav = new ProjectsNav();
   }
 
   setViewManagers() {
@@ -148,6 +164,7 @@ export class World {
     this.pathViewMap = {
       "/": "home",
       "/projects": "projects",
+      "/about": "about",
     };
 
     this.dataCount = this.data.length;
@@ -269,6 +286,7 @@ export class World {
   changeView(view) {
     Object.keys(this.view).map((key) => (this.view[key] = false));
     this.view[view] = true;
+
     if (view === "home") {
       this.projectsViewManager.hide();
       this.projectDetailViewManager.hide();
@@ -288,6 +306,13 @@ export class World {
       const path = this.data[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
     }
+    if (view === "about") {
+      this.projectsViewManager.hide();
+      this.homeViewManager.hide();
+      this.projectDetailViewManager.hide();
+      // thisaboutViewManager.show
+      window.history.pushState({}, "", "/about");
+    }
   }
 
   worldDebug() {
@@ -300,6 +325,7 @@ export class World {
           { text: "home", value: "home" },
           { text: "projects", value: "projects" },
           { text: "projectDetail", value: "projectDetail" },
+          { text: "about", value: "about" },
         ],
         value: "view",
       })

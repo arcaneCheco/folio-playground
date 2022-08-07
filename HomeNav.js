@@ -23,7 +23,7 @@ export default class HomeNav {
     this.geometry = new TextGeometry();
     this.geometry.setText({
       font,
-      text: "ViewProjects",
+      text: "View Projects",
       align: "center",
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);

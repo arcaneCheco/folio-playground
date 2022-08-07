@@ -271,7 +271,7 @@ export default class ProjectTitles {
   }
 
   onResize() {
-    let s = 0.00075 * window.innerWidth;
+    let s = 0.00035 * window.innerWidth;
     this.outerGroup.scale.setScalar(this.baseScale * s);
   }
 

@@ -109,6 +109,8 @@ export default class HomeViewManager {
 
   onPointerup() {
     if (this.homeNav.hover && this.homeNav.down) {
+      this.homeNav.down = false;
+      this.homeNav.hover = false;
       document.body.style.cursor = "";
       this.world.changeView("projects");
     }
@@ -152,6 +154,7 @@ export default class HomeViewManager {
     homeContact.iconScaleX = homeContact.emailOffset;
     homeContact.iconScaleY = homeContact.iconScaleX * aspect;
 
+    // homveNav
     homeNav.scaleY = 200 * widthRatio;
     homeNav.scaleY = Math.min(0.3, homeNav.scaleY);
     homeNav.scaleX = homeNav.scaleY * aspect;
