@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import { World } from "./app";
-import vertexShader from "./shaders/markers/vertex.glsl";
-import fragmentShader from "./shaders/markers/fragment.glsl";
 
 export default class ProjectsViewManager {
   constructor() {
@@ -10,8 +8,11 @@ export default class ProjectsViewManager {
     this.projectScreen = this.world.projectScreen;
     this.projectTitles = this.world.projectTitles;
     this.activeProjectState = this.world.activeProjectState;
+    this.projectFilters = this.world.projectFilters;
 
-    // this.setOverlay();
+    this.raycaster = this.world.raycaster;
+    this.rayOrigin = new THREE.Vector3(0, 0, 1);
+    this.rayTarget = new THREE.Vector3();
   }
 
   setDebug() {
@@ -80,63 +81,6 @@ export default class ProjectsViewManager {
     this.projectTitles.setPositionsWithinGroup();
   }
 
-  setOverlay() {
-    this.setMarkers();
-    this.setFilters();
-  }
-
-  setMarkers() {
-    const n = 6;
-    const markerGeometry = new THREE.PlaneGeometry(2, 2);
-    const markerMaterial = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      transparent: true,
-    });
-    const markersMesh = new THREE.InstancedMesh(
-      markerGeometry,
-      markerMaterial,
-      n
-    );
-    markersMesh.renderOrder = 10;
-    this.scene.add(markersMesh);
-
-    const dummy = new THREE.Object3D();
-
-    for (let i = 0; i < n; i++) {
-      dummy.position.x = n - 1 - 2 * i;
-      // console.log(dummy.position.y);
-      dummy.updateMatrix();
-      markersMesh.setMatrixAt(i, dummy.matrix);
-      markersMesh.setColorAt(i, new THREE.Color("#ffffff"));
-    }
-    markersMesh.scale.set(50 / window.innerWidth, 50 / window.innerHeight, 1);
-    markersMesh.position.set(0.5, -0.5, 0);
-    // this.markersMesh.setColorAt(this.activeIndex, this.settings.markerActive);
-  }
-
-  setFilters() {
-    const g = new THREE.PlaneGeometry(2, 2);
-    const m = new THREE.ShaderMaterial({
-      vertexShader: `
-      void main() {
-        gl_Position = modelMatrix * vec4(position, 1.);
-      }`,
-    });
-    const all = new THREE.Mesh(g, m);
-    const sites = all.clone();
-    sites.position.y = -2.5 * 1;
-    const sketches = all.clone();
-    sketches.position.y = -2.5 * 2;
-    const publications = all.clone();
-    publications.position.y = -2.5 * 3;
-    const filtersGroup = new THREE.Group();
-    filtersGroup.scale.set(100 / window.innerWidth, 30 / window.innerHeight, 1);
-    filtersGroup.add(all, sites, sketches, publications);
-    filtersGroup.position.set(-0.7, 0, 0);
-    this.scene.add(filtersGroup);
-  }
-
   onActiveChange() {
     this.projectTitles.onActiveChange(this.activeProjectState.active);
     this.projectScreen.onActiveChange(this.activeProjectState.active);
@@ -144,18 +88,62 @@ export default class ProjectsViewManager {
 
   onPointerdown() {
     this.projectScreen.onPointerdown();
+    if (this.hoverFilters) {
+      this.down = true;
+    }
   }
 
-  onPointermove() {
+  onPointermove(mouse) {
+    if (this.down) return;
+    this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
+    this.raycaster.set(this.rayOrigin, this.rayTarget);
+
+    const [hit] = this.raycaster.intersectObjects(
+      this.projectFilters.group.children
+    );
+
+    if (hit) {
+      this.hoveredFilter = hit.object.name;
+      this.hoverFilters = true;
+      document.body.style.cursor = "pointer";
+    } else {
+      document.body.style.cursor = "";
+      this.hoverFilters = false;
+    }
+
     this.projectScreen.onPointermove();
   }
 
   onPointerup() {
+    document.body.style.cursor = "";
+
     this.projectScreen.onPointerup();
+
+    if (this.hoverFilters && this.down) {
+      this.down = false;
+      switch (this.hoveredFilter) {
+        case "All":
+          this.filterAll();
+          break;
+        case "Sites":
+          this.filterSites();
+          break;
+        case "Sketches":
+          this.filterSketches();
+          break;
+        case "Publications":
+          this.filterPublications();
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   resize() {
     this.projectScreen.resize();
+    this.projectTitles.onResize();
+    this.projectFilters.onResize();
   }
 
   onWheel({ deltaY }) {
@@ -165,13 +153,15 @@ export default class ProjectsViewManager {
   show() {
     this.scene.add(this.projectTitles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
+    this.scene.add(this.projectFilters.outerGroup);
     this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
-    this.projectScreen.mesh.position.set(0.18, 0.22, 0.47);
+    this.projectScreen.mesh.position.set(0.18, 0.22, 0.1);
   }
 
   hide() {
     this.scene.remove(this.projectTitles.outerGroup);
     this.scene.remove(this.projectScreen.mesh);
+    this.scene.remove(this.projectFilters.outerGroup);
   }
 
   update() {

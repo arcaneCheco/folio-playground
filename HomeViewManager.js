@@ -23,7 +23,10 @@ export default class HomeViewManager {
   }
 
   setDebug() {
-    this.debug = this.world.pane.addFolder({ title: "homeViewManager" });
+    this.debug = this.world.pane.addFolder({
+      title: "homeViewManager",
+      expanded: false,
+    });
     this.debug
       .addInput(this.resizeSettings, "offsetTop", {
         min: 0,

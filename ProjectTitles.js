@@ -25,6 +25,27 @@ export default class ProjectTitles {
     this.gap = 0.2;
     this.active = 0;
 
+    // this.initialScrollOffset = -5;
+    this.baseWidth = 3.5; // wolrd units
+
+    this.group = new THREE.Group();
+    this.outerGroup = new THREE.Group();
+    this.outerGroup.add(this.group);
+    this.group.renderOrder = 1000;
+
+    this.baseScale = 1 / this.baseWidth;
+    this.outerGroup.scale.setScalar(this.baseScale);
+    this.outerGroup.position.y = 0;
+
+    this.group.position.x = -1;
+
+    this.meshes = [];
+
+    this.fontData = fontData;
+    this.fontTexture = this.world.textureLoader.load(
+      "fonts/audiowide/Audiowide-Regular.ttf.png"
+    );
+
     this.setMaterial();
   }
 
@@ -32,7 +53,7 @@ export default class ProjectTitles {
     this.uniforms = {
       uColor: { value: new THREE.Vector3() },
       uActive: { value: false },
-      uMap: { value: null },
+      uMap: { value: this.fontTexture },
       uStroke: { value: 0.1 },
       uPadding: { value: 0.1 },
       uTime: { value: 0 },
@@ -51,7 +72,7 @@ export default class ProjectTitles {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "project titles",
-      expanded: false,
+      expanded: true,
     });
     this.stroke = 0.1;
     this.debug
@@ -79,6 +100,28 @@ export default class ProjectTitles {
           (mesh) => (mesh.material.uniforms.uPadding.value = this.padding)
         )
       );
+
+    this.debug
+      .addInput(this, "gap", {
+        min: 0,
+        max: 1,
+        step: 0.001,
+      })
+      .on("change", () => {
+        this.setPositionsWithinGroup();
+      });
+    this.debug.addInput(this.outerGroup.position, "y", {
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "outerGroup - posY",
+    });
+    this.debug.addInput(this.group.position, "x", {
+      min: -4,
+      max: 0,
+      step: 0.001,
+      label: "group - posX",
+    });
   }
 
   setTextBoundingUv(textGeometry) {
@@ -87,9 +130,9 @@ export default class ProjectTitles {
     const positions = textGeometry.attributes.position.array;
     for (let i = 0; i < count; i++) {
       const posX = positions[i * 3];
-      bUvArray[i * 2] = posX / textGeometry.worldWidth + 0.5;
+      bUvArray[i * 2] = posX / this.baseWidth + 0.5;
       const posY = positions[i * 3 + 1];
-      bUvArray[i * 2 + 1] = posY / textGeometry.worldHeight + 0.5;
+      bUvArray[i * 2 + 1] = posY / textGeometry.height + 0.5;
     }
     textGeometry.setAttribute(
       "boundingUv",
@@ -103,23 +146,26 @@ export default class ProjectTitles {
       font: this.fontData,
       text: text,
       align: "center",
-      lineWidth: 1,
+      lineWidth: 5,
       lineHeight: 1,
     });
 
-    // scale text mesh
-    const s = this.baseWidth / textG.text.width;
-    const dummy = new THREE.Matrix4().makeScale(s, s, 1);
-    textG.applyMatrix4(dummy);
-
     textG.computeBoundingBox();
-    textG.worldWidth = textG.boundingBox.max.x - textG.boundingBox.min.x;
-    textG.worldHeight = textG.boundingBox.max.y - textG.boundingBox.min.y;
+
+    const width = textG.boundingBox.max.x - textG.boundingBox.min.x;
+    const height = textG.boundingBox.max.y - textG.boundingBox.min.y;
+    const aspect = height / width;
 
     // center text mesh on yAxis
-    const offset = textG.worldHeight / 2 - textG.boundingBox.max.y;
-    const dummy3 = new THREE.Matrix4().makeTranslation(0, offset, 0);
-    textG.applyMatrix4(dummy3);
+    const offset = height * 0.5 - textG.boundingBox.max.y;
+    const offsetMatrix = new THREE.Matrix4().makeTranslation(0, offset, 0);
+    textG.applyMatrix4(offsetMatrix);
+    // make width uniform
+    const scale = this.baseWidth / width;
+    const scaleMatrix = new THREE.Matrix4().makeScale(scale, scale, 1);
+    textG.applyMatrix4(scaleMatrix);
+
+    textG.height = this.baseWidth * aspect;
 
     this.setTextBoundingUv(textG);
 
@@ -127,19 +173,6 @@ export default class ProjectTitles {
   }
 
   setMeshes2() {
-    this.group = new THREE.Group();
-    this.outerGroup = new THREE.Group();
-    this.outerGroup.add(this.group);
-    this.meshes = [];
-
-    this.baseWidth = 3.5; // wolrd units
-    this.fontData = fontData;
-    this.fontTexture = this.world.textureLoader.load(
-      "fonts/audiowide/Audiowide-Regular.ttf.png"
-    );
-
-    this.uniforms.uMap.value = this.fontTexture;
-
     this.data.map(({ title, category, color }, index) => {
       const mat = this.material.clone();
       const geometry = this.setTextGeometry(title);
@@ -148,6 +181,12 @@ export default class ProjectTitles {
       mesh.userData.index = index;
       mesh.userData.category = category;
       this.meshes.push(mesh);
+
+      // const m = new THREE.Mesh(
+      //   new THREE.PlaneGeometry(this.baseWidth, geometry.height),
+      //   new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.5 })
+      // );
+      // mesh.add(m);
     });
   }
 
@@ -157,13 +196,13 @@ export default class ProjectTitles {
     this.group.children.map((mesh, i) => {
       if (i === 0) {
         mesh.position.y = 0;
-        mesh.userData.scrollPosition = 0;
-        currentOffset = mesh.geometry.worldHeight / 2 + this.gap;
+        mesh.userData.scrollPosition = mesh.position.y;
+        currentOffset = mesh.geometry.height / 2 + this.gap;
       } else {
-        mesh.position.y = -(currentOffset + mesh.geometry.worldHeight / 2);
+        mesh.position.y = -(currentOffset + mesh.geometry.height / 2);
         mesh.userData.scrollPosition = mesh.position.y;
         limitOffset = -mesh.position.y; // only need position of last item in list
-        currentOffset += mesh.geometry.worldHeight + this.gap;
+        currentOffset += mesh.geometry.height + this.gap;
       }
     });
 
@@ -174,8 +213,8 @@ export default class ProjectTitles {
 
   setGroupPosition() {
     this.outerGroup.scale.setScalar(0.2);
-    this.outerGroup.rotateY(Math.PI / 8);
-    this.outerGroup.rotateX(-Math.PI / 6);
+    // this.outerGroup.rotateY(Math.PI / 8);
+    // this.outerGroup.rotateX(-Math.PI / 6);
 
     // this.outerGroup.rotateY(Math.PI / 6);
     // this.outerGroup.rotateX(-Math.PI / 8);
@@ -200,7 +239,6 @@ export default class ProjectTitles {
   }
 
   onWheel(deltaY) {
-    // console.log(deltaY);
     let newPosition = this.group.position.y + deltaY * 0.01;
     newPosition = clamp(
       newPosition,
@@ -230,6 +268,11 @@ export default class ProjectTitles {
     //   });
     // }
     this.group.position.y = newPosition;
+  }
+
+  onResize() {
+    let s = 0.00075 * window.innerWidth;
+    this.outerGroup.scale.setScalar(this.baseScale * s);
   }
 
   update() {

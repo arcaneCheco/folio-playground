@@ -43,13 +43,7 @@ export default class ProjectScreen {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.setInitialPosition(); // later this should be called on view change with a transition
-  }
-
-  setInitialPosition() {
     this.mesh.scale.setScalar(0.4);
-    this.mesh.rotation.set(0, -Math.PI / 5, 0);
-    this.mesh.position.set(0.18, 0.22, 0.47);
   }
 
   positionDebug() {

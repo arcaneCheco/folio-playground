@@ -12,6 +12,7 @@ import ProjectDetailViewManager from "./ProjectDetailViewManager";
 import HomeTitle from "./HomeTitle";
 import HomeContact from "./homeContact";
 import HomeNav from "./HomeNav";
+import ProjectsFilters from "./ProjectFilters";
 
 //******ADD CAMERA SHAKE FROM ALIEN */
 
@@ -127,6 +128,7 @@ export class World {
     this.homeTitle = new HomeTitle();
     this.homeContact = new HomeContact();
     this.homeNav = new HomeNav();
+    this.projectFilters = new ProjectsFilters();
   }
 
   setViewManagers() {
@@ -139,7 +141,6 @@ export class World {
     this.projectScreen.data = this.data;
     this.projectTitles.data = this.data;
     this.projectTitles.setMeshes2();
-    this.projectTitles.setGroupPosition();
     this.projectsViewManager.filterAll();
 
     const location = window.location.pathname;
@@ -369,10 +370,7 @@ export class World {
 
   setDebug() {
     this.paneContainer = new Pane();
-    this.pane = this.paneContainer.addFolder({ title: "", expanded: false });
-    // this.pane.addButton({ title: "show/hide" }).on("click", () => {
-    //   this.debug.hidden = !this.debug.hidden;
-    // });
+    this.pane = this.paneContainer.addFolder({ title: "", expanded: true });
     this.worldDebug();
     this.sky && this.sky.setDebug();
     this.curlBubble && this.curlBubble.setDebug();
@@ -409,7 +407,7 @@ export class World {
     this.components.sky && this.sky.onPointermove();
     this.components.water && this.water.onPointermove();
 
-    if (this.view.projects) this.projectsViewManager.onPointermove();
+    if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
     if (this.view.projectDetail) this.projectDetailViewManager.onPointermove();
     if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
   }
