@@ -449,9 +449,12 @@ export class World {
     this.components.sky && this.sky.resize();
     this.components.water && this.water.resize();
 
-    if (this.view.projects) this.projectsViewManager.resize();
-    if (this.view.projectDetail) this.projectDetailViewManager.resize();
-    if (this.view.home) this.homeViewManager.resize();
+    this.projectsViewManager.resize();
+    this.projectDetailViewManager.resize();
+    this.homeViewManager.resize();
+    // if (this.view.projects) this.projectsViewManager.resize();
+    // if (this.view.projectDetail) this.projectDetailViewManager.resize();
+    // if (this.view.home) this.homeViewManager.resize();
   }
 
   setParallax() {
