@@ -39,6 +39,9 @@ export default class ProjectTitles {
 
     this.group.position.x = -1;
 
+    this.outerGroup.rotateY(Math.PI / 8);
+    // this.outerGroup.rotateX(-Math.PI / 6);
+
     this.meshes = [];
 
     this.fontData = fontData;

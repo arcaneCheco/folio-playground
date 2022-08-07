@@ -89,13 +89,29 @@ export default class ProjectsViewManager {
 
   onPointerdown() {
     this.projectScreen.onPointerdown();
-    if (this.hover) {
+    if (this.hover || this.hoverTitles) {
       this.down = true;
     }
   }
 
   onPointermove(mouse) {
     if (this.down) return;
+
+    const [hitTitles] = this.raycaster.intersectObjects(
+      this.projectTitles.group.children
+    );
+
+    if (hitTitles) {
+      document.body.style.cursor = "pointer";
+      this.hoverTitles = true;
+      this.titleIndex = hitTitles.object.userData.index;
+      if (this.titleIndex !== this.activeProjectState.active) {
+        this.activeProjectState.active = this.titleIndex;
+        this.onActiveChange();
+      }
+    } else {
+      this.hoverTitles = false;
+    }
 
     this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
     this.raycaster.set(this.rayOrigin, this.rayTarget);
@@ -111,8 +127,11 @@ export default class ProjectsViewManager {
       this.hover = true;
       document.body.style.cursor = "pointer";
     } else {
-      document.body.style.cursor = "";
       this.hover = false;
+    }
+
+    if (!hit && !hitTitles) {
+      document.body.style.cursor = "";
     }
 
     this.projectScreen.onPointermove();
@@ -122,6 +141,11 @@ export default class ProjectsViewManager {
     document.body.style.cursor = "";
 
     this.projectScreen.onPointerup();
+
+    if (this.hoverTitles && this.down) {
+      this.down = false;
+      this.world.changeView("projectDetail");
+    }
 
     if (this.hover && this.down) {
       this.down = false;
@@ -148,12 +172,6 @@ export default class ProjectsViewManager {
           break;
       }
     }
-
-    console.log({
-      hover: this.hover,
-      down: this.down,
-      target: this.target,
-    });
   }
 
   getSizes() {
