@@ -14,6 +14,7 @@ import HomeContact from "./homeContact";
 import HomeNav from "./HomeNav";
 import ProjectsFilters from "./ProjectFilters";
 import ProjectsNav from "./ProjectsNav";
+import ProjectDetailOverlay from "./ProjectDetailOverlay";
 
 const debounce = (func, timeout = 50) => {
   let timer;
@@ -145,6 +146,7 @@ export class World {
     this.homeNav = new HomeNav();
     this.projectFilters = new ProjectsFilters();
     this.projectsNav = new ProjectsNav();
+    this.projectDetailOverlay = new ProjectDetailOverlay();
   }
 
   setViewManagers() {

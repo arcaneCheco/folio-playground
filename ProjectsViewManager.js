@@ -208,7 +208,7 @@ export default class ProjectsViewManager {
     this.scene.add(this.projectFilters.outerGroup);
     this.scene.add(this.projectsNav.group);
     this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
-    this.projectScreen.mesh.position.set(0.18, 0.22, 0.1);
+    this.projectScreen.mesh.position.set(0.18, 0.22, 0);
   }
 
   hide() {

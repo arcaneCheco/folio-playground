@@ -39,6 +39,8 @@ export default class ProjectScreen {
       fragmentShader,
       uniforms: this.uniforms,
       transparent: true,
+      // depthTest: false,
+      // depthWrite: false,
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
