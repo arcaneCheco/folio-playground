@@ -8,6 +8,10 @@ export default class ProjectDetailViewManager {
     this.activeProjectState = this.world.activeProjectState;
     this.projectScreen = this.world.projectScreen;
     this.projectDetailOverlay = this.world.projectDetailOverlay;
+
+    this.raycaster = this.world.raycaster;
+    this.rayOrigin = new THREE.Vector3(0, 0, 1);
+    this.rayTarget = new THREE.Vector3();
   }
 
   show() {
@@ -173,16 +177,73 @@ export default class ProjectDetailViewManager {
     );
   }
 
-  onPointermove() {
+  onPointermove(mouse) {
+    if (this.down) return;
     this.projectScreen.onPointermove();
+
+    this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
+    this.raycaster.set(this.rayOrigin, this.rayTarget);
+
+    const [hit] = this.raycaster.intersectObjects([
+      this.projectDetailOverlay.close,
+      this.projectDetailOverlay.prevButton,
+      this.projectDetailOverlay.nextButton,
+      ...this.projectDetailOverlay.visitGroup.children,
+    ]);
+
+    if (hit) {
+      const { name } = hit.object;
+      this.target = name;
+      this.hover = true;
+      document.body.style.cursor = "pointer";
+    } else {
+      this.hover = false;
+      document.body.style.cursor = "";
+    }
   }
 
   onPointerdown() {
     this.projectScreen.onPointerdown();
+
+    if (this.hover) {
+      this.down = true;
+    }
   }
 
   onPointerup() {
+    if (!this.down) return;
+
+    this.down = false;
     this.projectScreen.onPointerup();
+
+    switch (this.target) {
+      case "close":
+        this.world.changeView("projects");
+        break;
+      case "prev":
+        this.activeProjectState.active = Math.max(
+          this.activeProjectState.min,
+          this.activeProjectState.active - 1
+        );
+        this.world.changeView("projectDetail");
+        this.projectScreen.onActiveChange(this.activeProjectState.active);
+        break;
+      case "next":
+        this.activeProjectState.active = Math.min(
+          this.activeProjectState.active + 1,
+          this.activeProjectState.max
+        );
+        this.world.changeView("projectDetail");
+        this.projectScreen.onActiveChange(this.activeProjectState.active);
+        break;
+      case "visit":
+        const url = this.world.data[this.activeProjectState.active].link;
+        console.log(url);
+        window.open(url, "_blank").focus();
+        break;
+      default:
+        break;
+    }
   }
 
   resize() {

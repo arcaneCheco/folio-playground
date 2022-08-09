@@ -436,7 +436,8 @@ export class World {
     this.components.water && this.water.onPointermove();
 
     if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
-    if (this.view.projectDetail) this.projectDetailViewManager.onPointermove();
+    if (this.view.projectDetail)
+      this.projectDetailViewManager.onPointermove(this.mouse);
     if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
   }
 
