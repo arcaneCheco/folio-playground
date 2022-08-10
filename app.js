@@ -15,6 +15,11 @@ import HomeNav from "./HomeNav";
 import ProjectsFilters from "./ProjectFilters";
 import ProjectsNav from "./ProjectsNav";
 import ProjectDetailOverlay from "./ProjectDetailOverlay";
+import AboutViewManager from "./AboutViewManager";
+import AboutScreen from "./AboutScreen";
+import AboutGreeting from "./AboutGreeting";
+import AboutSocialIcons from "./AboutSocialIcons";
+import AboutFooter from "./AboutFooter";
 
 const debounce = (func, timeout = 50) => {
   let timer;
@@ -147,11 +152,16 @@ export class World {
     this.projectFilters = new ProjectsFilters();
     this.projectsNav = new ProjectsNav();
     this.projectDetailOverlay = new ProjectDetailOverlay();
+    this.aboutScreen = new AboutScreen();
+    this.aboutGreeting = new AboutGreeting();
+    this.aboutSocialIcons = new AboutSocialIcons();
+    this.aboutFooter = new AboutFooter();
   }
 
   setViewManagers() {
     this.projectsViewManager = new ProjectsViewManager();
     this.projectDetailViewManager = new ProjectDetailViewManager();
+    this.aboutViewManager = new AboutViewManager();
     this.homeViewManager = new HomeViewManager();
   }
 
@@ -292,18 +302,21 @@ export class World {
     if (view === "home") {
       this.projectsViewManager.hide();
       this.projectDetailViewManager.hide();
+      this.aboutViewManager.hide();
       this.homeViewManager.show();
       window.history.pushState({}, "", "/");
     }
     if (view === "projects") {
       this.projectDetailViewManager.hide();
       this.homeViewManager.hide();
+      this.aboutViewManager.hide();
       this.projectsViewManager.show();
       window.history.pushState({}, "", "/projects");
     }
     if (view === "projectDetail") {
       this.projectsViewManager.hide();
       this.homeViewManager.hide();
+      this.aboutViewManager.hide();
       this.projectDetailViewManager.show();
       const path = this.data[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
@@ -312,7 +325,7 @@ export class World {
       this.projectsViewManager.hide();
       this.homeViewManager.hide();
       this.projectDetailViewManager.hide();
-      // thisaboutViewManager.show
+      this.aboutViewManager.show();
       window.history.pushState({}, "", "/about");
     }
   }
@@ -407,6 +420,7 @@ export class World {
     this.projectTitles.setDebug();
     this.projectsViewManager.setDebug();
     this.projectDetailViewManager.setDebug();
+    this.aboutViewManager.setDebug();
     this.homeViewManager.setDebug();
   }
 
@@ -438,6 +452,7 @@ export class World {
     if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
     if (this.view.projectDetail)
       this.projectDetailViewManager.onPointermove(this.mouse);
+    if (this.view.about) this.aboutViewManager.onPointermove();
     if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
   }
 
@@ -447,6 +462,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointerdown();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerdown();
+    if (this.view.about) this.aboutViewManager.onPointerdown();
     if (this.view.home) this.homeViewManager.onPointerdown();
   }
 
@@ -456,6 +472,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onPointerup();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerup();
+    if (this.view.about) this.aboutViewManager.onPointerup();
     if (this.view.home) this.homeViewManager.onPointerup();
   }
 
@@ -465,6 +482,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.onWheel(ev);
     if (this.view.projectDetail) this.projectDetailViewManager.onWheel(ev);
+    if (this.view.about) this.aboutViewManager.onWheel(ev);
     if (this.view.home) this.homeViewManager.onWheel(ev);
   }
 
@@ -480,10 +498,8 @@ export class World {
 
     this.projectsViewManager.resize();
     this.projectDetailViewManager.resize();
+    this.aboutViewManager.onResize();
     this.homeViewManager.resize();
-    // if (this.view.projects) this.projectsViewManager.resize();
-    // if (this.view.projectDetail) this.projectDetailViewManager.resize();
-    // if (this.view.home) this.homeViewManager.resize();
   }
 
   setParallax() {
@@ -516,6 +532,7 @@ export class World {
 
     if (this.view.projects) this.projectsViewManager.update();
     if (this.view.projectDetail) this.projectDetailViewManager.update();
+    if (this.view.about) this.aboutViewManager.update();
     if (this.view.home) this.homeViewManager.update();
   }
 
