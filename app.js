@@ -20,6 +20,8 @@ import AboutScreen from "./AboutScreen";
 import AboutGreeting from "./AboutGreeting";
 import AboutSocialIcons from "./AboutSocialIcons";
 import AboutFooter from "./AboutFooter";
+import AboutNav from "./AboutNav";
+import AboutOverlay from "./AboutOverlay";
 
 const debounce = (func, timeout = 50) => {
   let timer;
@@ -156,6 +158,8 @@ export class World {
     this.aboutGreeting = new AboutGreeting();
     this.aboutSocialIcons = new AboutSocialIcons();
     this.aboutFooter = new AboutFooter();
+    this.aboutNav = new AboutNav();
+    this.aboutOverlay = new AboutOverlay();
   }
 
   setViewManagers() {
@@ -411,7 +415,7 @@ export class World {
 
   setDebug() {
     this.paneContainer = new Pane();
-    this.pane = this.paneContainer.addFolder({ title: "", expanded: true });
+    this.pane = this.paneContainer.addFolder({ title: "", expanded: false });
     this.worldDebug();
     this.sky && this.sky.setDebug();
     this.curlBubble && this.curlBubble.setDebug();
@@ -452,7 +456,7 @@ export class World {
     if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
     if (this.view.projectDetail)
       this.projectDetailViewManager.onPointermove(this.mouse);
-    if (this.view.about) this.aboutViewManager.onPointermove();
+    if (this.view.about) this.aboutViewManager.onPointermove(this.mouse);
     if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
   }
 

@@ -63,10 +63,12 @@ export default class AboutFooter {
     });
 
     this.cv = new THREE.Mesh(cvGeometry, this.textMaterial);
+    this.cv.name = "cv";
     this.cvGroup.add(this.cv);
     this.cvGroup.position.x = -8;
 
     this.cvIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial);
+    this.cvIcon.name = "cv";
     this.cvIcon.position.x = -7;
     this.cvIcon.scale.multiplyScalar(2);
     this.cvGroup.add(this.cvIcon);

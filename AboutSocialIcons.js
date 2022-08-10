@@ -20,17 +20,21 @@ export default class AboutSocialIcons {
 
     this.twitter = new THREE.Mesh(this.geometry, this.iconMaterial);
     this.twitter.position.x = -3;
+    this.twitter.name = "twitter";
     this.group.add(this.twitter);
 
     this.github = new THREE.Mesh(this.geometry, this.iconMaterial);
     this.github.position.x = -1;
+    this.github.name = "github";
     this.group.add(this.github);
 
     this.linkedin = new THREE.Mesh(this.geometry, this.iconMaterial);
+    this.linkedin.name = "linkedin";
     this.linkedin.position.x = 1;
     this.group.add(this.linkedin);
 
     this.email = new THREE.Mesh(this.geometry, this.iconMaterial);
+    this.email.name = "email";
     this.email.position.x = 3;
     this.group.add(this.email);
   }
