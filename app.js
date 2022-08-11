@@ -10,7 +10,7 @@ import ProjectTitles from "./ProjectTitles";
 import HomeViewManager from "./HomeViewManager";
 import ProjectDetailViewManager from "./ProjectDetailViewManager";
 import HomeTitle from "./HomeTitle";
-import HomeContact from "./homeContact";
+import HomeContact from "./HomeContact";
 import HomeNav from "./HomeNav";
 import ProjectsFilters from "./ProjectFilters";
 import ProjectsNav from "./ProjectsNav";
