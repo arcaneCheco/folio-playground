@@ -101,7 +101,7 @@ export class World {
     // this.renderer.setClearColor(0x333333);
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = false;
+    // this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
@@ -511,7 +511,7 @@ export class World {
       lerp: 0.03,
       magX: 0.03,
       magY: 0.05,
-      enabled: true,
+      enabled: false,
       target: new THREE.Vector2(),
     };
   }

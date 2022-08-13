@@ -4,6 +4,8 @@ import font from "./data/fonts/audiowide/Audiowide-Regular.json";
 import fontMap from "./data/fonts/audiowide/Audiowide-Regular.ttf.png";
 import vertexShader from "./shaders/aboutFooter/text/vertex.glsl";
 import fragmentShader from "./shaders/aboutFooter/text/fragment.glsl";
+import pinSrc from "./data/images/icons/pin.png";
+import cvSrc from "./data/images/icons/cv.png";
 
 export default class AboutFooter {
   constructor() {
@@ -23,14 +25,31 @@ export default class AboutFooter {
       depthTest: false,
     });
 
+    this.loader = new THREE.TextureLoader();
+
     this.iconGeometry = new THREE.PlaneGeometry(1, 1);
     this.iconMaterial = new THREE.ShaderMaterial({
-      vertexShader: `void main() {gl_Position = modelMatrix * vec4(position, 1.);}`,
-      fragmentShader: `void main() {gl_FragColor = vec4(1., 0., 1., 1.);}`,
+      vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        gl_Position = modelMatrix * vec4(position, 1.);
+        vUv = uv;
+      }`,
+      fragmentShader: `
+      uniform sampler2D uMap;
+      varying vec2 vUv;
+
+      void main() {
+        vec4 icon = texture2D(uMap, vUv);
+        gl_FragColor = icon;
+      }`,
       depthWrite: false,
       depthTest: false,
       transparent: true,
-      side: THREE.DoubleSide,
+      uniforms: {
+        uMap: { value: null },
+      },
     });
 
     this.locationGroup = new THREE.Group();
@@ -47,7 +66,11 @@ export default class AboutFooter {
     this.locationGroup.add(this.location);
     this.locationGroup.position.x = 8;
 
-    this.locationIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial);
+    this.locationIcon = new THREE.Mesh(
+      this.iconGeometry,
+      this.iconMaterial.clone()
+    );
+    this.locationIcon.material.uniforms.uMap.value = this.loader.load(pinSrc);
     this.locationIcon.position.x = -7;
     this.locationIcon.scale.multiplyScalar(2);
     this.locationGroup.add(this.locationIcon);
@@ -67,7 +90,8 @@ export default class AboutFooter {
     this.cvGroup.add(this.cv);
     this.cvGroup.position.x = -8;
 
-    this.cvIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial);
+    this.cvIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial.clone());
+    this.cvIcon.material.uniforms.uMap.value = this.loader.load(cvSrc);
     this.cvIcon.name = "cv";
     this.cvIcon.position.x = -7;
     this.cvIcon.scale.multiplyScalar(2);

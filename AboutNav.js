@@ -11,7 +11,7 @@ export default class AboutNav {
   constructor() {
     this.group = new THREE.Group();
 
-    this.group.scale.set(0.5, 0.5, 1);
+    this.group.scale.set(0.5, 0.5, 2);
     this.group.position.set(-0.8, 0.5, 0);
 
     this.material = new THREE.ShaderMaterial({

@@ -10,7 +10,7 @@ import fragmentIcon from "./shaders/projectDetailOverlay/icon/fragment.glsl";
 import TextGeometry from "./TextGeometry";
 import font from "./data/fonts/audiowide/Audiowide-Regular.json";
 import fontMap from "./data/fonts/audiowide/Audiowide-Regular.ttf.png";
-import linkIconSrc from "./data/images/linkIcon.png";
+import linkIconSrc from "./data/images/icons/linkIcon.png";
 
 export default class ProjectDetailOverlay {
   constructor() {
