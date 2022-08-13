@@ -14,11 +14,11 @@ export default class HomeViewManager {
     this.rayTarget = new THREE.Vector3();
 
     this.resizeSettings = {
-      offsetTop: 50,
-      offsetTopPerc: 0.4,
-      posX: -0.1,
-      maxScale: 749,
-      scale: 0.4,
+      offsetTop: 0.2,
+      posX: -0.3,
+      scale: 0.75,
+      contactRatio: 0.8,
+      navSize: 0.5,
     };
   }
 
@@ -30,8 +30,8 @@ export default class HomeViewManager {
     this.debug
       .addInput(this.resizeSettings, "offsetTop", {
         min: 0,
-        max: 500,
-        step: 1,
+        max: 1,
+        step: 0.001,
       })
       .on("change", () => this.resize());
     this.debug
@@ -42,16 +42,23 @@ export default class HomeViewManager {
       })
       .on("change", () => this.resize());
     this.debug
-      .addInput(this.resizeSettings, "maxScale", {
-        min: 100,
-        max: 1200,
-        step: 1,
-      })
-      .on("change", () => this.resize());
-    this.debug
       .addInput(this.resizeSettings, "scale", {
         min: 0,
         max: 1,
+        step: 0.001,
+      })
+      .on("change", () => this.resize());
+    this.debug
+      .addInput(this.resizeSettings, "contactRatio", {
+        min: 0,
+        max: 1.3,
+        step: 0.001,
+      })
+      .on("change", () => this.resize());
+    this.debug
+      .addInput(this.resizeSettings, "navSize", {
+        min: 0,
+        max: 1.3,
         step: 0.001,
       })
       .on("change", () => this.resize());
@@ -63,7 +70,7 @@ export default class HomeViewManager {
 
     const [hit] = this.raycaster.intersectObjects([
       this.homeTitle.mesh,
-      this.homeNav.mesh,
+      ...this.homeNav.group.children,
       this.homeContact.touchPlane,
     ]);
     if (hit) {
@@ -133,51 +140,45 @@ export default class HomeViewManager {
     let homeNav = {};
 
     // homeTitle
-    homeTitle.scaleX = Math.min(
-      this.resizeSettings.maxScale * 0.5 * widthRatio,
-      this.resizeSettings.scale
-    );
-    homeTitle.scaleY = homeTitle.scaleX * aspect;
-    homeTitle.posX = this.resizeSettings.posX;
+    homeTitle.scaleY = this.resizeSettings.scale;
+    homeTitle.scaleX = homeTitle.scaleY / aspect;
+
+    homeTitle.posX = this.resizeSettings.posX * homeTitle.scaleX;
     homeTitle.posY =
-      1 - homeTitle.scaleY * 0.65 - this.resizeSettings.offsetTop * heightRatio;
-    homeTitle.posY =
-      1 - homeTitle.scaleY * 0.65 - this.resizeSettings.offsetTopPerc / aspect;
+      1 - homeTitle.scaleY * 0.65 - this.resizeSettings.offsetTop;
+
     //homeContact
-    homeContact.posX = this.resizeSettings.posX - homeTitle.scaleX * 0.7;
-    homeContact.posY = homeTitle.posY - homeTitle.scaleY * 0.9;
-    homeContact.ctaScaleX = homeTitle.scaleX * 1.4;
+    homeContact.ctaScaleX =
+      homeTitle.scaleX * 1.4 * this.resizeSettings.contactRatio;
+
     homeContact.ctaScaleY = homeContact.ctaScaleX * aspect;
     homeContact.emailScaleX = homeContact.ctaScaleX * 0.8;
+
     homeContact.emailScaleY = homeContact.emailScaleX * aspect;
     homeContact.emailOffset = homeContact.ctaScaleX - homeContact.emailScaleX;
+
     homeContact.iconScaleX = homeContact.emailOffset;
     homeContact.iconScaleY = homeContact.iconScaleX * aspect;
 
-    // homveNav
-    homeNav.scaleY = 200 * widthRatio;
-    homeNav.scaleY = Math.min(0.3, homeNav.scaleY);
-    homeNav.scaleX = homeNav.scaleY * aspect;
+    homeContact.posX =
+      homeTitle.posX -
+      homeTitle.scaleX * 0.7 +
+      homeTitle.scaleX * 1.4 * (1 - this.resizeSettings.contactRatio);
 
-    homeNav.posX = -0.5;
-    homeNav.posX = -homeTitle.scaleX + homeTitle.posX;
+    homeContact.posY = homeTitle.posY - homeTitle.scaleY * 0.9;
+
+    homeNav.scaleX = this.resizeSettings.navSize;
+    homeNav.scaleY = this.resizeSettings.navSize / aspect;
+
+    homeNav.posX =
+      -homeTitle.scaleX * Math.min(aspect * 0.9, 1.3) + homeTitle.posX;
     homeNav.posY = -0.5;
 
     return { homeTitle, homeContact, homeNav };
   }
 
   resize() {
-    let orientation =
-      window.innerWidth > window.innerHeight ? "landscape" : "portrait";
-
-    let device =
-      window.innerWidth > 749
-        ? "desktop"
-        : window.innerWidth > 481
-        ? "ipad"
-        : "mobile";
-
-    const { homeTitle, homeContact, homeNav } = this.getSizes(device);
+    const { homeTitle, homeContact, homeNav } = this.getSizes();
 
     this.homeTitle.resize(homeTitle);
     this.homeContact.resize(homeContact);

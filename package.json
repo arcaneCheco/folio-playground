@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "npx parcel ./index.pug --no-cache",
+    "dev": "npx parcel ./index.pug",
     "updateResources": "cp -r ./data/* ./dist/"
   },
   "author": "",

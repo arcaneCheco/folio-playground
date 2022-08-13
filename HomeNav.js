@@ -18,6 +18,8 @@ export default class HomeNav {
         tMap: { value: new THREE.TextureLoader().load(fontMap) },
       },
       transparent: true,
+      depthTest: false,
+      depthWrite: false,
     });
 
     this.geometry = new TextGeometry();
@@ -30,6 +32,7 @@ export default class HomeNav {
     this.mesh.name = "homeNav";
     this.group.rotateZ(Math.PI / 2);
     this.group.add(this.mesh);
+    this.group.renderOrder = 501;
 
     this.geometry.computeBoundingBox();
     const width =
@@ -42,9 +45,11 @@ export default class HomeNav {
       new THREE.ShaderMaterial({
         vertexShader: vertexUnderline,
         fragmentShader: fragmentUnderline,
-        // transparent: true,
+        depthTest: false,
+        depthWrite: false,
       })
     );
+    underline.name = "homeNav";
     underline.position.y = -1 / width;
     this.group.add(underline);
   }

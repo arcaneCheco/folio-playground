@@ -495,6 +495,13 @@ export class World {
   }
 
   resize() {
+    let device =
+      window.innerWidth > 749
+        ? "desktop"
+        : window.innerWidth > 481
+        ? "ipad"
+        : "mobile";
+
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
     this.renderer.setSize(this.width, this.height);
