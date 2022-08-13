@@ -22,6 +22,9 @@ import AboutSocialIcons from "./AboutSocialIcons";
 import AboutFooter from "./AboutFooter";
 import AboutNav from "./AboutNav";
 import AboutOverlay from "./AboutOverlay";
+import RotateAlert from "./RotateAlert";
+
+// add preloader => preloader maessage: This website has been designed for desktop
 
 const debounce = (func, timeout = 50) => {
   let timer;
@@ -160,6 +163,7 @@ export class World {
     this.aboutFooter = new AboutFooter();
     this.aboutNav = new AboutNav();
     this.aboutOverlay = new AboutOverlay();
+    this.rotateAlert = new RotateAlert();
   }
 
   setViewManagers() {
@@ -499,6 +503,8 @@ export class World {
 
     this.components.sky && this.sky.resize();
     this.components.water && this.water.resize();
+
+    this.rotateAlert.onResize(this.width / this.height);
 
     this.projectsViewManager.resize();
     this.projectDetailViewManager.resize();
