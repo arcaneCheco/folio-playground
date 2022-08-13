@@ -80,5 +80,6 @@ export default class AboutTextTexture {
     this.texture.value = this.renderTarget.texture;
     renderer.setRenderTarget(currentRenderTarget);
     renderer.clear();
+    // renderer.render(this.scene, camera);
   }
 }

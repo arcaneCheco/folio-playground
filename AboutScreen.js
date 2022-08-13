@@ -14,13 +14,25 @@ export default class AboutScreen {
       fragmentShader,
       uniforms: {
         uTextMap: this.textTexture.texture,
+        uMouse: { value: new THREE.Vector2() },
+        uAspect: { value: 2 },
+        uDistortion: { value: 0.5 },
+        uInfluence: { value: 0.25 },
+        uTest: { value: 0.48 },
+        uProgress: { value: 1 },
       },
-      // transparent: true,
+      transparent: true,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
+    this.mesh.name = "screen";
+
     this.mesh.scale.set(0.4, 0.2, 1);
     this.mesh.position.y = 0.17;
+  }
+
+  onPointermove(uv) {
+    this.material.uniforms.uMouse.value = uv;
   }
 
   onWheel(deltaY, renderer, camera) {

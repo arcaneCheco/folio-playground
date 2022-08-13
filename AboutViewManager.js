@@ -20,7 +20,38 @@ export default class AboutViewManager {
     this.rayTarget = new THREE.Vector3();
   }
 
-  setDebug() {}
+  setDebug() {
+    this.debug = this.world.pane.addFolder({ title: "about view" });
+    this.screenDebug();
+  }
+
+  screenDebug() {
+    const screen = this.debug.addFolder({ title: "screen" });
+    screen.addInput(this.aboutScreen.material.uniforms.uDistortion, "value", {
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "distortion",
+    });
+    screen.addInput(this.aboutScreen.material.uniforms.uInfluence, "value", {
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "influence",
+    });
+    screen.addInput(this.aboutScreen.material.uniforms.uTest, "value", {
+      min: -1,
+      max: 0.5,
+      step: 0.001,
+      label: "test",
+    });
+    screen.addInput(this.aboutScreen.material.uniforms.uProgress, "value", {
+      min: 0,
+      max: 1,
+      step: 0.001,
+      label: "progress",
+    });
+  }
 
   onPointerdown() {
     if (!this.hover) return;
@@ -30,6 +61,12 @@ export default class AboutViewManager {
   onPointermove(mouse) {
     if (this.down) return;
 
+    const [hitScreen] = this.raycaster.intersectObject(this.aboutScreen.mesh);
+
+    if (hitScreen) {
+      this.aboutScreen.onPointermove(hitScreen.uv);
+    }
+
     this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
     this.raycaster.set(this.rayOrigin, this.rayTarget);
 
@@ -38,7 +75,8 @@ export default class AboutViewManager {
     );
 
     if (hit) {
-      this.target = hit.object.name;
+      const { name } = hit.object;
+      this.target = name;
       this.hover = true;
       document.body.style.cursor = "pointer";
     } else {

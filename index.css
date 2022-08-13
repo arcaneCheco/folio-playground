@@ -5,31 +5,10 @@
   }
   body {
     background: black;
-    /* cursor: none; */
+    overflow: hidden;
+    position: fixed;
   }
   #canvas {
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
-    position: fixed;
-  }
-
-
-  .homeOverlay {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    z-index: 1;
-  }
-
-  .homeOverlayTitle {
-    position: absolute;
-    width: 50%;
-    border: 1px solid red;
-    height: 50%;
-    top: 10%;
-    transform: translateX(-20%);
   }
