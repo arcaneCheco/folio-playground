@@ -82,17 +82,11 @@ export class World {
     this.camera = new THREE.PerspectiveCamera(
       65,
       this.width / this.height,
-      0.1,
-      900
+      0.0001,
+      10
     );
-    // this.camera.position.set(0, 0.2196, 0.9749);
-    // this.camera.rotation.set(-0.2216, 0.0384, 0.0087);
-    // this.camera.position.set(0.0331, 0.1395, 1.097);
-    // this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
-    this.camera.position.set(0.0331, 0.1395, 0.85);
-    this.camera.rotation.set(-0.0578, 0.0286, 0.0017);
-    // this.camera.position.set(0, 0.0925, 1.0484);
-    // this.camera.rotation.set(-0.0514, 0.061, 0);
+    this.initialHeight = 0.14;
+    this.camera.position.set(0, this.initialHeight, 1);
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       powerPreference: "high-performance",
@@ -101,7 +95,6 @@ export class World {
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     // this.renderer.autoClear = false;
-    // this.renderer.setClearColor(0x333333);
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     // this.controls.enabled = false;
@@ -415,6 +408,11 @@ export class World {
     camera.addButton({ title: "toggle parallax" }).on("click", () => {
       this.parallax.enabled = !this.parallax.enabled;
     });
+    camera.addInput(this, "initialHeight", {
+      min: 0,
+      max: 0.5,
+      step: 0.001,
+    });
   }
 
   setDebug() {
@@ -443,8 +441,31 @@ export class World {
 
   updateParallaxTarget() {
     if (!this.parallax.enabled) return;
-    this.parallax.target.y = -this.mouse.x * this.parallax.magX;
+    this.parallax.target.y = this.mouse.x * this.parallax.magX;
     this.parallax.target.x = this.mouse.y * this.parallax.magY;
+  }
+
+  setParallax() {
+    this.parallax = {
+      lerp: 0.01,
+      magX: 0.18,
+      magY: 0.3,
+      enabled: true,
+      target: new THREE.Vector2(),
+    };
+  }
+
+  updateParallax() {
+    if (this.parallax.enabled) {
+      this.camera.position.x +=
+        (this.parallax.target.y - this.camera.position.x) * this.parallax.lerp;
+      this.camera.position.y +=
+        (this.parallax.target.x + this.initialHeight - this.camera.position.y) *
+        this.parallax.lerp;
+      this.camera.position.y = Math.max(this.camera.position.y, 0.06);
+
+      this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    }
   }
 
   onPointermove(e) {
@@ -517,25 +538,6 @@ export class World {
     this.projectDetailViewManager.resize();
     this.aboutViewManager.onResize();
     this.homeViewManager.resize();
-  }
-
-  setParallax() {
-    this.parallax = {
-      lerp: 0.03,
-      magX: 0.03,
-      magY: 0.05,
-      enabled: false,
-      target: new THREE.Vector2(),
-    };
-  }
-
-  updateParallax() {
-    if (this.parallax.enabled) {
-      this.camera.rotation.x +=
-        (this.parallax.target.x - this.camera.rotation.x) * this.parallax.lerp;
-      this.camera.rotation.y +=
-        (this.parallax.target.y - this.camera.rotation.y) * this.parallax.lerp;
-    }
   }
 
   updateWorld() {

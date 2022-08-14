@@ -59,10 +59,10 @@ export default class CurlBubble {
         // lines
         uCut: { value: 0.5 },
         uRotationSpeed: { value: 1 },
-        uColorStrength: { value: 0.02 },
+        uColorStrength: { value: 0.03 },
         uColorIntensity: { value: 0.0082 },
         uLightPosition: {
-          value: new THREE.Vector3(0.0000001, 0.00000001, 0.0000001),
+          value: new THREE.Vector3(0.0000001, 0.001, 0.0000001),
         },
         uBubblePos: { value: 0.12 },
       },
@@ -538,11 +538,9 @@ export default class CurlBubble {
     });
   }
 
-  onPointermove() {
-    // fix this at some point
-    const coords = this.world.mouse;
-    this.material.uniforms.uLightPosition.value.x = coords.x;
-    this.material.uniforms.uLightPosition.value.y = coords.y;
+  onPointermove(mouse) {
+    this.material.uniforms.uLightPosition.value.x = mouse.x;
+    this.material.uniforms.uLightPosition.value.y = mouse.y - 0.22;
   }
 
   onPointerdown() {}
@@ -555,6 +553,5 @@ export default class CurlBubble {
 
   update() {
     this.mesh.material.uniforms.uTime.value = this.world.time;
-    // this.mesh.rotation.y += 0.01;
   }
 }

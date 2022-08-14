@@ -137,7 +137,7 @@ export default class AboutViewManager {
   }
 
   hide() {
-    this.world.camera.position.z = 0.85;
+    this.world.camera.position.z = 1;
     this.scene.remove(this.aboutScreen.mesh);
     this.scene.remove(this.aboutGreeting.group);
     this.scene.remove(this.aboutOverlay.group);

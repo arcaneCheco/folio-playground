@@ -104,7 +104,7 @@ export default class HomeViewManager {
     }
 
     this.homeNav.onPointermove();
-    this.curlBubble.onPointermove();
+    this.curlBubble.onPointermove(mouse);
   }
 
   onPointerdown() {

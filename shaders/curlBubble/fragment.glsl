@@ -67,6 +67,11 @@ vec3 hsv2rgb(vec3 c) {
     vec3 lPos = vec3(0.);
     lPos = uLightPosition;
     vec3 lDir = normalize(lPos);
+
+    vec3 col = uColor;
+    col = rgb2hsv(col);
+    col.r = mod(col.r + uTime * 0.1, 1.);
+    col = hsv2rgb(col);
     
     // p += rayDir * delta;
     for (float t = 0.; t < uSteps; t++) {
@@ -78,7 +83,7 @@ vec3 hsv2rgb(vec3 c) {
       vec3 e = normalize(-p);
       vec3 h = normalize(lDir + e);
       float specular = pow(max(dot(n, h), 0.), .5);
-      lines.rgb += uColor * (diffuse + specular)/10. * d;
+      lines.rgb += col * (diffuse + specular)/10. * d;
       lines.a += uColorStrength * d; //uColorStrengthAlpha
       lines.a /= pow(length(p-lPos) * 2., uColorIntensity);
 
@@ -86,7 +91,7 @@ vec3 hsv2rgb(vec3 c) {
       float ff = abs(d-uCut);
       float lineThickness = .3;
       if(ff<ee * lineThickness && length(p) < 0.48) {
-        vec3 lineColor = uColor + length(p) * 2.;
+        vec3 lineColor = col + length(p) * 2.;
         lines.rgb = lineColor;
       }
 
