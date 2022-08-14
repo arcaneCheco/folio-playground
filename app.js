@@ -97,7 +97,7 @@ export class World {
     // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    // this.controls.enabled = false;
+    this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
@@ -441,8 +441,8 @@ export class World {
 
   updateParallaxTarget() {
     if (!this.parallax.enabled) return;
-    this.parallax.target.y = this.mouse.x * this.parallax.magX;
-    this.parallax.target.x = this.mouse.y * this.parallax.magY;
+    this.parallax.target.y = this.mouse.y * this.parallax.magY;
+    this.parallax.target.x = this.mouse.x * this.parallax.magX;
   }
 
   setParallax() {
@@ -458,11 +458,11 @@ export class World {
   updateParallax() {
     if (this.parallax.enabled) {
       this.camera.position.x +=
-        (this.parallax.target.y - this.camera.position.x) * this.parallax.lerp;
+        (this.parallax.target.x - this.camera.position.x) * this.parallax.lerp;
       this.camera.position.y +=
-        (this.parallax.target.x + this.initialHeight - this.camera.position.y) *
+        (this.parallax.target.y + this.initialHeight - this.camera.position.y) *
         this.parallax.lerp;
-      this.camera.position.y = Math.max(this.camera.position.y, 0.06);
+      this.camera.position.y = Math.max(this.camera.position.y, 0.05);
 
       this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     }

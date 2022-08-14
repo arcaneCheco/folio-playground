@@ -177,23 +177,44 @@ export default class ProjectsViewManager {
   getSizes() {
     const widthRatio = 2 / window.innerWidth;
     const aspect = window.innerWidth / window.innerHeight;
+    console.log({ aspect });
 
     const projectsNav = {};
+    const screen = {};
+    const titles = {};
 
+    // nav
     projectsNav.scaleY = 30 * widthRatio;
     projectsNav.scaleY = Math.min(0.3, projectsNav.scaleY);
     projectsNav.scaleX = projectsNav.scaleY * aspect;
 
+    // screen
+    screen.scaleX = 1 + aspect * 0.2;
+    screen.scaleY = 1 * screen.scaleX * (9 / 16);
+    const distanceFromCenter = 0.65;
+    let offset = 30 + aspect * 8; // degress;
+    offset *= Math.PI / 180; // 0.25PI
+    screen.posX = Math.sin(offset) * distanceFromCenter;
+    screen.posZ = -Math.cos(offset) * distanceFromCenter;
+    screen.rotY = -offset;
+    screen.aspect = aspect;
+
+    //titles
+    titles.scale = 0.1 + aspect * 0.05;
+    titles.posX = -1.4 - aspect * 0.2;
+
     return {
       projectsNav,
+      screen,
+      titles,
     };
   }
 
   resize() {
-    const { projectsNav } = this.getSizes();
+    const { projectsNav, screen, titles } = this.getSizes();
 
-    this.projectScreen.resize();
-    this.projectTitles.onResize();
+    this.projectScreen.resize(screen);
+    this.projectTitles.onResize(titles);
     this.projectFilters.onResize();
     this.projectsNav.onResize(projectsNav);
   }
@@ -207,8 +228,14 @@ export default class ProjectsViewManager {
     this.scene.add(this.projectScreen.mesh);
     this.scene.add(this.projectFilters.outerGroup);
     this.scene.add(this.projectsNav.group);
-    this.projectScreen.mesh.rotation.set(0, -Math.PI / 5, 0);
-    this.projectScreen.mesh.position.set(0.18, 0.22, 0);
+
+    this.world.sky.material.uniforms.uSkyColor.value = new THREE.Color(
+      "#c5fffa"
+    );
+    this.world.sky.material.uniforms.uSkyBrightness.value = 1;
+    this.world.sky.material.uniforms.uCloudColor.value = new THREE.Color(
+      "#ffb57a"
+    );
   }
 
   hide() {

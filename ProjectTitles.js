@@ -22,24 +22,19 @@ export default class ProjectTitles {
       limitTop: 0,
       limitBottom: 0,
     };
-    this.gap = 0.2;
+    this.gap = 0.5;
     this.active = 0;
 
-    // this.initialScrollOffset = -5;
-    this.baseWidth = 3.5; // wolrd units
+    this.baseWidth = 5; // wolrd units
 
     this.group = new THREE.Group();
     this.outerGroup = new THREE.Group();
     this.outerGroup.add(this.group);
     this.group.renderOrder = 1000;
+    this.initialScrollOffset = 1;
 
-    this.baseScale = 1 / this.baseWidth;
-    this.outerGroup.scale.setScalar(this.baseScale);
-    this.outerGroup.position.y = 0;
-
-    this.group.position.x = -1;
-
-    this.outerGroup.rotateY(Math.PI / 8);
+    this.outerGroup.rotateY(Math.PI / 12);
+    this.outerGroup.position.z = -0.3;
     // this.outerGroup.rotateX(-Math.PI / 6);
 
     this.meshes = [];
@@ -198,11 +193,13 @@ export default class ProjectTitles {
     let limitOffset = 0;
     this.group.children.map((mesh, i) => {
       if (i === 0) {
-        mesh.position.y = 0;
+        mesh.position.y = this.initialScrollOffset;
         mesh.userData.scrollPosition = mesh.position.y;
-        currentOffset = mesh.geometry.height / 2 + this.gap;
+        currentOffset += mesh.geometry.height / 2 + this.gap;
       } else {
-        mesh.position.y = -(currentOffset + mesh.geometry.height / 2);
+        mesh.position.y =
+          -(currentOffset + mesh.geometry.height / 2) +
+          this.initialScrollOffset;
         mesh.userData.scrollPosition = mesh.position.y;
         limitOffset = -mesh.position.y; // only need position of last item in list
         currentOffset += mesh.geometry.height + this.gap;
@@ -212,26 +209,6 @@ export default class ProjectTitles {
     this.scroll.limitBottom = limitOffset;
     this.onActiveChange(this.group.children[0].userData.index);
     this.group.position.y = 0;
-  }
-
-  setGroupPosition() {
-    this.outerGroup.scale.setScalar(0.2);
-    // this.outerGroup.rotateY(Math.PI / 8);
-    // this.outerGroup.rotateX(-Math.PI / 6);
-
-    // this.outerGroup.rotateY(Math.PI / 6);
-    // this.outerGroup.rotateX(-Math.PI / 8);
-    // this.outerGroup.rotation.set(
-    //   -0.4461313914223183,
-    //   0.4801810588538978,
-    //   0.21744900405528222
-    // ); // equivalent of above two lines
-    // this.outerGroup.rotation.y = 0.5235987755982988;
-    /////
-
-    this.outerGroup.position.y = 0.2;
-    this.outerGroup.position.z = 0.5;
-    this.group.position.x = -1;
   }
 
   onActiveChange(activeProject) {
@@ -273,15 +250,14 @@ export default class ProjectTitles {
     this.group.position.y = newPosition;
   }
 
-  onResize() {
-    let s = 0.00035 * window.innerWidth;
-    this.outerGroup.scale.setScalar(this.baseScale * s);
+  onResize(sizes) {
+    this.outerGroup.scale.set(sizes.scale, sizes.scale, 1);
+    this.group.position.x = sizes.posX;
   }
 
   update() {
     this.group.children.map(
       (mesh) => (mesh.material.uniforms.uTime.value = this.world.time)
     );
-    // this.uniforms.uTime.value = this.world.time;
   }
 }

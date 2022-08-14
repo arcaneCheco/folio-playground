@@ -247,7 +247,7 @@ export default class ProjectDetailViewManager {
   }
 
   resize() {
-    this.projectScreen.resize();
+    // this.projectScreen.resize();
   }
 
   onWheel() {}

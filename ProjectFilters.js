@@ -19,7 +19,7 @@ export default class ProjectsFilters {
 
     this.gap = 0.8;
 
-    this.outerGroup.position.x = -0.9;
+    this.outerGroup.position.x = 0.75;
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,

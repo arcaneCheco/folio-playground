@@ -6,6 +6,10 @@ import img from "./data/images/t1.jpeg";
 
 /*****
  * figure out how to update active project when transition is already in progress
+ * in projectsView
+ *    set aspect to aspect of screen
+ *    setHeight 0.1 units above water
+ *    set width to be about half the screen width;
  */
 
 export default class ProjectScreen {
@@ -13,7 +17,7 @@ export default class ProjectScreen {
     this.world = new World();
     this.scene = this.world.scene;
 
-    this.geometry = new THREE.PlaneGeometry(2, 1);
+    this.geometry = new THREE.PlaneGeometry(1, 1, 50, 1);
     this.uniforms = {
       uTime: { value: 0 },
       uProgress: { value: 0 },
@@ -33,6 +37,7 @@ export default class ProjectScreen {
       uColor: { value: new THREE.Vector3() },
       uVignetteIntensity: { value: 40 },
       uVignetteInfluence: { value: 0.5 },
+      uAspect: { value: 1 },
     };
     this.material = new THREE.ShaderMaterial({
       vertexShader,
@@ -44,8 +49,6 @@ export default class ProjectScreen {
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-
-    this.mesh.scale.setScalar(0.4);
   }
 
   positionDebug() {
@@ -186,7 +189,13 @@ export default class ProjectScreen {
 
   onPointerup() {}
 
-  resize() {}
+  resize(sizes) {
+    this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
+    this.mesh.position.x = sizes.posX;
+    this.mesh.position.z = sizes.posZ;
+    this.mesh.rotation.y = sizes.rotY;
+    this.uniforms.uAspect.value = sizes.aspect;
+  }
 
   update() {
     this.uniforms.uTime.value = this.world.time;

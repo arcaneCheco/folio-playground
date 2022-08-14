@@ -155,6 +155,9 @@ export default class Water extends Mirror {
       this.world.projectDetailOverlay.group.visible = false;
     } else if (this.world.view.about) {
       this.world.aboutOverlay.group.visible = false;
+    } else if (this.world.view.projects) {
+      this.world.projectFilters.outerGroup.visible = false;
+      this.world.projectsNav.group.visible = false;
     }
     super.update(this.mesh, this.renderer, this.camera, this.scene);
     if (this.world.view.home) {
@@ -165,6 +168,9 @@ export default class Water extends Mirror {
       this.world.projectDetailOverlay.group.visible = true;
     } else if (this.world.view.about) {
       this.world.aboutOverlay.group.visible = true;
+    } else if (this.world.view.projects) {
+      this.world.projectFilters.outerGroup.visible = true;
+      this.world.projectsNav.group.visible = true;
     }
     this.heightMap.update(this.renderer, this.camera);
   }
