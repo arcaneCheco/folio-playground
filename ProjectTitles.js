@@ -206,7 +206,7 @@ export default class ProjectTitles {
       }
     });
 
-    this.scroll.limitBottom = limitOffset;
+    this.scroll.limitBottom = limitOffset + this.initialScrollOffset;
     this.onActiveChange(this.group.children[0].userData.index);
     this.group.position.y = 0;
   }

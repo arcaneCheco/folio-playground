@@ -10,6 +10,7 @@ export default class ProjectsViewManager {
     this.activeProjectState = this.world.activeProjectState;
     this.projectFilters = this.world.projectFilters;
     this.projectsNav = this.world.projectsNav;
+    this.activeFilter = undefined;
 
     this.raycaster = this.world.raycaster;
     this.rayOrigin = new THREE.Vector3(0, 0, 1);
@@ -42,7 +43,19 @@ export default class ProjectsViewManager {
       .on("click", () => this.filterPublications());
   }
 
+  setAtiveFilter(key) {
+    if (this.activeFilter === key) return;
+    this.activeFilter = key;
+    this.projectFilters.group.children.map((mesh) =>
+      mesh.name === key
+        ? (mesh.material.uniforms.uActive.value = true)
+        : (mesh.material.uniforms.uActive.value = false)
+    );
+  }
+
   filterAll() {
+    this.setAtiveFilter("all");
+
     this.projectTitles.meshes.map((mesh) => {
       this.projectTitles.group.add(mesh);
     });
@@ -50,6 +63,8 @@ export default class ProjectsViewManager {
   }
 
   filterSites() {
+    this.setAtiveFilter("sites");
+
     this.projectTitles.meshes.map((mesh) => {
       if (mesh.userData.category === "site") {
         this.projectTitles.group.add(mesh);
@@ -61,6 +76,8 @@ export default class ProjectsViewManager {
   }
 
   filterSketches() {
+    this.setAtiveFilter("sketches");
+
     this.projectTitles.meshes.map((mesh) => {
       if (mesh.userData.category === "sketch") {
         this.projectTitles.group.add(mesh);
@@ -72,6 +89,8 @@ export default class ProjectsViewManager {
   }
 
   filterPublications() {
+    this.setAtiveFilter("publications");
+
     this.projectTitles.meshes.map((mesh) => {
       if (mesh.userData.category === "publication") {
         this.projectTitles.group.add(mesh);
@@ -150,16 +169,16 @@ export default class ProjectsViewManager {
     if (this.hover && this.down) {
       this.down = false;
       switch (this.target) {
-        case "All":
+        case "all":
           this.filterAll();
           break;
-        case "Sites":
+        case "sites":
           this.filterSites();
           break;
-        case "Sketches":
+        case "sketches":
           this.filterSketches();
           break;
-        case "Publications":
+        case "publications":
           this.filterPublications();
           break;
         case "home":
@@ -177,11 +196,11 @@ export default class ProjectsViewManager {
   getSizes() {
     const widthRatio = 2 / window.innerWidth;
     const aspect = window.innerWidth / window.innerHeight;
-    console.log({ aspect });
 
     const projectsNav = {};
     const screen = {};
     const titles = {};
+    const filters = {};
 
     // nav
     projectsNav.scaleY = 30 * widthRatio;
@@ -192,8 +211,8 @@ export default class ProjectsViewManager {
     screen.scaleX = 1 + aspect * 0.2;
     screen.scaleY = 1 * screen.scaleX * (9 / 16);
     const distanceFromCenter = 0.65;
-    let offset = 30 + aspect * 8; // degress;
-    offset *= Math.PI / 180; // 0.25PI
+    let offset = 30 + aspect * 8;
+    offset *= Math.PI / 180;
     screen.posX = Math.sin(offset) * distanceFromCenter;
     screen.posZ = -Math.cos(offset) * distanceFromCenter;
     screen.rotY = -offset;
@@ -203,19 +222,28 @@ export default class ProjectsViewManager {
     titles.scale = 0.1 + aspect * 0.05;
     titles.posX = -1.4 - aspect * 0.2;
 
+    // filters
+    let scale = window.innerWidth > 750 ? 300 : 210;
+    scale /= this.projectFilters.gWidth;
+    filters.scaleX = scale / window.innerWidth;
+    filters.scaleY = scale / window.innerHeight;
+    filters.posX = 1 - 0.1 * aspect;
+    filters.posY = filters.scaleY * (2 + this.projectFilters.gap);
+
     return {
       projectsNav,
       screen,
       titles,
+      filters,
     };
   }
 
   resize() {
-    const { projectsNav, screen, titles } = this.getSizes();
+    const { projectsNav, screen, titles, filters } = this.getSizes();
 
     this.projectScreen.resize(screen);
     this.projectTitles.onResize(titles);
-    this.projectFilters.onResize();
+    this.projectFilters.onResize(filters);
     this.projectsNav.onResize(projectsNav);
   }
 

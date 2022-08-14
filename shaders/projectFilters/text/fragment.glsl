@@ -1,4 +1,5 @@
 uniform sampler2D tMap;
+uniform float uActive;
 
 varying vec2 vUv;
 
@@ -17,7 +18,8 @@ float msdf(sampler2D tMap, vec2 uv) {
 }
 
 void main() {
-    vec3 col = vec3(1.);
+    // vec3 col = vec3(1.);
+    float col = mix(0.5, 1., uActive);
     float fill = msdf(tMap, vUv);
-    gl_FragColor = vec4(col, fill);
+    gl_FragColor = vec4(vec3(col), fill);
 }

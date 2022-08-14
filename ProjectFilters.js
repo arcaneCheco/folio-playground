@@ -17,15 +17,14 @@ export default class ProjectsFilters {
 
     this.underlineThickness = 0.1;
 
-    this.gap = 0.8;
-
-    this.outerGroup.position.x = 0.75;
+    this.gap = 1.2;
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         tMap: { value: new THREE.TextureLoader().load(fontMap) },
+        uActive: { value: false },
       },
       transparent: true,
     });
@@ -37,6 +36,7 @@ export default class ProjectsFilters {
       geometry.setText({
         font,
         text,
+        align: "right",
       });
 
       if (text === "Publications") {
@@ -45,9 +45,8 @@ export default class ProjectsFilters {
         this.gWidth = width;
       }
 
-      let mesh = new THREE.Mesh(geometry, this.material);
-
-      mesh.name = text;
+      let mesh = new THREE.Mesh(geometry, this.material.clone());
+      mesh.name = text.toLowerCase();
 
       mesh.position.y = -i * (1 + this.gap);
 
@@ -63,29 +62,22 @@ export default class ProjectsFilters {
       fragmentShader: fragmentUnderline,
     });
     const m = new THREE.Mesh(
-      new THREE.PlaneGeometry(this.gWidth, this.underlineThickness),
+      new THREE.PlaneGeometry(this.gWidth * 1.05, this.underlineThickness),
       this.underlineMaterial
     );
 
     this.group.children.map((child) => {
       let line = m.clone();
-      line.position.x = this.gWidth * 0.5;
+      line.position.x = this.gWidth * 0.5 - this.gWidth;
       line.position.y = -0.5 - this.underlineThickness / 2;
       child.add(line);
     });
   }
 
-  onResize() {
-    let s = 1 / this.gWidth;
-    let aspect = window.innerWidth / window.innerHeight;
-    this.outerGroup.scale.set(s, s * aspect, 1);
+  onResize(sizes) {
+    this.outerGroup.position.x = sizes.posX;
+    this.outerGroup.scale.set(sizes.scaleX, sizes.scaleY, 1);
 
-    let groupScale = (2 * this.size) / window.innerWidth;
-    this.group.scale.setScalar(groupScale);
-
-    this.outerGroup.position.y =
-      (this.size * (2 + this.gap)) / window.innerWidth;
-    this.outerGroup.position.y =
-      (this.size * (2 - this.gap * 1.5)) / window.innerHeight;
+    this.outerGroup.position.y = sizes.posY;
   }
 }
