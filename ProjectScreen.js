@@ -38,6 +38,7 @@ export default class ProjectScreen {
       uVignetteIntensity: { value: 40 },
       uVignetteInfluence: { value: 0.5 },
       uAspect: { value: 1 },
+      uIsCurved: { value: false },
     };
     this.material = new THREE.ShaderMaterial({
       vertexShader,
@@ -190,6 +191,18 @@ export default class ProjectScreen {
   onPointerup() {}
 
   resize(sizes) {
+    if (this.world.view.projectDetail) this.resizeProjectDetailView(sizes);
+    else this.resizeProjectsView(sizes);
+  }
+
+  resizeProjectDetailView(sizes) {
+    this.mesh.scale.x = sizes.scaleX;
+    this.mesh.scale.y = sizes.scaleY;
+    this.mesh.position.x = sizes.posX;
+    this.mesh.position.z = sizes.posZ;
+  }
+
+  resizeProjectsView(sizes) {
     this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
     this.mesh.position.x = sizes.posX;
     this.mesh.position.z = sizes.posZ;

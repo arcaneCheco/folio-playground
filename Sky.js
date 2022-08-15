@@ -213,9 +213,7 @@ export default class Sky {
   }
 
   addObject() {
-    // this.geometry = new THREE.BoxGeometry(5, 5, 5);
     this.geometry = new THREE.SphereGeometry(1);
-    // this.geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, 1, 2));
     this.geometry.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
 
     this.material = new THREE.ShaderMaterial({

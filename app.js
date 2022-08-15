@@ -23,6 +23,7 @@ import AboutFooter from "./AboutFooter";
 import AboutNav from "./AboutNav";
 import AboutOverlay from "./AboutOverlay";
 import RotateAlert from "./RotateAlert";
+import Post from "./Post";
 
 // add preloader => preloader maessage: This website has been designed for desktop
 
@@ -43,7 +44,7 @@ export class World {
     }
     World.instance = this;
     this.splitScreen = false;
-    this.post = false;
+    this.usePost = true;
     // screen.orientation.lock("landscape");
     this.init();
 
@@ -82,7 +83,8 @@ export class World {
     this.camera = new THREE.PerspectiveCamera(
       65,
       this.width / this.height,
-      0.0001,
+      0.01,
+      // 0.0001,
       10
     );
     this.initialHeight = 0.14;
@@ -97,7 +99,7 @@ export class World {
     // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = false;
+    this.controls.enabled = true;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
@@ -109,13 +111,11 @@ export class World {
     this.setViewManagers();
 
     this.setData();
-    // await this.setData();
 
     this.onDataLoaded();
 
-    this.post && this.setPost();
-
     this.water && (this.water.mesh.renderOrder = -1);
+    // this.sky.mesh.renderOrder = 0;
 
     this.setDebug();
 
@@ -139,6 +139,7 @@ export class World {
   }
 
   setComponents() {
+    this.post = new Post();
     this.sky = new Sky();
     this.curlBubble = new CurlBubble();
     this.projectTitles = new ProjectTitles();
@@ -417,7 +418,7 @@ export class World {
 
   setDebug() {
     this.paneContainer = new Pane();
-    this.pane = this.paneContainer.addFolder({ title: "", expanded: false });
+    this.pane = this.paneContainer.addFolder({ title: "", expanded: true });
     this.worldDebug();
     this.sky && this.sky.setDebug();
     this.curlBubble && this.curlBubble.setDebug();
@@ -428,10 +429,7 @@ export class World {
     this.projectDetailViewManager.setDebug();
     this.aboutViewManager.setDebug();
     this.homeViewManager.setDebug();
-  }
-
-  setPost() {
-    this.sky.setPost();
+    this.post.setDebug();
   }
 
   mouseNDC(e) {
@@ -450,7 +448,7 @@ export class World {
       lerp: 0.01,
       magX: 0.18,
       magY: 0.3,
-      enabled: true,
+      enabled: false,
       target: new THREE.Vector2(),
     };
   }
@@ -558,7 +556,11 @@ export class World {
   render() {
     this.time += 0.01633;
     this.update();
-    this.renderer.render(this.scene, this.camera);
+    if (this.usePost) {
+      this.post.render();
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
     window.requestAnimationFrame(this.render.bind(this));
   }
 }

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { World } from "./app";
+import GSAP from "gsap";
 
 export default class ProjectsViewManager {
   constructor() {
@@ -20,7 +21,7 @@ export default class ProjectsViewManager {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "projectsViewManager",
-      expanded: false,
+      expanded: true,
     });
     this.debug
       .addInput(this.activeProjectState, "active", { min: 0, max: 5, step: 1 })
@@ -41,6 +42,37 @@ export default class ProjectsViewManager {
     filter
       .addButton({ title: "filter publications" })
       .on("click", () => this.filterPublications());
+
+    this.debug
+      .addButton({ title: "do transition" })
+      .on("click", () => this.doTransition());
+  }
+
+  doTransition() {
+    this.camera = this.world.camera;
+    let t = this.camera.position;
+    let r = this.camera.rotation;
+    console.log(r);
+    GSAP.to(t, {
+      z: -1,
+      duration: 1,
+      onUpdate: () => {
+        console.log(this.world.camera.position);
+      },
+    });
+    GSAP.to(r, {
+      z: Math.PI,
+      x: Math.PI,
+      duration: 0.8,
+      delay: 0.2,
+      onStart: () => {
+        // this.world.sky.mesh.rotation.y = Math.PI;
+        // this.world.sky.geometry.applyMatrix4(
+        //   new THREE.Matrix4().makeRotationY(Math.PI)
+        // );
+        this.world.changeView("projects");
+      },
+    });
   }
 
   setAtiveFilter(key) {
@@ -258,7 +290,9 @@ export default class ProjectsViewManager {
   resize() {
     const { projectsNav, screen, titles, filters } = this.getSizes();
 
-    this.projectScreen.resize(screen);
+    console.log(this.world.view);
+
+    if (!this.world.view.projectDetail) this.projectScreen.resize(screen);
     this.projectTitles.onResize(titles);
     this.projectFilters.onResize(filters);
     this.projectsNav.onResize(projectsNav);
@@ -281,6 +315,7 @@ export default class ProjectsViewManager {
     this.world.sky.material.uniforms.uCloudColor.value = new THREE.Color(
       "#ffb57a"
     );
+    this.projectScreen.material.uniforms.uIsCurved.value = true;
   }
 
   hide() {

@@ -17,11 +17,9 @@ export default class ProjectDetailViewManager {
   show() {
     this.scene.add(this.projectScreen.mesh);
     this.scene.add(this.projectDetailOverlay.group);
-    this.projectScreen.mesh.rotation.y = 0;
-    this.projectScreen.mesh.position.x = 0;
-    this.projectScreen.mesh.position.y = 0.22;
-    this.projectScreen.mesh.position.z = 0.25;
-    // this.projectScreen.mesh.position.y = 0;
+    this.projectScreen.material.uniforms.uIsCurved.value = false;
+    this.world.parallax.enabled = false;
+    this.world.controls.enabled = true;
   }
 
   hide() {
@@ -32,7 +30,7 @@ export default class ProjectDetailViewManager {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "projectDetailViewManager",
-      expanded: true,
+      expanded: false,
     });
     this.debug.addButton({ title: "next" }).on("click", () => {
       this.activeProjectState.active = Math.min(
@@ -233,6 +231,7 @@ export default class ProjectDetailViewManager {
           this.activeProjectState.active + 1,
           this.activeProjectState.max
         );
+        // have some kind of special case here. It's unneccesary to to show and hide again
         this.world.changeView("projectDetail");
         this.projectScreen.onActiveChange(this.activeProjectState.active);
         break;
@@ -246,8 +245,32 @@ export default class ProjectDetailViewManager {
     }
   }
 
+  getSizes() {
+    let t = this.world.camera;
+    console.log(t.position);
+    const aspect = window.innerWidth / window.innerHeight;
+    const screen = {};
+    screen.scaleX = 1.3;
+    screen.scaleY = screen.scaleX / aspect;
+    screen.posX = 0;
+    screen.posZ = 0.5;
+
+    t.position.y = screen.scaleY / 2;
+    let fov2 = ((Math.PI / 180) * t.fov) / 2;
+
+    let distanceToCamera = (screen.scaleY * 0.5) / Math.tan(fov2);
+    console.log({ distanceToCamera });
+    t.position.z = screen.posZ + distanceToCamera;
+    t.rotation.set(0, 0, 0);
+
+    return {
+      screen,
+    };
+  }
+
   resize() {
-    // this.projectScreen.resize();
+    const { screen } = this.getSizes();
+    this.world.view.projectDetail && this.projectScreen.resize(screen);
   }
 
   onWheel() {}
