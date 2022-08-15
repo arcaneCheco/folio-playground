@@ -203,9 +203,26 @@ export default class ProjectsViewManager {
     const filters = {};
 
     // nav
-    projectsNav.scaleY = 30 * widthRatio;
-    projectsNav.scaleY = Math.min(0.3, projectsNav.scaleY);
-    projectsNav.scaleX = projectsNav.scaleY * aspect;
+    projectsNav.lineScaleY = this.projectsNav.lineThickness * widthRatio;
+    projectsNav.lineScaleX = 0.8;
+
+    let navScale = window.innerWidth > 750 ? 50 : 35;
+    projectsNav.navScaleY = navScale / window.innerWidth;
+    projectsNav.navScaleX = navScale / window.innerHeight;
+    projectsNav.navPosY =
+      projectsNav.navScaleY / 2 +
+      projectsNav.lineScaleY / 2 +
+      this.projectsNav.textLineSpacing * widthRatio;
+
+    let offsetLeft = 40;
+    projectsNav.posX =
+      -1 + offsetLeft * widthRatio + projectsNav.lineScaleY / 2;
+
+    let verticalOffset = 10;
+    projectsNav.posHome =
+      -projectsNav.lineScaleX / projectsNav.navScaleX +
+      (verticalOffset * (2 / window.innerHeight)) / projectsNav.navScaleX;
+    projectsNav.posAbout = -projectsNav.posHome;
 
     // screen
     screen.scaleX = 1 + aspect * 0.2;
