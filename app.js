@@ -24,6 +24,7 @@ import AboutNav from "./AboutNav";
 import AboutOverlay from "./AboutOverlay";
 import RotateAlert from "./RotateAlert";
 import Post from "./Post";
+import TransitionManager from "./TransitionManager";
 
 // add preloader => preloader maessage: This website has been designed for desktop
 
@@ -44,8 +45,8 @@ export class World {
     }
     World.instance = this;
     this.splitScreen = false;
-    this.usePost = true;
-    // screen.orientation.lock("landscape");
+    this.usePost = false;
+
     this.init();
 
     this.activeProjectState = {
@@ -83,7 +84,7 @@ export class World {
     this.camera = new THREE.PerspectiveCamera(
       65,
       this.width / this.height,
-      0.01,
+      0.001,
       // 0.0001,
       10
     );
@@ -158,6 +159,7 @@ export class World {
     this.aboutNav = new AboutNav();
     this.aboutOverlay = new AboutOverlay();
     this.rotateAlert = new RotateAlert();
+    this.transitionManager = new TransitionManager();
   }
 
   setViewManagers() {
@@ -200,15 +202,17 @@ export class World {
       }
     }
 
-    this.projectScreen.uniforms.uImage1.value =
-      this.data[this.activeProjectState.active].texture;
-    this.projectScreen.uniforms.uImage2.value =
-      this.data[
-        Math.min(
-          this.activeProjectState.active + 1,
-          this.activeProjectState.max
-        )
-      ].texture;
+    // this.projectScreen.uniforms.uImage1.value =
+    //   this.data[this.activeProjectState.active].texture;
+    // this.projectScreen.uniforms.uImage2.value =
+    //   this.data[
+    //     Math.min(
+    //       this.activeProjectState.active + 1,
+    //       this.activeProjectState.max
+    //     )
+    //   ].texture;
+
+    console.log("LOADED");
 
     this.changeView(view);
   }
@@ -298,38 +302,38 @@ export class World {
   }
 
   changeView(view) {
-    Object.keys(this.view).map((key) => (this.view[key] = false));
-    this.view[view] = true;
-
     if (view === "home") {
-      this.projectsViewManager.hide();
-      this.projectDetailViewManager.hide();
-      this.aboutViewManager.hide();
+      this.view.projects && this.projectsViewManager.hide();
+      this.view.projectDetail && this.projectDetailViewManager.hide();
+      this.view.about && this.aboutViewManager.hide();
       this.homeViewManager.show();
       window.history.pushState({}, "", "/");
     }
     if (view === "projects") {
-      this.projectDetailViewManager.hide();
-      this.homeViewManager.hide();
-      this.aboutViewManager.hide();
-      this.projectsViewManager.show();
+      this.view.projectDetail && this.projectDetailViewManager.hide();
+      this.view.home && this.transitionManager.homeToProjects();
+      this.view.about && this.aboutViewManager.hide();
+      if (!this.view.home) this.projectsViewManager.show();
       window.history.pushState({}, "", "/projects");
     }
     if (view === "projectDetail") {
-      this.projectsViewManager.hide();
-      this.homeViewManager.hide();
-      this.aboutViewManager.hide();
+      this.view.projects && this.projectsViewManager.hide();
+      this.view.home && this.homeViewManager.hide();
+      this.view.about && this.aboutViewManager.hide();
       this.projectDetailViewManager.show();
       const path = this.data[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
     }
     if (view === "about") {
-      this.projectsViewManager.hide();
-      this.homeViewManager.hide();
-      this.projectDetailViewManager.hide();
+      this.view.projects && this.projectsViewManager.hide();
+      this.view.home && this.homeViewManager.hide();
+      this.view.projectDetail && this.projectDetailViewManager.hide();
       this.aboutViewManager.show();
       window.history.pushState({}, "", "/about");
     }
+
+    Object.keys(this.view).map((key) => (this.view[key] = false));
+    this.view[view] = true;
   }
 
   worldDebug() {
@@ -430,6 +434,7 @@ export class World {
     this.aboutViewManager.setDebug();
     this.homeViewManager.setDebug();
     this.post.setDebug();
+    this.transitionManager.setDebug();
   }
 
   mouseNDC(e) {
@@ -440,7 +445,8 @@ export class World {
   updateParallaxTarget() {
     if (!this.parallax.enabled) return;
     this.parallax.target.y = this.mouse.y * this.parallax.magY;
-    this.parallax.target.x = this.mouse.x * this.parallax.magX;
+    this.parallax.target.x =
+      this.mouse.x * this.parallax.magX * this.parallax.direction;
   }
 
   setParallax() {
@@ -448,7 +454,8 @@ export class World {
       lerp: 0.01,
       magX: 0.18,
       magY: 0.3,
-      enabled: false,
+      enabled: true,
+      direction: 1,
       target: new THREE.Vector2(),
     };
   }

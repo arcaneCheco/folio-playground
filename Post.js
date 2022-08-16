@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import vertexShader from "./shaders/post/vertex.glsl";
 import fragmentShader from "./shaders/post/transition.glsl";
+// import fragmentShader from "./shaders/post/transitionZoom.glsl";
 import { World } from "./app";
 
 export default class Post {
@@ -19,7 +20,7 @@ export default class Post {
         generateMipmaps: false,
         stencilBuffer: false,
         // depthBuffer: false,
-        type: THREE.HalfFloatType,
+        // type: THREE.FloatType,
       }
     );
 

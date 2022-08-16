@@ -33,9 +33,10 @@ export default class ProjectTitles {
     this.group.renderOrder = 1000;
     this.initialScrollOffset = 1;
 
-    this.outerGroup.rotateY(Math.PI / 12);
-    this.outerGroup.position.z = -0.3;
-    // this.outerGroup.rotateX(-Math.PI / 6);
+    // this.outerGroup.rotateY(Math.PI / 12);
+    // this.outerGroup.position.z = -0.3;
+    this.outerGroup.rotation.y = (Math.PI * 13) / 12;
+    this.outerGroup.position.z = 0.3;
 
     this.meshes = [];
 

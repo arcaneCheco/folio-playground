@@ -17,6 +17,8 @@ export default class ProjectScreen {
     this.world = new World();
     this.scene = this.world.scene;
 
+    let abstractTex = this.world.textureLoader.load("images/abstract2.jpeg");
+
     this.geometry = new THREE.PlaneGeometry(1, 1, 50, 1);
     this.uniforms = {
       uTime: { value: 0 },
@@ -32,13 +34,14 @@ export default class ProjectScreen {
       },
       uBorderColor: { value: new THREE.Vector3() },
       uAbstract: {
-        value: this.world.textureLoader.load("images/abstract2.jpeg"),
+        value: abstractTex,
       },
       uColor: { value: new THREE.Vector3() },
       uVignetteIntensity: { value: 40 },
       uVignetteInfluence: { value: 0.5 },
       uAspect: { value: 1 },
       uIsCurved: { value: false },
+      uOpacity: { value: 1 },
     };
     this.material = new THREE.ShaderMaterial({
       vertexShader,

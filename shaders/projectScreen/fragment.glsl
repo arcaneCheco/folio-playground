@@ -3,6 +3,7 @@ uniform float uTransition;
 uniform float uTransitionStart;
 uniform float uTransitionDuration;
 uniform vec3 uColor;
+uniform float uOpacity;
 
 uniform sampler2D uImage1;
 uniform sampler2D uImage2;
@@ -123,7 +124,7 @@ void main() {
     final *= vec3(vig);
 
 
-    gl_FragColor = vec4(final + borderColor * f1, 1.);
+    gl_FragColor = vec4(final + borderColor * f1, 1.) * uOpacity;
 
     // gl_FragColor = vec4(vec3(vig), 1.);
 

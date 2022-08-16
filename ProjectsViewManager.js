@@ -42,37 +42,6 @@ export default class ProjectsViewManager {
     filter
       .addButton({ title: "filter publications" })
       .on("click", () => this.filterPublications());
-
-    this.debug
-      .addButton({ title: "do transition" })
-      .on("click", () => this.doTransition());
-  }
-
-  doTransition() {
-    this.camera = this.world.camera;
-    let t = this.camera.position;
-    let r = this.camera.rotation;
-    console.log(r);
-    GSAP.to(t, {
-      z: -1,
-      duration: 1,
-      onUpdate: () => {
-        console.log(this.world.camera.position);
-      },
-    });
-    GSAP.to(r, {
-      z: Math.PI,
-      x: Math.PI,
-      duration: 0.8,
-      delay: 0.2,
-      onStart: () => {
-        // this.world.sky.mesh.rotation.y = Math.PI;
-        // this.world.sky.geometry.applyMatrix4(
-        //   new THREE.Matrix4().makeRotationY(Math.PI)
-        // );
-        this.world.changeView("projects");
-      },
-    });
   }
 
   setAtiveFilter(key) {
@@ -260,7 +229,7 @@ export default class ProjectsViewManager {
     screen.scaleX = 1 + aspect * 0.2;
     screen.scaleY = 1 * screen.scaleX * (9 / 16);
     const distanceFromCenter = 0.65;
-    let offset = 30 + aspect * 8;
+    let offset = 210 + aspect * 8; // 30
     offset *= Math.PI / 180;
     screen.posX = Math.sin(offset) * distanceFromCenter;
     screen.posZ = -Math.cos(offset) * distanceFromCenter;
