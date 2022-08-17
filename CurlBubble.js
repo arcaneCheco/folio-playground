@@ -74,7 +74,6 @@ export default class CurlBubble {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.scale.set(0.28, 0.28, 0.28);
     this.mesh.position.set(0, 0.22, 0);
-    this.scene.add(this.mesh);
 
     this.shapeType = "sphere";
 

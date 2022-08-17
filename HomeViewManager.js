@@ -200,14 +200,13 @@ export default class HomeViewManager {
     this.scene.add(this.homeTitle.group);
     this.scene.add(this.homeContact.group);
     this.scene.add(this.homeNav.group);
-    this.curlBubble && this.scene.add(this.curlBubble.mesh);
-    // this.curlBubble && this.curlBubble.mesh.position.set(0, 0.3, 0);
+    this.scene.add(this.curlBubble.mesh);
   }
 
   hide() {
     this.scene.remove(this.homeTitle.group);
     this.scene.remove(this.homeContact.group);
     this.scene.remove(this.homeNav.group);
-    this.curlBubble && this.scene.remove(this.curlBubble.mesh);
+    this.scene.remove(this.curlBubble.mesh);
   }
 }

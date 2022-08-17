@@ -32,9 +32,8 @@ export default class ProjectTitles {
     this.outerGroup.add(this.group);
     this.group.renderOrder = 1000;
     this.initialScrollOffset = 1;
+    this.scroll.limitTop = -this.initialScrollOffset;
 
-    // this.outerGroup.rotateY(Math.PI / 12);
-    // this.outerGroup.position.z = -0.3;
     this.outerGroup.rotation.y = (Math.PI * 13) / 12;
     this.outerGroup.position.z = 0.3;
 
@@ -207,7 +206,8 @@ export default class ProjectTitles {
       }
     });
 
-    this.scroll.limitBottom = limitOffset + this.initialScrollOffset;
+    // this.scroll.limitBottom = limitOffset + this.initialScrollOffset;
+    this.scroll.limitBottom = limitOffset;
     this.onActiveChange(this.group.children[0].userData.index);
     this.group.position.y = 0;
   }

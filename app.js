@@ -100,7 +100,7 @@ export class World {
     // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = true;
+    this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
@@ -215,6 +215,8 @@ export class World {
     console.log("LOADED");
 
     this.changeView(view);
+
+    console.log({ view });
   }
 
   async setData() {
@@ -303,24 +305,32 @@ export class World {
 
   changeView(view) {
     if (view === "home") {
-      this.view.projects && this.projectsViewManager.hide();
-      this.view.projectDetail && this.projectDetailViewManager.hide();
-      this.view.about && this.aboutViewManager.hide();
-      this.homeViewManager.show();
+      this.transitionManager.projectsToHome();
+      // this.view.projects && this.transitionManager.projectsToHome();
+      // this.view.projectDetail && this.projectDetailViewManager.hide();
+      // this.view.about && this.aboutViewManager.hide();
+      // if (!this.view.projects) this.homeViewManager.show();
       window.history.pushState({}, "", "/");
     }
     if (view === "projects") {
-      this.view.projectDetail && this.projectDetailViewManager.hide();
-      this.view.home && this.transitionManager.homeToProjects();
-      this.view.about && this.aboutViewManager.hide();
-      if (!this.view.home) this.projectsViewManager.show();
+      if (this.view.home) this.transitionManager.homeToProjects();
+      else if (this.view.projectDetail)
+        this.transitionManager.projectDetailToProjects();
+      else {
+        this.projectsViewManager.show();
+      }
+      // this.view.projectDetail && this.projectDetailViewManager.hide();
+      // this.view.home && this.transitionManager.homeToProjects();
+      // this.view.about && this.aboutViewManager.hide();
+      // if (!this.view.home) this.projectsViewManager.show();
       window.history.pushState({}, "", "/projects");
     }
     if (view === "projectDetail") {
-      this.view.projects && this.projectsViewManager.hide();
-      this.view.home && this.homeViewManager.hide();
-      this.view.about && this.aboutViewManager.hide();
-      this.projectDetailViewManager.show();
+      if (this.view.projects) this.transitionManager.projectsToProjectDetail();
+      // this.view.projects && this.projectsViewManager.hide();
+      // this.view.home && this.homeViewManager.hide();
+      // this.view.about && this.aboutViewManager.hide();
+      // this.projectDetailViewManager.show();
       const path = this.data[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
     }
@@ -383,13 +393,6 @@ export class World {
     components.addButton({ title: "water" }).on("click", () => {
       toggleComponent("water");
     });
-    // components.addButton({ title: "projectScreen" }).on("click", () => {
-    //   toggleComponent("projectScreen");
-    // });
-
-    // temp
-    // this.components.curlBubble = false;
-    // this.scene.remove(this.curlBubble.mesh);
   }
 
   debugCamera() {

@@ -269,8 +269,9 @@ export default class ProjectDetailViewManager {
   }
 
   resize() {
-    const { screen } = this.getSizes();
-    this.world.view.projectDetail && this.projectScreen.resize(screen);
+    // const { screen } = this.getSizes();
+    // if (this.world.view.projectDetail)
+    //   this.projectScreen.resizeProjectDetailView(screen);
   }
 
   onWheel() {}

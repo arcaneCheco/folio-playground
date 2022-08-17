@@ -172,10 +172,6 @@ export default class ProjectScreen {
   }
 
   onActiveChange(activeProject) {
-    console.log({
-      one: this.uniforms.uImage1.value,
-      two: this.uniforms.uImage2.value,
-    });
     console.log("ONACTIVECHANGE");
     this.uniforms.uColor.value = this.data[activeProject].color;
     this.uniforms.uTransition.value = true;
@@ -192,11 +188,6 @@ export default class ProjectScreen {
   onPointermove() {}
 
   onPointerup() {}
-
-  resize(sizes) {
-    if (this.world.view.projectDetail) this.resizeProjectDetailView(sizes);
-    else this.resizeProjectsView(sizes);
-  }
 
   resizeProjectDetailView(sizes) {
     this.mesh.scale.x = sizes.scaleX;
