@@ -259,8 +259,9 @@ export default class ProjectsViewManager {
   resize() {
     const { projectsNav, screen, titles, filters } = this.getSizes();
 
-    if (!this.world.view.projectDetail)
+    if (!this.world.view.projectDetail) {
       this.projectScreen.resizeProjectsView(screen);
+    }
     this.projectTitles.onResize(titles);
     this.projectFilters.onResize(filters);
     this.projectsNav.onResize(projectsNav);
@@ -271,7 +272,6 @@ export default class ProjectsViewManager {
   }
 
   show() {
-    console.log("hey");
     this.scene.add(this.projectTitles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
     this.scene.add(this.projectFilters.outerGroup);

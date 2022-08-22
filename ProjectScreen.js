@@ -190,6 +190,7 @@ export default class ProjectScreen {
   onPointerup() {}
 
   resizeProjectDetailView(sizes) {
+    console.log("WHY");
     this.mesh.scale.x = sizes.scaleX;
     this.mesh.scale.y = sizes.scaleY;
     this.mesh.position.x = sizes.posX;
@@ -197,6 +198,7 @@ export default class ProjectScreen {
   }
 
   resizeProjectsView(sizes) {
+    console.log("YAEH");
     this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
     this.mesh.position.x = sizes.posX;
     this.mesh.position.z = sizes.posZ;

@@ -327,6 +327,7 @@ export class World {
     }
     if (view === "projectDetail") {
       if (this.view.projects) this.transitionManager.projectsToProjectDetail();
+      else this.projectDetailViewManager.show();
       // this.view.projects && this.projectsViewManager.hide();
       // this.view.home && this.homeViewManager.hide();
       // this.view.about && this.aboutViewManager.hide();
@@ -335,10 +336,12 @@ export class World {
       window.history.pushState({}, "", path);
     }
     if (view === "about") {
-      this.view.projects && this.projectsViewManager.hide();
-      this.view.home && this.homeViewManager.hide();
-      this.view.projectDetail && this.projectDetailViewManager.hide();
-      this.aboutViewManager.show();
+      if (this.view.projects) this.transitionManager.projectsToAbout();
+      else this.transitionManager.projectsToAbout();
+      // this.view.projects && this.projectsViewManager.hide();
+      // this.view.home && this.homeViewManager.hide();
+      // this.view.projectDetail && this.projectDetailViewManager.hide();
+      // this.aboutViewManager.show();
       window.history.pushState({}, "", "/about");
     }
 
@@ -425,7 +428,7 @@ export class World {
 
   setDebug() {
     this.paneContainer = new Pane();
-    this.pane = this.paneContainer.addFolder({ title: "", expanded: true });
+    this.pane = this.paneContainer.addFolder({ title: "", expanded: false });
     this.worldDebug();
     this.sky && this.sky.setDebug();
     this.curlBubble && this.curlBubble.setDebug();

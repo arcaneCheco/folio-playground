@@ -4,6 +4,7 @@ uniform float uLengthCorner;
 uniform float uCenterGap;
 uniform float uLengthTop;
 uniform vec2 uResolution;
+uniform float uScale;
 
 varying vec2 vUv;
 
@@ -27,4 +28,5 @@ void main() {
     vec3 col = vec3 (1.);
 
     gl_FragColor = vec4(col, strength);
+    // gl_FragColor.a += 0.5;
 }

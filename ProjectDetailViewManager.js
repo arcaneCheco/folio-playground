@@ -19,7 +19,7 @@ export default class ProjectDetailViewManager {
     this.scene.add(this.projectDetailOverlay.group);
     this.projectScreen.material.uniforms.uIsCurved.value = false;
     this.world.parallax.enabled = false;
-    this.world.controls.enabled = true;
+    this.world.sky.mesh.rotation.y = Math.PI;
   }
 
   hide() {
@@ -246,22 +246,26 @@ export default class ProjectDetailViewManager {
   }
 
   getSizes() {
-    let t = this.world.camera;
-    console.log(t.position);
     const aspect = window.innerWidth / window.innerHeight;
     const screen = {};
-    screen.scaleX = 1.3;
-    screen.scaleY = screen.scaleX / aspect;
-    screen.posX = 0;
-    screen.posZ = 0.5;
 
-    t.position.y = screen.scaleY / 2;
-    let fov2 = ((Math.PI / 180) * t.fov) / 2;
+    const dist = 0.65;
+    const fov2 = (this.world.camera.fov * 0.5 * Math.PI) / 180;
+    const scaleY = 2 * dist * Math.tan(fov2); // scaleX = 2*dist*Math.tan(fov/2)
+    const scaleX = scaleY * aspect;
+    this.projectScreen.mesh.scale.set(scaleX, scaleY, 1);
 
-    let distanceToCamera = (screen.scaleY * 0.5) / Math.tan(fov2);
-    console.log({ distanceToCamera });
-    t.position.z = screen.posZ + distanceToCamera;
-    t.rotation.set(0, 0, 0);
+    let offset = 210 + aspect * 8; // 30
+    offset *= Math.PI / 180;
+    const posX = Math.sin(offset) * dist;
+    const posZ = -Math.cos(offset) * dist;
+    this.projectScreen.mesh.position.set(posX, 0, posZ);
+    const rotY = -offset;
+    this.projectScreen.mesh.rotation.y = rotY;
+
+    this.world.camera.position.set(0, scaleY / 2, 0);
+    const rotation = (30 + aspect * 8) * (Math.PI / 180);
+    this.world.camera.rotation.set(-Math.PI, rotation, Math.PI);
 
     return {
       screen,
@@ -269,9 +273,13 @@ export default class ProjectDetailViewManager {
   }
 
   resize() {
-    // const { screen } = this.getSizes();
-    // if (this.world.view.projectDetail)
-    //   this.projectScreen.resizeProjectDetailView(screen);
+    if (this.world.view.projectDetail) {
+      console.log("NOPW");
+      const { screen } = this.getSizes();
+      // this.projectScreen.resizeProjectDetailView(screen);
+    }
+    //resize overlay
+    this.projectDetailOverlay.onResize();
   }
 
   onWheel() {}

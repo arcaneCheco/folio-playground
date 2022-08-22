@@ -154,7 +154,7 @@ export default class TransitionManager {
 
     const t = GSAP.timeline({
       defaults: {
-        duration: 1,
+        duration: 0.8,
         delay: 0,
         ease: "power1.in",
       },
@@ -171,7 +171,7 @@ export default class TransitionManager {
         x: scaleX,
         y: scaleY,
       },
-      0.2
+      0.1
     );
 
     // camera
@@ -182,9 +182,9 @@ export default class TransitionManager {
       {
         x: -Math.PI,
         y: rotation,
-        z: -Math.PI,
+        z: Math.PI * Math.sign(this.cameraRotation.z),
       },
-      0.2
+      0.1
     );
 
     this.scene.remove(
@@ -194,6 +194,24 @@ export default class TransitionManager {
     );
 
     this.scene.add(this.projectDetailOverlayObject);
+  }
+
+  projectsToAbout() {
+    this.scene.remove(
+      this.projectScreen.mesh,
+      this.titlesObject,
+      this.filtersObject,
+      this.projectsNavObject
+    );
+
+    this.scene.add(
+      this.world.aboutScreen.mesh,
+      this.world.aboutGreeting.group,
+      this.world.aboutOverlay.group
+    );
+
+    this.cameraPosition.set(0, 0, 1);
+    this.world.sky.mesh.rotation.y = 0;
   }
 
   setDebug() {
