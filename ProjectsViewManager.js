@@ -21,7 +21,7 @@ export default class ProjectsViewManager {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "projectsViewManager",
-      expanded: true,
+      expanded: false,
     });
     this.debug
       .addInput(this.activeProjectState, "active", { min: 0, max: 5, step: 1 })

@@ -12,4 +12,10 @@ export default class AboutOverlay {
     this.group.add(this.aboutFooter.group);
     this.group.add(this.aboutNav.group);
   }
+
+  onResize() {
+    this.aboutNav.onResize();
+    this.aboutSocialIcons.onResize();
+    this.aboutFooter.onResize();
+  }
 }

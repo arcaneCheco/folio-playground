@@ -7,6 +7,8 @@ export default class AboutScreen {
   constructor() {
     this.geometry = new THREE.PlaneGeometry(1, 1);
 
+    this.aspect = 2;
+
     this.textTexture = new AboutTextTexture({});
 
     this.material = new THREE.ShaderMaterial({
@@ -15,20 +17,18 @@ export default class AboutScreen {
       uniforms: {
         uTextMap: this.textTexture.texture,
         uMouse: { value: new THREE.Vector2() },
-        uAspect: { value: 2 },
+        uAspect: { value: this.aspect },
         uDistortion: { value: 0.5 },
         uInfluence: { value: 0.25 },
         uTest: { value: 0.48 },
         uProgress: { value: 1 },
       },
       transparent: true,
+      depthTest: false,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
     this.mesh.name = "screen";
-
-    this.mesh.scale.set(0.4, 0.2, 1);
-    this.mesh.position.y = 0.17;
   }
 
   onPointermove(uv) {
@@ -41,5 +41,11 @@ export default class AboutScreen {
 
   onTextureChange(texture) {
     this.material.uniforms.uTextMap = texture;
+  }
+
+  onResize(sizes) {
+    this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
+    this.mesh.position.y = sizes.posY;
+    this.material.uniforms.uAspect.value = sizes.aspect;
   }
 }

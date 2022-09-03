@@ -51,6 +51,31 @@ export default class AboutViewManager {
       step: 0.001,
       label: "progress",
     });
+
+    screen
+      .addInput(this.aboutScreen.mesh.scale, "x", {
+        label: "scale",
+        min: 0,
+        max: 2,
+        step: 0.001,
+      })
+      .on("change", () => {
+        this.aboutScreen.mesh.scale.y =
+          this.aboutScreen.mesh.scale.x / this.aboutScreen.aspect;
+      });
+    screen
+      .addInput(this.aboutScreen, "aspect", {
+        min: 1,
+        max: 3,
+        step: 0.001,
+      })
+      .on("change", () => {
+        this.aboutScreen.mesh.scale.y =
+          this.aboutScreen.mesh.scale.x / this.aboutScreen.aspect;
+        this.aboutScreen.material.uniforms.uAspect.value =
+          this.aboutScreen.aspect;
+        this.aboutScreen.textTexture.createTexture(this.renderer, this.camera);
+      });
   }
 
   onPointerdown() {
@@ -123,7 +148,41 @@ export default class AboutViewManager {
     this.aboutScreen.onWheel(deltaY, this.renderer, this.camera);
   }
 
-  onResize() {}
+  getSizes() {
+    const aspect = window.innerWidth / window.innerHeight;
+    // screen
+    const screen = {};
+    screen.aspect = aspect;
+    screen.scaleY = Math.min(500 / window.innerHeight, 0.8);
+    screen.scaleY = 500 / window.innerHeight;
+    screen.scaleX = aspect * screen.scaleY;
+
+    screen.scaleX = 1.2;
+    screen.scaleY = screen.scaleX * (9 / 16);
+
+    screen.posY = screen.scaleY / 1.9;
+    screen.posY = 0;
+    screen.posY = 0.12;
+
+    const greeting = {};
+
+    greeting.scaleX = 0.06;
+    greeting.scaleY = greeting.scaleX;
+    greeting.posX = -screen.scaleX * 0.51;
+    greeting.posY = screen.posY + screen.scaleY / 2 + greeting.scaleX * 1.2;
+    greeting.mesh1posX = -screen.scaleX / 2 - greeting.scaleX / 2;
+
+    return { screen, greeting };
+
+    // greeting;
+  }
+
+  onResize() {
+    const { screen, greeting } = this.getSizes();
+    this.aboutScreen.onResize(screen);
+    this.aboutGreeting.onResize(greeting);
+    this.aboutOverlay.onResize();
+  }
 
   update() {
     // this.aboutScreen.textTexture.createTexture(this.renderer, this.camera);

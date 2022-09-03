@@ -70,7 +70,7 @@ export default class ProjectTitles {
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "project titles",
-      expanded: true,
+      expanded: false,
     });
     this.stroke = 0.1;
     this.debug

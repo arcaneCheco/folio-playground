@@ -30,7 +30,6 @@ export default class AboutTextTexture {
     this.geometry.computeBoundingBox();
     let height =
       this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y;
-    console.log(height);
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,

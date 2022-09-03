@@ -10,9 +10,7 @@ import fontMap from "./data/fonts/audiowide/Audiowide-Regular.ttf.png";
 export default class AboutNav {
   constructor() {
     this.group = new THREE.Group();
-
-    this.group.scale.set(0.5, 0.5, 2);
-    this.group.position.set(-0.8, 0.5, 0);
+    this.group.position.set(-0.85, 0.5, 0);
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,
@@ -59,11 +57,10 @@ export default class AboutNav {
 
   onPointerdown() {}
 
-  //   resize(sizes) {
-  //     this.group.scale.x = sizes.scaleX;
-  //     this.group.scale.y = sizes.scaleY;
-
-  //     this.group.position.x = sizes.posX;
-  //     this.group.position.y = sizes.posY;
-  //   }
+  onResize() {
+    const aspect = window.innerWidth / window.innerHeight;
+    const scaleX = 0.6;
+    const scaleY = scaleX / aspect;
+    this.group.scale.set(scaleX, scaleY, 1);
+  }
 }

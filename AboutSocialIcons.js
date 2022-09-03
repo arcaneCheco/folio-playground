@@ -2,16 +2,11 @@ import * as THREE from "three";
 import twitterSrc from "./data/images/icons/twitter.png";
 import githubSrc from "./data/images/icons/github.png";
 import linkedinSrc from "./data/images/icons/linkedin.png";
-import emailSrc from "./data/images/icons/email.png";
 
 export default class AboutSocialIcons {
   constructor() {
     this.group = new THREE.Group();
     this.group.position.z = 0.1;
-    let aspect = window.innerWidth / window.innerHeight;
-    let scale = 0.1;
-    this.group.scale.set(scale, scale * aspect, 1);
-    this.group.position.y = -0.5;
     this.iconMaterial = new THREE.ShaderMaterial({
       vertexShader: `
       varying vec2 vUv;
@@ -42,26 +37,34 @@ export default class AboutSocialIcons {
 
     this.twitter = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
     this.twitter.material.uniforms.uMap.value = this.loader.load(twitterSrc);
-    this.twitter.position.x = -3;
     this.twitter.name = "twitter";
     this.group.add(this.twitter);
 
     this.github = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
     this.github.material.uniforms.uMap.value = this.loader.load(githubSrc);
-    this.github.position.x = -1;
     this.github.name = "github";
     this.group.add(this.github);
 
     this.linkedin = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
     this.linkedin.material.uniforms.uMap.value = this.loader.load(linkedinSrc);
     this.linkedin.name = "linkedin";
-    this.linkedin.position.x = 1;
     this.group.add(this.linkedin);
 
-    this.email = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
-    this.email.material.uniforms.uMap.value = this.loader.load(emailSrc);
-    this.email.name = "email";
-    this.email.position.x = 3;
-    this.group.add(this.email);
+    // this.email = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
+    // this.email.material.uniforms.uMap.value = this.loader.load(emailSrc);
+    // this.email.name = "email";
+    // this.group.add(this.email);
+  }
+
+  onResize() {
+    let aspect = window.innerWidth / window.innerHeight;
+    let scale = 80 / window.innerWidth;
+    this.group.scale.set(scale, scale * aspect, 1);
+    this.group.position.y =
+      -1 + (scale / 2) * aspect + 140 / window.innerHeight;
+
+    this.twitter.position.x = -2;
+    this.github.position.x = -0;
+    this.linkedin.position.x = 2;
   }
 }
