@@ -25,6 +25,7 @@ import AboutOverlay from "./AboutOverlay";
 import RotateAlert from "./RotateAlert";
 import Post from "./Post";
 import TransitionManager from "./TransitionManager";
+import Resources from "./Resources";
 
 // add preloader => preloader maessage: This website has been designed for desktop
 
@@ -52,6 +53,16 @@ export class World {
     this.activeProjectState = {
       active: 0,
       progress: 0,
+      target: 0,
+      isTransitioning: false,
+      min: 0,
+      max: 5,
+    };
+    this.activeProjectState2 = {
+      active: 0,
+      progress: { value: 0 },
+      target: 0,
+      isTransitioning: { value: false },
       min: 0,
       max: 5,
     };
@@ -102,6 +113,7 @@ export class World {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
     this.raycaster = new THREE.Raycaster();
+    this.ndcRaycaster = new THREE.Raycaster();
     this.setParallax();
     this.textureLoader = new THREE.TextureLoader();
   }
@@ -111,7 +123,10 @@ export class World {
 
     this.setViewManagers();
 
-    this.setData();
+    // this.setData();
+
+    this.resources = new Resources();
+    await this.resources.load();
 
     this.onDataLoaded();
 
@@ -170,10 +185,7 @@ export class World {
   }
 
   onDataLoaded() {
-    this.projectScreen.data = this.data;
-    this.projectTitles.data = this.data;
-    this.projectTitles.setMeshes2();
-    this.projectsViewManager.filterAll();
+    this.projectsViewManager.onDataLoaded();
 
     const location = window.location.pathname;
 
@@ -183,10 +195,10 @@ export class World {
       "/about": "about",
     };
 
-    this.dataCount = this.data.length;
+    this.dataCount = this.resources.projects.length;
 
     for (let i = 0; i < this.dataCount; i++) {
-      const key = this.data[i].path;
+      const key = this.resources.projects[i].path;
       this.pathViewMap[key] = "projectDetail";
     }
 
@@ -194,7 +206,7 @@ export class World {
 
     if (view === "projectDetail") {
       for (let i = 0; i < this.dataCount; i++) {
-        const dataPath = this.data[i].path;
+        const dataPath = this.resources.projects[i].path;
         if (location === dataPath) {
           this.activeProjectState.active = i;
           break;
@@ -202,137 +214,31 @@ export class World {
       }
     }
 
-    // this.projectScreen.uniforms.uImage1.value =
-    //   this.data[this.activeProjectState.active].texture;
-    // this.projectScreen.uniforms.uImage2.value =
-    //   this.data[
-    //     Math.min(
-    //       this.activeProjectState.active + 1,
-    //       this.activeProjectState.max
-    //     )
-    //   ].texture;
-
-    console.log("LOADED");
-
     this.changeView(view);
 
     console.log({ view });
   }
 
-  async setData() {
-    const rawData = [
-      {
-        title: "Elastic Mesh",
-        color: new THREE.Color("#ff0000"),
-        category: "site",
-        imageUrl: "images/t1.jpeg",
-        link: "http://goggle.com/elasticMesh",
-      },
-      {
-        title: "Mandelbrot Explorer",
-        color: new THREE.Color("#00ff00"),
-        category: "sketch",
-        imageUrl: "images/t2.jpeg",
-        link: "http://goggle.com/Mandelbrot",
-      },
-      {
-        title: "A.P.O.D. Snippets",
-        color: new THREE.Color("#0000ff"),
-        category: "sketch",
-        imageUrl: "images/t3.jpeg",
-        link: "https://apod-snippets.vercel.app/",
-      },
-      {
-        title: "Infinite Tunnel",
-        color: new THREE.Color("#ff00ff"),
-        category: "publication",
-        imageUrl: "images/t4.jpeg",
-        link: "http://goggle.com/Infinite",
-      },
-      {
-        title: "Elastic Mesh 4",
-        color: new THREE.Color("#ffff00"),
-        category: "publication",
-        imageUrl: "images/t5.jpeg",
-        link: "http://goggle.com/Elastic4",
-      },
-      {
-        title: "Elastic Mesh 5",
-        color: new THREE.Color("#00ffff"),
-        category: "publication",
-        imageUrl: "images/t6.jpeg",
-        link: "http://goggle.com/Mesh5",
-      },
-    ];
-
-    // const loadData = async () => {
-    //   return new Promise((resolve) => {
-    //     const loadedData = rawData.map(async (entry) => {
-    //       const tex = await new Promise((resolve) => {
-    //         this.textureLoader.load(entry.imageUrl, (text) => {
-    //           resolve(text);
-    //         });
-    //       });
-
-    //       return {
-    //         ...entry,
-    //         texture: tex,
-    //         path: "/projects-".concat(
-    //           entry.title.toLowerCase().split(" ").join("-").replaceAll(".", "")
-    //         ),
-    //       };
-    //     });
-
-    //     Promise.all(loadedData).then((dat) => {
-    //       this.data = dat;
-    //       resolve();
-    //     });
-    //   });
-    // };
-
-    // await loadData();
-
-    this.data = rawData.map((entry) => {
-      return {
-        ...entry,
-        texture: this.textureLoader.load(entry.imageUrl),
-        path: "/projects-".concat(
-          entry.title.toLowerCase().split(" ").join("-").replaceAll(".", "")
-        ),
-      };
-    });
-  }
-
   changeView(view) {
     if (view === "home") {
       this.transitionManager.projectsToHome();
-      // this.view.projects && this.transitionManager.projectsToHome();
-      // this.view.projectDetail && this.projectDetailViewManager.hide();
-      // this.view.about && this.aboutViewManager.hide();
-      // if (!this.view.projects) this.homeViewManager.show();
       window.history.pushState({}, "", "/");
     }
     if (view === "projects") {
       if (this.view.home) this.transitionManager.homeToProjects();
       else if (this.view.projectDetail)
         this.transitionManager.projectDetailToProjects();
-      else {
+      else if (this.view.about) {
+        this.transitionManager.aboutToProjects();
+      } else {
         this.projectsViewManager.show();
       }
-      // this.view.projectDetail && this.projectDetailViewManager.hide();
-      // this.view.home && this.transitionManager.homeToProjects();
-      // this.view.about && this.aboutViewManager.hide();
-      // if (!this.view.home) this.projectsViewManager.show();
       window.history.pushState({}, "", "/projects");
     }
     if (view === "projectDetail") {
       if (this.view.projects) this.transitionManager.projectsToProjectDetail();
       else this.projectDetailViewManager.show();
-      // this.view.projects && this.projectsViewManager.hide();
-      // this.view.home && this.homeViewManager.hide();
-      // this.view.about && this.aboutViewManager.hide();
-      // this.projectDetailViewManager.show();
-      const path = this.data[this.activeProjectState.active].path;
+      const path = this.resources.projects[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
     }
     if (view === "about") {

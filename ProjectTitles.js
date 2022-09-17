@@ -3,7 +3,6 @@ import { World } from "./app";
 import vertexShader from "./shaders/projectTitle/vertex.glsl";
 import fragmentShader from "./shaders/projectTitle/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
-import GSAP from "gsap";
 import TextGeometry from "./TextGeometry";
 import fontData from "./data/fonts/audiowide/Audiowide-Regular.json";
 
@@ -31,10 +30,11 @@ export default class ProjectTitles {
     this.outerGroup = new THREE.Group();
     this.outerGroup.add(this.group);
     this.group.renderOrder = 1000;
-    this.initialScrollOffset = 1;
-    this.scroll.limitTop = -this.initialScrollOffset;
+    this.initialScrollOffset = 1.5;
+    // this.scroll.limitTop = -this.initialScrollOffset;
 
-    this.outerGroup.rotation.y = (Math.PI * 13) / 12;
+    this.outerGroup.rotation.y = Math.PI;
+    // this.outerGroup.rotation.y = (Math.PI * 13) / 12;
     this.outerGroup.position.z = 0.3;
 
     this.meshes = [];
@@ -50,7 +50,7 @@ export default class ProjectTitles {
   setMaterial() {
     this.uniforms = {
       uColor: { value: new THREE.Vector3() },
-      uActive: { value: false },
+      uProgress: { value: 0 },
       uMap: { value: this.fontTexture },
       uStroke: { value: 0.1 },
       uPadding: { value: 0.1 },
@@ -83,6 +83,19 @@ export default class ProjectTitles {
       .on("change", () =>
         this.meshes.map(
           (mesh) => (mesh.material.uniforms.uStroke.value = this.stroke)
+        )
+      );
+    this.progress = 0;
+    this.debug
+      .addInput(this, "progress", {
+        min: 0,
+        max: 1,
+        step: 0.001,
+        label: "progress",
+      })
+      .on("change", () =>
+        this.meshes.map(
+          (mesh) => (mesh.material.uniforms.uProgress.value = this.progress)
         )
       );
     this.padding = 0.1;
@@ -171,11 +184,10 @@ export default class ProjectTitles {
   }
 
   setMeshes2() {
-    this.data.map(({ title, category, color }, index) => {
+    this.data.map(({ title, category }, index) => {
       const mat = this.material.clone();
       const geometry = this.setTextGeometry(title);
       const mesh = new THREE.Mesh(geometry, mat);
-      mat.uniforms.uColor.value = color;
       mesh.userData.index = index;
       mesh.userData.category = category;
       this.meshes.push(mesh);
@@ -206,17 +218,9 @@ export default class ProjectTitles {
       }
     });
 
-    // this.scroll.limitBottom = limitOffset + this.initialScrollOffset;
+    // this.scroll.limitBottom = limitOffset - this.initialScrollOffset;
     this.scroll.limitBottom = limitOffset;
-    this.onActiveChange(this.group.children[0].userData.index);
     this.group.position.y = 0;
-  }
-
-  onActiveChange(activeProject) {
-    // this.group.position.y = -this.meshes[activeProject].userData.scrollPosition;
-    this.meshes[this.active].material.uniforms.uActive.value = false;
-    this.meshes[activeProject].material.uniforms.uActive.value = true;
-    this.active = activeProject;
   }
 
   onWheel(deltaY) {

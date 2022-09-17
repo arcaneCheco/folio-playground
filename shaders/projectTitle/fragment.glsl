@@ -2,6 +2,7 @@ uniform vec3 uColor;
 uniform float uActive;
 uniform sampler2D uMap;
 uniform float uStroke;
+uniform float uProgress;
 uniform float uPadding;
 uniform float uTime;
 
@@ -40,17 +41,14 @@ void main() {
     float fill = msdf(uMap, vUv);
     float stroke = strokemsdf(uMap, vUv, uStroke, uPadding);
 
-    float alpha = mix(stroke, fill, uActive);
+    float alpha = mix(stroke, fill, uProgress);
     alpha = fill + stroke;
+    alpha = fill * 0.2 + uProgress * 0.4 + stroke * 0.5 + stroke * uProgress;
+
+    float tvNoiseMag = min(2. * uProgress, 2. - 2. * uProgress);
 
     float tvN = tvNoise(bUv);
-    alpha -= tvN;
+    alpha -= tvN * tvNoiseMag;
 
-    float st = bUv.x;
-    if (st > 1.) st = 0.;
-    float stY = bUv.y;
-    if (stY > 1.) stY = 0.;
-
-    gl_FragColor = vec4(uColor + uActive, alpha);
-    // gl_FragColor = vec4(vec3(st, stY, 0.), 1.);
+    gl_FragColor = vec4(uColor, alpha);
 }

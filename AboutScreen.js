@@ -21,7 +21,7 @@ export default class AboutScreen {
         uDistortion: { value: 0.5 },
         uInfluence: { value: 0.25 },
         uTest: { value: 0.48 },
-        uProgress: { value: 1 },
+        uProgress: { value: 0 },
       },
       transparent: true,
       depthTest: false,

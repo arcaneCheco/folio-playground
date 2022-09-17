@@ -1,0 +1,40 @@
+{
+  "projects": [
+    {
+      "title": "Elastic Mesh",
+      "category": "site",
+      "src": "images/t1.jpeg",
+      "demo": "http://goggle.com/elasticMesh"
+    },
+    {
+      "title": "Mandelbrot Explorer",
+      "category": "sketch",
+      "src": "images/t2.jpeg",
+      "demo": "http://goggle.com/Mandelbrot"
+    },
+    {
+      "title": "A.P.O.D. Snippets",
+      "category": "sketch",
+      "src": "images/t3.jpeg",
+      "demo": "https://apod-snippets.vercel.app/"
+    },
+    {
+      "title": "Infinite Tunnel",
+      "category": "publication",
+      "src": "images/t4.jpeg",
+      "demo": "http://goggle.com/Infinite"
+    },
+    {
+      "title": "Elastic Mesh 4",
+      "category": "publication",
+      "src": "images/t5.jpeg",
+      "demo": "http://goggle.com/Elastic4"
+    },
+    {
+      "title": "Elastic Mesh 5",
+      "category": "publication",
+      "src": "images/t6.jpeg",
+      "demo": "http://goggle.com/Mesh5"
+    }
+  ]
+}

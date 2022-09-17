@@ -67,24 +67,12 @@ void main() {
 
 
     if (uTransition > 0.5) {
-        float timeElapsed = uTime - uTransitionStart;
-        float progress = timeElapsed / uTransitionDuration;
-
-        vec3 image = mix(image1, image2, step(0.5, progress));
-
+        vec3 image = mix(image1, image2, uProgress);
         vec3 staticSample = vec3(tvNoise(vUv));
-        float staticRatio = getTransition(progress);
+        float staticRatio = getTransition(uProgress);
 
         final = mix(image, staticSample, staticRatio);
-
-        // final = vec3(vUv, 0.);
     }
-
-    // debug
-    // vec3 image = mix(image1, image2, step(0.5, uProgress));
-    // vec3 staticSample = vec3(tvNoise(vUv));
-    // float staticRatio = getTransition(uProgress);
-    // final = mix(image, staticSample, staticRatio);
 
     // border shape
     vec2 angleUV = vUv - vec2(0.5);
@@ -117,27 +105,17 @@ void main() {
     // vignette
     vec2 vigUv = vUv * (1.0 - vUv.yx);
     
-    float vig = vigUv.x*vigUv.y * uVignetteIntensity; // multiply with sth for intensity
+    float vig = vigUv.x*vigUv.y * uVignetteIntensity;
     
-    vig = pow(vig, uVignetteInfluence); // change pow for modifying the extend of the  vignette
+    vig = pow(vig, uVignetteInfluence);
     vig = clamp(vig, 0., 1.);
     final *= vec3(vig);
 
+    final += borderColor * f1;
 
-    gl_FragColor = vec4(final + borderColor * f1, 1.) * uOpacity;
+    final = pow( final, vec3(1.5,1.2,1.0) );    
+    final *= clamp(1.0-0.3*length(vUv), 0.0, 1.0 );
 
-    // gl_FragColor = vec4(vec3(vig), 1.);
 
-    // gl_FragColor = vec4(angleS, 0., 0., 1.);
-    // gl_FragColor = texture2D(uImage2, vUv);
+    gl_FragColor = vec4(final, 1.) * uOpacity;
 }
-
-
-// uniform sampler2D uAbstract;
-// uniform sampler2D uImage1;
-// varying vec2 vUv;
-
-// void main() {
-//     gl_FragColor = vec4(vUv, 0., 1.);
-//     gl_FragColor = texture2D(uImage1, vUv);
-// }

@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { World } from "./app";
 import vertexShader from "./shaders/projectScreen/vertex.glsl";
 import fragmentShader from "./shaders/projectScreen/fragment.glsl";
-import img from "./data/images/t1.jpeg";
 
 /*****
  * figure out how to update active project when transition is already in progress
@@ -17,13 +16,17 @@ export default class ProjectScreen {
     this.world = new World();
     this.scene = this.world.scene;
 
+    this.activeProjectState = this.world.activeProjectState;
+
+    this.resources = this.world.resources;
+
     let abstractTex = this.world.textureLoader.load("images/abstract2.jpeg");
 
     this.geometry = new THREE.PlaneGeometry(1, 1, 50, 1);
     this.uniforms = {
       uTime: { value: 0 },
-      uProgress: { value: 0 },
-      uTransition: { value: false },
+      uProgress: this.world.activeProjectState2.progress,
+      uTransition: this.world.activeProjectState2.isTransitioning,
       uTransitionStart: { value: 0 },
       uTransitionDuration: { value: 0.5 },
       uImage1: {
@@ -173,7 +176,7 @@ export default class ProjectScreen {
 
   onActiveChange(activeProject) {
     console.log("ONACTIVECHANGE");
-    this.uniforms.uColor.value = this.data[activeProject].color;
+    // this.uniforms.uColor.value = this.data[activeProject].color;
     this.uniforms.uTransition.value = true;
     this.uniforms.uImage2.value = this.data[activeProject].texture;
     this.uniforms.uTransitionStart.value = this.world.time;
@@ -190,7 +193,6 @@ export default class ProjectScreen {
   onPointerup() {}
 
   resizeProjectDetailView(sizes) {
-    console.log("WHY");
     this.mesh.scale.x = sizes.scaleX;
     this.mesh.scale.y = sizes.scaleY;
     this.mesh.position.x = sizes.posX;
@@ -198,7 +200,6 @@ export default class ProjectScreen {
   }
 
   resizeProjectsView(sizes) {
-    console.log("YAEH");
     this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
     this.mesh.position.x = sizes.posX;
     this.mesh.position.z = sizes.posZ;

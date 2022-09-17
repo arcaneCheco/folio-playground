@@ -26,12 +26,14 @@ export default class Post {
 
     this.geometry = new THREE.PlaneGeometry(2, 2);
 
-    this.scene = new THREE.Scene();
+    this.activeScene = null;
 
     this.createTransitionPass();
+    this.toAboutTransition();
   }
 
   createTransitionPass() {
+    this.homeAboutScene = new THREE.Scene();
     this.transitionUniforms = {
       uScreen: { value: null },
       uProgress: { value: 0 },
@@ -49,7 +51,42 @@ export default class Post {
     });
 
     let mesh = new THREE.Mesh(this.geometry, material);
-    this.scene.add(mesh);
+    this.homeAboutScene.add(mesh);
+  }
+
+  toAboutTransition() {
+    this.aboutScene = new THREE.Scene();
+    this.toAboutTransitionUniforms = {
+      uScreen: { value: null },
+      uProgress: { value: 0 },
+    };
+    let material = new THREE.ShaderMaterial({
+      depthWrite: false,
+      depthTest: false,
+      uniforms: this.toAboutTransitionUniforms,
+      vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+          gl_Position = vec4(position, 1.);
+          vUv = uv;
+      }`,
+      fragmentShader: `
+      uniform sampler2D uScreen;
+      uniform float uProgress;
+
+      varying vec2 vUv;
+
+      void main() {
+        vec3 base = texture2D(uScreen, vUv).rgb;
+        vec3 final = mix(base, vec3(0.), uProgress);
+        gl_FragColor = vec4(final, 1.);
+      }
+      `,
+    });
+
+    let mesh = new THREE.Mesh(this.geometry, material);
+    this.aboutScene.add(mesh);
   }
 
   setDebug() {
@@ -78,6 +115,19 @@ export default class Post {
       step: 0.001,
       label: "color shift",
     });
+
+    const aboutPost = this.debug.addFolder({ title: "about" });
+    aboutPost
+      .addInput(this.toAboutTransitionUniforms.uProgress, "value", {
+        min: 0,
+        max: 1,
+        step: 0.001,
+        label: "progress",
+      })
+      .on("change", () => {
+        this.activeScene = this.aboutScene;
+        this.world.usePost = true;
+      });
   }
 
   render() {
@@ -86,14 +136,8 @@ export default class Post {
     this.renderer.render(this.worldScene, this.camera);
 
     this.transitionUniforms.uScreen.value = this.renderTarget.texture;
+    this.toAboutTransitionUniforms.uScreen.value = this.renderTarget.texture;
     this.renderer.setRenderTarget(currentRT);
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.activeScene, this.camera);
   }
 }
-
-// const post = this.pane.addFolder({ title: "post" });
-//     post.addInput(this.postStuff.mesh.material.uniforms.uProgress, "value", {
-//       min: 0,
-//       max: 1,
-//       step: 0.001,
-//     });

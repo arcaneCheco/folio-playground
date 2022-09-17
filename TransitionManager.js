@@ -24,6 +24,7 @@ export default class TransitionManager {
   }
 
   homeToProjects() {
+    this.world.post.activeScene = this.world.post.homeAboutScene;
     const t = GSAP.timeline({
       defaults: {
         duration: 1.2,
@@ -46,12 +47,6 @@ export default class TransitionManager {
     t.to(this.postTransition, { value: 1 }, 0);
     t.to(this.cameraPosition, { x: 0, y: this.initialHeight, z: -1 }, 0);
 
-    // t.fromTo(
-    //   this.world.projectTitles.group,
-    //   { y: -5 },
-    //   { y: 0, delay: 2, duration: 4 }
-    // );
-
     GSAP.delayedCall(t.duration() / 4, () => {
       this.world.sky.mesh.rotation.y = Math.PI;
       this.scene.remove(...this.homeObjects);
@@ -66,6 +61,7 @@ export default class TransitionManager {
   }
 
   projectsToHome() {
+    this.world.post.activeScene = this.world.post.homeAboutScene;
     const t = GSAP.timeline({
       defaults: {
         duration: 1.2,
@@ -197,21 +193,96 @@ export default class TransitionManager {
   }
 
   projectsToAbout() {
-    this.scene.remove(
-      this.projectScreen.mesh,
-      this.titlesObject,
-      this.filtersObject,
-      this.projectsNavObject
+    this.world.post.activeScene = this.world.post.aboutScene;
+    const t = GSAP.timeline();
+    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
+      value: 1,
+      duration: 0.5,
+      onStart: () => {
+        this.world.usePost = true;
+      },
+      onComplete: () => {
+        this.scene.remove(
+          this.projectScreen.mesh,
+          this.titlesObject,
+          this.filtersObject,
+          this.projectsNavObject
+        );
+      },
+    });
+    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
+      value: 0,
+      duration: 0.5,
+      onStart: () => {
+        this.scene.add(
+          this.world.aboutScreen.mesh,
+          this.world.aboutGreeting.group,
+          this.world.aboutOverlay.group
+        );
+        this.cameraPosition.set(0, this.initialHeight, 1);
+        this.world.sky.mesh.rotation.y = 0;
+      },
+      onComplete: () => {
+        this.world.usePost = false;
+      },
+    });
+    t.to(
+      this.world.aboutScreen.material.uniforms.uProgress,
+      {
+        delay: 0.5,
+        duration: 0.5,
+        value: 1,
+      },
+      "0"
     );
+  }
 
-    this.scene.add(
-      this.world.aboutScreen.mesh,
-      this.world.aboutGreeting.group,
-      this.world.aboutOverlay.group
+  aboutToProjects() {
+    this.world.post.activeScene = this.world.post.aboutScene;
+    const t = GSAP.timeline();
+    t.to(
+      this.world.aboutScreen.material.uniforms.uProgress,
+      {
+        duration: 0.5,
+        value: 0,
+      },
+      "0"
     );
-
-    this.cameraPosition.set(0, 0, 1);
-    this.world.sky.mesh.rotation.y = 0;
+    t.to(
+      this.world.post.toAboutTransitionUniforms.uProgress,
+      {
+        value: 1,
+        duration: 0.5,
+        onStart: () => {
+          this.world.usePost = true;
+        },
+        onComplete: () => {
+          this.scene.remove(
+            this.world.aboutScreen.mesh,
+            this.world.aboutGreeting.group,
+            this.world.aboutOverlay.group
+          );
+        },
+      },
+      "0"
+    );
+    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
+      value: 0,
+      duration: 0.5,
+      onStart: () => {
+        this.scene.add(
+          this.projectScreen.mesh,
+          this.titlesObject,
+          this.filtersObject,
+          this.projectsNavObject
+        );
+        this.cameraPosition.z = -1;
+        this.world.sky.mesh.rotation.y = Math.PI;
+      },
+      onComplete: () => {
+        this.world.usePost = false;
+      },
+    });
   }
 
   setDebug() {
