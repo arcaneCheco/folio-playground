@@ -14,4 +14,6 @@ html(lang="en")
   body 
     include ./rotateDevice.pug
     #canvas
-    script(type="module" src="app.js")
+    .vids 
+      video(style='object-fit: contain;' src="./data/vids/snippets.mp4" id="video" autoplay="true" playsinline="true" loop="true" crossorigin="anonymous" webkit-playsinline="true" width="500" height="500" muted="true")
+    script(type="module" src="app.ts")

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strictPropertyInitialization": false,
+    "allowUnreachableCode": true,
+    "lib": ["ES2021", "dom"]
+    // "baseUrl": "./",
+    // "paths": {
+    //   "app/*": ["src/main/webapp/app/*"]
+    // }
+  },
+  "include": ["./**/*", "./*"]
+}

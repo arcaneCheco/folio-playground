@@ -17,6 +17,9 @@
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.3.2",
-    "@parcel/transformer-pug": "^2.3.2"
+    "@parcel/transformer-pug": "^2.3.2",
+    "@types/three": "^0.144.0",
+    "i": "^0.3.7",
+    "npm": "^8.19.2"
   }
 }
