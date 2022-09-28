@@ -10,31 +10,31 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Pane } from "tweakpane";
-import Sky from "./Sky";
-import CurlBubble from "./CurlBubble";
-import Water from "./Water";
-import ProjectScreen from "./ProjectScreen";
-import ProjectsViewManager from "./ProjectsViewManager";
-import ProjectTitles from "./ProjectTitles";
-import HomeViewManager from "./HomeViewManager";
-import ProjectDetailViewManager from "./ProjectDetailViewManager";
-import HomeTitle from "./HomeTitle";
-import HomeContact from "./HomeContact";
-import HomeNav from "./HomeNav";
-import ProjectsFilters from "./ProjectFilters";
-import ProjectsNav from "./ProjectsNav";
-import ProjectDetailOverlay from "./ProjectDetailOverlay";
-import AboutViewManager from "./AboutViewManager";
-import AboutScreen from "./AboutScreen";
-import AboutGreeting from "./AboutGreeting";
-import AboutSocialIcons from "./AboutSocialIcons";
-import AboutFooter from "./AboutFooter";
-import AboutNav from "./AboutNav";
-import AboutOverlay from "./AboutOverlay";
-import RotateAlert from "./RotateAlert";
-import Post from "./Post";
-import TransitionManager from "./TransitionManager";
-import Resources from "./Resources";
+import Sky from "./components/Sky";
+import CurlBubble from "./components/CurlBubble";
+import Water from "./components/water";
+import ProjectScreen from "./components/ProjectScreen";
+import ProjectsViewManager from "./components/ProjectsViewManager";
+import ProjectTitles from "./components/ProjectTitles";
+import HomeViewManager from "./components/HomeViewManager";
+import ProjectDetailViewManager from "./components/ProjectDetailViewManager";
+import HomeTitle from "./components/HomeTitle";
+import HomeContact from "./components/HomeContact";
+import HomeNav from "./components/HomeNav";
+import ProjectsFilters from "./components/ProjectFilters";
+import ProjectsNav from "./components/ProjectsNav";
+import ProjectDetailOverlay from "./components/ProjectDetailOverlay";
+import AboutViewManager from "./components/AboutViewManager";
+import AboutScreen from "./components/AboutScreen";
+import AboutGreeting from "./components/AboutGreeting";
+import AboutSocialIcons from "./components/AboutSocialIcons";
+import AboutFooter from "./components/AboutFooter";
+import AboutNav from "./components/AboutNav";
+import AboutOverlay from "./components/AboutOverlay";
+import RotateAlert from "./components/RotateAlert";
+import Post from "./components/Post";
+import TransitionManager from "./components/TransitionManager";
+import Resources from "./components/Resources";
 
 // add preloader => preloader maessage: This website has been designed for desktop
 
@@ -166,15 +166,6 @@ export class World {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
     this.setParallax();
-    this.setVideoTextures();
-  }
-  setVideoTextures() {
-    const video: any = document.getElementById("video");
-    video.playbackRate = 0.75;
-    video.play();
-    this.testSrc = video;
-    const texture = new THREE.VideoTexture(video);
-    this.testTex = texture;
   }
 
   async setWorld() {
