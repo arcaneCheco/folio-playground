@@ -2,18 +2,18 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
+    "strict": false,
+    "allowJs": false,
     "noImplicitAny": false,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "strictNullChecks": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "allowUnreachableCode": true,
     "lib": ["ES2021", "dom"]
-    // "baseUrl": "./",
     // "paths": {
     //   "app/*": ["src/main/webapp/app/*"]
-    // }
+    // },
   },
-  "include": ["./**/*", "./*"]
+  "exclude": ["node_modules"]
 }

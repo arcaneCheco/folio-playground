@@ -1,3 +1,6 @@
 dist/
 .parcel-cache/
 node_modules/
+.env
+api/data.mjs
+api/data/
