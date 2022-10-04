@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "allowUnreachableCode": true,
+    "resolveJsonModule": true,
     "lib": ["ES2021", "dom"]
     // "paths": {
     //   "app/*": ["src/main/webapp/app/*"]

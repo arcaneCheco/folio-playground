@@ -15,7 +15,6 @@ export default class ProjectScreen {
   world = new World();
   scene = this.world.scene;
   activeProjectState = this.world.activeProjectState;
-  resources = this.world.resources;
   geometry = new THREE.PlaneGeometry(1, 1, 50, 1);
   uniforms: any;
   material: any;
@@ -24,8 +23,6 @@ export default class ProjectScreen {
   scaleDebugs: any;
   data: any;
   constructor() {
-    let abstractTex = this.world.resources.assets.abstract;
-
     this.uniforms = {
       uTime: { value: 0 },
       uProgress: this.world.activeProjectState2.progress,
@@ -40,7 +37,7 @@ export default class ProjectScreen {
       },
       uBorderColor: { value: new THREE.Vector3() },
       uAbstract: {
-        value: abstractTex,
+        value: null,
       },
       uColor: { value: new THREE.Vector3() },
       uVignetteIntensity: { value: 40 },
@@ -59,6 +56,10 @@ export default class ProjectScreen {
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+  }
+
+  onPreloaded() {
+    this.uniforms.uAbstract.value = this.world.resources.assets.abstract;
   }
 
   positionDebug() {

@@ -133,7 +133,7 @@ export default class Resources {
       Object.entries(window.FONTS).map(([name, { map, data }]) => {
         this.textureLoader.load(map, (texture) => {
           this.fonts[name] = {
-            data,
+            data: data,
             map: texture,
           };
           this.onAssetLoaded();

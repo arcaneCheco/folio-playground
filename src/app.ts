@@ -109,6 +109,7 @@ export class World {
     if (World.instance) {
       return World.instance;
     }
+    console.log({ HELLEFEFJEOFMEFEFEFEFEFEFEGWGWRG: "YEAHHHHFEFE W" });
     World.instance = this;
     this.container = container!;
 
@@ -169,12 +170,15 @@ export class World {
   }
 
   async setWorld() {
+    this.setBeforeComponenets();
     this.resources = new Resources();
     await this.resources.load();
-
     await new Promise<void>((resolve) => {
-      window.setTimeout(() => resolve(), 500);
+      window.setTimeout(() => {
+        resolve();
+      }, 1500);
     });
+    this.onAfterSetComponenets();
 
     this.setComponents();
 
@@ -185,7 +189,7 @@ export class World {
     this.water && (this.water.mesh.renderOrder = -1);
     // this.sky.mesh.renderOrder = 0;
 
-    this.setDebug();
+    // this.setDebug();
 
     this.addListeners();
 
@@ -206,20 +210,28 @@ export class World {
     window.addEventListener("wheel", this.onWheel.bind(this));
   }
 
-  setComponents() {
+  setBeforeComponenets() {
     this.post = new Post();
     this.sky = new Sky();
     this.curlBubble = new CurlBubble();
-    this.projectTitles = new ProjectTitles();
-    this.projectScreen = new ProjectScreen();
     this.water = new Water();
+    this.projectScreen = new ProjectScreen();
+  }
+
+  onAfterSetComponenets() {
+    this.sky.onPreloaded();
+    this.projectScreen.onPreloaded();
+  }
+
+  setComponents() {
+    this.projectTitles = new ProjectTitles();
     this.homeTitle = new HomeTitle();
     this.homeContact = new HomeContact();
     this.homeNav = new HomeNav();
     this.projectFilters = new ProjectsFilters();
+    this.aboutScreen = new AboutScreen();
     this.projectsNav = new ProjectsNav();
     this.projectDetailOverlay = new ProjectDetailOverlay();
-    this.aboutScreen = new AboutScreen();
     this.aboutGreeting = new AboutGreeting();
     this.aboutSocialIcons = new AboutSocialIcons();
     this.aboutFooter = new AboutFooter();

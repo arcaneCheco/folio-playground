@@ -3,7 +3,8 @@ import fetch from "node-fetch";
 import * as path from "path";
 import { getClient } from "./client.mjs";
 import * as dotenv from "dotenv";
-import { dummyData } from "./data.mjs";
+// import * as fs from "fs";
+// import { dummyData } from "./data.mjs";
 dotenv.config();
 
 const app = express();
@@ -47,8 +48,9 @@ const handleRequest = async () => {
   await Promise.all(
     fonts.map(async (entry) => {
       const data = await fetch(entry.data.url).then((res) => res.json());
+      const url = entry.map.url.split("?auto=")[0];
       myFonts[entry.name] = {
-        map: entry.map.url,
+        map: url,
         data,
       };
     })
@@ -63,9 +65,8 @@ const handleRequest = async () => {
 };
 
 app.get(["/", "/about", "/projects"], async (req, res) => {
-  // const data = await handleRequest();
-  const data = dummyData;
-
+  const data = await handleRequest();
+  // const data = dummyData;
   res.render("index", data);
 });
 

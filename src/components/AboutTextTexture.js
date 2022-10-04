@@ -1,13 +1,15 @@
 import * as THREE from "three";
 import TextGeometry from "./TextGeometry";
-import font from "../../data/fonts/audiowide/Audiowide-Regular.json";
-import fontMap from "../../data/fonts/audiowide/Audiowide-Regular.ttf.png";
+import font from "../../api/data/fonts/audiowide/Audiowide-Regular.json";
+import fontMap from "../../api/data/fonts/audiowide/Audiowide-Regular.ttf.png";
 import vertexShader from "../shaders/basicText/vertex.glsl";
 import fragmentShader from "../shaders/basicText/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
+import { World } from "../app";
 
 export default class AboutTextTexture {
   constructor({ lineHeight = 1.6, padding = { x: 0.2, y: 0.2 } }) {
+    // this.font = new World().resources.fonts.audiowideRegular;
     this.geometry = new TextGeometry();
     this.geometry.setText({
       font,
@@ -35,7 +37,7 @@ export default class AboutTextTexture {
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: { value: new THREE.TextureLoader().load(fontMap) },
+        tMap: new THREE.TextureLoader(fontMap),
       },
       transparent: true,
     });

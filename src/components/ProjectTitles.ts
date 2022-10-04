@@ -4,6 +4,7 @@ import vertexShader from "../shaders/projectTitle/vertex.glsl";
 import fragmentShader from "../shaders/projectTitle/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
 import TextGeometry from "./TextGeometry";
+import fontData from "../../api/data/fonts/audiowide/Audiowide-Regular.json";
 
 /**
  * not sure if to show titles-reflection yet

@@ -263,7 +263,7 @@ export default class Sky {
         uMoonGradient: { value: 1.0111 },
         // uGreyNoise
         uGreyNoise: {
-          value: this.world.resources.assets.greyNoise,
+          value: null,
         },
       },
       side: THREE.BackSide,
@@ -272,6 +272,11 @@ export default class Sky {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     // this.mesh.scale.set(2, 2, 1);
     this.scene.add(this.mesh);
+  }
+
+  onPreloaded() {
+    this.material.uniforms.uGreyNoise.value =
+      this.world.resources.assets.greyNoise;
   }
 
   setPost() {
