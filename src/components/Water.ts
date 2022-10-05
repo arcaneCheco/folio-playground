@@ -1,9 +1,9 @@
 import { World } from "../app";
 import * as THREE from "three";
-import Mirror from "./Mirror";
+import Mirror from "@utils/Mirror";
 import WaterHeightMap from "./WaterHeightMap";
-import vertexShader from "../shaders/water/vertex.glsl";
-import fragmentShader from "../shaders/water/fragment.glsl";
+import vertexShader from "@shaders/water/vertex.glsl";
+import fragmentShader from "@shaders/water/fragment.glsl";
 
 export default class Water extends Mirror {
   world = new World();

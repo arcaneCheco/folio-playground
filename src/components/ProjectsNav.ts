@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import vertexSideline from "../shaders/projectsNav/sideline/vertex.glsl";
-import fragmentSideline from "../shaders/projectsNav/sideline/fragment.glsl";
-import vertexShader from "../shaders/projectsNav/text/vertex.glsl";
-import fragmentShader from "../shaders/projectsNav/text/fragment.glsl";
-import TextGeometry from "./TextGeometry";
-import { World } from "../app";
+import vertexSideline from "@shaders/projectsNav/sideline/vertex.glsl";
+import fragmentSideline from "@shaders/projectsNav/sideline/fragment.glsl";
+import vertexShader from "@shaders/projectsNav/text/vertex.glsl";
+import fragmentShader from "@shaders/projectsNav/text/fragment.glsl";
+import TextGeometry from "@utils/TextGeometry";
+import { World } from "@src/app";
 
 export default class ProjectsNav {
   group = new THREE.Group();

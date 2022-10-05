@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { World } from "../app";
-import fragmentShader from "../shaders/curlBubble/fragment.glsl";
-import vertexShader from "../shaders/curlBubble/vertex.glsl";
+import { World } from "@src/app";
+import fragmentShader from "@shaders/curlBubble/fragment.glsl";
+import vertexShader from "@shaders/curlBubble/vertex.glsl";
 import { randFloat, clamp } from "three/src/math/MathUtils";
-import { perlin3 } from "./perlin";
+import { perlin3 } from "@utils/perlin";
 
 /******move light position inside bubble to mouse */
 

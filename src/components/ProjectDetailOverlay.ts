@@ -1,14 +1,14 @@
 import * as THREE from "three";
-import vertexLine from "../shaders/projectDetailOverlay/line/vertex.glsl";
-import fragmentLine from "../shaders/projectDetailOverlay/line/fragment.glsl";
-import vertexClose from "../shaders/projectDetailOverlay/close/vertex.glsl";
-import fragmentClose from "../shaders/projectDetailOverlay/close/fragment.glsl";
-import vertexText from "../shaders/projectDetailOverlay/text/vertex.glsl";
-import fragmentText from "../shaders/projectDetailOverlay/text/fragment.glsl";
-import vertexIcon from "../shaders/projectDetailOverlay/icon/vertex.glsl";
-import fragmentIcon from "../shaders/projectDetailOverlay/icon/fragment.glsl";
-import TextGeometry from "./TextGeometry";
-import { World } from "../app";
+import vertexLine from "@shaders/projectDetailOverlay/line/vertex.glsl";
+import fragmentLine from "@shaders/projectDetailOverlay/line/fragment.glsl";
+import vertexClose from "@shaders/projectDetailOverlay/close/vertex.glsl";
+import fragmentClose from "@shaders/projectDetailOverlay/close/fragment.glsl";
+import vertexText from "@shaders/projectDetailOverlay/text/vertex.glsl";
+import fragmentText from "@shaders/projectDetailOverlay/text/fragment.glsl";
+import vertexIcon from "@shaders/projectDetailOverlay/icon/vertex.glsl";
+import fragmentIcon from "@shaders/projectDetailOverlay/icon/fragment.glsl";
+import TextGeometry from "@utils/TextGeometry";
+import { World } from "@src/app";
 
 export default class ProjectDetailOverlay {
   group = new THREE.Group();

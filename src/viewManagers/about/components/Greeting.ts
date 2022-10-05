@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import TextGeometry from "../../../components/TextGeometry";
+import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/aboutGreeting/vertex.glsl";
 import fragmentShader from "@shaders/aboutGreeting/fragment.glsl";
 

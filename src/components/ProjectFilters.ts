@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import vertexShader from "../shaders/projectFilters/text/vertex.glsl";
-import fragmentShader from "../shaders/projectFilters/text/fragment.glsl";
-import vertexUnderline from "../shaders/projectFilters/underline/vertex.glsl";
-import fragmentUnderline from "../shaders/projectFilters/underline/fragment.glsl";
-import TextGeometry from "./TextGeometry";
-import { World } from "../app";
+import vertexShader from "@shaders/projectFilters/text/vertex.glsl";
+import fragmentShader from "@shaders/projectFilters/text/fragment.glsl";
+import vertexUnderline from "@shaders/projectFilters/underline/vertex.glsl";
+import fragmentUnderline from "@shaders/projectFilters/underline/fragment.glsl";
+import TextGeometry from "@utils/TextGeometry";
+import { World } from "@src/app";
 
 export default class ProjectsFilters {
   outerGroup = new THREE.Group();

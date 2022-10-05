@@ -1,17 +1,21 @@
 import * as THREE from "three";
-import RenderBuffer from "./RenderBuffer";
-import vertexShader from "../shaders/waterHeightMap/vertex.glsl";
-import fragmentShader from "../shaders/waterHeightMap/fragment.glsl";
+import RenderBuffer from "@utils/RenderBuffer";
+import vertexShader from "@shaders/waterHeightMap/vertex.glsl";
+import fragmentShader from "@shaders/waterHeightMap/fragment.glsl";
 
 /****set needsUpdate using frames for performance reasons */
 /***lerp mouse position */
 
 /******HALFFLOATTYPE for webgl1 */
 export default class WaterHeightMap extends RenderBuffer {
+  bounds;
+  mesh;
+  uniforms;
+  material;
   constructor(bounds) {
     super({});
     this.bounds = bounds;
-    this.setMaterial(bounds);
+    this.setMaterial();
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.scene.add(this.mesh);
   }

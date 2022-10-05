@@ -1,4 +1,4 @@
-import { FontData } from "./Resources";
+import { FontData } from "@components/Resources";
 
 enum TextAlign {
   Left = "left",

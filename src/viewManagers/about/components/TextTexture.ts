@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import TextGeometry from "../../../components/TextGeometry";
+import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/basicText/vertex.glsl";
 import fragmentShader from "@shaders/basicText/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";

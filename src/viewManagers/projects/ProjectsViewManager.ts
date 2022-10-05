@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { World } from "../../app";
 import GSAP from "gsap";
-import { GradientLinear } from "../../components/gradientLinear";
-import { warm, natural } from "../../components/palettes";
+import { GradientLinear } from "@utils/gradientLinear";
+import { warm, natural } from "@utils/palettes";
 
 export class ProjectsViewManager {
   world = new World();

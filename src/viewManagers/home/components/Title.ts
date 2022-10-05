@@ -1,7 +1,7 @@
 import { World } from "@src/app";
 import * as THREE from "three";
-import Flowmap from "../../../components/Flowmap";
-import TextTexture from "../../../components/TextTexture";
+import Flowmap from "@utils/Flowmap";
+import TextTexture from "@utils/TextTexture";
 import vertexShader from "@shaders/homeTitle/vertex.glsl";
 import fragmentShader from "@shaders/homeTitle/fragment.glsl";
 // import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";

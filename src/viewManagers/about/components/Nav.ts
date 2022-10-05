@@ -3,7 +3,7 @@ import vertexUnderline from "@shaders/aboutNav/underline/vertex.glsl";
 import fragmentUnderline from "@shaders/aboutNav/underline/fragment.glsl";
 import vertexShader from "@shaders/aboutNav/text/vertex.glsl";
 import fragmentShader from "@shaders/aboutNav/text/fragment.glsl";
-import TextGeometry from "../../../components/TextGeometry";
+import TextGeometry from "@utils/TextGeometry";
 
 export class Nav {
   group = new THREE.Group();
