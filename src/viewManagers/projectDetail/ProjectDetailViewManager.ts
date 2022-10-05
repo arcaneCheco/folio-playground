@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { World } from "../../app";
+import { World, View } from "../../app";
 
 export class ProjectDetailViewManager {
   world = new World();
@@ -39,7 +39,7 @@ export class ProjectDetailViewManager {
         this.activeProjectState.active + 1,
         this.activeProjectState.max
       );
-      this.world.changeView("projectDetail");
+      this.world.changeView(View.ProjectDetail);
       this.projectScreen.onActiveChange(this.activeProjectState.active);
     });
     this.debug.addButton({ title: "previous" }).on("click", () => {
@@ -47,12 +47,12 @@ export class ProjectDetailViewManager {
         this.activeProjectState.min,
         this.activeProjectState.active - 1
       );
-      this.world.changeView("projectDetail");
+      this.world.changeView(View.ProjectDetail);
       this.projectScreen.onActiveChange(this.activeProjectState.active);
     });
     this.debug
       .addButton({ title: "close" })
-      .on("click", () => this.world.changeView("projects"));
+      .on("click", () => this.world.changeView(View.Projects));
     // this.debug.addButton({ title: "visit" }).on("click", () => {
     //   const url = this.world.data[this.activeProjectState.active].link;
     //   console.log(url);
@@ -218,14 +218,14 @@ export class ProjectDetailViewManager {
 
     switch (this.target) {
       case "close":
-        this.world.changeView("projects");
+        this.world.changeView(View.Projects);
         break;
       case "prev":
         this.activeProjectState.active = Math.max(
           this.activeProjectState.min,
           this.activeProjectState.active - 1
         );
-        this.world.changeView("projectDetail");
+        this.world.changeView(View.ProjectDetail);
         this.projectScreen.onActiveChange(this.activeProjectState.active);
         break;
       case "next":
@@ -234,7 +234,7 @@ export class ProjectDetailViewManager {
           this.activeProjectState.max
         );
         // have some kind of special case here. It's unneccesary to to show and hide again
-        this.world.changeView("projectDetail");
+        this.world.changeView(View.ProjectDetail);
         this.projectScreen.onActiveChange(this.activeProjectState.active);
         break;
       case "visit":
@@ -275,7 +275,7 @@ export class ProjectDetailViewManager {
   }
 
   resize() {
-    if (this.world.view.projectDetail) {
+    if (this.world.view === View.ProjectDetail) {
       console.log("NOPW");
       const { screen } = this.getSizes();
       // this.projectScreen.resizeProjectDetailView(screen);

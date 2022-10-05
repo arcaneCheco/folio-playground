@@ -1,4 +1,4 @@
-import { World } from "../app";
+import { World, View } from "../app";
 import * as THREE from "three";
 import Mirror from "@utils/Mirror";
 import WaterHeightMap from "./WaterHeightMap";
@@ -143,28 +143,28 @@ export class Water extends Mirror {
   onWheel() {}
 
   update() {
-    if (this.world.view.home) {
+    if (this.world.view == View.Home) {
       this.world.homeViewManager.title.mesh.visible = false;
       this.world.homeViewManager.contact.group.visible = false;
       this.world.homeViewManager.nav.group.visible = false;
-    } else if (this.world.view.projectDetail) {
+    } else if (this.world.view === View.ProjectDetail) {
       this.world.projectDetailOverlay.group.visible = false;
-    } else if (this.world.view.about) {
+    } else if (this.world.view === View.About) {
       this.world.aboutViewManager.overlay.group.visible = false;
-    } else if (this.world.view.projects) {
+    } else if (this.world.view === View.Projects) {
       this.world.projectFilters.outerGroup.visible = false;
       this.world.projectsNav.group.visible = false;
     }
     super.update(this.mesh, this.renderer, this.camera, this.scene);
-    if (this.world.view.home) {
+    if (this.world.view === View.Home) {
       this.world.homeViewManager.title.mesh.visible = true;
       this.world.homeViewManager.contact.group.visible = true;
       this.world.homeViewManager.nav.group.visible = true;
-    } else if (this.world.view.projectDetail) {
+    } else if (this.world.view === View.ProjectDetail) {
       this.world.projectDetailOverlay.group.visible = true;
-    } else if (this.world.view.about) {
+    } else if (this.world.view === View.About) {
       this.world.aboutViewManager.overlay.group.visible = true;
-    } else if (this.world.view.projects) {
+    } else if (this.world.view === View.Projects) {
       this.world.projectFilters.outerGroup.visible = true;
       this.world.projectsNav.group.visible = true;
     }

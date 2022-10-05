@@ -1,4 +1,4 @@
-import { World } from "@src//app";
+import { World, View } from "@src//app";
 import * as THREE from "three";
 import { Contact, Title, Nav } from "./components";
 
@@ -130,7 +130,7 @@ export class HomeViewManager {
       this.nav.down = false;
       this.nav.hover = false;
       document.body.style.cursor = "";
-      this.world.changeView("projects");
+      this.world.changeView(View.Projects);
     }
 
     if (this.contact.hover && this.contact.down) {

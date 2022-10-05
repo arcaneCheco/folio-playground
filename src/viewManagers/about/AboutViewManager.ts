@@ -1,4 +1,4 @@
-import { World } from "@src/app";
+import { View, World } from "@src/app";
 import * as THREE from "three";
 import { Greeting, Overlay, Screen } from "./components";
 
@@ -172,7 +172,7 @@ export class AboutViewManager {
         window.open(url, "_blank")?.focus();
         break;
       case "aboutNav":
-        this.world.changeView("projects");
+        this.world.changeView(View.Projects);
         break;
       default:
         break;

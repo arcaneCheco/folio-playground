@@ -41,12 +41,19 @@ import {
 //   };
 // };
 
+export enum View {
+  Home = "Home",
+  About = "About",
+  Projects = "Projects",
+  ProjectDetail = "ProjectDetail",
+}
+
 export class World {
   static instance: World;
   usePost = false;
   activeProjectState: any;
   activeProjectState2: any;
-  view: any;
+  view: View;
   time = 0;
   mouse = new Vector2();
   container: HTMLDivElement;
@@ -80,7 +87,7 @@ export class World {
   aboutViewManager: AboutViewManager;
   homeViewManager: HomeViewManager;
   parallax: Parallax;
-  pathViewMap: any;
+  pathViewMap: Record<string, View>;
   dataCount: any;
   debug: any;
   pane: any;
@@ -109,13 +116,6 @@ export class World {
       isTransitioning: { value: false },
       min: 0,
       max: 5,
-    };
-
-    this.view = {
-      home: false,
-      projects: false,
-      projectDetail: false,
-      about: false,
     };
 
     this.setWorld();
@@ -206,21 +206,21 @@ export class World {
     const location = window.location.pathname;
 
     this.pathViewMap = {
-      "/": "home",
-      "/projects": "projects",
-      "/about": "about",
+      "/": View.Home,
+      "/projects": View.Projects,
+      "/about": View.About,
     };
 
     this.dataCount = this.resources.projects.length;
 
     for (let i = 0; i < this.dataCount; i++) {
       const key = this.resources.projects[i].path;
-      this.pathViewMap[key] = "projectDetail";
+      this.pathViewMap[key] = View.ProjectDetail;
     }
 
     const view = this.pathViewMap[location];
 
-    if (view === "projectDetail") {
+    if (view === View.ProjectDetail) {
       for (let i = 0; i < this.dataCount; i++) {
         const dataPath = this.resources.projects[i].path;
         if (location === dataPath) {
@@ -231,34 +231,33 @@ export class World {
     }
 
     this.changeView(view);
-
-    console.log({ view });
   }
 
-  changeView(view: any) {
-    if (view === "home") {
+  changeView(view: View) {
+    if (view === View.Home) {
       this.transitionManager.projectsToHome();
       window.history.pushState({}, "", "/");
     }
-    if (view === "projects") {
-      if (this.view.home) this.transitionManager.homeToProjects();
-      else if (this.view.projectDetail)
+    if (view === View.Projects) {
+      if ((this.view = View.Home)) this.transitionManager.homeToProjects();
+      else if (this.view === View.ProjectDetail)
         this.transitionManager.projectDetailToProjects();
-      else if (this.view.about) {
+      else if (this.view === View.About) {
         this.transitionManager.aboutToProjects();
       } else {
         this.projectsViewManager.show();
       }
       window.history.pushState({}, "", "/projects");
     }
-    if (view === "projectDetail") {
-      if (this.view.projects) this.transitionManager.projectsToProjectDetail();
+    if (view === View.ProjectDetail) {
+      if (this.view === View.Projects)
+        this.transitionManager.projectsToProjectDetail();
       else this.projectDetailViewManager.show();
       const path = this.resources.projects[this.activeProjectState.active].path;
       window.history.pushState({}, "", path);
     }
-    if (view === "about") {
-      if (this.view.projects) this.transitionManager.projectsToAbout();
+    if (view === View.About) {
+      if (this.view === View.Projects) this.transitionManager.projectsToAbout();
       else this.transitionManager.projectsToAbout();
       // this.view.projects && this.projectsViewManager.hide();
       // this.view.home && this.homeViewManager.hide();
@@ -267,8 +266,7 @@ export class World {
       window.history.pushState({}, "", "/about");
     }
 
-    Object.keys(this.view).map((key) => (this.view[key] = false));
-    this.view[view] = true;
+    this.view = view;
   }
 
   worldDebug() {
@@ -344,13 +342,6 @@ export class World {
     this.mouse.y = (-2 * e.clientY) / this.height + 1;
   }
 
-  updateParallaxTarget() {
-    if (!this.parallax.enabled) return;
-    this.parallax.target.y = this.mouse.y * this.parallax.magY;
-    this.parallax.target.x =
-      this.mouse.x * this.parallax.magX * this.parallax.direction;
-  }
-
   onPointermove(e: PointerEvent) {
     // world updates
     this.mouseNDC(e);
@@ -361,41 +352,47 @@ export class World {
     this.sky.onPointermove();
     this.water.onPointermove();
 
-    if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
-    if (this.view.projectDetail)
+    if (this.view === View.Projects)
+      this.projectsViewManager.onPointermove(this.mouse);
+    if (this.view === View.ProjectDetail)
       this.projectDetailViewManager.onPointermove(this.mouse);
-    if (this.view.about) this.aboutViewManager.onPointermove(this.mouse);
-    if (this.view.home) this.homeViewManager.onPointermove(e, this.mouse);
+    if (this.view === View.About)
+      this.aboutViewManager.onPointermove(this.mouse);
+    if (this.view === View.Home)
+      this.homeViewManager.onPointermove(e, this.mouse);
   }
 
   onPointerdown() {
     this.sky.onPointerdown();
     this.water.onPointerdown();
 
-    if (this.view.projects) this.projectsViewManager.onPointerdown();
-    if (this.view.projectDetail) this.projectDetailViewManager.onPointerdown();
-    if (this.view.about) this.aboutViewManager.onPointerdown();
-    if (this.view.home) this.homeViewManager.onPointerdown();
+    if (this.view === View.Projects) this.projectsViewManager.onPointerdown();
+    if (this.view === View.ProjectDetail)
+      this.projectDetailViewManager.onPointerdown();
+    if (this.view === View.About) this.aboutViewManager.onPointerdown();
+    if (this.view === View.Home) this.homeViewManager.onPointerdown();
   }
 
   onPointerup() {
     this.sky.onPointerup();
     this.water.onPointerup();
 
-    if (this.view.projects) this.projectsViewManager.onPointerup();
-    if (this.view.projectDetail) this.projectDetailViewManager.onPointerup();
-    if (this.view.about) this.aboutViewManager.onPointerup();
-    if (this.view.home) this.homeViewManager.onPointerup();
+    if (this.view === View.Projects) this.projectsViewManager.onPointerup();
+    if (this.view === View.ProjectDetail)
+      this.projectDetailViewManager.onPointerup();
+    if (this.view === View.About) this.aboutViewManager.onPointerup();
+    if (this.view === View.Home) this.homeViewManager.onPointerup();
   }
 
   onWheel(ev: WheelEvent) {
     this.sky.onWheel();
     this.water.onWheel();
 
-    if (this.view.projects) this.projectsViewManager.onWheel(ev);
-    if (this.view.projectDetail) this.projectDetailViewManager.onWheel();
-    if (this.view.about) this.aboutViewManager.onWheel(ev);
-    if (this.view.home) this.homeViewManager.onWheel();
+    if (this.view === View.Projects) this.projectsViewManager.onWheel(ev);
+    if (this.view === View.ProjectDetail)
+      this.projectDetailViewManager.onWheel();
+    if (this.view === View.About) this.aboutViewManager.onWheel(ev);
+    if (this.view === View.Home) this.homeViewManager.onWheel();
   }
 
   resize() {
@@ -432,10 +429,11 @@ export class World {
     this.sky.update();
     this.water.update();
 
-    if (this.view.projects) this.projectsViewManager.update();
-    if (this.view.projectDetail) this.projectDetailViewManager.update();
-    if (this.view.about) this.aboutViewManager.update();
-    if (this.view.home) this.homeViewManager.update();
+    if (this.view === View.Projects) this.projectsViewManager.update();
+    if (this.view === View.ProjectDetail)
+      this.projectDetailViewManager.update();
+    if (this.view === View.About) this.aboutViewManager.update();
+    if (this.view === View.Home) this.homeViewManager.update();
   }
 
   render() {

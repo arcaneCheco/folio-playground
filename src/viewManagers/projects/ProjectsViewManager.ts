@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { World } from "../../app";
+import { View, World } from "../../app";
 import GSAP from "gsap";
 import { GradientLinear } from "@utils/gradientLinear";
 import { warm, natural } from "@utils/palettes";
@@ -211,7 +211,7 @@ export class ProjectsViewManager {
 
     if (this.hoverTitles && this.down) {
       this.down = false;
-      this.world.changeView("projectDetail");
+      this.world.changeView(View.ProjectDetail);
     }
 
     if (this.hover && this.down) {
@@ -230,10 +230,10 @@ export class ProjectsViewManager {
           this.filterPublications();
           break;
         case "home":
-          this.world.changeView("home");
+          this.world.changeView(View.Home);
           break;
         case "about":
-          this.world.changeView("about");
+          this.world.changeView(View.About);
           break;
         default:
           break;
@@ -306,7 +306,7 @@ export class ProjectsViewManager {
   resize() {
     const { projectsNav, screen, titles, filters } = this.getSizes();
 
-    if (!this.world.view.projectDetail) {
+    if (this.world.view !== View.ProjectDetail) {
       this.projectScreen.resizeProjectsView(screen);
     }
     this.projectTitles.onResize(titles);
