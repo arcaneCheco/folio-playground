@@ -1,5 +1,5 @@
 import GSAP from "gsap";
-import { World } from "../app";
+import { World } from "@src/app";
 import * as THREE from "three";
 
 export default class TransitionManager {
@@ -11,9 +11,9 @@ export default class TransitionManager {
   initialHeight = this.world.initialHeight;
   projectScreen = this.world.projectScreen;
   homeObjects = [
-    this.world.homeTitle.group,
-    this.world.homeContact.group,
-    this.world.homeNav.group,
+    this.world.homeViewManager.title.group,
+    this.world.homeViewManager.contact.group,
+    this.world.homeViewManager.nav.group,
     this.world.curlBubble.mesh,
   ];
   titlesObject = this.world.projectTitles.outerGroup;
@@ -215,9 +215,9 @@ export default class TransitionManager {
       duration: 0.5,
       onStart: () => {
         this.scene.add(
-          this.world.aboutScreen.mesh,
-          this.world.aboutGreeting.group,
-          this.world.aboutOverlay.group
+          this.world.aboutViewManager.screen.mesh,
+          this.world.aboutViewManager.greeting.group,
+          this.world.aboutViewManager.overlay.group
         );
         this.cameraPosition.set(0, this.initialHeight, 1);
         this.world.sky.mesh.rotation.y = 0;
@@ -227,7 +227,7 @@ export default class TransitionManager {
       },
     });
     t.to(
-      this.world.aboutScreen.material.uniforms.uProgress,
+      this.world.aboutViewManager.screen.material.uniforms.uProgress,
       {
         delay: 0.5,
         duration: 0.5,
@@ -241,7 +241,7 @@ export default class TransitionManager {
     this.world.post.activeScene = this.world.post.aboutScene;
     const t = GSAP.timeline();
     t.to(
-      this.world.aboutScreen.material.uniforms.uProgress,
+      this.world.aboutViewManager.screen.material.uniforms.uProgress,
       {
         duration: 0.5,
         value: 0,
@@ -258,9 +258,9 @@ export default class TransitionManager {
         },
         onComplete: () => {
           this.scene.remove(
-            this.world.aboutScreen.mesh,
-            this.world.aboutGreeting.group,
-            this.world.aboutOverlay.group
+            this.world.aboutViewManager.screen.mesh,
+            this.world.aboutViewManager.greeting.group,
+            this.world.aboutViewManager.overlay.group
           );
         },
       },

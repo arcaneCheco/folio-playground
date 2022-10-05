@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { World } from "../app";
+import { World } from "../../app";
 import GSAP from "gsap";
-import { GradientLinear } from "./gradientLinear";
-import { warm, natural } from "./palettes";
+import { GradientLinear } from "../../components/gradientLinear";
+import { warm, natural } from "../../components/palettes";
 
-export default class ProjectsViewManager {
+export class ProjectsViewManager {
   world = new World();
   scene = this.world.scene;
   projectScreen = this.world.projectScreen;

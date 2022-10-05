@@ -1,23 +1,13 @@
 import * as THREE from "three";
-import { World } from "../app";
 
-export default class AboutSocialIcons {
+export class SocialIcons {
   group = new THREE.Group();
   iconMaterial: any;
-  loader: any;
   geometry: any;
   twitter: any;
   github: any;
   linkedin: any;
-  world;
-  twitterTex;
-  githubTex;
-  linkedinTex;
   constructor() {
-    this.world = new World();
-    this.twitterTex = this.world.resources.assets.twitterIcon;
-    this.githubTex = this.world.resources.assets.githubIcon;
-    this.linkedinTex = this.world.resources.assets.linkedinIcon;
     this.group.position.z = 0.1;
     this.iconMaterial = new THREE.ShaderMaterial({
       vertexShader: `
@@ -43,22 +33,17 @@ export default class AboutSocialIcons {
       },
     });
 
-    this.loader = new THREE.TextureLoader();
-
     this.geometry = new THREE.PlaneGeometry(1, 1);
 
     this.twitter = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
-    this.twitter.material.uniforms.uMap.value = this.twitterTex;
     this.twitter.name = "twitter";
     this.group.add(this.twitter);
 
     this.github = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
-    this.github.material.uniforms.uMap.value = this.githubTex;
     this.github.name = "github";
     this.group.add(this.github);
 
     this.linkedin = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
-    this.linkedin.material.uniforms.uMap.value = this.linkedinTex;
     this.linkedin.name = "linkedin";
     this.group.add(this.linkedin);
 
@@ -66,6 +51,13 @@ export default class AboutSocialIcons {
     // this.email.material.uniforms.uMap.value = this.loader.load(emailSrc);
     // this.email.name = "email";
     // this.group.add(this.email);
+  }
+
+  onPreloaded({ twitterIcon, githubIcon, linkedinIcon }) {
+    this.twitter.material.uniforms.uMap.value = twitterIcon;
+    this.github.material.uniforms.uMap.value = githubIcon;
+    this.github.material.uniforms.uMap.value = githubIcon;
+    this.linkedin.material.uniforms.uMap.value = linkedinIcon;
   }
 
   onResize() {

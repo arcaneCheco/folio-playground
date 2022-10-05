@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { World } from "../app";
+import { World } from "../../app";
 
-export default class ProjectDetailViewManager {
+export class ProjectDetailViewManager {
   world = new World();
   scene = this.world.scene;
   activeProjectState = this.world.activeProjectState;

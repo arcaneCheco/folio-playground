@@ -22,6 +22,7 @@
     "tweakpane": "^3.0.7"
   },
   "devDependencies": {
+    "@parcel/plugin": "^2.7.0",
     "@parcel/transformer-glsl": "^2.3.2",
     "@parcel/transformer-pug": "^2.3.2",
     "@parcel/validator-typescript": "^2.7.0",
@@ -29,6 +30,8 @@
     "@types/node": "^18.7.23",
     "@types/three": "^0.144.0",
     "nodemon": "^2.0.20",
+    "parcel-resolver-ts-base-url": "^1.2.0",
+    "parcel-resolver-typescript-module": "^0.1.8",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "typescript": "^4.8.4"

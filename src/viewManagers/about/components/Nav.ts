@@ -1,42 +1,45 @@
 import * as THREE from "three";
-import vertexUnderline from "../shaders/aboutNav/underline/vertex.glsl";
-import fragmentUnderline from "../shaders/aboutNav/underline/fragment.glsl";
-import vertexShader from "../shaders/aboutNav/text/vertex.glsl";
-import fragmentShader from "../shaders/aboutNav/text/fragment.glsl";
-import TextGeometry from "./TextGeometry";
-import { World } from "../app";
+import vertexUnderline from "@shaders/aboutNav/underline/vertex.glsl";
+import fragmentUnderline from "@shaders/aboutNav/underline/fragment.glsl";
+import vertexShader from "@shaders/aboutNav/text/vertex.glsl";
+import fragmentShader from "@shaders/aboutNav/text/fragment.glsl";
+import TextGeometry from "../../../components/TextGeometry";
 
-export default class AboutNav {
+export class Nav {
   group = new THREE.Group();
   material: any;
   geometry: any;
   mesh: any;
-  world: any;
   font: any;
   constructor() {
-    this.world = new World();
-    this.font = this.world.resources.fonts.audiowideRegular;
     this.group.position.set(-0.85, 0.5, 0);
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: { value: this.font.map },
+        tMap: { value: null },
       },
       transparent: true,
     });
 
     this.geometry = new TextGeometry();
+
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.name = "aboutNav";
+
+    this.group.rotateZ(Math.PI / 2);
+    this.group.add(this.mesh);
+  }
+
+  onPreloaded(font) {
+    this.font = font;
+    this.material.uniforms.tMap.value = this.font.map;
     this.geometry.setText({
       font: this.font.data,
       text: "View Projects",
       align: "center",
     });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.name = "aboutNav";
-    this.group.rotateZ(Math.PI / 2);
-    this.group.add(this.mesh);
 
     this.geometry.computeBoundingBox();
     const width =

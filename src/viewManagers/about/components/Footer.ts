@@ -1,10 +1,9 @@
 import * as THREE from "three";
-import TextGeometry from "./TextGeometry";
-import vertexShader from "../shaders/aboutFooter/text/vertex.glsl";
-import fragmentShader from "../shaders/aboutFooter/text/fragment.glsl";
-import { World } from "../app";
+import TextGeometry from "../../../components/TextGeometry";
+import vertexShader from "@shaders/aboutFooter/text/vertex.glsl";
+import fragmentShader from "@shaders/aboutFooter/text/fragment.glsl";
 
-export default class AboutFooter {
+export class Footer {
   group = new THREE.Group();
   textMaterial: any;
   loader: any;
@@ -22,32 +21,20 @@ export default class AboutFooter {
   line: any;
   lineG: any;
   lineM: any;
-  world;
   font;
-  cvIconTexture;
-  pinIconTexture;
-  emailIconTexture;
   constructor() {
-    this.world = new World();
-    this.font = this.world.resources.fonts.audiowideRegular;
     this.group.renderOrder = 6001;
-    const { cvIcon, pinIcon, emailIcon } = this.world.resources.assets;
-    this.cvIconTexture = cvIcon;
-    this.pinIconTexture = pinIcon;
-    this.emailIconTexture = emailIcon;
 
     this.textMaterial = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: { value: this.font.map },
+        tMap: { value: null },
       },
       transparent: true,
       depthWrite: false,
       depthTest: false,
     });
-
-    this.loader = new THREE.TextureLoader();
 
     this.iconGeometry = new THREE.PlaneGeometry(1, 1);
     this.iconMaterial = new THREE.ShaderMaterial({
@@ -78,11 +65,6 @@ export default class AboutFooter {
     this.group.add(this.locationGroup);
 
     let locationGeometry = new TextGeometry();
-    locationGeometry.setText({
-      font: this.font.data,
-      text: "London, UK",
-      align: "left",
-    });
 
     this.location = new THREE.Mesh(locationGeometry, this.textMaterial);
     this.locationGroup.add(this.location);
@@ -91,25 +73,18 @@ export default class AboutFooter {
       this.iconGeometry,
       this.iconMaterial.clone()
     );
-    this.locationIcon.material.uniforms.uMap.value = this.pinIconTexture;
     this.locationGroup.add(this.locationIcon);
 
     this.cvGroup = new THREE.Group();
     this.group.add(this.cvGroup);
 
     let cvGeometry = new TextGeometry();
-    cvGeometry.setText({
-      font: this.font.data,
-      text: "curriculum vitae",
-      align: "left",
-    });
 
     this.cv = new THREE.Mesh(cvGeometry, this.textMaterial);
     this.cv.name = "cv";
     this.cvGroup.add(this.cv);
 
     this.cvIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial.clone());
-    this.cvIcon.material.uniforms.uMap.value = this.cvIconTexture;
     this.cvIcon.name = "cv";
     this.cvGroup.add(this.cvIcon);
 
@@ -117,11 +92,6 @@ export default class AboutFooter {
     this.group.add(this.emailGroup);
 
     let emailGeometry = new TextGeometry();
-    emailGeometry.setText({
-      font: this.font.data,
-      text: "sergio@azizi.dev",
-      align: "left",
-    });
 
     this.email = new THREE.Mesh(emailGeometry, this.textMaterial);
     this.email.name = "email";
@@ -131,7 +101,6 @@ export default class AboutFooter {
       this.iconGeometry,
       this.iconMaterial.clone()
     );
-    this.emailIcon.material.uniforms.uMap.value = this.emailIconTexture;
     this.emailIcon.name = "email";
     this.emailGroup.add(this.emailIcon);
 
@@ -150,6 +119,33 @@ export default class AboutFooter {
     });
     this.line = new THREE.Mesh(this.lineG, this.lineM);
     this.group.add(this.line);
+  }
+
+  onPreloaded({ font, cvIcon, pinIcon, emailIcon }) {
+    this.font = font;
+
+    this.textMaterial.uniforms.tMap.value = this.font.map;
+
+    this.location.geometry.setText({
+      font: this.font.data,
+      text: "London, UK",
+      align: "left",
+    });
+    this.locationIcon.material.uniforms.uMap.value = pinIcon;
+
+    this.cv.geometry.setText({
+      font: this.font.data,
+      text: "curriculum vitae",
+      align: "left",
+    });
+    this.cvIcon.material.uniforms.uMap.value = cvIcon;
+
+    this.email.geometry.setText({
+      font: this.font.data,
+      text: "sergio@azizi.dev",
+      align: "left",
+    });
+    this.emailIcon.material.uniforms.uMap.value = emailIcon;
   }
 
   onResize() {

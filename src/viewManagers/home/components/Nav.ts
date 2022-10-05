@@ -1,31 +1,35 @@
 import * as THREE from "three";
-import vertexUnderline from "../shaders/homeNav/underline/vertex.glsl";
-import fragmentUnderline from "../shaders/homeNav/underline/fragment.glsl";
-import vertexShader from "../shaders/homeNav/text/vertex.glsl";
-import fragmentShader from "../shaders/homeNav/text/fragment.glsl";
-import TextGeometry from "./TextGeometry";
-import { World } from "../app";
+import vertexUnderline from "@shaders/homeNav/underline/vertex.glsl";
+import fragmentUnderline from "@shaders/homeNav/underline/fragment.glsl";
+import vertexShader from "@shaders/homeNav/text/vertex.glsl";
+import fragmentShader from "@shaders/homeNav/text/fragment.glsl";
+import TextGeometry from "../../../components/TextGeometry";
+import { World } from "@src/app";
 
-export default class HomeNav {
+export class Nav {
   group = new THREE.Group();
   material: any;
   geometry: any;
   mesh: any;
-  world;
   font;
+  hover;
+  down;
   constructor() {
-    this.world = new World();
-    this.font = this.world.resources.fonts.audiowideRegular;
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: { value: this.font.map },
+        tMap: { value: null },
       },
       transparent: true,
       depthTest: false,
       depthWrite: false,
     });
+  }
+
+  onPreloaded(font) {
+    this.font = font;
+    this.material.uniforms.tMap.value = this.font.map;
 
     this.geometry = new TextGeometry();
     this.geometry.setText({

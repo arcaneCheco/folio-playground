@@ -1,11 +1,11 @@
-import { World } from "../app";
+import { World } from "@src/app";
 import * as THREE from "three";
-import Flowmap from "./Flowmap";
-import TextTexture from "./TextTexture";
-import vertexShader from "../shaders/homeTitle/vertex.glsl";
-import fragmentShader from "../shaders/homeTitle/fragment.glsl";
+import Flowmap from "../../../components/Flowmap";
+import TextTexture from "../../../components/TextTexture";
+import vertexShader from "@shaders/homeTitle/vertex.glsl";
+import fragmentShader from "@shaders/homeTitle/fragment.glsl";
 // import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
-export default class HomeTitle {
+export class Title {
   world = new World();
   scene = this.world.scene;
   group = new THREE.Group();

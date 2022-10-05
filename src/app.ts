@@ -14,27 +14,20 @@ import Sky from "./components/Sky";
 import CurlBubble from "./components/CurlBubble";
 import Water from "./components/water";
 import ProjectScreen from "./components/ProjectScreen";
-import ProjectsViewManager from "./components/ProjectsViewManager";
 import ProjectTitles from "./components/ProjectTitles";
-import HomeViewManager from "./components/HomeViewManager";
-import ProjectDetailViewManager from "./components/ProjectDetailViewManager";
-import HomeTitle from "./components/HomeTitle";
-import HomeContact from "./components/HomeContact";
-import HomeNav from "./components/HomeNav";
 import ProjectsFilters from "./components/ProjectFilters";
 import ProjectsNav from "./components/ProjectsNav";
 import ProjectDetailOverlay from "./components/ProjectDetailOverlay";
-import AboutViewManager from "./components/AboutViewManager";
-import AboutScreen from "./components/AboutScreen";
-import AboutGreeting from "./components/AboutGreeting";
-import AboutSocialIcons from "./components/AboutSocialIcons";
-import AboutFooter from "./components/AboutFooter";
-import AboutNav from "./components/AboutNav";
-import AboutOverlay from "./components/AboutOverlay";
 import RotateAlert from "./components/RotateAlert";
 import Post from "./components/Post";
 import TransitionManager from "./components/TransitionManager";
 import Resources from "./components/Resources";
+import {
+  AboutViewManager,
+  HomeViewManager,
+  ProjectsViewManager,
+  ProjectDetailViewManager,
+} from "./viewManagers";
 
 // add preloader => preloader maessage: This website has been designed for desktop
 
@@ -109,7 +102,6 @@ export class World {
     if (World.instance) {
       return World.instance;
     }
-    console.log({ HELLEFEFJEOFMEFEFEFEFEFEFEGWGWRG: "YEAHHHHFEFE W" });
     World.instance = this;
     this.container = container!;
 
@@ -173,11 +165,7 @@ export class World {
     this.setBeforeComponenets();
     this.resources = new Resources();
     await this.resources.load();
-    await new Promise<void>((resolve) => {
-      window.setTimeout(() => {
-        resolve();
-      }, 1500);
-    });
+
     this.onAfterSetComponenets();
 
     this.setComponents();
@@ -225,20 +213,10 @@ export class World {
 
   setComponents() {
     this.projectTitles = new ProjectTitles();
-    this.homeTitle = new HomeTitle();
-    this.homeContact = new HomeContact();
-    this.homeNav = new HomeNav();
     this.projectFilters = new ProjectsFilters();
-    this.aboutScreen = new AboutScreen();
     this.projectsNav = new ProjectsNav();
     this.projectDetailOverlay = new ProjectDetailOverlay();
-    this.aboutGreeting = new AboutGreeting();
-    this.aboutSocialIcons = new AboutSocialIcons();
-    this.aboutFooter = new AboutFooter();
-    this.aboutNav = new AboutNav();
-    this.aboutOverlay = new AboutOverlay();
     this.rotateAlert = new RotateAlert();
-    this.transitionManager = new TransitionManager();
   }
 
   setViewManagers() {
@@ -246,10 +224,14 @@ export class World {
     this.projectDetailViewManager = new ProjectDetailViewManager();
     this.aboutViewManager = new AboutViewManager();
     this.homeViewManager = new HomeViewManager();
+    this.transitionManager = new TransitionManager();
   }
 
   onDataLoaded() {
     this.projectsViewManager.onDataLoaded();
+
+    this.aboutViewManager.onPreloaded();
+    this.homeViewManager.onPreloaded();
 
     const location = window.location.pathname;
 

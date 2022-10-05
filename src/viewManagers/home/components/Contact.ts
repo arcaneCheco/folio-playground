@@ -1,37 +1,38 @@
 import * as THREE from "three";
-import TextGeometry from "./TextGeometry";
-import vertexShader from "../shaders/homeContact/vertex.glsl";
-import fragmentShader from "../shaders/homeContact/fragment.glsl";
-import vertexTouchPlane from "../shaders/homeContact/touchPlane/vertex.glsl";
-import fragmentTouchPlane from "../shaders/homeContact/touchPlane/fragment.glsl";
-import vertexIcon from "../shaders/ghostIcon/vertex.glsl";
-import fragmentIcon from "../shaders/ghostIcon/fragment.glsl";
-import { World } from "../app";
+import TextGeometry from "../../../components/TextGeometry";
+import vertexShader from "@shaders/homeContact/vertex.glsl";
+import fragmentShader from "@shaders/homeContact/fragment.glsl";
+import vertexTouchPlane from "@shaders/homeContact/touchPlane/vertex.glsl";
+import fragmentTouchPlane from "@shaders/homeContact/touchPlane/fragment.glsl";
+import vertexIcon from "@shaders/ghostIcon/vertex.glsl";
+import fragmentIcon from "@shaders/ghostIcon/fragment.glsl";
 
-export default class HomeContact {
+export class Contact {
   group = new THREE.Group();
   material: any;
   email: any;
   touchPlane: any;
   icon: any;
   cta: any;
-  world;
   font;
   ghostTex;
+  hover;
+  down;
   constructor() {
-    this.world = new World();
-    this.font = this.world.resources.fonts.audiowideRegular;
-    console.log({ here: this.font.data });
-    this.ghostTex = this.world.resources.assets.ghostIcon;
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: { value: this.font?.map },
+        tMap: { value: null },
       },
       transparent: true,
     });
+  }
 
+  onPreloaded({ font, ghostIcon }) {
+    this.ghostTex = ghostIcon;
+    this.font = font;
+    this.material.uniforms.tMap.value = this.font.map;
     this.setEmailText();
     this.setCTAText();
     this.setGhostIcon();

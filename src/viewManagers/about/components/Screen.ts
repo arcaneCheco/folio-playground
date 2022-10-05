@@ -1,12 +1,12 @@
 import * as THREE from "three";
-import vertexShader from "../shaders/aboutScreen/vertex.glsl";
-import fragmentShader from "../shaders/aboutScreen/fragment.glsl";
-import AboutTextTexture from "./AboutTextTexture";
+import vertexShader from "@shaders/aboutScreen/vertex.glsl";
+import fragmentShader from "@shaders/aboutScreen/fragment.glsl";
+import TextTexture from "./TextTexture";
 
-export default class AboutScreen {
+export class Screen {
   geometry = new THREE.PlaneGeometry(1, 1);
   aspect = 2;
-  textTexture = new AboutTextTexture({});
+  textTexture = new TextTexture({});
   material: any;
   mesh: any;
   constructor() {

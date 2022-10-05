@@ -1,18 +1,25 @@
 import * as THREE from "three";
-import TextGeometry from "./TextGeometry";
-import font from "../../api/data/fonts/audiowide/Audiowide-Regular.json";
-import fontMap from "../../api/data/fonts/audiowide/Audiowide-Regular.ttf.png";
-import vertexShader from "../shaders/basicText/vertex.glsl";
-import fragmentShader from "../shaders/basicText/fragment.glsl";
+import TextGeometry from "../../../components/TextGeometry";
+import vertexShader from "@shaders/basicText/vertex.glsl";
+import fragmentShader from "@shaders/basicText/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
-import { World } from "../app";
+import { World } from "@src/app";
 
-export default class AboutTextTexture {
+export default class TextTexture {
+  geometry;
+  material;
+  mesh;
+  initialOffset;
+  maxScroll;
+  renderTarget;
+  texture;
+  scene;
+  font;
   constructor({ lineHeight = 1.6, padding = { x: 0.2, y: 0.2 } }) {
-    // this.font = new World().resources.fonts.audiowideRegular;
+    this.font = new World().resources.fonts.audiowideRegular;
     this.geometry = new TextGeometry();
     this.geometry.setText({
-      font,
+      font: this.font.data,
       text: `
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
@@ -37,7 +44,7 @@ export default class AboutTextTexture {
       vertexShader,
       fragmentShader,
       uniforms: {
-        tMap: new THREE.TextureLoader(fontMap),
+        tMap: { value: this.font.map },
       },
       transparent: true,
     });

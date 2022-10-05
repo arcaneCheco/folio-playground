@@ -1,14 +1,12 @@
-import { World } from "../app";
+import { World } from "@src/app";
 import * as THREE from "three";
+import { Greeting, Overlay, Screen } from "./components";
 
-export default class AboutViewManager {
+export class AboutViewManager {
   world = new World();
   scene = this.world.scene;
-  aboutScreen = this.world.aboutScreen;
   renderer = this.world.renderer;
   camera = this.world.camera;
-  aboutGreeting: any;
-  aboutOverlay: any;
   raycaster: any;
   rayOrigin: any;
   rayTarget: any;
@@ -16,16 +14,48 @@ export default class AboutViewManager {
   hover: any;
   target: any;
   down: any;
+  screen: Screen;
+  greeting: Greeting;
+  overlay: Overlay;
   constructor() {
     window.setTimeout(() => {
-      this.aboutScreen.textTexture.createTexture(this.renderer, this.camera);
-    }, 500);
+      this.screen.textTexture.createTexture(this.renderer, this.camera);
+    }, 800);
 
-    this.aboutGreeting = this.world.aboutGreeting;
-    this.aboutOverlay = this.world.aboutOverlay;
     this.raycaster = this.world.raycaster;
     this.rayOrigin = new THREE.Vector3(0, 0, 1);
     this.rayTarget = new THREE.Vector3();
+
+    this.setComponents();
+  }
+
+  setComponents() {
+    this.overlay = new Overlay();
+    this.greeting = new Greeting();
+    this.screen = new Screen();
+  }
+
+  onPreloaded() {
+    const font = this.world.resources.fonts.audiowideRegular;
+
+    const {
+      twitterIcon,
+      githubIcon,
+      linkedinIcon,
+      cvIcon,
+      pinIcon,
+      emailIcon,
+    } = this.world.resources.assets;
+
+    this.overlay.onPreloaded({
+      twitterIcon,
+      githubIcon,
+      linkedinIcon,
+      cvIcon,
+      pinIcon,
+      emailIcon,
+      font,
+    });
   }
 
   setDebug() {
@@ -35,25 +65,25 @@ export default class AboutViewManager {
 
   screenDebug() {
     const screen = this.debug.addFolder({ title: "screen" });
-    screen.addInput(this.aboutScreen.material.uniforms.uDistortion, "value", {
+    screen.addInput(this.screen.material.uniforms.uDistortion, "value", {
       min: 0,
       max: 1,
       step: 0.001,
       label: "distortion",
     });
-    screen.addInput(this.aboutScreen.material.uniforms.uInfluence, "value", {
+    screen.addInput(this.screen.material.uniforms.uInfluence, "value", {
       min: 0,
       max: 1,
       step: 0.001,
       label: "influence",
     });
-    screen.addInput(this.aboutScreen.material.uniforms.uTest, "value", {
+    screen.addInput(this.screen.material.uniforms.uTest, "value", {
       min: -1,
       max: 0.5,
       step: 0.001,
       label: "test",
     });
-    screen.addInput(this.aboutScreen.material.uniforms.uProgress, "value", {
+    screen.addInput(this.screen.material.uniforms.uProgress, "value", {
       min: 0,
       max: 1,
       step: 0.001,
@@ -61,28 +91,27 @@ export default class AboutViewManager {
     });
 
     screen
-      .addInput(this.aboutScreen.mesh.scale, "x", {
+      .addInput(this.screen.mesh.scale, "x", {
         label: "scale",
         min: 0,
         max: 2,
         step: 0.001,
       })
       .on("change", () => {
-        this.aboutScreen.mesh.scale.y =
-          this.aboutScreen.mesh.scale.x / this.aboutScreen.aspect;
+        this.screen.mesh.scale.y =
+          this.screen.mesh.scale.x / this.screen.aspect;
       });
     screen
-      .addInput(this.aboutScreen, "aspect", {
+      .addInput(this.screen, "aspect", {
         min: 1,
         max: 3,
         step: 0.001,
       })
       .on("change", () => {
-        this.aboutScreen.mesh.scale.y =
-          this.aboutScreen.mesh.scale.x / this.aboutScreen.aspect;
-        this.aboutScreen.material.uniforms.uAspect.value =
-          this.aboutScreen.aspect;
-        this.aboutScreen.textTexture.createTexture(this.renderer, this.camera);
+        this.screen.mesh.scale.y =
+          this.screen.mesh.scale.x / this.screen.aspect;
+        this.screen.material.uniforms.uAspect.value = this.screen.aspect;
+        this.screen.textTexture.createTexture(this.renderer, this.camera);
       });
   }
 
@@ -94,18 +123,16 @@ export default class AboutViewManager {
   onPointermove(mouse) {
     if (this.down) return;
 
-    const [hitScreen] = this.raycaster.intersectObject(this.aboutScreen.mesh);
+    const [hitScreen] = this.raycaster.intersectObject(this.screen.mesh);
 
     if (hitScreen) {
-      this.aboutScreen.onPointermove(hitScreen.uv);
+      this.screen.onPointermove(hitScreen.uv);
     }
 
     this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
     this.raycaster.set(this.rayOrigin, this.rayTarget);
 
-    const [hit] = this.raycaster.intersectObjects(
-      this.aboutOverlay.group.children
-    );
+    const [hit] = this.raycaster.intersectObjects(this.overlay.group.children);
 
     if (hit) {
       const { name } = hit.object;
@@ -153,7 +180,7 @@ export default class AboutViewManager {
   }
 
   onWheel({ deltaY }) {
-    this.aboutScreen.onWheel(deltaY, this.renderer, this.camera);
+    this.screen.onWheel(deltaY, this.renderer, this.camera);
   }
 
   getSizes() {
@@ -187,26 +214,26 @@ export default class AboutViewManager {
 
   onResize() {
     const { screen, greeting } = this.getSizes();
-    this.aboutScreen.onResize(screen);
-    this.aboutGreeting.onResize(greeting);
-    this.aboutOverlay.onResize();
+    this.screen.onResize(screen);
+    this.greeting.onResize(greeting);
+    this.overlay.onResize();
   }
 
   update() {
-    // this.aboutScreen.textTexture.createTexture(this.renderer, this.camera);
+    // this.screen.textTexture.createTexture(this.renderer, this.camera);
   }
 
   show() {
     // this.world.camera.position.z = 0.35;
-    this.scene.add(this.aboutScreen.mesh);
-    this.scene.add(this.aboutGreeting.group);
-    this.scene.add(this.aboutOverlay.group);
+    this.scene.add(this.screen.mesh);
+    this.scene.add(this.greeting.group);
+    this.scene.add(this.overlay.group);
   }
 
   hide() {
     // this.world.camera.position.z = 1;
-    this.scene.remove(this.aboutScreen.mesh);
-    this.scene.remove(this.aboutGreeting.group);
-    this.scene.remove(this.aboutOverlay.group);
+    this.scene.remove(this.screen.mesh);
+    this.scene.remove(this.greeting.group);
+    this.scene.remove(this.overlay.group);
   }
 }
