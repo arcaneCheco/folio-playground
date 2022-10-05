@@ -87,8 +87,8 @@ export default class Flowmap extends RenderBuffer {
     );
   }
 
-  update(renderer, camera) {
+  update(renderer) {
     this.updateInputs();
-    super.update(renderer, camera);
+    super.update(renderer);
   }
 }

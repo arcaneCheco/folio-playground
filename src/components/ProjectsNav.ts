@@ -6,7 +6,7 @@ import fragmentShader from "@shaders/projectsNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
 
-export default class ProjectsNav {
+export class ProjectsNav {
   group = new THREE.Group();
   lineThickness = 3;
   textLineSpacing = 5;

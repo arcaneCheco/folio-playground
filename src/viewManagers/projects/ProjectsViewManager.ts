@@ -63,10 +63,11 @@ export class ProjectsViewManager {
   setAtiveFilter(key) {
     if (this.activeFilter === key) return;
     this.activeFilter = key;
-    this.projectFilters.group.children.map((mesh) =>
-      mesh.name === key
-        ? (mesh.material.uniforms.uActive.value = true)
-        : (mesh.material.uniforms.uActive.value = false)
+    this.projectFilters.group.children.map(
+      (mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) =>
+        mesh.name === key
+          ? (mesh.material.uniforms.uActive.value = true)
+          : (mesh.material.uniforms.uActive.value = false)
     );
   }
 

@@ -11,7 +11,7 @@ import fragmentShader from "../shaders/projectScreen/fragment.glsl";
  *    set width to be about half the screen width;
  */
 
-export default class ProjectScreen {
+export class ProjectScreen {
   world = new World();
   scene = this.world.scene;
   activeProjectState = this.world.activeProjectState;

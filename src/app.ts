@@ -1,27 +1,27 @@
-import * as THREE from "three";
 import {
   Vector2,
   Scene,
   PerspectiveCamera,
   WebGLRenderer,
   Raycaster,
-  TextureLoader,
-  Vector3,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Pane } from "tweakpane";
-import Sky from "./components/Sky";
-import CurlBubble from "./components/CurlBubble";
-import Water from "./components/water";
-import ProjectScreen from "./components/ProjectScreen";
-import ProjectTitles from "./components/ProjectTitles";
-import ProjectsFilters from "./components/ProjectFilters";
-import ProjectsNav from "./components/ProjectsNav";
-import ProjectDetailOverlay from "./components/ProjectDetailOverlay";
-import RotateAlert from "./components/RotateAlert";
-import Post from "./components/Post";
-import TransitionManager from "./components/TransitionManager";
-import Resources from "./components/Resources";
+import {
+  Parallax,
+  Sky,
+  CurlBubble,
+  Post,
+  ProjectDetailOverlay,
+  ProjectsFilters,
+  ProjectScreen,
+  ProjectsNav,
+  ProjectTitles,
+  Resources,
+  RotateAlert,
+  TransitionManager,
+  Water,
+} from "./components";
 import {
   AboutViewManager,
   HomeViewManager,
@@ -46,15 +46,14 @@ export class World {
   usePost = false;
   activeProjectState: any;
   activeProjectState2: any;
-  components: any;
   view: any;
   time = 0;
   mouse = new Vector2();
-  container: any;
+  container: HTMLDivElement;
   width: number;
   height: number;
   scene = new Scene();
-  camera: PerspectiveCamera;
+  camera = new PerspectiveCamera(65, 1, 0.001, 10);
   initialHeight = 0.14;
   renderer = new WebGLRenderer({
     alpha: true,
@@ -64,41 +63,29 @@ export class World {
   controls: OrbitControls;
   raycaster = new Raycaster();
   ndcRaycaster = new Raycaster();
-  textureLoader = new TextureLoader();
-  testSrc: any;
-  testTex: any;
-  resources: any;
-  water: any;
-  post: any;
+  resources: Resources;
+  water: Water;
+  post: Post;
   sky: Sky;
-  curlBubble: any;
-  projectTitles: any;
-  homeTitle: any;
-  projectScreen: any;
-  homeContact: any;
-  homeNav: any;
-  projectFilters: any;
-  projectsNav: any;
-  projectDetailOverlay: any;
-  aboutScreen: any;
-  aboutGreeting: any;
-  aboutSocialIcons: any;
-  aboutFooter: any;
-  aboutNav: any;
-  aboutOverlay: any;
-  rotateAlert: any;
-  transitionManager: any;
-  projectsViewManager: any;
-  projectDetailViewManager: any;
-  aboutViewManager: any;
-  homeViewManager: any;
+  curlBubble: CurlBubble;
+  projectTitles: ProjectTitles;
+  projectScreen: ProjectScreen;
+  projectFilters: ProjectsFilters;
+  projectsNav: ProjectsNav;
+  projectDetailOverlay: ProjectDetailOverlay;
+  rotateAlert: RotateAlert;
+  transitionManager: TransitionManager;
+  projectsViewManager: ProjectsViewManager;
+  projectDetailViewManager: ProjectDetailViewManager;
+  aboutViewManager: AboutViewManager;
+  homeViewManager: HomeViewManager;
+  parallax: Parallax;
   pathViewMap: any;
   dataCount: any;
   debug: any;
   pane: any;
-  parallax: any;
   paneContainer: any;
-  constructor({ container }: { container?: any } = {}) {
+  constructor({ container }: { container?: HTMLDivElement } = {}) {
     if (World.instance) {
       return World.instance;
     }
@@ -124,14 +111,6 @@ export class World {
       max: 5,
     };
 
-    this.components = {
-      sky: true,
-      curlBubble: true,
-      water: true,
-      projectScreen: true,
-      homeTitle: true,
-    }; // for debug purposes
-
     this.view = {
       home: false,
       projects: false,
@@ -143,22 +122,12 @@ export class World {
   }
 
   init() {
-    this.width = this.container.offsetWidth;
-    this.height = this.container.offsetHeight;
-    this.camera = new THREE.PerspectiveCamera(
-      65,
-      this.width / this.height,
-      0.001,
-      10
-    );
     this.camera.position.set(0, this.initialHeight, 1);
-    this.renderer.setSize(this.width, this.height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(1);
     // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
-    this.setParallax();
   }
 
   async setWorld() {
@@ -199,6 +168,7 @@ export class World {
   }
 
   setBeforeComponenets() {
+    this.parallax = new Parallax({});
     this.post = new Post();
     this.sky = new Sky();
     this.curlBubble = new CurlBubble();
@@ -318,37 +288,9 @@ export class World {
       .on("change", ({ value }: any) => this.changeView(value));
 
     this.debugCamera();
-    this.debugComponents();
 
     this.debug.addButton({ title: "toggle autoclear" }).on("click", () => {
       this.renderer.autoClear = !this.renderer.autoClear;
-    });
-  }
-
-  debugComponents() {
-    const components = this.debug.addFolder({
-      title: " toggle components",
-      expanded: false,
-    });
-    const toggleComponent = (component: any) => {
-      if (this.components[component]) {
-        this.components[component] = false;
-        // @ts-ignore: Unreachable code error
-        this.scene.remove(this[component].mesh);
-      } else {
-        this.components[component] = true;
-        // @ts-ignore: Unreachable code error
-        this.scene.add(this[component].mesh);
-      }
-    };
-    components.addButton({ title: "sky" }).on("click", () => {
-      toggleComponent("sky");
-    });
-    components.addButton({ title: "curlBubble" }).on("click", () => {
-      toggleComponent("curlBubble");
-    });
-    components.addButton({ title: "water" }).on("click", () => {
-      toggleComponent("water");
     });
   }
 
@@ -409,39 +351,15 @@ export class World {
       this.mouse.x * this.parallax.magX * this.parallax.direction;
   }
 
-  setParallax() {
-    this.parallax = {
-      lerp: 0.01,
-      magX: 0.18,
-      magY: 0.3,
-      enabled: true,
-      direction: 1,
-      target: new THREE.Vector2(),
-    };
-  }
-
-  updateParallax() {
-    if (this.parallax.enabled) {
-      this.camera.position.x +=
-        (this.parallax.target.x - this.camera.position.x) * this.parallax.lerp;
-      this.camera.position.y +=
-        (this.parallax.target.y + this.initialHeight - this.camera.position.y) *
-        this.parallax.lerp;
-      this.camera.position.y = Math.max(this.camera.position.y, 0.05);
-
-      this.camera.lookAt(new Vector3(0, 0, 0));
-    }
-  }
-
   onPointermove(e: PointerEvent) {
     // world updates
     this.mouseNDC(e);
-    this.updateParallaxTarget();
+    this.parallax.updateTarget();
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    this.components.sky && this.sky.onPointermove();
-    this.components.water && this.water.onPointermove();
+    this.sky.onPointermove();
+    this.water.onPointermove();
 
     if (this.view.projects) this.projectsViewManager.onPointermove(this.mouse);
     if (this.view.projectDetail)
@@ -451,8 +369,8 @@ export class World {
   }
 
   onPointerdown() {
-    this.components.sky && this.sky.onPointerdown();
-    this.components.water && this.water.onPointerdown();
+    this.sky.onPointerdown();
+    this.water.onPointerdown();
 
     if (this.view.projects) this.projectsViewManager.onPointerdown();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerdown();
@@ -461,8 +379,8 @@ export class World {
   }
 
   onPointerup() {
-    this.components.sky && this.sky.onPointerup();
-    this.components.water && this.water.onPointerup();
+    this.sky.onPointerup();
+    this.water.onPointerup();
 
     if (this.view.projects) this.projectsViewManager.onPointerup();
     if (this.view.projectDetail) this.projectDetailViewManager.onPointerup();
@@ -471,13 +389,13 @@ export class World {
   }
 
   onWheel(ev: WheelEvent) {
-    this.components.sky && this.sky.onWheel();
-    this.components.water && this.water.onWheel();
+    this.sky.onWheel();
+    this.water.onWheel();
 
     if (this.view.projects) this.projectsViewManager.onWheel(ev);
-    if (this.view.projectDetail) this.projectDetailViewManager.onWheel(ev);
+    if (this.view.projectDetail) this.projectDetailViewManager.onWheel();
     if (this.view.about) this.aboutViewManager.onWheel(ev);
-    if (this.view.home) this.homeViewManager.onWheel(ev);
+    if (this.view.home) this.homeViewManager.onWheel();
   }
 
   resize() {
@@ -494,8 +412,8 @@ export class World {
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
 
-    this.components.sky && this.sky.resize();
-    this.components.water && this.water.resize();
+    this.sky.resize();
+    this.water.resize();
 
     this.rotateAlert.onResize(this.width / this.height);
 
@@ -506,13 +424,13 @@ export class World {
   }
 
   updateWorld() {
-    this.updateParallax();
+    this.parallax.update();
   }
 
   update() {
     this.updateWorld();
-    this.components.sky && this.sky.update();
-    this.components.water && this.water.update();
+    this.sky.update();
+    this.water.update();
 
     if (this.view.projects) this.projectsViewManager.update();
     if (this.view.projectDetail) this.projectDetailViewManager.update();

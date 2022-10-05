@@ -7,7 +7,7 @@ import { World } from "../app";
 /***********add rgb shift to moon */
 /*********ADD OPTION TO REMOVE BORDER FROM MOUNTAINS */
 
-export default class Sky {
+export class Sky {
   world = new World();
   scene = this.world.scene;
   debug: any;

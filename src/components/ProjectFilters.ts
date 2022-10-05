@@ -6,7 +6,7 @@ import fragmentUnderline from "@shaders/projectFilters/underline/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
 
-export default class ProjectsFilters {
+export class ProjectsFilters {
   outerGroup = new THREE.Group();
   group = new THREE.Group();
   size = 150;

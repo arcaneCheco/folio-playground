@@ -9,7 +9,7 @@ import TextGeometry from "@utils/TextGeometry";
  * not sure if to show titles-reflection yet
  */
 
-export default class ProjectTitles {
+export class ProjectTitles {
   world = new World();
   scene = this.world.scene;
   scroll = {

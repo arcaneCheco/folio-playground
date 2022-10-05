@@ -58,6 +58,6 @@ export class Title {
   }
 
   update() {
-    this.flowmap.update(this.renderer, this.camera);
+    this.flowmap.update(this.renderer);
   }
 }

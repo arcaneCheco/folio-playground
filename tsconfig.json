@@ -5,7 +5,7 @@
     "strict": false,
     "allowJs": false,
     "noImplicitAny": false,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,

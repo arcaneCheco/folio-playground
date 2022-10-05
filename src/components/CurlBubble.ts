@@ -7,7 +7,7 @@ import { perlin3 } from "@utils/perlin";
 
 /******move light position inside bubble to mouse */
 
-export default class CurlBubble {
+export class CurlBubble {
   world = new World();
   scene = this.world.scene;
   size = 128;

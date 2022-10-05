@@ -5,7 +5,7 @@ import WaterHeightMap from "./WaterHeightMap";
 import vertexShader from "@shaders/water/vertex.glsl";
 import fragmentShader from "@shaders/water/fragment.glsl";
 
-export default class Water extends Mirror {
+export class Water extends Mirror {
   world = new World();
   renderer = this.world.renderer;
   camera = this.world.camera;
@@ -168,6 +168,6 @@ export default class Water extends Mirror {
       this.world.projectFilters.outerGroup.visible = true;
       this.world.projectsNav.group.visible = true;
     }
-    this.heightMap.update(this.renderer, this.camera);
+    this.heightMap.update(this.renderer);
   }
 }

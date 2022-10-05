@@ -10,7 +10,7 @@ import fragmentIcon from "@shaders/projectDetailOverlay/icon/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
 
-export default class ProjectDetailOverlay {
+export class ProjectDetailOverlay {
   group = new THREE.Group();
   scale = 1.6;
   material: any;

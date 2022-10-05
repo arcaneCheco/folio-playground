@@ -1,8 +1,7 @@
 import GSAP from "gsap";
 import { World } from "@src/app";
-import * as THREE from "three";
 
-export default class TransitionManager {
+export class TransitionManager {
   world = new World();
   scene = this.world.scene;
   postTransition = this.world.post.transitionUniforms.uProgress;

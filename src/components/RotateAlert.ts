@@ -1,4 +1,4 @@
-export default class RotateAlert {
+export class RotateAlert {
   container = document.querySelector(".portraitAlert")!;
   animateWrapper = document.querySelector(".rotate_device_container")!;
   isActive: any;

@@ -61,7 +61,7 @@ export interface FontData {
   pages: Array<string>;
 }
 
-export default class Resources {
+export class Resources {
   world = new World();
   textureLoader = new THREE.TextureLoader();
   numAssets = 0;

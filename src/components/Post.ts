@@ -4,7 +4,7 @@ import fragmentShader from "../shaders/post/transition.glsl";
 // import fragmentShader from "./shaders/post/transitionZoom.glsl";
 import { World } from "../app";
 
-export default class Post {
+export class Post {
   world = new World();
   worldScene = this.world.scene;
   renderer = this.world.renderer;

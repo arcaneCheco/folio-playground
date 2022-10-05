@@ -47,8 +47,8 @@ export default class WaterHeightMap extends RenderBuffer {
     this.uniforms.uMouse.value.y = uv.y;
   }
 
-  update(renderer, camera) {
-    super.update(renderer, camera);
+  update(renderer) {
+    super.update(renderer);
     this.uniforms.uAddWave.value = false;
   }
 }

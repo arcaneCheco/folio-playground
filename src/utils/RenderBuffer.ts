@@ -51,7 +51,7 @@ export default class RenderBuffer {
     this.texture.value = this.read.texture;
   }
 
-  update(renderer, camera) {
+  update(renderer) {
     const currentRenderTarget = renderer.getRenderTarget();
     renderer.setRenderTarget(this.write);
     renderer.render(this.scene, this.camera);

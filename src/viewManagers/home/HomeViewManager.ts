@@ -141,7 +141,7 @@ export class HomeViewManager {
     this.curlBubble.onPointerup();
   }
 
-  getSizes(device?) {
+  getSizes() {
     const widthRatio = 2 / window.innerWidth;
     const heightRatio = 2 / window.innerHeight;
     const aspect = window.innerWidth / window.innerHeight;

@@ -280,7 +280,7 @@ export default class Text {
     this.width = Math.max(...this.lines.map((line) => line.width));
   }
 
-  onResize(width) {
+  onResize() {
     // this.width = width;
     this.layout();
     this.populateBuffers();
