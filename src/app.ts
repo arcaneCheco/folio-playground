@@ -21,6 +21,7 @@ import {
   RotateAlert,
   TransitionManager,
   Water,
+  Preloader,
 } from "./components";
 import {
   AboutViewManager,
@@ -87,6 +88,7 @@ export class World {
   aboutViewManager: AboutViewManager;
   homeViewManager: HomeViewManager;
   parallax: Parallax;
+  preloader: Preloader;
   pathViewMap: Record<string, View>;
   dataCount: any;
   debug: any;
@@ -133,6 +135,9 @@ export class World {
   async setWorld() {
     this.setBeforeComponenets();
     this.resources = new Resources();
+    this.addListeners();
+    this.resize();
+    this.render();
     await this.resources.load();
 
     this.onAfterSetComponenets();
@@ -143,15 +148,9 @@ export class World {
 
     this.onDataLoaded();
 
-    this.water && (this.water.mesh.renderOrder = -1);
-    // this.sky.mesh.renderOrder = 0;
-
-    // this.setDebug();
-
-    this.addListeners();
+    this.setDebug();
 
     this.resize();
-    this.render();
   }
 
   addListeners() {
@@ -168,9 +167,10 @@ export class World {
   }
 
   setBeforeComponenets() {
+    this.preloader = new Preloader();
     this.parallax = new Parallax({});
-    this.post = new Post();
     this.sky = new Sky();
+    this.post = new Post();
     this.curlBubble = new CurlBubble();
     this.water = new Water();
     this.projectScreen = new ProjectScreen();
@@ -412,12 +412,14 @@ export class World {
     this.sky.resize();
     this.water.resize();
 
-    this.rotateAlert.onResize(this.width / this.height);
+    this.rotateAlert && this.rotateAlert.onResize(this.width / this.height);
 
-    this.projectsViewManager.resize();
-    this.projectDetailViewManager.resize();
-    this.aboutViewManager.onResize();
-    this.homeViewManager.resize();
+    if (this.projectsViewManager) {
+      this.projectsViewManager.resize();
+      this.projectDetailViewManager.resize();
+      this.aboutViewManager.onResize();
+      this.homeViewManager.resize();
+    }
   }
 
   updateWorld() {

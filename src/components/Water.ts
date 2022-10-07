@@ -43,6 +43,7 @@ export class Water extends Mirror {
   debug: any;
   constructor() {
     super();
+    this.mesh.renderOrder = -1;
     this.mesh.scale.set(this.scale / this.bounds, this.scale / this.bounds, 1);
     this.mesh.rotation.x = -Math.PI / 2;
     this.mesh.matrixAutoUpdate = false;

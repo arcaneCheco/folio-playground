@@ -77,6 +77,7 @@ export class Resources {
   progress: number;
   fonts: { [name: string]: { map: THREE.Texture; data: any } };
   assets: { [name: string]: THREE.Texture };
+  preloader = this.world.preloader;
   constructor() {
     this.numAssets =
       window.PROJECTS.length +
@@ -88,6 +89,7 @@ export class Resources {
     this.assetsLoaded++;
     this.progress = this.assetsLoaded / this.numAssets;
     console.log({ progress: this.progress });
+    this.preloader.onAssetLoaded(this.progress);
   }
 
   async loadProjects() {

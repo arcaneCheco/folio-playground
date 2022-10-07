@@ -64,11 +64,14 @@ const handleRequest = async () => {
   };
 };
 
-app.get(["/", "/about", "/projects"], async (req, res) => {
-  const data = await handleRequest();
-  // const data = dummyData;
-  res.render("index", data);
-});
+app.get(
+  ["/", "/about", "/projects", "/projects/:projectName"],
+  async (req, res) => {
+    const data = await handleRequest();
+    // const data = dummyData;
+    res.render("index", data);
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
