@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import vertexShader from "../shaders/post/vertex.glsl";
-import fragmentShader from "../shaders/post/transition.glsl";
+import vertexShader from "@shaders/post/vertex.glsl";
+import fragmentShader from "@shaders/post/transition.glsl";
 // import fragmentShader from "./shaders/post/transitionZoom.glsl";
-import { World } from "../app";
+import { World } from "@src/app";
 
 export class Post {
   world = new World();

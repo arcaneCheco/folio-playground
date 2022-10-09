@@ -1,17 +1,16 @@
 import * as THREE from "three";
-import { View, World } from "../../app";
+import { World } from "../../app";
 import GSAP from "gsap";
+import { Nav, Titles, Filters } from "./components";
 import { GradientLinear } from "@utils/gradientLinear";
 import { warm, natural } from "@utils/palettes";
+import { View } from "@types";
 
 export class ProjectsViewManager {
   world = new World();
   scene = this.world.scene;
   projectScreen = this.world.projectScreen;
-  projectTitles = this.world.projectTitles;
-  activeProjectState = this.world.activeProjectState;
-  projectFilters = this.world.projectFilters;
-  projectsNav = this.world.projectsNav;
+  activeProjectState = this.world.projectState;
   activeFilter = undefined;
   sky = this.world.sky;
   water = this.world.water;
@@ -28,22 +27,27 @@ export class ProjectsViewManager {
   down: any;
   target: any;
   titleIndex: any;
+  titles: Titles;
+  nav: Nav;
+  filters: Filters;
   constructor() {
     console.log({ colors: this.colorGradient });
+    this.titles = new Titles();
+    this.nav = new Nav();
+    this.filters = new Filters();
   }
 
   onDataLoaded() {
     this.projectScreen.data = this.world.resources.projects;
     this.projectScreen.uniforms.uImage1 = {
       value:
-        this.world.resources.projects[this.world.activeProjectState2.active]
-          .texture,
+        this.world.resources.projects[this.world.projectState.active].texture,
     };
-    this.projectTitles.data = this.world.resources.projects;
-    this.projectTitles.setMeshes2();
+    this.titles.data = this.world.resources.projects;
+    this.titles.setMeshes2();
     this.filterAll();
-    const n = this.projectTitles.data.length;
-    this.projectTitles.meshes.map((mesh, i) => {
+    const n = this.titles.data.length;
+    this.titles.meshes.map((mesh, i) => {
       mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
     });
   }
@@ -63,8 +67,9 @@ export class ProjectsViewManager {
   setAtiveFilter(key) {
     if (this.activeFilter === key) return;
     this.activeFilter = key;
-    this.projectFilters.group.children.map(
-      (mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) =>
+    this.filters.group.children.map(
+      // (mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) =>
+      (mesh: any) =>
         mesh.name === key
           ? (mesh.material.uniforms.uActive.value = true)
           : (mesh.material.uniforms.uActive.value = false)
@@ -74,57 +79,57 @@ export class ProjectsViewManager {
   filterAll() {
     this.setAtiveFilter("all");
 
-    this.projectTitles.meshes.map((mesh) => {
-      this.projectTitles.group.add(mesh);
+    this.titles.meshes.map((mesh) => {
+      this.titles.group.add(mesh);
     });
-    this.projectTitles.setPositionsWithinGroup();
+    this.titles.setPositionsWithinGroup();
   }
 
   filterSites() {
     this.setAtiveFilter("sites");
 
-    this.projectTitles.meshes.map((mesh) => {
+    this.titles.meshes.map((mesh) => {
       if (mesh.userData.category === "site") {
-        this.projectTitles.group.add(mesh);
+        this.titles.group.add(mesh);
       } else {
-        this.projectTitles.group.remove(mesh);
+        this.titles.group.remove(mesh);
       }
     });
-    this.projectTitles.setPositionsWithinGroup();
+    this.titles.setPositionsWithinGroup();
   }
 
   filterSketches() {
     this.setAtiveFilter("sketches");
 
-    this.projectTitles.meshes.map((mesh) => {
+    this.titles.meshes.map((mesh) => {
       if (mesh.userData.category === "sketch") {
-        this.projectTitles.group.add(mesh);
+        this.titles.group.add(mesh);
       } else {
-        this.projectTitles.group.remove(mesh);
+        this.titles.group.remove(mesh);
       }
     });
-    this.projectTitles.setPositionsWithinGroup();
+    this.titles.setPositionsWithinGroup();
   }
 
   filterPublications() {
     this.setAtiveFilter("publications");
 
-    this.projectTitles.meshes.map((mesh) => {
+    this.titles.meshes.map((mesh) => {
       if (mesh.userData.category === "publication") {
-        this.projectTitles.group.add(mesh);
+        this.titles.group.add(mesh);
       } else {
-        this.projectTitles.group.remove(mesh);
+        this.titles.group.remove(mesh);
       }
     });
-    this.projectTitles.setPositionsWithinGroup();
+    this.titles.setPositionsWithinGroup();
   }
 
   onActiveChange(newIndex) {
     if (newIndex === 0) {
       // this.world.testSrc.play();
     }
-    this.world.activeProjectState2.target = newIndex;
-    const n = this.projectTitles.data.length;
+    this.world.projectState.target = newIndex;
+    const n = this.titles.data.length;
     this.projectScreen.uniforms.uColor.value = this.colorGradient.getAt(
       newIndex / n
     );
@@ -136,28 +141,28 @@ export class ProjectsViewManager {
     );
     this.projectScreen.uniforms.uImage2.value =
       this.world.resources.projects[newIndex].texture;
-    this.world.activeProjectState2.isTransitioning.value = true;
+    this.world.projectState.isTransitioning.value = true;
     if (this.timeline.parent) {
       this.timeline.clear();
-      this.world.activeProjectState2.progress.value = 0.5;
+      this.world.projectState.progress.value = 0.5;
     }
-    this.timeline.to(this.world.activeProjectState2.progress, {
+    this.timeline.to(this.world.projectState.progress, {
       value: 1,
       duration: 1.5,
       onComplete: () => {
         // screen
-        this.world.activeProjectState2.active = newIndex;
+        this.world.projectState.active = newIndex;
         this.projectScreen.uniforms.uImage1.value =
           this.world.resources.projects[newIndex].texture;
-        this.world.activeProjectState2.progress.value = 0;
-        this.world.activeProjectState2.isTransitioning.value = false;
+        this.world.projectState.progress.value = 0;
+        this.world.projectState.isTransitioning.value = false;
       },
     });
 
     // titles
     this.titlesTimeline && this.titlesTimeline.clear();
     this.titlesTimeline = GSAP.timeline();
-    this.projectTitles.meshes.map((mesh, index) => {
+    this.titles.meshes.map((mesh, index) => {
       let target = 0;
       if (index === newIndex) {
         target = 1;
@@ -188,9 +193,9 @@ export class ProjectsViewManager {
     this.ndcRaycaster.set(this.rayOrigin, this.rayTarget);
 
     const [hit] = this.ndcRaycaster.intersectObjects([
-      ...this.projectFilters.group.children,
-      this.projectsNav.homeNav,
-      this.projectsNav.aboutNav,
+      ...this.filters.group.children,
+      this.nav.homeNav,
+      this.nav.aboutNav,
     ]);
 
     if (hit) {
@@ -251,7 +256,7 @@ export class ProjectsViewManager {
     const filters: any = {};
 
     // nav
-    projectsNav.lineScaleY = this.projectsNav.lineThickness * widthRatio;
+    projectsNav.lineScaleY = this.nav.lineThickness * widthRatio;
     projectsNav.lineScaleX = 0.8;
 
     let navScale = window.innerWidth > 750 ? 50 : 35;
@@ -260,7 +265,7 @@ export class ProjectsViewManager {
     projectsNav.navPosY =
       projectsNav.navScaleY / 2 +
       projectsNav.lineScaleY / 2 +
-      this.projectsNav.textLineSpacing * widthRatio;
+      this.nav.textLineSpacing * widthRatio;
 
     let offsetLeft = 40;
     projectsNav.posX =
@@ -289,11 +294,11 @@ export class ProjectsViewManager {
 
     // filters
     let scale = window.innerWidth > 750 ? 300 : 210;
-    scale /= this.projectFilters.gWidth;
+    scale /= this.filters.gWidth;
     filters.scaleX = scale / window.innerWidth;
     filters.scaleY = scale / window.innerHeight;
     filters.posX = 1 - 0.1 * aspect;
-    filters.posY = filters.scaleY * (2 + this.projectFilters.gap);
+    filters.posY = filters.scaleY * (2 + this.filters.gap);
 
     return {
       projectsNav,
@@ -309,20 +314,20 @@ export class ProjectsViewManager {
     if (this.world.view !== View.ProjectDetail) {
       this.projectScreen.resizeProjectsView(screen);
     }
-    this.projectTitles.onResize(titles);
-    this.projectFilters.onResize(filters);
-    this.projectsNav.onResize(projectsNav);
+    this.titles.onResize(titles);
+    this.filters.onResize(filters);
+    this.nav.onResize(projectsNav);
   }
 
   onWheel({ deltaY }) {
-    this.projectTitles.onWheel(deltaY);
+    this.titles.onWheel(deltaY);
   }
 
   show() {
-    this.scene.add(this.projectTitles.outerGroup);
+    this.scene.add(this.titles.outerGroup);
     this.scene.add(this.projectScreen.mesh);
-    this.scene.add(this.projectFilters.outerGroup);
-    this.scene.add(this.projectsNav.group);
+    this.scene.add(this.filters.outerGroup);
+    this.scene.add(this.nav.group);
 
     // this.world.sky.material.uniforms.uSkyColor.value = new THREE.Color(
     //   "#c5fffa"
@@ -340,21 +345,21 @@ export class ProjectsViewManager {
   }
 
   hide() {
-    this.scene.remove(this.projectTitles.outerGroup);
+    this.scene.remove(this.titles.outerGroup);
     this.scene.remove(this.projectScreen.mesh);
-    this.scene.remove(this.projectFilters.outerGroup);
-    this.scene.remove(this.projectsNav.group);
+    this.scene.remove(this.filters.outerGroup);
+    this.scene.remove(this.nav.group);
   }
 
   update() {
     const [hitTitles] = this.raycaster.intersectObjects(
-      this.projectTitles.group.children
+      this.titles.group.children
     );
 
     if (hitTitles) {
       this.titleIndex = hitTitles.object.userData.index;
       document.body.style.cursor = "pointer";
-      if (this.titleIndex !== this.world.activeProjectState2.target) {
+      if (this.titleIndex !== this.world.projectState.target) {
         this.hoverTitles = true;
         this.onActiveChange(this.titleIndex);
       }
@@ -363,7 +368,7 @@ export class ProjectsViewManager {
       if (!this.hover) document.body.style.cursor = "";
     }
 
-    this.projectTitles.update();
+    this.titles.update();
     this.projectScreen.update();
   }
 }

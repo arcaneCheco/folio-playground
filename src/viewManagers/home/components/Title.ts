@@ -1,6 +1,6 @@
 import { World } from "@src/app";
 import * as THREE from "three";
-import Flowmap from "@utils/Flowmap";
+import { Flowmap } from "@utils/Flowmap";
 import TextTexture from "@utils/TextTexture";
 import vertexShader from "@shaders/homeTitle/vertex.glsl";
 import fragmentShader from "@shaders/homeTitle/fragment.glsl";

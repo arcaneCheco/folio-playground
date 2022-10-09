@@ -1,9 +1,10 @@
-import { World, View } from "../app";
+import { World } from "../app";
 import * as THREE from "three";
 import Mirror from "@utils/Mirror";
 import WaterHeightMap from "./WaterHeightMap";
 import vertexShader from "@shaders/water/vertex.glsl";
 import fragmentShader from "@shaders/water/fragment.glsl";
+import { View } from "@types";
 
 export class Water extends Mirror {
   world = new World();
@@ -149,12 +150,12 @@ export class Water extends Mirror {
       this.world.homeViewManager.contact.group.visible = false;
       this.world.homeViewManager.nav.group.visible = false;
     } else if (this.world.view === View.ProjectDetail) {
-      this.world.projectDetailOverlay.group.visible = false;
+      this.world.projectDetailViewManager.overlay.group.visible = false;
     } else if (this.world.view === View.About) {
       this.world.aboutViewManager.overlay.group.visible = false;
     } else if (this.world.view === View.Projects) {
-      this.world.projectFilters.outerGroup.visible = false;
-      this.world.projectsNav.group.visible = false;
+      this.world.projectsViewManager.filters.outerGroup.visible = false;
+      this.world.projectsViewManager.nav.group.visible = false;
     }
     super.update(this.mesh, this.renderer, this.camera, this.scene);
     if (this.world.view === View.Home) {
@@ -162,12 +163,12 @@ export class Water extends Mirror {
       this.world.homeViewManager.contact.group.visible = true;
       this.world.homeViewManager.nav.group.visible = true;
     } else if (this.world.view === View.ProjectDetail) {
-      this.world.projectDetailOverlay.group.visible = true;
+      this.world.projectDetailViewManager.overlay.group.visible = true;
     } else if (this.world.view === View.About) {
       this.world.aboutViewManager.overlay.group.visible = true;
     } else if (this.world.view === View.Projects) {
-      this.world.projectFilters.outerGroup.visible = true;
-      this.world.projectsNav.group.visible = true;
+      this.world.projectsViewManager.filters.outerGroup.visible = true;
+      this.world.projectsViewManager.nav.group.visible = true;
     }
     this.heightMap.update(this.renderer);
   }

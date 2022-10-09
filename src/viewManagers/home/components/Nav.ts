@@ -4,6 +4,7 @@ import fragmentUnderline from "@shaders/homeNav/underline/fragment.glsl";
 import vertexShader from "@shaders/homeNav/text/vertex.glsl";
 import fragmentShader from "@shaders/homeNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
+import { TextAlign } from "@types";
 
 export class Nav {
   group = new THREE.Group();
@@ -32,9 +33,9 @@ export class Nav {
 
     this.geometry = new TextGeometry();
     this.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "View Projects",
-      align: "center",
+      align: TextAlign.Center,
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.name = "homeNav";

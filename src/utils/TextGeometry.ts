@@ -1,27 +1,21 @@
-import * as THREE from "three";
-import Text from "./Text";
+import { _Text, _TextGeometry } from "@types";
+import { BufferAttribute, BufferGeometry } from "three";
+import { Text, TextProps } from "./Text";
 
-export default class TextGeometry extends THREE.BufferGeometry {
-  text: Text;
-  constructor() {
-    super();
-  }
-
-  setText(opt) {
+export default class TextGeometry
+  extends BufferGeometry
+  implements _TextGeometry
+{
+  text: _Text;
+  setText(opt: TextProps) {
     this.text = new Text(opt);
     this.setAttribute(
       "position",
-      new THREE.BufferAttribute(this.text.buffers["position"], 3)
+      new BufferAttribute(this.text.buffers["position"], 3)
     );
-    this.setAttribute(
-      "uv",
-      new THREE.BufferAttribute(this.text.buffers["uv"], 2)
-    );
-    this.setAttribute(
-      "id",
-      new THREE.BufferAttribute(this.text.buffers["id"], 1)
-    );
-    this.setIndex(new THREE.BufferAttribute(this.text.buffers["index"], 1));
+    this.setAttribute("uv", new BufferAttribute(this.text.buffers["uv"], 2));
+    this.setAttribute("id", new BufferAttribute(this.text.buffers["id"], 1));
+    this.setIndex(new BufferAttribute(this.text.buffers["index"], 1));
   }
 }
 

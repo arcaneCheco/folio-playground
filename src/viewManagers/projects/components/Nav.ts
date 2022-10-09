@@ -5,8 +5,9 @@ import vertexShader from "@shaders/projectsNav/text/vertex.glsl";
 import fragmentShader from "@shaders/projectsNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
+import { TextAlign } from "@types";
 
-export class ProjectsNav {
+export class Nav {
   group = new THREE.Group();
   lineThickness = 3;
   textLineSpacing = 5;
@@ -42,9 +43,9 @@ export class ProjectsNav {
     this.group.add(this.navGroup);
     let homeGeometry = new TextGeometry();
     homeGeometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "Home",
-      align: "left",
+      align: TextAlign.Left,
     });
 
     this.homeNav = new THREE.Mesh(homeGeometry, this.material);
@@ -53,9 +54,9 @@ export class ProjectsNav {
 
     let aboutGeometry = new TextGeometry();
     aboutGeometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "About",
-      align: "right",
+      align: TextAlign.Right,
     });
 
     this.aboutNav = new THREE.Mesh(aboutGeometry, this.material);

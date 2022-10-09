@@ -9,8 +9,9 @@ import vertexIcon from "@shaders/projectDetailOverlay/icon/vertex.glsl";
 import fragmentIcon from "@shaders/projectDetailOverlay/icon/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
+import { TextAlign } from "@types";
 
-export class ProjectDetailOverlay {
+export class Overlay {
   group = new THREE.Group();
   scale = 1.6;
   material: any;
@@ -110,9 +111,9 @@ export class ProjectDetailOverlay {
 
     let prevGeometry = new TextGeometry();
     prevGeometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "Prev.",
-      align: "left",
+      align: TextAlign.Left,
     });
 
     this.prevButton = new THREE.Mesh(prevGeometry, this.textMaterial);
@@ -122,9 +123,9 @@ export class ProjectDetailOverlay {
 
     let nextGeometry = new TextGeometry();
     nextGeometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "Next",
-      align: "right",
+      align: TextAlign.Right,
     });
 
     this.nextButton = new THREE.Mesh(nextGeometry, this.textMaterial);
@@ -139,9 +140,9 @@ export class ProjectDetailOverlay {
 
     let visitGeometry = new TextGeometry();
     visitGeometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "Visit",
-      align: "right",
+      align: TextAlign.Right,
     });
 
     visitGeometry.computeBoundingBox();

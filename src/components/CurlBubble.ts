@@ -1,68 +1,79 @@
-import * as THREE from "three";
 import { World } from "@src/app";
 import fragmentShader from "@shaders/curlBubble/fragment.glsl";
 import vertexShader from "@shaders/curlBubble/vertex.glsl";
 import { randFloat, clamp } from "three/src/math/MathUtils";
 import { perlin3 } from "@utils/perlin";
-
-/******move light position inside bubble to mouse */
-
-export class CurlBubble {
+import { CurlSeed, Shape, _CurlBubble } from "@types";
+import {
+  BufferGeometry,
+  Color,
+  Data3DTexture,
+  FloatType,
+  IUniform,
+  LinearFilter,
+  Mesh,
+  RedFormat,
+  ShaderMaterial,
+  SphereGeometry,
+  Vector2,
+  Vector3,
+} from "three";
+import { FolderApi } from "tweakpane";
+export class CurlBubble implements _CurlBubble {
   world = new World();
   scene = this.world.scene;
   size = 128;
-  shapeArray: any;
-  noiseArray: any;
-  shape: any;
-  noise: any;
-  geometry: any;
-  material: any;
-  mesh: any;
-  shapeType: any;
-  noiseSeed: any;
-  debug: any;
-  uniforms: any;
-  scale: any;
+  shapeArray: Float32Array;
+  noiseArray: Float32Array;
+  shape: Data3DTexture;
+  noise: Data3DTexture;
+  geometry: SphereGeometry;
+  material: ShaderMaterial;
+  mesh: Mesh<BufferGeometry, ShaderMaterial>;
+  shapeType: Shape;
+  noiseSeed: CurlSeed;
+  debug: FolderApi;
+  uniforms: Record<string, IUniform>;
+  scale: number;
   constructor() {
     const n = Math.pow(this.size, 3);
     this.shapeArray = new Float32Array(n);
     this.noiseArray = new Float32Array(n);
 
-    this.shape = new THREE.Data3DTexture(
+    this.shape = new Data3DTexture(
       this.shapeArray,
       this.size,
       this.size,
       this.size
     );
-    this.shape.format = THREE.RedFormat;
-    this.shape.type = THREE.FloatType;
-    this.shape.minFilter = THREE.LinearFilter;
-    this.shape.magFilter = THREE.LinearFilter;
+    this.shape.format = RedFormat;
+    this.shape.type = FloatType;
+    this.shape.minFilter = LinearFilter;
+    this.shape.magFilter = LinearFilter;
     this.shape.unpackAlignment = 1;
 
-    this.noise = new THREE.Data3DTexture(
+    this.noise = new Data3DTexture(
       this.noiseArray,
       this.size,
       this.size,
       this.size
     );
-    this.noise.format = THREE.RedFormat;
-    this.noise.type = THREE.FloatType;
-    this.noise.minFilter = THREE.LinearFilter;
-    this.noise.magFilter = THREE.LinearFilter;
+    this.noise.format = RedFormat;
+    this.noise.type = FloatType;
+    this.noise.minFilter = LinearFilter;
+    this.noise.magFilter = LinearFilter;
     this.noise.unpackAlignment = 1;
 
-    this.geometry = new THREE.SphereGeometry(0.5, 30, 30);
-    // this.geometry = new THREE.SphereGeometry(1, 30, 30);
-    const geometry2 = new THREE.SphereGeometry(2, 30, 30);
+    this.geometry = new SphereGeometry(0.5, 30, 30);
+    const geometry2 = new SphereGeometry(2, 30, 30);
     this.geometry.setAttribute("position2", geometry2.attributes.position);
 
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       uniforms: {
         uShape: { value: this.shape },
         uNoise: { value: this.noise },
         uTime: { value: 0.0 },
-        uColor: { value: new THREE.Color("#5676ff") },
+        uColor: { value: new Color("#5676ff") },
         uSteps: { value: 90 },
         // vertex-distortion
         uVertexDistortionSpeed: { value: 0.9 },
@@ -73,7 +84,7 @@ export class CurlBubble {
         uColorStrength: { value: 0.03 },
         uColorIntensity: { value: 0.0082 },
         uLightPosition: {
-          value: new THREE.Vector3(0.0000001, 0.001, 0.0000001),
+          value: new Vector3(0.0000001, 0.001, 0.0000001),
         },
         uBubblePos: { value: 0.12 },
       },
@@ -82,11 +93,11 @@ export class CurlBubble {
       fragmentShader,
     });
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.scale.set(0.28, 0.28, 0.28);
     this.mesh.position.set(0, 0.22, 0);
 
-    this.shapeType = "sphere";
+    this.shapeType = Shape.Sphere;
 
     this.generateShape(this.shapeType);
 
@@ -192,6 +203,7 @@ export class CurlBubble {
         ],
         value: "sphere",
       })
+      // @ts-ignore
       .on("change", ({ value }) => {
         this.shapeType = value;
         this.generateShape(this.shapeType);
@@ -211,7 +223,7 @@ export class CurlBubble {
         this.noiseSeed.oy,
         this.noiseSeed.oz
       );
-      this.world.pane.refresh();
+      this.world.paneContainer.refresh();
     });
     noise.addInput(this.noiseSeed, "s", {
       min: 3,
@@ -330,7 +342,7 @@ export class CurlBubble {
 
   mapData(data, fn) {
     let ptr = 0;
-    const p = new THREE.Vector3();
+    const p = new Vector3();
     for (let z = 0; z < this.size; z++) {
       for (let y = 0; y < this.size; y++) {
         for (let x = 0; x < this.size; x++) {
@@ -431,7 +443,7 @@ export class CurlBubble {
 
     for (let i = 0; i < 3; i++) {
       spheres.push({
-        position: new THREE.Vector3(
+        position: new Vector3(
           randFloat(-r, r),
           randFloat(-r, r),
           randFloat(-r, r)
@@ -490,12 +502,12 @@ export class CurlBubble {
 
   generateTorus() {
     const sdTorus = (p, t) => {
-      const pp = new THREE.Vector2(p.x, p.z);
-      const q = new THREE.Vector2(pp.length() - t.x, p.y);
+      const pp = new Vector2(p.x, p.z);
+      const q = new Vector2(pp.length() - t.x, p.y);
       return q.length() - t.y;
     };
 
-    const t = new THREE.Vector2(3, 0.5);
+    const t = new Vector2(3, 0.5);
     this.mapData(this.shapeArray, (p) => {
       p.multiplyScalar(10);
       return 1 - sdTorus(p, t);
@@ -528,7 +540,7 @@ export class CurlBubble {
     const rot2d = (v, a) => {
       const c = Math.cos(a);
       const s = Math.sin(a);
-      return new THREE.Vector2(v.x * c - v.y * s, v.x * s + v.y * c);
+      return new Vector2(v.x * c - v.y * s, v.x * s + v.y * c);
     };
 
     const sdCircle = (p, r) => {
@@ -538,8 +550,8 @@ export class CurlBubble {
     let shapeFn = (p) => sdCircle(p, r2);
     this.mapData(this.shapeArray, (p) => {
       p.multiplyScalar(5.2);
-      const pp = new THREE.Vector2(p.x, p.z);
-      const cp = new THREE.Vector2(pp.length() - r1, p.y);
+      const pp = new Vector2(p.x, p.z);
+      const cp = new Vector2(pp.length() - r1, p.y);
       const a = s * Math.atan2(p.x, p.z);
       cp.copy(rot2d(cp, a * pf));
       cp.y = Math.abs(cp.y) - oy;

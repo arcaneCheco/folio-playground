@@ -6,6 +6,7 @@ import vertexTouchPlane from "@shaders/homeContact/touchPlane/vertex.glsl";
 import fragmentTouchPlane from "@shaders/homeContact/touchPlane/fragment.glsl";
 import vertexIcon from "@shaders/ghostIcon/vertex.glsl";
 import fragmentIcon from "@shaders/ghostIcon/fragment.glsl";
+import { TextAlign } from "@types";
 
 export class Contact {
   group = new THREE.Group();
@@ -41,9 +42,9 @@ export class Contact {
   setEmailText() {
     const geometry = new TextGeometry();
     geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "sergio@azizi.dev",
-      align: "left",
+      align: TextAlign.Left,
     });
     geometry.computeBoundingBox();
     const width = geometry.boundingBox!.max.x - geometry.boundingBox!.min.x;
@@ -51,7 +52,6 @@ export class Contact {
       new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
     );
     this.email = new THREE.Mesh(geometry, this.material);
-    // this.email.name = "email";
     this.email.renderOrder = 150;
     this.group.add(this.email);
 
@@ -73,9 +73,9 @@ export class Contact {
   setCTAText() {
     const geometry = new TextGeometry();
     geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "`\nAvailable for freelance work", // choose a character not part of the font for the first line
-      align: "left",
+      align: TextAlign.Left,
       lineHeight: 1.8,
     });
     geometry.computeBoundingBox();

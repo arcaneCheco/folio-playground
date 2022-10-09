@@ -4,6 +4,7 @@ import fragmentUnderline from "@shaders/aboutNav/underline/fragment.glsl";
 import vertexShader from "@shaders/aboutNav/text/vertex.glsl";
 import fragmentShader from "@shaders/aboutNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
+import { TextAlign } from "@types";
 
 export class Nav {
   group = new THREE.Group();
@@ -36,9 +37,9 @@ export class Nav {
     this.font = font;
     this.material.uniforms.tMap.value = this.font.map;
     this.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "View Projects",
-      align: "center",
+      align: TextAlign.Center,
     });
 
     this.geometry.computeBoundingBox();

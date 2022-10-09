@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
-    "strict": false,
+    "strict": true,
     "allowJs": false,
     "noImplicitAny": false,
     "noUnusedParameters": true,
@@ -10,14 +10,16 @@
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "allowUnreachableCode": true,
-    "resolveJsonModule": true,
     "lib": ["ES2021", "dom"],
+    "strictFunctionTypes": true,
     "paths": {
       "@src/*": ["./src/*"],
       "@shaders/*": ["./src/shaders/*"],
       "@components/*": ["./src/components/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@types": ["./src/@types/types.d.ts"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["./src/**/*"]
 }

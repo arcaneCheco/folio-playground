@@ -1,89 +1,20 @@
-import { World } from "../app";
-import * as THREE from "three";
+import { Texture, TextureLoader, VideoTexture } from "three";
+import { Font, Project, _Resources } from "@types";
+import { World } from "@src/app";
 
-interface FontChar {
-  char: string;
-  chnl: number;
-  height: number;
-  id: number;
-  index: number;
-  page: number;
-  width: number;
-  x: number;
-  xadvance: number;
-  xoffset: number;
-  y: number;
-  yoffset: number;
-}
-
-interface FontCommon {
-  alphaChnl: number;
-  base: number;
-  blueChnl: number;
-  greenChnl: number;
-  lineHeight: number;
-  packed: number;
-  pages: number;
-  redChnl: number;
-  scaleH: number;
-  scaleW: number;
-}
-
-interface FontInfo {
-  aa: number;
-  bold: number;
-  charset: Array<string>;
-  face: string;
-  italic: number;
-  padding: Array<number>;
-  size: number;
-  smooth: number;
-  spacing: Array<number>;
-  stretchH: number;
-  unicode: number;
-}
-
-interface FontKerning {
-  first: number;
-  second: number;
-  amount: number;
-}
-
-export interface FontData {
-  chars: Array<FontChar>;
-  common: FontCommon;
-  distanceFiled: {
-    distanceRange: number;
-    fieldType: string;
-  };
-  info: FontInfo;
-  kernings: Array<FontKerning>;
-  pages: Array<string>;
-}
-
-export class Resources {
+export class Resources implements _Resources {
   world = new World();
-  textureLoader = new THREE.TextureLoader();
-  numAssets = 0;
+  textureLoader = new TextureLoader();
   assetsLoaded = 0;
-  projects: {
-    category: string;
-    demo: string;
-    path: string;
-    source: string;
-    texture: THREE.VideoTexture;
-    title: string;
-  }[] = [];
-  progress: number;
-  fonts: { [name: string]: { map: THREE.Texture; data: any } };
-  assets: { [name: string]: THREE.Texture };
+  progress = 0;
   preloader = this.world.preloader;
-  constructor() {
-    this.numAssets =
-      window.PROJECTS.length +
-      Object.keys(window.ASSETS).length +
-      Object.keys(window.FONTS).length;
-  }
+  projects: Array<Project> = [];
+  numAssets =
+    window.PROJECTS.length +
+    Object.keys(window.ASSETS).length +
+    Object.keys(window.FONTS).length;
+  fonts: Record<string, Font>;
+  assets: Record<string, Texture>;
 
   onAssetLoaded() {
     this.assetsLoaded++;
@@ -97,9 +28,6 @@ export class Resources {
 
     return new Promise<void>((resolve) => {
       this.projects = window.PROJECTS.map((entry) => {
-        const path = "/projects/".concat(
-          entry.title.toLowerCase().split(" ").join("-").replaceAll(".", "")
-        );
         const element = document.createElement("video");
         videoContainer.appendChild(element);
         element.muted = true;
@@ -113,14 +41,13 @@ export class Resources {
         element.style.objectFit = "contain";
         element.play();
 
-        const texture = new THREE.VideoTexture(element);
+        const texture = new VideoTexture(element);
 
         this.onAssetLoaded();
 
         return {
           ...entry,
           texture,
-          path,
         };
       });
       resolve();

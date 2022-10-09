@@ -1,3 +1,5 @@
+import { View } from "./types";
+
 export {};
 
 declare global {
@@ -7,8 +9,10 @@ declare global {
       category: string;
       demo: string;
       source: string;
+      path: string;
     }>;
     ASSETS: { [name: string]: string };
     FONTS: { [name: string]: { map: string; data: any } };
+    VIEW: View;
   }
 }

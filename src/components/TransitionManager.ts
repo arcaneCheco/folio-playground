@@ -15,10 +15,11 @@ export class TransitionManager {
     this.world.homeViewManager.nav.group,
     this.world.curlBubble.mesh,
   ];
-  titlesObject = this.world.projectTitles.outerGroup;
-  filtersObject = this.world.projectFilters.outerGroup;
-  projectsNavObject = this.world.projectsNav.group;
-  projectDetailOverlayObject = this.world.projectDetailOverlay.group;
+  titlesObject = this.world.projectsViewManager.titles.outerGroup;
+  filtersObject = this.world.projectsViewManager.filters.outerGroup;
+  projectsNavObject = this.world.projectsViewManager.nav.group;
+  projectDetailOverlayObject =
+    this.world.projectDetailViewManager.overlay.group;
   debug: any;
   constructor() {}
 
@@ -237,6 +238,7 @@ export class TransitionManager {
   }
 
   aboutToProjects() {
+    console.log("HELLO");
     this.world.post.activeScene = this.world.post.aboutScene;
     const t = GSAP.timeline();
     t.to(
@@ -256,6 +258,7 @@ export class TransitionManager {
           this.world.usePost = true;
         },
         onComplete: () => {
+          console.log("REMOVING!");
           this.scene.remove(
             this.world.aboutViewManager.screen.mesh,
             this.world.aboutViewManager.greeting.group,

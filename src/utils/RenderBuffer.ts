@@ -1,5 +1,4 @@
 import {
-  IUniform,
   Scene,
   WebGLRenderTarget,
   PlaneGeometry,
@@ -7,26 +6,31 @@ import {
   LinearFilter,
   FloatType,
   RGBAFormat,
+  WebGLRenderer,
+  IUniform,
+  WebGLRenderTargetOptions,
+  Texture,
 } from "three";
-import { WebGLRenderTargetOptions } from "three";
+import { _RenderBuffer } from "@types";
 
-export default class RenderBuffer {
+export interface RenderBufferProps {
+  size?: number;
+  rtOptions?: WebGLRenderTargetOptions;
+}
+
+export class RenderBuffer implements _RenderBuffer {
   size: number;
-  texture: IUniform = { value: null };
+  rtOptions: WebGLRenderTargetOptions;
+
+  texture: IUniform<Texture | null> = { value: null };
   scene = new Scene();
   geometry = new PlaneGeometry(2, 2);
   camera = new PerspectiveCamera();
-  rtOptions: WebGLRenderTargetOptions;
   read: WebGLRenderTarget;
   write: WebGLRenderTarget;
-  constructor({
-    size = 128,
-    rtOptions = {},
-  }: {
-    size?: number;
-    rtOptions?: WebGLRenderTargetOptions;
-  }) {
-    this.size = size;
+
+  constructor(props?: RenderBufferProps) {
+    this.size = props?.size || 128;
     this.rtOptions = {
       minFilter: LinearFilter,
       type: FloatType,
@@ -35,12 +39,12 @@ export default class RenderBuffer {
       generateMipmaps: false,
       stencilBuffer: false,
       depthBuffer: false,
-      //depthwrite?
-      ...rtOptions,
+      ...props?.rtOptions,
     };
 
     this.read = new WebGLRenderTarget(this.size, this.size, this.rtOptions);
     this.write = new WebGLRenderTarget(this.size, this.size, this.rtOptions);
+
     this.swap();
   }
 
@@ -51,7 +55,7 @@ export default class RenderBuffer {
     this.texture.value = this.read.texture;
   }
 
-  update(renderer) {
+  update(renderer: WebGLRenderer) {
     const currentRenderTarget = renderer.getRenderTarget();
     renderer.setRenderTarget(this.write);
     renderer.render(this.scene, this.camera);

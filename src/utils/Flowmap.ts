@@ -1,36 +1,38 @@
-// import * as THREE from "three";
-import { Mesh, ShaderMaterial, Vector2 } from "three";
-import RenderBuffer from "./RenderBuffer";
-import vertexShader from "../shaders/flowmap/vertex.glsl";
-import fragmentShader from "../shaders/flowmap/fragment.glsl";
+import { Mesh, ShaderMaterial, Vector2, WebGLRenderer } from "three";
+import vertexShader from "@shaders/flowmap/vertex.glsl";
+import fragmentShader from "@shaders/flowmap/fragment.glsl";
+import { _Flowmap } from "@types";
+import { RenderBuffer } from "./RenderBuffer";
 
-export default class Flowmap extends RenderBuffer {
+interface FlowmapProps {
+  falloff?: number;
+  alpha?: number;
+  dissipation?: number;
+}
+
+export class Flowmap extends RenderBuffer implements _Flowmap {
   velocity: Vector2 & { needsUpdate?: boolean } = new Vector2();
   mouse = new Vector2();
   lastMouse = new Vector2();
   lastTime: number | null = null;
-  uniforms: any;
+  uniforms = {
+    uBuffer: this.texture,
+    uAspect: { value: 1 },
+    uMouse: { value: this.mouse },
+    uVelocity: { value: this.velocity },
+    uFalloff: { value: 0 },
+    uAlpha: { value: 0 },
+    uDissipation: { value: 0 },
+  };
   material: ShaderMaterial;
   mesh: Mesh;
-  constructor(falloff = 0.15, alpha = 1, dissipation = 0.98) {
-    super({});
-    this.setMaterial(falloff, alpha, dissipation);
-    this.mesh = new Mesh(this.geometry, this.material);
-    this.scene.add(this.mesh);
-  }
+  constructor(props?: FlowmapProps) {
+    super();
 
-  setMaterial(falloff, alpha, dissipation) {
-    this.uniforms = {
-      uBuffer: this.texture,
-      //
-      uFalloff: { value: falloff },
-      uAlpha: { value: alpha },
-      uDissipation: { value: dissipation },
-      //
-      uAspect: { value: 1 },
-      uMouse: { value: this.mouse },
-      uVelocity: { value: this.velocity },
-    };
+    this.uniforms.uFalloff.value = props?.falloff || 0.15;
+    this.uniforms.uFalloff.value = props?.alpha || 1;
+    this.uniforms.uFalloff.value = props?.dissipation || 0.98;
+
     this.material = new ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -39,9 +41,15 @@ export default class Flowmap extends RenderBuffer {
       depthTest: false,
       //   blending: THREE.NoBlending,
     });
+
+    this.mesh = new Mesh(this.geometry, this.material);
+    this.scene.add(this.mesh);
   }
 
-  onPointermove({ clientX, clientY }, uv) {
+  onPointermove(
+    { clientX, clientY }: { clientX: number; clientY: number },
+    uv: Vector2
+  ) {
     this.mouse.set(uv.x, uv.y);
 
     // Calculate velocity
@@ -87,7 +95,7 @@ export default class Flowmap extends RenderBuffer {
     );
   }
 
-  update(renderer) {
+  update(renderer: WebGLRenderer) {
     this.updateInputs();
     super.update(renderer);
   }

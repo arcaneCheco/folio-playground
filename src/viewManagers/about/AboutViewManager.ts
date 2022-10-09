@@ -1,6 +1,7 @@
-import { View, World } from "@src/app";
+import { World } from "@src/app";
 import * as THREE from "three";
 import { Greeting, Overlay, Screen } from "./components";
+import { View } from "@types";
 
 export class AboutViewManager {
   world = new World();

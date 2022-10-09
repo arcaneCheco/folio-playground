@@ -1,15 +1,17 @@
 import { Color } from "three";
 import { clamp } from "three/src/math/MathUtils";
+import { Palette } from "./palettes";
 
-const mix = (x, y, r) => {
+const mix = (x: number, y: number, r: number) => {
   return r * x + (1 - r) * y;
 };
 
 class GradientLinear {
-  constructor(colors) {
+  colors: Array<Color>;
+  constructor(colors: Palette) {
     this.colors = colors.map((c) => new Color(c));
   }
-  getAt(t) {
+  getAt(t: number) {
     t = clamp(t, 0, 1);
     const from = Math.floor(t * this.colors.length * 0.9999);
     const to = clamp(from + 1, 0, this.colors.length - 1);

@@ -127,23 +127,20 @@ export class Footer {
     this.textMaterial.uniforms.tMap.value = this.font.map;
 
     this.location.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "London, UK",
-      align: "left",
     });
     this.locationIcon.material.uniforms.uMap.value = pinIcon;
 
     this.cv.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "curriculum vitae",
-      align: "left",
     });
     this.cvIcon.material.uniforms.uMap.value = cvIcon;
 
     this.email.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "sergio@azizi.dev",
-      align: "left",
     });
     this.emailIcon.material.uniforms.uMap.value = emailIcon;
   }

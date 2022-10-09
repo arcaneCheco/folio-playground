@@ -5,18 +5,13 @@ import {
   WebGLRenderer,
   Raycaster,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { Pane } from "tweakpane";
+import { FolderApi, Pane } from "tweakpane";
 import {
   Parallax,
   Sky,
   CurlBubble,
   Post,
-  ProjectDetailOverlay,
-  ProjectsFilters,
   ProjectScreen,
-  ProjectsNav,
-  ProjectTitles,
   Resources,
   RotateAlert,
   TransitionManager,
@@ -29,8 +24,7 @@ import {
   ProjectsViewManager,
   ProjectDetailViewManager,
 } from "./viewManagers";
-
-// add preloader => preloader maessage: This website has been designed for desktop
+import { View, _World } from "@types";
 
 // const debounce = (func, timeout = 50) => {
 //   let timer;
@@ -42,18 +36,17 @@ import {
 //   };
 // };
 
-export enum View {
-  Home = "Home",
-  About = "About",
-  Projects = "Projects",
-  ProjectDetail = "ProjectDetail",
-}
-
-export class World {
+export class World implements _World {
   static instance: World;
   usePost = false;
-  activeProjectState: any;
-  activeProjectState2: any;
+  projectState = {
+    active: 0,
+    progress: { value: 0 },
+    target: 0,
+    isTransitioning: { value: false },
+    min: 0,
+    max: 5,
+  };
   view: View;
   time = 0;
   mouse = new Vector2();
@@ -68,7 +61,6 @@ export class World {
     powerPreference: "high-performance",
     antialias: true,
   });
-  controls: OrbitControls;
   raycaster = new Raycaster();
   ndcRaycaster = new Raycaster();
   resources: Resources;
@@ -76,11 +68,7 @@ export class World {
   post: Post;
   sky: Sky;
   curlBubble: CurlBubble;
-  projectTitles: ProjectTitles;
   projectScreen: ProjectScreen;
-  projectFilters: ProjectsFilters;
-  projectsNav: ProjectsNav;
-  projectDetailOverlay: ProjectDetailOverlay;
   rotateAlert: RotateAlert;
   transitionManager: TransitionManager;
   projectsViewManager: ProjectsViewManager;
@@ -89,11 +77,10 @@ export class World {
   homeViewManager: HomeViewManager;
   parallax: Parallax;
   preloader: Preloader;
-  pathViewMap: Record<string, View>;
-  dataCount: any;
-  debug: any;
-  pane: any;
-  paneContainer: any;
+  dataCount: number;
+  debug: FolderApi;
+  pane: FolderApi;
+  paneContainer: Pane;
   constructor({ container }: { container?: HTMLDivElement } = {}) {
     if (World.instance) {
       return World.instance;
@@ -101,52 +88,49 @@ export class World {
     World.instance = this;
     this.container = container!;
 
-    this.init();
-
-    this.activeProjectState = {
-      active: 0,
-      progress: 0,
-      target: 0,
-      isTransitioning: false,
-      min: 0,
-      max: 5,
-    };
-    this.activeProjectState2 = {
-      active: 0,
-      progress: { value: 0 },
-      target: 0,
-      isTransitioning: { value: false },
-      min: 0,
-      max: 5,
-    };
-
-    this.setWorld();
-  }
-
-  init() {
     this.camera.position.set(0, this.initialHeight, 1);
     this.renderer.setPixelRatio(1);
     // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = false;
+
+    this.init();
   }
 
-  async setWorld() {
-    this.setBeforeComponenets();
+  async init() {
+    this.preloader = new Preloader();
+    this.parallax = new Parallax();
+    this.sky = new Sky();
+    this.post = new Post();
+    this.curlBubble = new CurlBubble();
+    this.water = new Water();
+    this.projectScreen = new ProjectScreen();
+    this.rotateAlert = new RotateAlert();
+
     this.resources = new Resources();
     this.addListeners();
     this.resize();
     this.render();
     await this.resources.load();
+    await new Promise((res) => {
+      window.addEventListener("click", () => {
+        res(null);
+      });
+    });
 
-    this.onAfterSetComponenets();
+    this.sky.onPreloaded();
+    this.projectScreen.onPreloaded();
 
-    this.setComponents();
+    this.projectsViewManager = new ProjectsViewManager();
+    this.projectDetailViewManager = new ProjectDetailViewManager();
+    this.aboutViewManager = new AboutViewManager();
+    this.homeViewManager = new HomeViewManager();
+    this.transitionManager = new TransitionManager();
 
-    this.setViewManagers();
+    this.projectsViewManager.onDataLoaded();
+    this.aboutViewManager.onPreloaded();
+    this.homeViewManager.onPreloaded();
 
-    this.onDataLoaded();
+    this.changeView(window.VIEW);
 
     this.setDebug();
 
@@ -158,79 +142,7 @@ export class World {
     window.addEventListener("pointermove", this.onPointermove.bind(this));
     window.addEventListener("pointerup", this.onPointerup.bind(this));
     window.addEventListener("pointerdown", this.onPointerdown.bind(this));
-    // window.addEventListener("pointerup", debounce(this.onPointerup.bind(this)));
-    // window.addEventListener(
-    //   "pointerdown",
-    //   debounce(this.onPointerdown.bind(this))
-    // );
     window.addEventListener("wheel", this.onWheel.bind(this));
-  }
-
-  setBeforeComponenets() {
-    this.preloader = new Preloader();
-    this.parallax = new Parallax({});
-    this.sky = new Sky();
-    this.post = new Post();
-    this.curlBubble = new CurlBubble();
-    this.water = new Water();
-    this.projectScreen = new ProjectScreen();
-  }
-
-  onAfterSetComponenets() {
-    this.sky.onPreloaded();
-    this.projectScreen.onPreloaded();
-  }
-
-  setComponents() {
-    this.projectTitles = new ProjectTitles();
-    this.projectFilters = new ProjectsFilters();
-    this.projectsNav = new ProjectsNav();
-    this.projectDetailOverlay = new ProjectDetailOverlay();
-    this.rotateAlert = new RotateAlert();
-  }
-
-  setViewManagers() {
-    this.projectsViewManager = new ProjectsViewManager();
-    this.projectDetailViewManager = new ProjectDetailViewManager();
-    this.aboutViewManager = new AboutViewManager();
-    this.homeViewManager = new HomeViewManager();
-    this.transitionManager = new TransitionManager();
-  }
-
-  onDataLoaded() {
-    this.projectsViewManager.onDataLoaded();
-
-    this.aboutViewManager.onPreloaded();
-    this.homeViewManager.onPreloaded();
-
-    const location = window.location.pathname;
-
-    this.pathViewMap = {
-      "/": View.Home,
-      "/projects": View.Projects,
-      "/about": View.About,
-    };
-
-    this.dataCount = this.resources.projects.length;
-
-    for (let i = 0; i < this.dataCount; i++) {
-      const key = this.resources.projects[i].path;
-      this.pathViewMap[key] = View.ProjectDetail;
-    }
-
-    const view = this.pathViewMap[location];
-
-    if (view === View.ProjectDetail) {
-      for (let i = 0; i < this.dataCount; i++) {
-        const dataPath = this.resources.projects[i].path;
-        if (location === dataPath) {
-          this.activeProjectState.active = i;
-          break;
-        }
-      }
-    }
-
-    this.changeView(view);
   }
 
   changeView(view: View) {
@@ -239,8 +151,9 @@ export class World {
       window.history.pushState({}, "", "/");
     }
     if (view === View.Projects) {
-      if ((this.view = View.Home)) this.transitionManager.homeToProjects();
-      else if (this.view === View.ProjectDetail)
+      if (this.view === View.Home) {
+        this.transitionManager.homeToProjects();
+      } else if (this.view === View.ProjectDetail)
         this.transitionManager.projectDetailToProjects();
       else if (this.view === View.About) {
         this.transitionManager.aboutToProjects();
@@ -253,17 +166,16 @@ export class World {
       if (this.view === View.Projects)
         this.transitionManager.projectsToProjectDetail();
       else this.projectDetailViewManager.show();
-      const path = this.resources.projects[this.activeProjectState.active].path;
+      const path = this.resources.projects[this.projectState.active].path;
       window.history.pushState({}, "", path);
     }
     if (view === View.About) {
       if (this.view === View.Projects) this.transitionManager.projectsToAbout();
       else this.transitionManager.projectsToAbout();
-      // this.view.projects && this.projectsViewManager.hide();
-      // this.view.home && this.homeViewManager.hide();
-      // this.view.projectDetail && this.projectDetailViewManager.hide();
-      // this.aboutViewManager.show();
       window.history.pushState({}, "", "/about");
+    }
+    if (view === View.Error) {
+      alert("heyy :-)");
     }
 
     this.view = view;
@@ -271,19 +183,6 @@ export class World {
 
   worldDebug() {
     this.debug = this.pane.addFolder({ title: "world", expanded: false });
-
-    this.debug
-      .addBlade({
-        view: "list",
-        options: [
-          { text: "home", value: "home" },
-          { text: "projects", value: "projects" },
-          { text: "projectDetail", value: "projectDetail" },
-          { text: "about", value: "about" },
-        ],
-        value: "view",
-      })
-      .on("change", ({ value }: any) => this.changeView(value));
 
     this.debugCamera();
 
@@ -328,7 +227,6 @@ export class World {
     this.curlBubble && this.curlBubble.setDebug();
     this.water && this.water.setDebug();
     this.projectScreen.setDebug();
-    this.projectTitles.setDebug();
     this.projectsViewManager.setDebug();
     this.projectDetailViewManager.setDebug();
     this.aboutViewManager.setDebug();

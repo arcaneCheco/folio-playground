@@ -4,6 +4,7 @@ import vertexShader from "@shaders/basicText/vertex.glsl";
 import fragmentShader from "@shaders/basicText/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
 import { World } from "@src/app";
+import { TextAlign } from "@types";
 
 export default class TextTexture {
   geometry;
@@ -19,7 +20,7 @@ export default class TextTexture {
     this.font = new World().resources.fonts.audiowideRegular;
     this.geometry = new TextGeometry();
     this.geometry.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: `
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
@@ -27,7 +28,7 @@ export default class TextTexture {
         Here is another paragraph. This probably won't be immediately visible but that is fine.\n\`\n
         Also, look this, Heyyy, hoo.
         `,
-      align: "left",
+      align: TextAlign.Left,
       lineHeight,
       lineWidth: 2 - padding.x * 2,
     });

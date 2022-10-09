@@ -1,12 +1,14 @@
-const warm = [
-  "#FF2000", 
-  "#FF5900", 
-  "#FE9100", 
-  "#FEFDFC", 
-  "#FEC194", 
-  "#FE9F5B"
+export type Palette = Array<string>;
+
+const warm: Palette = [
+  "#FF2000",
+  "#FF5900",
+  "#FE9100",
+  "#FEFDFC",
+  "#FEC194",
+  "#FE9F5B",
 ];
-const natural = [
+const natural: Palette = [
   "#FF6D00",
   "#FBF8EB",
   "#008B99",
@@ -15,7 +17,7 @@ const natural = [
   "#B80A01",
   "#480D07",
 ];
-const natural2 = [
+const natural2: Palette = [
   "#EF2006",
   "#350000",
   "#A11104",
@@ -24,7 +26,7 @@ const natural2 = [
   "#7B5614",
   "#F7F1AC",
 ];
-const circus = [
+const circus: Palette = [
   "#F62D62",
   "#FFFFFF",
   "#FDB600",
@@ -32,7 +34,7 @@ const circus = [
   "#544C98",
   "#ECACBC",
 ];
-const seaside = [
+const seaside: Palette = [
   "#FEB019",
   "#F46002",
   "#E1E7F1",
@@ -42,7 +44,7 @@ const seaside = [
   "#D23401",
   "#B0A12F",
 ];
-const warm2 = [
+const warm2: Palette = [
   "#FFFEFE",
   "#0D0211",
   "#FBCEA0",
@@ -52,7 +54,7 @@ const warm2 = [
   "#B93810",
   "#907996",
 ];
-const warm3 = [
+const warm3: Palette = [
   "#EDEBE7",
   "#13595A",
   "#DE1408",
@@ -61,7 +63,7 @@ const warm3 = [
   "#B7BDB3",
   "#9F9772",
 ];
-const circus2 = [
+const circus2: Palette = [
   "#F62D62",
   "#FFFFFF",
   "#FDB600",

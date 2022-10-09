@@ -22,4 +22,6 @@ html(lang="en")
       window.ASSETS = !{JSON.stringify(assets).replace(/<\//g, "<\\/")}
     script.
       window.FONTS = !{JSON.stringify(fonts).replace(/<\//g, "<\\/")}
+    script.
+      window.VIEW = !{JSON.stringify(view).replace(/<\//g, "<\\/")}
     script(type="module" src="app.js")

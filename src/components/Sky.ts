@@ -275,6 +275,7 @@ export class Sky {
   }
 
   onPreloaded() {
+    console.log("HEYYYY");
     this.material.uniforms.uGreyNoise.value =
       this.world.resources.assets.greyNoise;
   }

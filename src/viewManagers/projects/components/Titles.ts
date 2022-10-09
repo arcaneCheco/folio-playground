@@ -1,15 +1,16 @@
 import * as THREE from "three";
 import { World } from "@src/app";
 import vertexShader from "@shaders/projectTitle/vertex.glsl";
-import fragmentShader from "../shaders/projectTitle/fragment.glsl";
+import fragmentShader from "@shaders/projectTitle/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
 import TextGeometry from "@utils/TextGeometry";
+import { TextAlign } from "@types";
 
 /**
  * not sure if to show titles-reflection yet
  */
 
-export class ProjectTitles {
+export class Titles {
   world = new World();
   scene = this.world.scene;
   scroll = {
@@ -156,9 +157,9 @@ export class ProjectTitles {
   setTextGeometry(text) {
     const textG = new TextGeometry();
     textG.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: text,
-      align: "center",
+      align: TextAlign.Center,
       lineWidth: 5,
       lineHeight: 1,
     });

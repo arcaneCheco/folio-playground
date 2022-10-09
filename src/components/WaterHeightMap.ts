@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import RenderBuffer from "@utils/RenderBuffer";
+import { RenderBuffer } from "@utils/RenderBuffer";
 import vertexShader from "@shaders/waterHeightMap/vertex.glsl";
 import fragmentShader from "@shaders/waterHeightMap/fragment.glsl";
 

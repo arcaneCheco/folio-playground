@@ -1,7 +1,8 @@
-import * as THREE from "three";
+import { Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
 import { World } from "../app";
 import vertexShader from "../shaders/projectScreen/vertex.glsl";
 import fragmentShader from "../shaders/projectScreen/fragment.glsl";
+import { FolderApi } from "tweakpane";
 
 /*****
  * figure out how to update active project when transition is already in progress
@@ -14,19 +15,19 @@ import fragmentShader from "../shaders/projectScreen/fragment.glsl";
 export class ProjectScreen {
   world = new World();
   scene = this.world.scene;
-  activeProjectState = this.world.activeProjectState;
-  geometry = new THREE.PlaneGeometry(1, 1, 50, 1);
+  activeProjectState = this.world.projectState;
+  geometry = new PlaneGeometry(1, 1, 50, 1);
   uniforms: any;
-  material: any;
-  mesh: any;
-  debug: any;
-  scaleDebugs: any;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  debug: FolderApi;
+  scaleDebugs: number;
   data: any;
   constructor() {
     this.uniforms = {
       uTime: { value: 0 },
-      uProgress: this.world.activeProjectState2.progress,
-      uTransition: this.world.activeProjectState2.isTransitioning,
+      uProgress: this.world.projectState.progress,
+      uTransition: this.world.projectState.isTransitioning,
       uTransitionStart: { value: 0 },
       uTransitionDuration: { value: 0.5 },
       uImage1: {
@@ -35,18 +36,18 @@ export class ProjectScreen {
       uImage2: {
         value: null,
       },
-      uBorderColor: { value: new THREE.Vector3() },
+      uBorderColor: { value: new Vector3() },
       uAbstract: {
         value: null,
       },
-      uColor: { value: new THREE.Vector3() },
+      uColor: { value: new Vector3() },
       uVignetteIntensity: { value: 40 },
       uVignetteInfluence: { value: 0.5 },
       uAspect: { value: 1 },
       uIsCurved: { value: false },
       uOpacity: { value: 1 },
     };
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: this.uniforms,
@@ -55,7 +56,7 @@ export class ProjectScreen {
       // depthWrite: false,
     });
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh = new Mesh(this.geometry, this.material);
   }
 
   onPreloaded() {
@@ -178,7 +179,7 @@ export class ProjectScreen {
     this.fragmentDebug();
   }
 
-  onActiveChange(activeProject) {
+  onActiveChange(activeProject: number) {
     console.log("ONACTIVECHANGE");
     // this.uniforms.uColor.value = this.data[activeProject].color;
     this.uniforms.uTransition.value = true;

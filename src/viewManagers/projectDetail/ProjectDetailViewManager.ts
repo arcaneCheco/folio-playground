@@ -1,24 +1,29 @@
 import * as THREE from "three";
-import { World, View } from "../../app";
+import { Vector2 } from "three";
+import { World } from "@src/app";
+import { Overlay } from "./Overlay";
+import { View } from "@types";
 
 export class ProjectDetailViewManager {
   world = new World();
   scene = this.world.scene;
-  activeProjectState = this.world.activeProjectState;
+  activeProjectState = this.world.projectState;
   projectScreen = this.world.projectScreen;
-  projectDetailOverlay = this.world.projectDetailOverlay;
   raycaster = this.world.raycaster;
   rayOrigin = new THREE.Vector3(0, 0, 1);
   rayTarget = new THREE.Vector3();
+  overlay: Overlay;
   debug: any;
   down: any;
   target: any;
   hover: any;
-  constructor() {}
+  constructor() {
+    this.overlay = new Overlay();
+  }
 
   show() {
     this.scene.add(this.projectScreen.mesh);
-    this.scene.add(this.projectDetailOverlay.group);
+    this.scene.add(this.overlay.group);
     this.projectScreen.material.uniforms.uIsCurved.value = false;
     this.world.parallax.enabled = false;
     this.world.sky.mesh.rotation.y = Math.PI;
@@ -26,7 +31,7 @@ export class ProjectDetailViewManager {
 
   hide() {
     this.scene.remove(this.projectScreen.mesh);
-    this.scene.remove(this.projectDetailOverlay.group);
+    this.scene.remove(this.overlay.group);
   }
 
   setDebug() {
@@ -65,64 +70,44 @@ export class ProjectDetailViewManager {
   overlayDebug() {
     const overlay = this.debug.addFolder({ title: "overlay" });
 
-    overlay.addInput(
-      this.projectDetailOverlay.material.uniforms.uLineThickness,
-      "value",
-      {
-        min: 1,
-        max: 50,
-        step: 1,
-        label: "line thickness",
-      }
-    );
+    overlay.addInput(this.overlay.material.uniforms.uLineThickness, "value", {
+      min: 1,
+      max: 50,
+      step: 1,
+      label: "line thickness",
+    });
 
-    overlay.addInput(
-      this.projectDetailOverlay.material.uniforms.uLengthBottom,
-      "value",
-      {
-        min: 1,
-        max: 1000,
-        step: 1,
-        label: "length bottom",
-      }
-    );
+    overlay.addInput(this.overlay.material.uniforms.uLengthBottom, "value", {
+      min: 1,
+      max: 1000,
+      step: 1,
+      label: "length bottom",
+    });
 
-    overlay.addInput(
-      this.projectDetailOverlay.material.uniforms.uLengthCorner,
-      "value",
-      {
-        min: 1,
-        max: 500,
-        step: 1,
-        label: "length corner",
-      }
-    );
+    overlay.addInput(this.overlay.material.uniforms.uLengthCorner, "value", {
+      min: 1,
+      max: 500,
+      step: 1,
+      label: "length corner",
+    });
 
-    overlay.addInput(
-      this.projectDetailOverlay.material.uniforms.uCenterGap,
-      "value",
-      {
-        min: 0,
-        max: 400,
-        step: 1,
-        label: "center gap",
-      }
-    );
+    overlay.addInput(this.overlay.material.uniforms.uCenterGap, "value", {
+      min: 0,
+      max: 400,
+      step: 1,
+      label: "center gap",
+    });
 
-    overlay.addInput(
-      this.projectDetailOverlay.material.uniforms.uLengthTop,
-      "value",
-      {
-        min: 1,
-        max: 400,
-        step: 1,
-        label: "length top",
-      }
-    );
+    overlay.addInput(this.overlay.material.uniforms.uLengthTop, "value", {
+      min: 1,
+      max: 400,
+      step: 1,
+      label: "length top",
+    });
 
     const close = overlay.addFolder({ title: "closeButton" });
     close.addInput(
-      this.projectDetailOverlay.close.material.uniforms.uBorderThickness,
+      this.overlay.close.material.uniforms.uBorderThickness,
       "value",
       {
         min: 0,
@@ -133,7 +118,7 @@ export class ProjectDetailViewManager {
     );
 
     close.addInput(
-      this.projectDetailOverlay.close.material.uniforms.uBorderStrength,
+      this.overlay.close.material.uniforms.uBorderStrength,
       "value",
       {
         min: 0,
@@ -144,7 +129,7 @@ export class ProjectDetailViewManager {
     );
 
     close.addInput(
-      this.projectDetailOverlay.close.material.uniforms.uCrossThickness,
+      this.overlay.close.material.uniforms.uCrossThickness,
       "value",
       {
         min: 0,
@@ -154,19 +139,15 @@ export class ProjectDetailViewManager {
       }
     );
 
-    close.addInput(
-      this.projectDetailOverlay.close.material.uniforms.uCrossSize,
-      "value",
-      {
-        min: 0,
-        max: 100,
-        step: 1,
-        label: "cross size",
-      }
-    );
+    close.addInput(this.overlay.close.material.uniforms.uCrossSize, "value", {
+      min: 0,
+      max: 100,
+      step: 1,
+      label: "cross size",
+    });
 
     close.addInput(
-      this.projectDetailOverlay.close.material.uniforms.uBackgroundStrength,
+      this.overlay.close.material.uniforms.uBackgroundStrength,
       "value",
       {
         min: 0,
@@ -177,7 +158,7 @@ export class ProjectDetailViewManager {
     );
   }
 
-  onPointermove(mouse) {
+  onPointermove(mouse: Vector2) {
     if (this.down) return;
     this.projectScreen.onPointermove();
 
@@ -185,10 +166,10 @@ export class ProjectDetailViewManager {
     this.raycaster.set(this.rayOrigin, this.rayTarget);
 
     const [hit] = this.raycaster.intersectObjects([
-      this.projectDetailOverlay.close,
-      this.projectDetailOverlay.prevButton,
-      this.projectDetailOverlay.nextButton,
-      ...this.projectDetailOverlay.visitGroup.children,
+      this.overlay.close,
+      this.overlay.prevButton,
+      this.overlay.nextButton,
+      ...this.overlay.visitGroup.children,
     ]);
 
     if (hit) {
@@ -281,7 +262,7 @@ export class ProjectDetailViewManager {
       // this.projectScreen.resizeProjectDetailView(screen);
     }
     //resize overlay
-    this.projectDetailOverlay.onResize();
+    this.overlay.onResize();
   }
 
   onWheel() {}

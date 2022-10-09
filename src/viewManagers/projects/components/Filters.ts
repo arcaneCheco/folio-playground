@@ -5,8 +5,9 @@ import vertexUnderline from "@shaders/projectFilters/underline/vertex.glsl";
 import fragmentUnderline from "@shaders/projectFilters/underline/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
+import { TextAlign } from "@types";
 
-export class ProjectsFilters {
+export class Filters {
   outerGroup = new THREE.Group();
   group = new THREE.Group();
   size = 150;
@@ -38,9 +39,9 @@ export class ProjectsFilters {
     this.filters.map((text, i) => {
       let geometry = new TextGeometry();
       geometry.setText({
-        font: this.font.data,
+        fontData: this.font.data,
         text,
-        align: "right",
+        align: TextAlign.Right,
       });
 
       if (text === "Publications") {

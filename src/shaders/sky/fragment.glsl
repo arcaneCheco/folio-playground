@@ -23,7 +23,6 @@
 #define TAU 2. * PI
 
 uniform float uTime;
-// uniform vec3 uCameraPos;
 varying vec3 vWorldPosition;
 
 // sky
@@ -57,7 +56,6 @@ uniform float uMoonGradient;
 
 varying vec2 vUv;
 varying vec3 vOrigin;
-// varying vec3 vDirection;
 
 vec2 rotUv(vec2 uv, float a) {
     float c = cos(a);

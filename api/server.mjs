@@ -64,14 +64,39 @@ const handleRequest = async () => {
   };
 };
 
-app.get(
-  ["/", "/about", "/projects", "/projects/:projectName"],
-  async (req, res) => {
-    const data = await handleRequest();
-    // const data = dummyData;
-    res.render("index", data);
+const viewResolver = (url, projectsArray) => {
+  let view = "";
+  switch (true) {
+    case url === "/projects" || path === "/projects/":
+      view = "Projects";
+      break;
+    case url === "/":
+      view = "Home";
+      break;
+    case url === "/about" || url === "/about/":
+      view = "About";
+      break;
+    case projectsArray
+      .map(({ path }) => [path, path + "/"])
+      .flat()
+      .includes(url):
+      view = "ProjectDetail";
+      break;
+    default:
+      view = "404";
+      break;
   }
-);
+  return view;
+};
+
+app.get("*", async (req, res) => {
+  const data = await handleRequest();
+
+  const { path } = req;
+  const view = viewResolver(path, data.projects);
+  // const data = dummyData;
+  res.render("index", { ...data, view });
+});
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

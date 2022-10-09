@@ -1,28 +1,27 @@
-import { World, View } from "@src//app";
+import { World } from "@src//app";
 import * as THREE from "three";
 import { Contact, Title, Nav } from "./components";
+import { _HomeViewManager, View } from "@types";
+import { FolderApi } from "tweakpane";
 
-export class HomeViewManager {
+export class HomeViewManager implements _HomeViewManager {
   world = new World();
   scene = this.world.scene;
   curlBubble = this.world.curlBubble;
+  raycaster = this.world.raycaster;
   title = new Title();
   contact = new Contact();
   nav = new Nav();
-  raycaster = this.world.raycaster;
   rayOrigin = new THREE.Vector3(0, 0, 1);
   rayTarget = new THREE.Vector3();
-  resizeSettings: any;
-  debug: any;
-  constructor() {
-    this.resizeSettings = {
-      offsetTop: 0.2,
-      posX: -0.3,
-      scale: 0.75,
-      contactRatio: 0.8,
-      navSize: 0.5,
-    };
-  }
+  resizeSettings = {
+    offsetTop: 0.2,
+    posX: -0.3,
+    scale: 0.75,
+    contactRatio: 0.8,
+    navSize: 0.5,
+  };
+  debug: FolderApi;
 
   onPreloaded() {
     const font = this.world.resources.fonts.audiowideRegular;

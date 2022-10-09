@@ -1,25 +1,26 @@
-import { FontData } from "@components/Resources";
+import {
+  FontData,
+  TextAlign,
+  _Text,
+  _TextLine,
+  TextBufferAttributes,
+  FontChar,
+} from "@types";
 
-enum TextAlign {
-  Left = "left",
-  Right = "right",
-  Center = "center",
-}
-
-interface Props {
-  font: FontData;
+export interface TextProps {
+  fontData: FontData;
   text: string;
-  size: number;
-  letterSpacing: number;
-  wordSpacing: number;
-  wordBreak: boolean;
-  lineWidth: number;
-  align: TextAlign;
-  lineHeight: number;
+  size?: number;
+  letterSpacing?: number;
+  wordSpacing?: number;
+  wordBreak?: boolean;
+  lineWidth?: number;
+  align?: TextAlign;
+  lineHeight?: number;
 }
 
-export default class Text {
-  font: FontData;
+export class Text implements _Text {
+  fontData: FontData;
   text: string;
   size: number;
   letterSpacing: number;
@@ -30,33 +31,23 @@ export default class Text {
   lineHeight: number;
   newline = /\n/;
   whitespace = /\s/;
-  glyphs: any;
+  buffers: Record<TextBufferAttributes, Float32Array | Uint16Array>;
+  glyphs: Record<string, FontChar>;
   scale: number;
-  buffers: any;
-  lines: any;
-  numLines: any;
-  height: any;
-  width: any;
-  constructor({
-    font,
-    text,
-    size = 1,
-    letterSpacing = 0,
-    wordSpacing = 0,
-    wordBreak = false,
-    lineWidth = Infinity,
-    align = TextAlign.Left,
-    lineHeight = 1.4,
-  }: Props) {
-    this.font = font;
-    this.text = text;
-    this.size = size;
-    this.letterSpacing = letterSpacing;
-    this.wordSpacing = wordSpacing;
-    this.wordBreak = wordBreak;
-    this.lineWidth = lineWidth;
-    this.align = align;
-    this.lineHeight = lineHeight;
+  lines: Array<_TextLine>;
+  numLines: number;
+  height: number;
+  width: number;
+  constructor(props: TextProps) {
+    this.fontData = props.fontData;
+    this.text = props.text;
+    this.size = props.size || 1;
+    this.letterSpacing = props.letterSpacing || 0;
+    this.wordSpacing = props.wordSpacing || 0;
+    this.wordBreak = props.wordBreak || false;
+    this.lineWidth = props.lineWidth || Infinity;
+    this.align = props.align || TextAlign.Left;
+    this.lineHeight = props.lineHeight || 1.4;
 
     this.parseFont();
     this.createGeometry();
@@ -66,12 +57,12 @@ export default class Text {
 
   parseFont() {
     this.glyphs = {};
-    this.font.chars.forEach((d) => (this.glyphs[d.char] = d));
+    this.fontData.chars.forEach((d) => (this.glyphs[d.char] = d));
   }
 
   createGeometry() {
-    const fontHeight = this.font.common.lineHeight;
-    const baseline = this.font.common.base;
+    const fontHeight = this.fontData.common.lineHeight;
+    const baseline = this.fontData.common.base;
     const heightA = this.glyphs["A"].height;
 
     // Use baseline so that actual text height is as close to 'size' value as possible
@@ -108,7 +99,7 @@ export default class Text {
 
     let wordCursor = 0;
     let wordWidth = 0;
-    let line = new Line();
+    let line = new TextLine();
 
     this.lines.push(line);
 
@@ -130,7 +121,7 @@ export default class Text {
       // If newline char, skip to next line
       if (this.newline.test(char)) {
         cursor++;
-        line = new Line();
+        line = new TextLine();
         this.lines.push(line);
         wordCursor = cursor;
         wordWidth = 0;
@@ -176,7 +167,7 @@ export default class Text {
         if (this.wordBreak && line.glyphs.length > 1) {
           line.width -= advance;
           line.glyphs.pop();
-          line = new Line();
+          line = new TextLine();
           this.lines.push(line);
           wordCursor = cursor;
           wordWidth = 0;
@@ -188,7 +179,7 @@ export default class Text {
           line.glyphs.splice(-numGlyphs, numGlyphs);
           cursor = wordCursor;
           line.width -= wordWidth;
-          line = new Line();
+          line = new TextLine();
           this.lines.push(line);
           wordCursor = cursor;
           wordWidth = 0;
@@ -205,9 +196,9 @@ export default class Text {
     if (!line.width) this.lines.pop();
   }
 
-  getKernPairOffset(id1, id2) {
-    for (let i = 0; i < this.font.kernings.length; i++) {
-      let k = this.font.kernings[i];
+  getKernPairOffset(id1: number, id2: number) {
+    for (let i = 0; i < this.fontData.kernings.length; i++) {
+      let k = this.fontData.kernings[i];
       if (k.first < id1) continue;
       if (k.second < id2) continue;
       if (k.first > id1) return 0;
@@ -218,8 +209,8 @@ export default class Text {
   }
 
   populateBuffers() {
-    const texW = this.font.common.scaleW;
-    const texH = this.font.common.scaleH;
+    const texW = this.fontData.common.scaleW;
+    const texH = this.fontData.common.scaleH;
 
     // For all fonts tested, a little offset was needed to be right on the baseline, hence 0.07.
     let xOffset = 0;
@@ -286,14 +277,14 @@ export default class Text {
     this.populateBuffers();
   }
 
-  update(text) {
+  update(text: string) {
     this.text = text;
     this.createGeometry();
     this.layout();
     this.populateBuffers();
   }
 
-  updateSize(size, lineWidth = undefined, lineHeight = this.lineHeight) {
+  updateSize(size: number, lineHeight = this.lineHeight, lineWidth?: number) {
     if (lineWidth) this.lineWidth = lineWidth;
     this.lineHeight = lineHeight;
     this.size = size;
@@ -304,11 +295,7 @@ export default class Text {
   }
 }
 
-class Line {
-  width;
-  glyphs;
-  constructor() {
-    this.width = 0;
-    this.glyphs = [];
-  }
+class TextLine implements _TextLine {
+  width = 0;
+  glyphs: Array<[FontChar, number]> = [];
 }

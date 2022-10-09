@@ -1,44 +1,34 @@
-import { PerspectiveCamera, Vector2, Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 import { World } from "@src/app";
+import { _Parallax } from "@types";
 
-interface Props {
+interface ParallaxProps {
   lerp?: number;
   magX?: number;
   magY?: number;
   enabled?: boolean;
-  direction?: number;
+  direction?: 1 | -1;
   target?: Vector2;
 }
 
-export class Parallax {
+export class Parallax implements _Parallax {
+  world = new World();
+  camera = this.world.camera;
+  initialHeight = this.world.initialHeight;
+  mouse = this.world.mouse;
   lerp: number;
   magX: number;
   magY: number;
   enabled: boolean;
-  direction: number;
+  direction: 1 | -1;
   target: Vector2;
-  world: World;
-  camera: PerspectiveCamera;
-  initialHeight: number;
-  mouse: Vector2;
-  constructor({
-    lerp = 0.01,
-    magX = 0.18,
-    magY = 0.3,
-    enabled = true,
-    direction = 1,
-    target = new Vector2(),
-  }: Props) {
-    this.world = new World();
-    this.camera = this.world.camera;
-    this.initialHeight = this.world.initialHeight;
-    this.mouse = this.world.mouse;
-    this.lerp = lerp;
-    this.magX = magX;
-    this.magY = magY;
-    this.enabled = enabled;
-    this.direction = direction;
-    this.target = target;
+  constructor(props?: ParallaxProps) {
+    this.lerp = props?.lerp || 0.01;
+    this.magX = props?.magX || 0.18;
+    this.magY = props?.magY || 0.3;
+    this.enabled = props?.enabled || true;
+    this.direction = props?.direction || 1;
+    this.target = props?.target || new Vector2();
   }
 
   updateTarget() {
