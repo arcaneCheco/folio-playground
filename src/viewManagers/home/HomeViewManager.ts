@@ -1,8 +1,8 @@
 import { World } from "@src//app";
-import * as THREE from "three";
 import { Contact, Title, Nav } from "./components";
 import { _HomeViewManager, View } from "@types";
 import { FolderApi } from "tweakpane";
+import { Vector2, Vector3 } from "three";
 
 export class HomeViewManager implements _HomeViewManager {
   world = new World();
@@ -12,8 +12,8 @@ export class HomeViewManager implements _HomeViewManager {
   title = new Title();
   contact = new Contact();
   nav = new Nav();
-  rayOrigin = new THREE.Vector3(0, 0, 1);
-  rayTarget = new THREE.Vector3();
+  rayOrigin = new Vector3(0, 0, 1);
+  rayTarget = new Vector3();
   resizeSettings = {
     offsetTop: 0.2,
     posX: -0.3,
@@ -22,15 +22,6 @@ export class HomeViewManager implements _HomeViewManager {
     navSize: 0.5,
   };
   debug: FolderApi;
-
-  onPreloaded() {
-    const font = this.world.resources.fonts.audiowideRegular;
-    this.contact.onPreloaded({
-      font,
-      ghostIcon: this.world.resources.assets.ghostIcon,
-    });
-    this.nav.onPreloaded(font);
-  }
 
   setDebug() {
     this.debug = this.world.pane.addFolder({
@@ -74,7 +65,7 @@ export class HomeViewManager implements _HomeViewManager {
       .on("change", () => this.resize());
   }
 
-  onPointermove(e, mouse) {
+  onPointermove(e: PointerEvent, mouse: Vector2) {
     this.rayTarget.set(mouse.x, mouse.y, -1);
     this.raycaster.set(this.rayOrigin, this.rayTarget.normalize());
 

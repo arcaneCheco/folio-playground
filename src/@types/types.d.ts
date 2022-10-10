@@ -1,10 +1,9 @@
 import { World } from "@src/app";
-import { Preloader } from "@src/components";
 import { TextProps } from "@src/utils/Text";
-import { Contact, Nav, Title } from "@src/viewManagers/home/components";
 import {
   BufferGeometry,
   Data3DTexture,
+  Group,
   IUniform,
   Mesh,
   PerspectiveCamera,
@@ -150,6 +149,20 @@ export interface _TextGeometry extends BufferGeometry {
   setText(opt: TextProps): void;
 }
 
+export interface _TitleMesh extends Mesh<_TextGeometry, ShaderMaterial> {
+  uniforms: Record<string, IUniform>;
+  setTextBoundingUv(baseWidth: number): void;
+  setGeometrySpecs({
+    text,
+    fontData,
+    baseWidth,
+  }: {
+    text: string;
+    fontData: FontData;
+    baseWidth: number;
+  }): void;
+}
+
 export interface _RenderBuffer {
   size: number;
   texture: IUniform<Texture | null>;
@@ -207,19 +220,33 @@ export interface _CurlBubble {
   scale: number;
 }
 
+export interface _HomeTitle {
+  world: _World;
+  scene: Scene;
+  group: Group;
+  raycaster: Raycaster;
+  renderer: WebGLRenderer;
+  camera: PerspectiveCamera;
+  flowmap: _Flowmap;
+  textTexture: _TextTexture;
+  aspect: number;
+  geometry: PlaneGeometry;
+  material: ShaderMaterial;
+  mesh: Mesh;
+}
+
 export interface _HomeViewManager {
-  world: World;
+  world: _World;
   scene: Scene;
   curlBubble: _CurlBubble;
-  title: Title;
-  contact: Contact;
-  nav: Nav;
+  title: _HomeTitle;
+  contact: _HomeContact;
+  nav: _HomeNav;
   raycaster: Raycaster;
   rayOrigin: Vector3;
   rayTarget: Vector3;
   resizeSettings: Record<string, number>;
   debug: FolderApi;
-  onPreloaded(): void;
   setDebug(): void;
 }
 
@@ -247,7 +274,7 @@ export interface _Resources {
   projects: Array<Project>;
   fonts: Record<string, Font>;
   assets: Record<string, Texture>;
-  preloader: Preloader;
+  preloader: _Preloader;
   onAssetLoaded(): void;
   loadFonts(): Promise<void>;
   loadProjects(): Promise<void>;
@@ -278,17 +305,159 @@ export interface _Post {}
 
 export interface _Sky {}
 
-export interface _ProjectScreen {}
+export interface _ProjectScreen {
+  world: _World;
+  scene: Scene;
+  projectState: ProjectState;
+  data: Array<Project>;
+  geometry: PlaneGeometry;
+  uniforms: Record<string, IUniform>;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  debug: FolderApi;
+}
 
 export interface _RotateAlert {}
 
 export interface _TransitionManager {}
 
-export interface _ProjectsViewManager {}
+export interface _GradientLinear {}
+
+export interface _AboutOverlay {
+  socialIcons: _AboutSocialIcons;
+  footer: _AboutFooter;
+  nav: _AboutNav;
+  group: Group;
+}
+
+export interface _AboutFooter {
+  world: _World;
+  font: Font;
+  group: Group;
+  textMaterial: ShaderMaterial;
+  iconGeometry: PlaneGeometry;
+  iconMaterial: ShaderMaterial;
+  locationGroup: Group;
+  location: Mesh;
+  locationIcon: Mesh;
+  cvGroup: Group;
+  cv: Mesh;
+  cvIcon: Mesh;
+  emailGroup: Group;
+  email: Mesh;
+  emailIcon: Mesh;
+  line: Mesh;
+}
+
+export interface _AboutSocialIcons {
+  world: _World;
+  group: Group;
+  iconMaterial: ShaderMaterial;
+  geometry: PlaneGeometry;
+  twitter: Mesh<PlaneGeometry, ShaderMaterial>;
+  github: Mesh<PlaneGeometry, ShaderMaterial>;
+  linkedin: Mesh<PlaneGeometry, ShaderMaterial>;
+}
+
+export interface _AboutNav {
+  group: Group;
+  font: Font;
+  material: ShaderMaterial;
+  geometry: _TextGeometry;
+  mesh: Mesh;
+}
+
+export interface Scroll {
+  current: number;
+  target: number;
+  active: boolean;
+  limitTop: number;
+  limitBottom: number;
+}
+
+export interface _ProjectTitles {
+  world: _World;
+  scene: Scene;
+  scroll: Scroll;
+  gap: number;
+  baseWidth: number;
+  group: Group;
+  outerGroup: Group;
+  initialScrollOffset: number;
+  data: Array<Project>;
+  font: Font;
+  meshes: Array<_TitleMesh>;
+  debug: FolderApi;
+}
+
+export interface _ProjectsNav {}
+
+export interface _ProjectsFilters {}
+
+export interface _ProjectsViewManager {
+  world: _World;
+  scene: Scene;
+  projectScreen: _ProjectScreen;
+  projectState: ProjectState;
+  activeFilter?: string;
+  sky: _Sky;
+  water: _Water;
+  timeline: GSAPTimeline;
+  raycaster: Raycaster;
+  ndcRaycaster: Raycaster;
+  rayOrigin: Vector3;
+  rayTarget: Vector3;
+  colorGradient: _GradientLinear;
+  debug: FolderApi;
+  titlesTimeline: GSAPTimeline;
+  hover: boolean;
+  hoverTitles: boolean;
+  down: boolean;
+  target: string;
+  titleIndex: number;
+  titles: _ProjectTitles;
+  nav: _ProjectsNav;
+  filters: _ProjectsFilters;
+}
 
 export interface _ProjectDetailViewManager {}
 
-export interface _AboutViewManager {}
+export interface _AboutScreen {
+  world: _World;
+  geometry: PlaneGeometry;
+  textTexture: _AboutTextTexture;
+  aspect: number;
+  material: ShaderMaterial;
+  mesh: Mesh;
+}
+
+export interface _AboutGreeting {
+  world: _World;
+  font: Font;
+  group: Group;
+  textMaterial: ShaderMaterial;
+  geometry1: _TextGeometry;
+  geometry2: _TextGeometry;
+  mesh1: Mesh;
+  mesh2: Mesh;
+}
+
+export interface _AboutViewManager {
+  world: _World;
+  scene: Scene;
+  renderer: WebGLRenderer;
+  camera: PerspectiveCamera;
+  screen: _AboutScreen;
+  greeting: _AboutGreeting;
+  overlay: _AboutOverlay;
+  raycaster: Raycaster;
+  rayOrigin: Vector3;
+  rayTarget: Vector3;
+  debug: FolderApi;
+  hover: boolean;
+  target: string;
+  down: boolean;
+}
 
 export interface _Preloader {}
 
@@ -325,4 +494,64 @@ export interface _World {
   debug: FolderApi;
   pane: FolderApi;
   paneContainer: Pane;
+}
+
+export interface Padding {
+  x: number;
+  y: number;
+}
+
+export interface _TextTexture {
+  font: Font;
+  geometry: _TextGeometry;
+  geometryAspect: number;
+  scale: number;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  renderTarget: WebGLRenderTarget;
+  texture: IUniform<Texture>;
+  scene: Scene;
+  lineHeight: number;
+  padding: Padding;
+}
+
+export interface _AboutTextTexture {
+  font: Font;
+  geometry: _TextGeometry;
+  lineHeight: number;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  renderTarget: WebGLRenderTarget;
+  texture: IUniform<Texture>;
+  scene: Scene;
+  initialOffset: number;
+  maxScroll: number;
+}
+
+export interface _HomeContact {
+  world: _World;
+  group: Group;
+  font: Font;
+  textMaterial: ShaderMaterial;
+  iconMaterial: ShaderMaterial;
+  email: Mesh;
+  touchPlane: Mesh;
+  icon: Mesh;
+  cta: Mesh;
+  hover: boolean;
+  down: boolean;
+  resize(sizes: any): void;
+  update(time: number): void;
+}
+
+export interface _HomeNav {
+  world: _World;
+  group: Group;
+  textMaterial: ShaderMaterial;
+  underlineMaterial: ShaderMaterial;
+  geometry: _TextGeometry;
+  mesh: Mesh;
+  font: Font;
+  hover: boolean;
+  down: boolean;
 }

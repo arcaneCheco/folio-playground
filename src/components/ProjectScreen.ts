@@ -1,8 +1,9 @@
-import { Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
-import { World } from "../app";
+import { IUniform, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
+import { World } from "@src/app";
 import vertexShader from "../shaders/projectScreen/vertex.glsl";
 import fragmentShader from "../shaders/projectScreen/fragment.glsl";
 import { FolderApi } from "tweakpane";
+import { _ProjectScreen } from "@types";
 
 /*****
  * figure out how to update active project when transition is already in progress
@@ -12,56 +13,43 @@ import { FolderApi } from "tweakpane";
  *    set width to be about half the screen width;
  */
 
-export class ProjectScreen {
+export class ProjectScreen implements _ProjectScreen {
   world = new World();
   scene = this.world.scene;
-  activeProjectState = this.world.projectState;
+  projectState = this.world.projectState;
+  data = this.world.resources.projects;
   geometry = new PlaneGeometry(1, 1, 50, 1);
-  uniforms: any;
-  material: ShaderMaterial;
-  mesh: Mesh;
+  uniforms: Record<string, IUniform> = {
+    uTime: { value: 0 },
+    uProgress: this.world.projectState.progress,
+    uTransition: this.world.projectState.isTransitioning,
+    uTransitionStart: { value: 0 },
+    uTransitionDuration: { value: 0.5 },
+    uImage1: {
+      value: this.data[this.projectState.active].texture,
+    },
+    uImage2: {
+      value: null,
+    },
+    uBorderColor: { value: new Vector3() },
+    uAbstract: {
+      value: this.world.resources.assets.abstract,
+    },
+    uColor: { value: new Vector3() },
+    uVignetteIntensity: { value: 40 },
+    uVignetteInfluence: { value: 0.5 },
+    uAspect: { value: 1 },
+    uIsCurved: { value: false },
+    uOpacity: { value: 1 },
+  };
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: this.uniforms,
+    transparent: true,
+  });
+  mesh = new Mesh(this.geometry, this.material);
   debug: FolderApi;
-  scaleDebugs: number;
-  data: any;
-  constructor() {
-    this.uniforms = {
-      uTime: { value: 0 },
-      uProgress: this.world.projectState.progress,
-      uTransition: this.world.projectState.isTransitioning,
-      uTransitionStart: { value: 0 },
-      uTransitionDuration: { value: 0.5 },
-      uImage1: {
-        value: null,
-      },
-      uImage2: {
-        value: null,
-      },
-      uBorderColor: { value: new Vector3() },
-      uAbstract: {
-        value: null,
-      },
-      uColor: { value: new Vector3() },
-      uVignetteIntensity: { value: 40 },
-      uVignetteInfluence: { value: 0.5 },
-      uAspect: { value: 1 },
-      uIsCurved: { value: false },
-      uOpacity: { value: 1 },
-    };
-    this.material = new ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: this.uniforms,
-      transparent: true,
-      // depthTest: false,
-      // depthWrite: false,
-    });
-
-    this.mesh = new Mesh(this.geometry, this.material);
-  }
-
-  onPreloaded() {
-    this.uniforms.uAbstract.value = this.world.resources.assets.abstract;
-  }
 
   positionDebug() {
     const position = this.debug.addFolder({
@@ -109,15 +97,16 @@ export class ProjectScreen {
 
   scaleDebug() {
     const scale = this.debug.addFolder({ title: "scale", expanded: false });
-    this.scaleDebugs = 1;
+
+    const scaleDebugs = { value: 1 };
     scale
-      .addInput(this, "scaleDebugs", {
+      .addInput(scaleDebugs, "value", {
         min: 0,
         max: 2,
         step: 0.001,
         label: "uniform scaling",
       })
-      .on("change", () => this.mesh.scale.setScalar(this.scaleDebugs));
+      .on("change", () => this.mesh.scale.setScalar(scaleDebugs.value));
     scale.addInput(this.mesh.scale, "x", {
       min: -2,
       max: 2,
@@ -180,8 +169,6 @@ export class ProjectScreen {
   }
 
   onActiveChange(activeProject: number) {
-    console.log("ONACTIVECHANGE");
-    // this.uniforms.uColor.value = this.data[activeProject].color;
     this.uniforms.uTransition.value = true;
     this.uniforms.uImage2.value = this.data[activeProject].texture;
     this.uniforms.uTransitionStart.value = this.world.time;

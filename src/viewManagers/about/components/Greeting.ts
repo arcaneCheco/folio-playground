@@ -1,70 +1,46 @@
-import * as THREE from "three";
+import { Group, Matrix4, Mesh, ShaderMaterial } from "three";
+import { World } from "@src/app";
 import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/aboutGreeting/vertex.glsl";
 import fragmentShader from "@shaders/aboutGreeting/fragment.glsl";
+import { TextAlign, _AboutGreeting } from "@types";
 
-export class Greeting {
-  group = new THREE.Group();
-  textMaterial: any;
-  g1Width: any;
-  mesh1: any;
-  mesh2: any;
-  font;
-  geometry1;
-  geometry2;
+export class Greeting implements _AboutGreeting {
+  world = new World();
+  font = this.world.resources.fonts.audiowideRegular;
+  group = new Group();
+  textMaterial = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+  });
+  geometry1 = new TextGeometry();
+  geometry2 = new TextGeometry();
+  mesh1 = new Mesh(this.geometry1, this.textMaterial);
+  mesh2 = new Mesh(this.geometry2, this.textMaterial);
   constructor() {
     this.group.renderOrder = 10000;
-    this.textMaterial = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: null },
-      },
-      transparent: true,
-      depthWrite: false,
-      depthTest: false,
-    });
-
-    this.geometry1 = new TextGeometry();
-
-    this.geometry1.applyMatrix4(new THREE.Matrix4().makeRotationZ(Math.PI / 2));
-    this.geometry1.applyMatrix4(
-      new THREE.Matrix4().makeTranslation(-0.5, 0, 0)
-    );
-
-    this.mesh1 = new THREE.Mesh(this.geometry1, this.textMaterial);
-
     this.group.add(this.mesh1);
-
-    this.geometry2 = new TextGeometry();
-
-    this.geometry2.applyMatrix4(
-      new THREE.Matrix4().makeTranslation(0, -0.5, 0)
-    );
-
-    this.mesh2 = new THREE.Mesh(this.geometry2, this.textMaterial);
-
     this.group.add(this.mesh2);
-  }
-
-  onPreloaded(font) {
-    this.font = font;
-    this.textMaterial.uniforms.tMap.value = this.font.map;
 
     this.geometry1.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "Thanks",
-      align: "right",
+      align: TextAlign.Right,
     });
-
-    this.geometry1.computeBoundingBox();
-    this.g1Width =
-      this.geometry1.boundingBox!.max.x - this.geometry1.boundingBox!.min.x;
+    this.geometry1.applyMatrix4(new Matrix4().makeRotationZ(Math.PI / 2));
+    this.geometry1.applyMatrix4(new Matrix4().makeTranslation(-0.5, 0, 0));
 
     this.geometry2.setText({
-      font: this.font.data,
+      fontData: this.font.data,
       text: "for stopping by!",
     });
+    this.geometry2.applyMatrix4(new Matrix4().makeTranslation(0, -0.5, 0));
   }
 
   onResize(sizes) {

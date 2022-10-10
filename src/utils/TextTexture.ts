@@ -1,38 +1,50 @@
 import {
   HalfFloatType,
+  IUniform,
   LinearFilter,
   Mesh,
   PerspectiveCamera,
   RGBAFormat,
   Scene,
   ShaderMaterial,
+  Texture,
   WebGLRenderer,
   WebGLRenderTarget,
 } from "three";
 import TextGeometry from "./TextGeometry";
 import vertexShader from "@shaders/basicText/vertex.glsl";
 import fragmentShader from "@shaders/basicText/fragment.glsl";
-import { World } from "@src/app";
-import { TextAlign } from "@types";
+import { Font, TextAlign, _TextGeometry, _TextTexture, Padding } from "@types";
 
-export default class TextTexture {
-  font;
-  geometry;
-  geometryAspect;
-  scale;
-  material;
-  mesh;
-  texture;
-  renderTarget;
-  scene;
-  constructor({ lineHeight = 1.4, padding = 0.25 }) {
-    this.font = new World().resources.fonts.audiowideRegular;
-    this.geometry = new TextGeometry();
+interface TextTextureProps {
+  lineHeight?: number;
+  padding?: Padding;
+  font: Font;
+  text: string;
+}
+
+export default class TextTexture implements _TextTexture {
+  font: Font;
+  geometry = new TextGeometry();
+  geometryAspect: number;
+  scale: number;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  renderTarget: WebGLRenderTarget;
+  texture: IUniform<Texture>;
+  scene: Scene;
+  lineHeight: number;
+  padding: Padding;
+  constructor(props: TextTextureProps) {
+    this.font = props.font;
+    this.lineHeight = props.lineHeight || 1.4;
+    this.padding = props.padding || { x: 0.25, y: 0.25 };
+
     this.geometry.setText({
       fontData: this.font.data,
-      text: "Creative\nWeb\nDeveloper",
+      text: props.text,
       align: TextAlign.Left,
-      lineHeight,
+      lineHeight: this.lineHeight,
       letterSpacing: -0.05,
     });
 
@@ -47,7 +59,7 @@ export default class TextTexture {
 
     this.scale = 2 / width;
 
-    this.geometry.text.updateSize(this.scale);
+    this.geometry.text.updateSize(this.scale, this.lineHeight);
 
     this.material = new ShaderMaterial({
       vertexShader,
@@ -61,12 +73,11 @@ export default class TextTexture {
     this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.scale.y = this.geometryAspect;
 
-    this.mesh.scale.multiplyScalar(1 - padding);
+    this.mesh.scale.multiplyScalar(1 - this.padding.x);
 
-    // this.mesh.scale.set
-
-    this.mesh.position.x = -1 + padding;
-    this.mesh.position.y = 1 - padding - this.scale * 0.5 * this.geometryAspect;
+    this.mesh.position.x = -1 + this.padding.x;
+    this.mesh.position.y =
+      1 - this.padding.y - this.scale * 0.5 * this.geometryAspect;
 
     this.renderTarget = new WebGLRenderTarget(512, 512, {
       depthBuffer: false,

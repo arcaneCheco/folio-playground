@@ -1,41 +1,31 @@
-import * as THREE from "three";
+import { Group, Matrix4, Mesh, PlaneGeometry, ShaderMaterial } from "three";
 import vertexUnderline from "@shaders/aboutNav/underline/vertex.glsl";
 import fragmentUnderline from "@shaders/aboutNav/underline/fragment.glsl";
 import vertexShader from "@shaders/aboutNav/text/vertex.glsl";
 import fragmentShader from "@shaders/aboutNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
-import { TextAlign } from "@types";
+import { TextAlign, _AboutNav } from "@types";
+import { World } from "@src/app";
 
-export class Nav {
-  group = new THREE.Group();
-  material: any;
-  geometry: any;
-  mesh: any;
-  font: any;
+export class Nav implements _AboutNav {
+  group = new Group();
+  font = new World().resources.fonts.audiowideRegular;
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+  });
+  geometry = new TextGeometry();
+  mesh = new Mesh(this.geometry, this.material);
   constructor() {
-    this.group.position.set(-0.85, 0.5, 0);
-
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: null },
-      },
-      transparent: true,
-    });
-
-    this.geometry = new TextGeometry();
-
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.name = "aboutNav";
-
+    this.group.position.set(-0.85, 0.5, 0);
     this.group.rotateZ(Math.PI / 2);
     this.group.add(this.mesh);
-  }
 
-  onPreloaded(font) {
-    this.font = font;
-    this.material.uniforms.tMap.value = this.font.map;
     this.geometry.setText({
       fontData: this.font.data,
       text: "View Projects",
@@ -44,16 +34,15 @@ export class Nav {
 
     this.geometry.computeBoundingBox();
     const width =
-      this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+      this.geometry.boundingBox!.max.x - this.geometry.boundingBox!.min.x;
     this.geometry.applyMatrix4(
-      new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
+      new Matrix4().makeScale(1 / width, 1 / width, 1)
     );
-    const underline = new THREE.Mesh(
-      new THREE.PlaneGeometry(1, 0.1 / width),
-      new THREE.ShaderMaterial({
+    const underline = new Mesh(
+      new PlaneGeometry(1, 0.1 / width),
+      new ShaderMaterial({
         vertexShader: vertexUnderline,
         fragmentShader: fragmentUnderline,
-        // transparent: true,
       })
     );
     underline.name = "aboutNav";

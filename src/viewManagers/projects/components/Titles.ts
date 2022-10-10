@@ -1,19 +1,18 @@
 import * as THREE from "three";
 import { World } from "@src/app";
-import vertexShader from "@shaders/projectTitle/vertex.glsl";
-import fragmentShader from "@shaders/projectTitle/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
-import TextGeometry from "@utils/TextGeometry";
-import { TextAlign } from "@types";
+import { Scroll, _ProjectTitles, _TextGeometry, _TitleMesh } from "@types";
+import { TitleMesh } from "./TitleMesh";
+import { FolderApi } from "tweakpane";
 
 /**
  * not sure if to show titles-reflection yet
  */
 
-export class Titles {
+export class Titles implements _ProjectTitles {
   world = new World();
   scene = this.world.scene;
-  scroll = {
+  scroll: Scroll = {
     current: 0,
     target: 0,
     active: false,
@@ -21,24 +20,29 @@ export class Titles {
     limitBottom: 0,
   };
   gap = 0.5;
-  active = 0;
   baseWidth = 5; // wolrd units
   group = new THREE.Group();
   outerGroup = new THREE.Group();
   initialScrollOffset = 1.5;
-  meshes: any[] = [];
-  fontTexture: any;
-  uniforms: any;
-  material: any;
-  data: any;
-  debug: any;
-  stroke: any;
-  progress: any;
-  padding: any;
-  geometry: any;
-  font;
+  data = this.world.resources.projects;
+  font = this.world.resources.fonts.audiowideRegular;
+  meshes: Array<_TitleMesh> = this.data.map(
+    ({ title, category }, index) =>
+      new TitleMesh({
+        title,
+        category,
+        index,
+        font: this.font,
+        baseWidth: this.baseWidth,
+      })
+  );
+  debug: FolderApi;
   constructor() {
-    this.font = this.world.resources.fonts.audiowideRegular;
+    // const n = this.titles.data.length;
+    // this.titles.meshes.map((mesh, i) => {
+    //   mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
+    // });
+
     this.outerGroup.add(this.group);
     this.group.renderOrder = 1000;
     // this.scroll.limitTop = -this.initialScrollOffset;
@@ -46,28 +50,6 @@ export class Titles {
     this.outerGroup.rotation.y = Math.PI;
     // this.outerGroup.rotation.y = (Math.PI * 13) / 12;
     this.outerGroup.position.z = 0.3;
-
-    this.setMaterial();
-  }
-
-  setMaterial() {
-    this.uniforms = {
-      uColor: { value: new THREE.Vector3() },
-      uProgress: { value: 0 },
-      uMap: { value: this.font?.map },
-      uStroke: { value: 0.1 },
-      uPadding: { value: 0.1 },
-      uTime: { value: 0 },
-    };
-
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: this.uniforms,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-    });
   }
 
   setDebug() {
@@ -75,9 +57,9 @@ export class Titles {
       title: "project titles",
       expanded: false,
     });
-    this.stroke = 0.1;
+    const stroke = { value: 0.1 };
     this.debug
-      .addInput(this, "stroke", {
+      .addInput(stroke, "value", {
         min: 0,
         max: 1,
         step: 0.001,
@@ -85,12 +67,12 @@ export class Titles {
       })
       .on("change", () =>
         this.meshes.map(
-          (mesh) => (mesh.material.uniforms.uStroke.value = this.stroke)
+          (mesh) => (mesh.material.uniforms.uStroke.value = stroke.value)
         )
       );
-    this.progress = 0;
+    const progress = { value: 0 };
     this.debug
-      .addInput(this, "progress", {
+      .addInput(progress, "value", {
         min: 0,
         max: 1,
         step: 0.001,
@@ -98,12 +80,12 @@ export class Titles {
       })
       .on("change", () =>
         this.meshes.map(
-          (mesh) => (mesh.material.uniforms.uProgress.value = this.progress)
+          (mesh) => (mesh.material.uniforms.uProgress.value = progress.value)
         )
       );
-    this.padding = 0.1;
+    const padding = { value: 0.1 };
     this.debug
-      .addInput(this, "padding", {
+      .addInput(padding, "value", {
         min: 0,
         max: 1,
         step: 0.001,
@@ -111,7 +93,7 @@ export class Titles {
       })
       .on("change", () =>
         this.meshes.map(
-          (mesh) => (mesh.material.uniforms.uPadding.value = this.padding)
+          (mesh) => (mesh.material.uniforms.uPadding.value = padding.value)
         )
       );
 
@@ -135,72 +117,6 @@ export class Titles {
       max: 0,
       step: 0.001,
       label: "group - posX",
-    });
-  }
-
-  setTextBoundingUv(textGeometry) {
-    const count = textGeometry.attributes.uv.count;
-    const bUvArray = new Float32Array(count * 2);
-    const positions = textGeometry.attributes.position.array;
-    for (let i = 0; i < count; i++) {
-      const posX = positions[i * 3];
-      bUvArray[i * 2] = posX / this.baseWidth + 0.5;
-      const posY = positions[i * 3 + 1];
-      bUvArray[i * 2 + 1] = posY / textGeometry.userData.height + 0.5;
-    }
-    textGeometry.setAttribute(
-      "boundingUv",
-      new THREE.BufferAttribute(bUvArray, 2)
-    );
-  }
-
-  setTextGeometry(text) {
-    const textG = new TextGeometry();
-    textG.setText({
-      fontData: this.font.data,
-      text: text,
-      align: TextAlign.Center,
-      lineWidth: 5,
-      lineHeight: 1,
-    });
-
-    textG.computeBoundingBox();
-
-    const width = textG.boundingBox!.max.x - textG.boundingBox!.min.x;
-    const height = textG.boundingBox!.max.y - textG.boundingBox!.min.y;
-    const aspect = height / width;
-
-    // center text mesh on yAxis
-    const offset = height * 0.5 - textG.boundingBox!.max.y;
-    const offsetMatrix = new THREE.Matrix4().makeTranslation(0, offset, 0);
-    textG.applyMatrix4(offsetMatrix);
-    // make width uniform
-    const scale = this.baseWidth / width;
-    const scaleMatrix = new THREE.Matrix4().makeScale(scale, scale, 1);
-    textG.applyMatrix4(scaleMatrix);
-
-    // textG.height = this.baseWidth * aspect;
-    textG.userData.height = this.baseWidth * aspect;
-
-    this.setTextBoundingUv(textG);
-
-    return textG;
-  }
-
-  setMeshes2() {
-    this.data.map(({ title, category }, index) => {
-      const mat = this.material.clone();
-      const geometry = this.setTextGeometry(title);
-      const mesh = new THREE.Mesh(geometry, mat);
-      mesh.userData.index = index;
-      mesh.userData.category = category;
-      this.meshes.push(mesh);
-
-      // const m = new THREE.Mesh(
-      //   new THREE.PlaneGeometry(this.baseWidth, geometry.userData.height),
-      //   new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.5 })
-      // );
-      // mesh.add(m);
     });
   }
 

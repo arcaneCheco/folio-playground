@@ -1,62 +1,57 @@
-import * as THREE from "three";
 import vertexUnderline from "@shaders/homeNav/underline/vertex.glsl";
 import fragmentUnderline from "@shaders/homeNav/underline/fragment.glsl";
 import vertexShader from "@shaders/homeNav/text/vertex.glsl";
 import fragmentShader from "@shaders/homeNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
-import { TextAlign } from "@types";
+import { TextAlign, _HomeNav } from "@types";
+import { World } from "@src/app";
+import { Group, Matrix4, Mesh, PlaneGeometry, ShaderMaterial } from "three";
 
-export class Nav {
-  group = new THREE.Group();
-  material: any;
-  geometry: any;
-  mesh: any;
-  font;
-  hover;
-  down;
+export class Nav implements _HomeNav {
+  world = new World();
+  group = new Group();
+  font = this.world.resources.fonts.audiowideRegular;
+  textMaterial = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+    depthTest: false,
+    depthWrite: false,
+  });
+  underlineMaterial = new ShaderMaterial({
+    vertexShader: vertexUnderline,
+    fragmentShader: fragmentUnderline,
+    depthTest: false,
+    depthWrite: false,
+  });
+  geometry = new TextGeometry();
+  mesh = new Mesh(this.geometry, this.textMaterial);
+  hover = false;
+  down = false;
   constructor() {
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: null },
-      },
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-    });
-  }
-
-  onPreloaded(font) {
-    this.font = font;
-    this.material.uniforms.tMap.value = this.font.map;
-
-    this.geometry = new TextGeometry();
     this.geometry.setText({
       fontData: this.font.data,
       text: "View Projects",
       align: TextAlign.Center,
     });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.name = "homeNav";
     this.group.rotateZ(Math.PI / 2);
     this.group.add(this.mesh);
     this.group.renderOrder = 501;
-
     this.geometry.computeBoundingBox();
+
     const width =
-      this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+      this.geometry.boundingBox!.max.x - this.geometry.boundingBox!.min.x;
     this.geometry.applyMatrix4(
-      new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
+      new Matrix4().makeScale(1 / width, 1 / width, 1)
     );
-    const underline = new THREE.Mesh(
-      new THREE.PlaneGeometry(1, 0.1 / width),
-      new THREE.ShaderMaterial({
-        vertexShader: vertexUnderline,
-        fragmentShader: fragmentUnderline,
-        depthTest: false,
-        depthWrite: false,
-      })
+
+    const underline = new Mesh(
+      new PlaneGeometry(1, 0.1 / width),
+      this.underlineMaterial
     );
     underline.name = "homeNav";
     underline.position.y = -1 / width;

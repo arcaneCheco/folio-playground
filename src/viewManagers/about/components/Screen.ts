@@ -1,32 +1,43 @@
-import * as THREE from "three";
+import { Mesh, PlaneGeometry, ShaderMaterial, Vector2 } from "three";
 import vertexShader from "@shaders/aboutScreen/vertex.glsl";
 import fragmentShader from "@shaders/aboutScreen/fragment.glsl";
 import TextTexture from "./TextTexture";
+import { _AboutScreen } from "@src/@types/types";
+import { World } from "@src/app";
 
-export class Screen {
-  geometry = new THREE.PlaneGeometry(1, 1);
+export class Screen implements _AboutScreen {
+  world = new World();
+  geometry = new PlaneGeometry(1, 1);
+  textTexture = new TextTexture({
+    lineHeight: 1.6,
+    padding: { x: 0.2, y: 0.2 },
+    font: this.world.resources.fonts.audiowideRegular,
+    text: `
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
+        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n\`\n
+        Here is another paragraph. This probably won't be immediately visible but that is fine.\n\`\n
+        Also, look this, Heyyy, hoo.
+        `,
+  });
   aspect = 2;
-  textTexture = new TextTexture({});
-  material: any;
-  mesh: any;
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      uTextMap: this.textTexture.texture,
+      uMouse: { value: new Vector2() },
+      uAspect: { value: this.aspect },
+      uDistortion: { value: 0.5 },
+      uInfluence: { value: 0.25 },
+      uTest: { value: 0.48 },
+      uProgress: { value: 0 },
+    },
+    transparent: true,
+    depthTest: false,
+  });
+  mesh = new Mesh(this.geometry, this.material);
   constructor() {
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        uTextMap: this.textTexture.texture,
-        uMouse: { value: new THREE.Vector2() },
-        uAspect: { value: this.aspect },
-        uDistortion: { value: 0.5 },
-        uInfluence: { value: 0.25 },
-        uTest: { value: 0.48 },
-        uProgress: { value: 0 },
-      },
-      transparent: true,
-      depthTest: false,
-    });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-
     this.mesh.name = "screen";
   }
 

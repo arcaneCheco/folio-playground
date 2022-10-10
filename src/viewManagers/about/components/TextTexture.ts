@@ -1,75 +1,78 @@
-import * as THREE from "three";
 import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/basicText/vertex.glsl";
 import fragmentShader from "@shaders/basicText/fragment.glsl";
 import { clamp } from "three/src/math/MathUtils";
 import { World } from "@src/app";
-import { TextAlign } from "@types";
+import { Font, Padding, TextAlign, _AboutTextTexture } from "@types";
+import {
+  HalfFloatType,
+  IUniform,
+  LinearFilter,
+  Mesh,
+  RGBAFormat,
+  Scene,
+  ShaderMaterial,
+  Texture,
+  WebGLRenderTarget,
+} from "three";
 
-export default class TextTexture {
-  geometry;
-  material;
-  mesh;
-  initialOffset;
-  maxScroll;
-  renderTarget;
-  texture;
-  scene;
-  font;
-  constructor({ lineHeight = 1.6, padding = { x: 0.2, y: 0.2 } }) {
-    this.font = new World().resources.fonts.audiowideRegular;
-    this.geometry = new TextGeometry();
+interface Props {
+  lineHeight?: number;
+  padding: Padding;
+  font: Font;
+  text: string;
+}
+
+export default class TextTexture implements _AboutTextTexture {
+  font: Font;
+  geometry = new TextGeometry();
+  lineHeight: number;
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: null },
+    },
+    transparent: true,
+  });
+  mesh = new Mesh(this.geometry, this.material);
+  renderTarget = new WebGLRenderTarget(512, 512, {
+    depthBuffer: false,
+    stencilBuffer: false,
+    minFilter: LinearFilter,
+    type: HalfFloatType,
+    format: RGBAFormat,
+    generateMipmaps: false,
+  });
+  texture: IUniform<Texture> = { value: this.renderTarget.texture };
+  scene = new Scene();
+  initialOffset: number;
+  maxScroll: number;
+  constructor(props: Props) {
+    this.font = props.font;
+    this.material.uniforms.tMap.value = this.font.map;
+    this.lineHeight = props.lineHeight || 1.6;
+
+    this.scene.add(this.mesh);
+
     this.geometry.setText({
       fontData: this.font.data,
-      text: `
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n\`\n      
-        Here is another paragraph. This probably won't be immediately visible but that is fine.\n\`\n
-        Also, look this, Heyyy, hoo.
-        `,
+      text: props.text,
       align: TextAlign.Left,
-      lineHeight,
-      lineWidth: 2 - padding.x * 2,
+      lineHeight: props.lineHeight || 1.6,
+      lineWidth: 2 - props.padding.x * 2,
     });
 
     let fontSize = 0.11;
-
-    this.geometry.text.updateSize(fontSize);
-
+    this.geometry.text.updateSize(fontSize, this.lineHeight);
     this.geometry.computeBoundingBox();
     let height =
-      this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y;
+      this.geometry.boundingBox!.max.y - this.geometry.boundingBox!.min.y;
 
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: this.font.map },
-      },
-      transparent: true,
-    });
-
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-
-    this.mesh.position.x = -1 + padding.x;
-    this.initialOffset = 1 - fontSize * 0.5 - padding.y;
-    this.maxScroll = this.initialOffset + height + padding.y * 2 - 2;
+    this.mesh.position.x = -1 + props.padding.x;
+    this.initialOffset = 1 - fontSize * 0.5 - props.padding.y;
+    this.maxScroll = this.initialOffset + height + props.padding.y * 2 - 2;
     this.mesh.position.y = this.initialOffset;
-
-    this.renderTarget = new THREE.WebGLRenderTarget(512, 512, {
-      depthBuffer: false,
-      stencilBuffer: false,
-      minFilter: THREE.LinearFilter,
-      type: THREE.HalfFloatType,
-      format: THREE.RGBAFormat,
-      generateMipmaps: false,
-    });
-
-    this.texture = { value: this.renderTarget.texture };
-
-    this.scene = new THREE.Scene();
-    this.scene.add(this.mesh);
   }
 
   onWheel(deltaY, renderer, camera) {
@@ -89,6 +92,5 @@ export default class TextTexture {
     this.texture.value = this.renderTarget.texture;
     renderer.setRenderTarget(currentRenderTarget);
     renderer.clear();
-    // renderer.render(this.scene, camera);
   }
 }

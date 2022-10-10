@@ -30,8 +30,8 @@ export class Flowmap extends RenderBuffer implements _Flowmap {
     super();
 
     this.uniforms.uFalloff.value = props?.falloff || 0.15;
-    this.uniforms.uFalloff.value = props?.alpha || 1;
-    this.uniforms.uFalloff.value = props?.dissipation || 0.98;
+    this.uniforms.uAlpha.value = props?.alpha || 1;
+    this.uniforms.uDissipation.value = props?.dissipation || 0.98;
 
     this.material = new ShaderMaterial({
       vertexShader,
@@ -39,7 +39,6 @@ export class Flowmap extends RenderBuffer implements _Flowmap {
       uniforms: this.uniforms,
       depthWrite: false,
       depthTest: false,
-      //   blending: THREE.NoBlending,
     });
 
     this.mesh = new Mesh(this.geometry, this.material);

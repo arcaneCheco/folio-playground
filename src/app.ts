@@ -103,7 +103,6 @@ export class World implements _World {
     this.post = new Post();
     this.curlBubble = new CurlBubble();
     this.water = new Water();
-    this.projectScreen = new ProjectScreen();
     this.rotateAlert = new RotateAlert();
 
     this.resources = new Resources();
@@ -111,24 +110,20 @@ export class World implements _World {
     this.resize();
     this.render();
     await this.resources.load();
-    await new Promise((res) => {
-      window.addEventListener("click", () => {
-        res(null);
-      });
-    });
+    // await new Promise((res) => {
+    //   window.addEventListener("click", () => {
+    //     res(null);
+    //   });
+    // });
 
     this.sky.onPreloaded();
-    this.projectScreen.onPreloaded();
 
+    this.projectScreen = new ProjectScreen();
+    this.homeViewManager = new HomeViewManager();
     this.projectsViewManager = new ProjectsViewManager();
     this.projectDetailViewManager = new ProjectDetailViewManager();
     this.aboutViewManager = new AboutViewManager();
-    this.homeViewManager = new HomeViewManager();
     this.transitionManager = new TransitionManager();
-
-    this.projectsViewManager.onDataLoaded();
-    this.aboutViewManager.onPreloaded();
-    this.homeViewManager.onPreloaded();
 
     this.changeView(window.VIEW);
 
@@ -256,8 +251,9 @@ export class World implements _World {
       this.projectDetailViewManager.onPointermove(this.mouse);
     if (this.view === View.About)
       this.aboutViewManager.onPointermove(this.mouse);
-    if (this.view === View.Home)
+    if (this.view === View.Home) {
       this.homeViewManager.onPointermove(e, this.mouse);
+    }
   }
 
   onPointerdown() {

@@ -1,63 +1,46 @@
-import * as THREE from "three";
+import { Group, Mesh, PlaneGeometry, ShaderMaterial } from "three";
+import vertexShader from "@shaders/aboutIcons/vertex.glsl";
+import fragmentShader from "@shaders/aboutIcons/fragment.glsl";
+import { World } from "@src/app";
+import { _AboutSocialIcons } from "@types";
 
-export class SocialIcons {
-  group = new THREE.Group();
-  iconMaterial: any;
-  geometry: any;
-  twitter: any;
-  github: any;
-  linkedin: any;
+export class SocialIcons implements _AboutSocialIcons {
+  world = new World();
+  group = new Group();
+  iconMaterial = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    depthWrite: false,
+    depthTest: false,
+    transparent: true,
+    uniforms: {
+      uMap: { value: null },
+    },
+  });
+  geometry = new PlaneGeometry(1, 1);
+  twitter: Mesh<PlaneGeometry, ShaderMaterial>;
+  github: Mesh<PlaneGeometry, ShaderMaterial>;
+  linkedin: Mesh<PlaneGeometry, ShaderMaterial>;
   constructor() {
     this.group.position.z = 0.1;
-    this.iconMaterial = new THREE.ShaderMaterial({
-      vertexShader: `
-      varying vec2 vUv;
 
-      void main() {
-        gl_Position = modelMatrix * vec4(position, 1.);
-        vUv = uv;
-      }`,
-      fragmentShader: `
-      uniform sampler2D uMap;
-      varying vec2 vUv;
+    const { twitterIcon, githubIcon, linkedinIcon } =
+      this.world.resources.assets;
 
-      void main() {
-        vec4 icon = texture2D(uMap, vUv);
-        gl_FragColor = icon;
-      }`,
-      depthWrite: false,
-      depthTest: false,
-      transparent: true,
-      uniforms: {
-        uMap: { value: null },
-      },
-    });
-
-    this.geometry = new THREE.PlaneGeometry(1, 1);
-
-    this.twitter = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
+    this.twitter = new Mesh(this.geometry, this.iconMaterial.clone());
+    this.twitter.material.uniforms.uMap.value = twitterIcon;
     this.twitter.name = "twitter";
     this.group.add(this.twitter);
 
-    this.github = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
+    this.github = new Mesh(this.geometry, this.iconMaterial.clone());
+    this.github.material.uniforms.uMap.value = githubIcon;
     this.github.name = "github";
     this.group.add(this.github);
 
-    this.linkedin = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
+    this.linkedin = new Mesh(this.geometry, this.iconMaterial.clone());
+    this.linkedin.material.uniforms.uMap.value = linkedinIcon;
     this.linkedin.name = "linkedin";
     this.group.add(this.linkedin);
-
-    // this.email = new THREE.Mesh(this.geometry, this.iconMaterial.clone());
-    // this.email.material.uniforms.uMap.value = this.loader.load(emailSrc);
-    // this.email.name = "email";
-    // this.group.add(this.email);
-  }
-
-  onPreloaded({ twitterIcon, githubIcon, linkedinIcon }) {
-    this.twitter.material.uniforms.uMap.value = twitterIcon;
-    this.github.material.uniforms.uMap.value = githubIcon;
-    this.github.material.uniforms.uMap.value = githubIcon;
-    this.linkedin.material.uniforms.uMap.value = linkedinIcon;
   }
 
   onResize() {

@@ -1,29 +1,16 @@
-import * as THREE from "three";
+import { Group } from "three";
 import { SocialIcons, Nav, Footer } from ".";
+import { _AboutOverlay } from "@types";
 
-export class Overlay {
+export class Overlay implements _AboutOverlay {
   socialIcons = new SocialIcons();
   footer = new Footer();
   nav = new Nav();
-  group = new THREE.Group();
+  group = new Group();
   constructor() {
     this.group.add(this.socialIcons.group);
     this.group.add(this.footer.group);
     this.group.add(this.nav.group);
-  }
-
-  onPreloaded({
-    twitterIcon,
-    githubIcon,
-    linkedinIcon,
-    cvIcon,
-    pinIcon,
-    emailIcon,
-    font,
-  }) {
-    this.socialIcons.onPreloaded({ twitterIcon, githubIcon, linkedinIcon });
-    this.nav.onPreloaded(font);
-    this.footer.onPreloaded({ font, cvIcon, pinIcon, emailIcon });
   }
 
   onResize() {

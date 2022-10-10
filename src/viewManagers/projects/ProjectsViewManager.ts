@@ -1,50 +1,37 @@
-import * as THREE from "three";
-import { World } from "../../app";
+import { World } from "@src/app";
+import { Vector3 } from "three";
 import GSAP from "gsap";
 import { Nav, Titles, Filters } from "./components";
 import { GradientLinear } from "@utils/gradientLinear";
 import { warm, natural } from "@utils/palettes";
-import { View } from "@types";
+import { View, _ProjectsViewManager } from "@types";
+import { FolderApi } from "tweakpane";
 
-export class ProjectsViewManager {
+export class ProjectsViewManager implements _ProjectsViewManager {
   world = new World();
   scene = this.world.scene;
   projectScreen = this.world.projectScreen;
-  activeProjectState = this.world.projectState;
+  projectState = this.world.projectState;
   activeFilter = undefined;
   sky = this.world.sky;
   water = this.world.water;
   timeline = GSAP.timeline();
   raycaster = this.world.raycaster;
   ndcRaycaster = this.world.ndcRaycaster;
-  rayOrigin = new THREE.Vector3(0, 0, 1);
-  rayTarget = new THREE.Vector3();
+  rayOrigin = new Vector3(0, 0, 1);
+  rayTarget = new Vector3();
   colorGradient = new GradientLinear(natural);
-  debug: any;
-  titlesTimeline: any;
-  hover: any;
-  hoverTitles: any;
-  down: any;
-  target: any;
-  titleIndex: any;
-  titles: Titles;
-  nav: Nav;
-  filters: Filters;
+  debug: FolderApi;
+  titlesTimeline: GSAPTimeline;
+  hover: boolean;
+  hoverTitles: boolean;
+  down: boolean;
+  target: string;
+  titleIndex: number;
+  titles = new Titles();
+  nav = new Nav();
+  filters = new Filters();
   constructor() {
-    console.log({ colors: this.colorGradient });
-    this.titles = new Titles();
-    this.nav = new Nav();
-    this.filters = new Filters();
-  }
-
-  onDataLoaded() {
-    this.projectScreen.data = this.world.resources.projects;
-    this.projectScreen.uniforms.uImage1 = {
-      value:
-        this.world.resources.projects[this.world.projectState.active].texture,
-    };
-    this.titles.data = this.world.resources.projects;
-    this.titles.setMeshes2();
     this.filterAll();
     const n = this.titles.data.length;
     this.titles.meshes.map((mesh, i) => {
@@ -58,9 +45,9 @@ export class ProjectsViewManager {
       expanded: false,
     });
     this.debug
-      .addInput(this.activeProjectState, "active", { min: 0, max: 5, step: 1 })
+      .addInput(this.projectState, "active", { min: 0, max: 5, step: 1 })
       .on("change", () => {
-        this.onActiveChange(this.activeProjectState.active);
+        this.onActiveChange(this.projectState.active);
       });
   }
 

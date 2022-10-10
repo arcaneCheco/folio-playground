@@ -1,4 +1,5 @@
-import * as THREE from "three";
+import { World } from "@src/app";
+import { Group, Matrix4, Mesh, PlaneGeometry, ShaderMaterial } from "three";
 import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/homeContact/vertex.glsl";
 import fragmentShader from "@shaders/homeContact/fragment.glsl";
@@ -6,34 +7,36 @@ import vertexTouchPlane from "@shaders/homeContact/touchPlane/vertex.glsl";
 import fragmentTouchPlane from "@shaders/homeContact/touchPlane/fragment.glsl";
 import vertexIcon from "@shaders/ghostIcon/vertex.glsl";
 import fragmentIcon from "@shaders/ghostIcon/fragment.glsl";
-import { TextAlign } from "@types";
+import { _HomeContact, _World } from "@types";
 
-export class Contact {
-  group = new THREE.Group();
-  material: any;
-  email: any;
-  touchPlane: any;
-  icon: any;
-  cta: any;
-  font;
-  ghostTex;
-  hover;
-  down;
+export class Contact implements _HomeContact {
+  world = new World();
+  group = new Group();
+  font = this.world.resources.fonts.audiowideRegular;
+  textMaterial = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+  });
+  iconMaterial = new ShaderMaterial({
+    vertexShader: vertexIcon,
+    fragmentShader: fragmentIcon,
+    uniforms: {
+      uMap: { value: this.world.resources.assets.ghostIcon },
+      uTime: { value: 0 },
+    },
+    transparent: true,
+  });
+  email: Mesh;
+  touchPlane: Mesh;
+  icon: Mesh;
+  cta: Mesh;
+  hover = false;
+  down = false;
   constructor() {
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: null },
-      },
-      transparent: true,
-    });
-  }
-
-  onPreloaded({ font, ghostIcon }) {
-    this.ghostTex = ghostIcon;
-    this.font = font;
-    this.material.uniforms.tMap.value = this.font.map;
     this.setEmailText();
     this.setCTAText();
     this.setGhostIcon();
@@ -44,25 +47,22 @@ export class Contact {
     geometry.setText({
       fontData: this.font.data,
       text: "sergio@azizi.dev",
-      align: TextAlign.Left,
     });
     geometry.computeBoundingBox();
     const width = geometry.boundingBox!.max.x - geometry.boundingBox!.min.x;
-    geometry.applyMatrix4(
-      new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
-    );
-    this.email = new THREE.Mesh(geometry, this.material);
+    geometry.applyMatrix4(new Matrix4().makeScale(1 / width, 1 / width, 1));
+    this.email = new Mesh(geometry, this.textMaterial);
     this.email.renderOrder = 150;
     this.group.add(this.email);
 
     // set touchPlane
     const height = geometry.boundingBox!.max.y - geometry.boundingBox!.min.y;
-    const g = new THREE.PlaneGeometry(1, height);
-    const m = new THREE.ShaderMaterial({
+    const g = new PlaneGeometry(1, height);
+    const m = new ShaderMaterial({
       vertexShader: vertexTouchPlane,
       fragmentShader: fragmentTouchPlane,
     });
-    this.touchPlane = new THREE.Mesh(g, m);
+    this.touchPlane = new Mesh(g, m);
     this.touchPlane.visible = false;
     this.touchPlane.position.x = 0.5;
     this.email.add(this.touchPlane);
@@ -75,31 +75,18 @@ export class Contact {
     geometry.setText({
       fontData: this.font.data,
       text: "`\nAvailable for freelance work", // choose a character not part of the font for the first line
-      align: TextAlign.Left,
       lineHeight: 1.8,
     });
     geometry.computeBoundingBox();
     const width = geometry.boundingBox!.max.x - geometry.boundingBox!.min.x;
-    geometry.applyMatrix4(
-      new THREE.Matrix4().makeScale(1 / width, 1 / width, 1)
-    );
-    this.cta = new THREE.Mesh(geometry, this.material);
+    geometry.applyMatrix4(new Matrix4().makeScale(1 / width, 1 / width, 1));
+    this.cta = new Mesh(geometry, this.textMaterial);
     this.group.add(this.cta);
   }
 
   setGhostIcon() {
-    const geometry = new THREE.PlaneGeometry(1, 1);
-    const texture = this.ghostTex;
-    const mat = new THREE.ShaderMaterial({
-      vertexShader: vertexIcon,
-      fragmentShader: fragmentIcon,
-      uniforms: {
-        uMap: { value: texture },
-        uTime: { value: 0 },
-      },
-      transparent: true,
-    });
-    this.icon = new THREE.Mesh(geometry, mat);
+    const geometry = new PlaneGeometry(1, 1);
+    this.icon = new Mesh(geometry, this.iconMaterial);
     this.group.add(this.icon);
   }
 
@@ -120,6 +107,6 @@ export class Contact {
   }
 
   update(time) {
-    this.icon.material.uniforms.uTime.value = time;
+    this.iconMaterial.uniforms.uTime.value = time;
   }
 }

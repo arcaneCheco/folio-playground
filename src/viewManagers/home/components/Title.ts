@@ -1,45 +1,43 @@
 import { World } from "@src/app";
-import * as THREE from "three";
 import { Flowmap } from "@utils/Flowmap";
 import TextTexture from "@utils/TextTexture";
 import vertexShader from "@shaders/homeTitle/vertex.glsl";
 import fragmentShader from "@shaders/homeTitle/fragment.glsl";
-// import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
-export class Title {
+import { Group, Mesh, PlaneGeometry, ShaderMaterial } from "three";
+import { _HomeTitle } from "@types";
+
+export class Title implements _HomeTitle {
   world = new World();
   scene = this.world.scene;
-  group = new THREE.Group();
+  group = new Group();
   raycaster = this.world.raycaster;
   renderer = this.world.renderer;
   camera = this.world.camera;
   flowmap = new Flowmap();
-  textTexture = new TextTexture({ lineHeight: 1.5 });
+  textTexture = new TextTexture({
+    lineHeight: 1.5,
+    font: this.world.resources.fonts.audiowideRegular,
+    text: "Creative\nWeb\nDeveloper",
+  });
   aspect: number;
-  geometry: any;
-  material: any;
-  mesh: any;
-  constructor() {
-    window.setTimeout(() => {
-      this.textTexture.createTexture(this.renderer, this.camera);
-    }, 500);
-    this.aspect = this.textTexture.geometryAspect;
-    // at this point can destroy textTexture;
+  geometry = new PlaneGeometry(2, 2);
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      uFlowmap: this.flowmap.texture,
+      uTextImage: this.textTexture.texture,
+    },
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+  });
+  mesh = new Mesh(this.geometry, this.material);
 
-    // this.geometry = new THREE.PlaneGeometry(this.textTexture.geometryAspect, 1);
-    this.geometry = new THREE.PlaneGeometry(2, 2);
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        uFlowmap: this.flowmap.texture,
-        uTextImage: this.textTexture.texture,
-      },
-      transparent: true,
-      depthWrite: false,
-      depthTest: false,
-      // blending: THREE.NoBlending,
-    });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+  constructor() {
+    this.textTexture.createTexture(this.renderer, this.camera);
+    this.aspect = this.textTexture.geometryAspect;
+
     this.mesh.name = "homeTitle";
     this.mesh.renderOrder = 100;
     this.mesh.position.z = -0.01;

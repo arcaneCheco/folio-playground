@@ -1,62 +1,26 @@
+import { Vector3 } from "three";
 import { World } from "@src/app";
-import * as THREE from "three";
 import { Greeting, Overlay, Screen } from "./components";
-import { View } from "@types";
+import { View, _AboutViewManager } from "@types";
+import { FolderApi } from "tweakpane";
 
-export class AboutViewManager {
+export class AboutViewManager implements _AboutViewManager {
   world = new World();
   scene = this.world.scene;
   renderer = this.world.renderer;
   camera = this.world.camera;
-  raycaster: any;
-  rayOrigin: any;
-  rayTarget: any;
-  debug: any;
-  hover: any;
-  target: any;
-  down: any;
-  screen: Screen;
-  greeting: Greeting;
-  overlay: Overlay;
+  screen = new Screen();
+  greeting = new Greeting();
+  overlay = new Overlay();
+  raycaster = this.world.raycaster;
+  rayOrigin = new Vector3(0, 0, 1);
+  rayTarget = new Vector3();
+  debug: FolderApi;
+  hover: boolean;
+  target: string;
+  down: boolean;
   constructor() {
-    window.setTimeout(() => {
-      this.screen.textTexture.createTexture(this.renderer, this.camera);
-    }, 800);
-
-    this.raycaster = this.world.raycaster;
-    this.rayOrigin = new THREE.Vector3(0, 0, 1);
-    this.rayTarget = new THREE.Vector3();
-
-    this.setComponents();
-  }
-
-  setComponents() {
-    this.overlay = new Overlay();
-    this.greeting = new Greeting();
-    this.screen = new Screen();
-  }
-
-  onPreloaded() {
-    const font = this.world.resources.fonts.audiowideRegular;
-
-    const {
-      twitterIcon,
-      githubIcon,
-      linkedinIcon,
-      cvIcon,
-      pinIcon,
-      emailIcon,
-    } = this.world.resources.assets;
-
-    this.overlay.onPreloaded({
-      twitterIcon,
-      githubIcon,
-      linkedinIcon,
-      cvIcon,
-      pinIcon,
-      emailIcon,
-      font,
-    });
+    this.screen.textTexture.createTexture(this.renderer, this.camera);
   }
 
   setDebug() {

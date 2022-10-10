@@ -1,130 +1,66 @@
-import * as THREE from "three";
+import { Group, Mesh, PlaneGeometry, ShaderMaterial } from "three";
+import { World } from "@src/app";
+import { _AboutFooter } from "@types";
 import TextGeometry from "@utils/TextGeometry";
 import vertexShader from "@shaders/aboutFooter/text/vertex.glsl";
 import fragmentShader from "@shaders/aboutFooter/text/fragment.glsl";
+import vertexIcons from "@shaders/aboutFooter/icons/vertex.glsl";
+import fragmentIcons from "@shaders/aboutFooter/icons/fragment.glsl";
+import vertexLine from "@shaders/aboutFooter/line/vertex.glsl";
+import fragmentLine from "@shaders/aboutFooter/line/fragment.glsl";
 
-export class Footer {
-  group = new THREE.Group();
-  textMaterial: any;
-  loader: any;
-  iconGeometry: any;
-  iconMaterial: any;
-  locationGroup: any;
-  location: any;
-  locationIcon: any;
-  cvGroup: any;
-  cv: any;
-  cvIcon: any;
-  emailGroup: any;
-  email: any;
-  emailIcon: any;
-  line: any;
-  lineG: any;
-  lineM: any;
-  font;
+export class Footer implements _AboutFooter {
+  world = new World();
+  font = this.world.resources.fonts.audiowideRegular;
+  group = new Group();
+  textMaterial = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+  });
+  iconGeometry = new PlaneGeometry(1, 1);
+  iconMaterial = new ShaderMaterial({
+    vertexShader: vertexIcons,
+    fragmentShader: fragmentIcons,
+    depthWrite: false,
+    depthTest: false,
+    transparent: true,
+    uniforms: {
+      uMap: { value: null },
+    },
+  });
+  locationGroup = new Group();
+  location = new Mesh(new TextGeometry(), this.textMaterial);
+  locationIcon = new Mesh(this.iconGeometry, this.iconMaterial.clone());
+  cvGroup = new Group();
+  cv = new Mesh(new TextGeometry(), this.textMaterial);
+  cvIcon = new Mesh(this.iconGeometry, this.iconMaterial.clone());
+  emailGroup = new Group();
+  email = new Mesh(new TextGeometry(), this.textMaterial);
+  emailIcon = new Mesh(this.iconGeometry, this.iconMaterial.clone());
+  line: Mesh;
   constructor() {
     this.group.renderOrder = 6001;
 
-    this.textMaterial = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: null },
-      },
-      transparent: true,
-      depthWrite: false,
-      depthTest: false,
-    });
-
-    this.iconGeometry = new THREE.PlaneGeometry(1, 1);
-    this.iconMaterial = new THREE.ShaderMaterial({
-      vertexShader: `
-      varying vec2 vUv;
-
-      void main() {
-        gl_Position = modelMatrix * vec4(position, 1.);
-        vUv = uv;
-      }`,
-      fragmentShader: `
-      uniform sampler2D uMap;
-      varying vec2 vUv;
-
-      void main() {
-        vec4 icon = texture2D(uMap, vUv);
-        gl_FragColor = icon;
-      }`,
-      depthWrite: false,
-      depthTest: false,
-      transparent: true,
-      uniforms: {
-        uMap: { value: null },
-      },
-    });
-
-    this.locationGroup = new THREE.Group();
     this.group.add(this.locationGroup);
-
-    let locationGeometry = new TextGeometry();
-
-    this.location = new THREE.Mesh(locationGeometry, this.textMaterial);
-    this.locationGroup.add(this.location);
-
-    this.locationIcon = new THREE.Mesh(
-      this.iconGeometry,
-      this.iconMaterial.clone()
-    );
-    this.locationGroup.add(this.locationIcon);
-
-    this.cvGroup = new THREE.Group();
     this.group.add(this.cvGroup);
-
-    let cvGeometry = new TextGeometry();
-
-    this.cv = new THREE.Mesh(cvGeometry, this.textMaterial);
-    this.cv.name = "cv";
-    this.cvGroup.add(this.cv);
-
-    this.cvIcon = new THREE.Mesh(this.iconGeometry, this.iconMaterial.clone());
-    this.cvIcon.name = "cv";
-    this.cvGroup.add(this.cvIcon);
-
-    this.emailGroup = new THREE.Group();
     this.group.add(this.emailGroup);
 
-    let emailGeometry = new TextGeometry();
+    this.locationGroup.add(this.location);
+    this.locationGroup.add(this.locationIcon);
 
-    this.email = new THREE.Mesh(emailGeometry, this.textMaterial);
-    this.email.name = "email";
+    this.cvGroup.add(this.cv);
+    this.cvGroup.add(this.cvIcon);
+
     this.emailGroup.add(this.email);
-
-    this.emailIcon = new THREE.Mesh(
-      this.iconGeometry,
-      this.iconMaterial.clone()
-    );
-    this.emailIcon.name = "email";
     this.emailGroup.add(this.emailIcon);
 
-    this.lineG = new THREE.PlaneGeometry(1, 1);
-    this.lineM = new THREE.ShaderMaterial({
-      vertexShader: `
-        void main() {
-          gl_Position = modelMatrix * vec4(position, 1.);
-        }
-      `,
-      fragmentShader: `
-        void main() {
-          gl_FragColor = vec4(1.);
-        }
-      `,
-    });
-    this.line = new THREE.Mesh(this.lineG, this.lineM);
-    this.group.add(this.line);
-  }
-
-  onPreloaded({ font, cvIcon, pinIcon, emailIcon }) {
-    this.font = font;
-
-    this.textMaterial.uniforms.tMap.value = this.font.map;
+    const { pinIcon, cvIcon, emailIcon } = this.world.resources.assets;
 
     this.location.geometry.setText({
       fontData: this.font.data,
@@ -137,12 +73,25 @@ export class Footer {
       text: "curriculum vitae",
     });
     this.cvIcon.material.uniforms.uMap.value = cvIcon;
+    this.cv.name = "cv";
+    this.cvIcon.name = "cv";
 
     this.email.geometry.setText({
       fontData: this.font.data,
       text: "sergio@azizi.dev",
     });
     this.emailIcon.material.uniforms.uMap.value = emailIcon;
+    this.email.name = "email";
+    this.emailIcon.name = "email";
+
+    this.line = new Mesh(
+      new PlaneGeometry(1, 1),
+      new ShaderMaterial({
+        vertexShader: vertexLine,
+        fragmentShader: fragmentLine,
+      })
+    );
+    this.group.add(this.line);
   }
 
   onResize() {
