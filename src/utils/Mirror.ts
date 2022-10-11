@@ -1,43 +1,50 @@
-import * as THREE from "three";
+import { _Mirror } from "@types";
+import {
+  Matrix4,
+  Object3D,
+  PerspectiveCamera,
+  Plane,
+  Scene,
+  Vector3,
+  Vector4,
+  WebGLRenderer,
+  WebGLRenderTarget,
+} from "three";
 
-export default class Mirror {
+interface MirrorProps {
+  textureWidth?: number;
+  textureHeight?: number;
+  clipBias?: number;
+}
+
+export default class Mirror implements _Mirror {
   textureWidth: number;
   textureHeight: number;
   clipBias: number;
-  mirrorPlane = new THREE.Plane();
-  normal = new THREE.Vector3();
-  mirrorWorldPosition = new THREE.Vector3();
-  cameraWorldPosition = new THREE.Vector3();
-  rotationMatrix = new THREE.Matrix4();
-  lookAtPosition = new THREE.Vector3(0, 0, -1);
-  clipPlane = new THREE.Vector4();
-  view = new THREE.Vector3();
-  target = new THREE.Vector3();
-  q = new THREE.Vector4();
-  textureMatrix = new THREE.Matrix4();
-  mirrorCamera = new THREE.PerspectiveCamera();
-  renderTarget: THREE.WebGLRenderTarget;
-  constructor(
-    options: {
-      textureWidth: number;
-      textureHeight: number;
-      clipBias: number;
-    } = {
-      textureWidth: 512,
-      textureHeight: 512,
-      clipBias: 0,
-    }
-  ) {
-    this.textureWidth = options.textureWidth;
-    this.textureHeight = options.textureHeight;
-    this.clipBias = options.clipBias;
-    this.renderTarget = new THREE.WebGLRenderTarget(
+  mirrorPlane = new Plane();
+  normal = new Vector3();
+  mirrorWorldPosition = new Vector3();
+  cameraWorldPosition = new Vector3();
+  rotationMatrix = new Matrix4();
+  lookAtPosition = new Vector3(0, 0, -1);
+  clipPlane = new Vector4();
+  view = new Vector3();
+  target = new Vector3();
+  q = new Vector4();
+  textureMatrix = new Matrix4();
+  mirrorCamera = new PerspectiveCamera();
+  renderTarget: WebGLRenderTarget;
+  constructor(options?: MirrorProps) {
+    this.textureWidth = options?.textureWidth || 512;
+    this.textureHeight = options?.textureHeight || 512;
+    this.clipBias = options?.clipBias || 0;
+    this.renderTarget = new WebGLRenderTarget(
       this.textureWidth,
       this.textureHeight
     );
   }
 
-  updateTextureMatrix(object, camera) {
+  updateTextureMatrix(object: Object3D, camera: PerspectiveCamera) {
     this.mirrorWorldPosition.setFromMatrixPosition(object.matrixWorld);
     this.cameraWorldPosition.setFromMatrixPosition(camera.matrixWorld);
 
@@ -132,7 +139,7 @@ export default class Mirror {
     // eye.setFromMatrixPosition( camera.matrixWorld );
   }
 
-  drawTexture(renderer, object, scene) {
+  drawTexture(renderer: WebGLRenderer, object: Object3D, scene: Scene) {
     const currentRenderTarget = renderer.getRenderTarget();
     object.visible = false;
     renderer.setRenderTarget(this.renderTarget);
@@ -143,7 +150,12 @@ export default class Mirror {
     renderer.setRenderTarget(currentRenderTarget);
   }
 
-  update(object, renderer, camera, scene) {
+  update(
+    object: Object3D,
+    renderer: WebGLRenderer,
+    camera: PerspectiveCamera,
+    scene: Scene
+  ) {
     this.updateTextureMatrix(object, camera);
     this.drawTexture(renderer, object, scene);
   }

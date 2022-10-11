@@ -8,6 +8,7 @@ import { RotateAlert } from "./RotateAlert";
 import { TransitionManager } from "./TransitionManager";
 import { Water } from "./Water";
 import { Preloader } from "./Preloader";
+import { TransitionScene } from "./TransitionScene";
 
 export {
   Sky,
@@ -20,4 +21,5 @@ export {
   TransitionManager,
   Water,
   Preloader,
+  TransitionScene,
 };

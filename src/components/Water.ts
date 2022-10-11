@@ -1,12 +1,12 @@
-import { World } from "../app";
-import * as THREE from "three";
+import { World } from "@src/app";
+import { Color, Mesh, Object3D, PlaneGeometry, ShaderMaterial } from "three";
 import Mirror from "@utils/Mirror";
 import WaterHeightMap from "./WaterHeightMap";
 import vertexShader from "@shaders/water/vertex.glsl";
 import fragmentShader from "@shaders/water/fragment.glsl";
-import { View } from "@types";
+import { View, _Water } from "@types";
 
-export class Water extends Mirror {
+export class Water extends Mirror implements _Water {
   world = new World();
   renderer = this.world.renderer;
   camera = this.world.camera;
@@ -15,7 +15,7 @@ export class Water extends Mirror {
   bounds = 512; // large system units for normal calculation
   scale = 2;
   heightMap = new WaterHeightMap(this.bounds);
-  geometry = new THREE.PlaneGeometry(
+  geometry = new PlaneGeometry(
     this.bounds,
     this.bounds,
     this.heightMap.size - 1,
@@ -23,13 +23,13 @@ export class Water extends Mirror {
   );
   uniforms = {
     uHeightMap: this.heightMap.texture,
-    uBaseColor: { value: new THREE.Color("#f9f9f9") },
-    uFresnelColor: { value: new THREE.Color("#b754ff") },
+    uBaseColor: { value: new Color("#f9f9f9") },
+    uFresnelColor: { value: new Color("#b754ff") },
     uFresnelPower: { value: 3 },
     uTextureMatrix: { value: this.textureMatrix },
     uMirrorMap: { value: this.renderTarget.texture },
   };
-  material = new THREE.ShaderMaterial({
+  material = new ShaderMaterial({
     vertexShader,
     fragmentShader,
     uniforms: this.uniforms,
@@ -39,9 +39,15 @@ export class Water extends Mirror {
       SCALE: (this.scale / this.bounds).toFixed(10),
     },
   });
-  mesh = new THREE.Mesh(this.geometry, this.material);
-  intersectionPlane: THREE.Mesh;
+  mesh = new Mesh(this.geometry, this.material);
+  intersectionPlane: Mesh;
   debug: any;
+  hiddenObjects: { [key in View]?: Array<Object3D> } = {
+    Home: [],
+    Projects: [],
+    ProjectDetail: [],
+    About: [],
+  };
   constructor() {
     super();
     this.mesh.renderOrder = -1;
@@ -54,9 +60,9 @@ export class Water extends Mirror {
   }
 
   setIntersectionPlane() {
-    this.intersectionPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(this.scale, this.scale, 1, 1),
-      new THREE.ShaderMaterial({ visible: false })
+    this.intersectionPlane = new Mesh(
+      new PlaneGeometry(this.scale, this.scale, 1, 1),
+      new ShaderMaterial({ visible: false })
     );
     this.intersectionPlane.rotation.x = -Math.PI / 2;
     this.scene.add(this.intersectionPlane);
@@ -71,7 +77,7 @@ export class Water extends Mirror {
   onPointermove() {
     const [intersect] = this.raycaster.intersectObject(this.intersectionPlane);
     if (intersect) {
-      this.heightMap.onPointermove(intersect.uv);
+      this.heightMap.onPointermove(intersect.uv!);
     }
   }
 
@@ -145,31 +151,16 @@ export class Water extends Mirror {
   onWheel() {}
 
   update() {
-    if (this.world.view == View.Home) {
-      this.world.homeViewManager.title.mesh.visible = false;
-      this.world.homeViewManager.contact.group.visible = false;
-      this.world.homeViewManager.nav.group.visible = false;
-    } else if (this.world.view === View.ProjectDetail) {
-      this.world.projectDetailViewManager.overlay.group.visible = false;
-    } else if (this.world.view === View.About) {
-      this.world.aboutViewManager.overlay.group.visible = false;
-    } else if (this.world.view === View.Projects) {
-      this.world.projectsViewManager.filters.outerGroup.visible = false;
-      this.world.projectsViewManager.nav.group.visible = false;
-    }
+    this.hiddenObjects[this.world.view]?.map(
+      (object) => (object.visible = false)
+    );
+
     super.update(this.mesh, this.renderer, this.camera, this.scene);
-    if (this.world.view === View.Home) {
-      this.world.homeViewManager.title.mesh.visible = true;
-      this.world.homeViewManager.contact.group.visible = true;
-      this.world.homeViewManager.nav.group.visible = true;
-    } else if (this.world.view === View.ProjectDetail) {
-      this.world.projectDetailViewManager.overlay.group.visible = true;
-    } else if (this.world.view === View.About) {
-      this.world.aboutViewManager.overlay.group.visible = true;
-    } else if (this.world.view === View.Projects) {
-      this.world.projectsViewManager.filters.outerGroup.visible = true;
-      this.world.projectsViewManager.nav.group.visible = true;
-    }
+
+    this.hiddenObjects[this.world.view]?.map(
+      (object) => (object.visible = true)
+    );
+
     this.heightMap.update(this.renderer);
   }
 }

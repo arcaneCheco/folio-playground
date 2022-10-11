@@ -37,6 +37,11 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     this.titles.meshes.map((mesh, i) => {
       mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
     });
+
+    this.world.water.hiddenObjects[View.Projects]?.push(
+      this.filters.outerGroup,
+      this.nav.group
+    );
   }
 
   setDebug() {

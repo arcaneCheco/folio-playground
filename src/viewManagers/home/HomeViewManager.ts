@@ -23,6 +23,14 @@ export class HomeViewManager implements _HomeViewManager {
   };
   debug: FolderApi;
 
+  constructor() {
+    this.world.water.hiddenObjects[View.Home]?.push(
+      this.title.mesh,
+      this.contact.group,
+      this.nav.group
+    );
+  }
+
   setDebug() {
     this.debug = this.world.pane.addFolder({
       title: "homeViewManager",

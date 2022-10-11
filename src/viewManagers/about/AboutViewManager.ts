@@ -21,6 +21,8 @@ export class AboutViewManager implements _AboutViewManager {
   down: boolean;
   constructor() {
     this.screen.textTexture.createTexture(this.renderer, this.camera);
+
+    this.world.water.hiddenObjects[View.Projects]?.push(this.overlay.group);
   }
 
   setDebug() {

@@ -1,14 +1,15 @@
 import GSAP from "gsap";
 import { World } from "@src/app";
+import { TransitionEffect } from "@types";
 
 export class TransitionManager {
   world = new World();
   scene = this.world.scene;
-  postTransition = this.world.post.transitionUniforms.uProgress;
+  post = this.world.post;
+  projectScreen = this.world.projectScreen;
   cameraPosition = this.world.camera.position;
   cameraRotation = this.world.camera.rotation;
   initialHeight = this.world.initialHeight;
-  projectScreen = this.world.projectScreen;
   homeObjects = [
     this.world.homeViewManager.title.group,
     this.world.homeViewManager.contact.group,
@@ -24,7 +25,7 @@ export class TransitionManager {
   constructor() {}
 
   homeToProjects() {
-    this.world.post.activeScene = this.world.post.homeAboutScene;
+    this.post.activeEffect = TransitionEffect.HomeProjects;
     const t = GSAP.timeline({
       defaults: {
         duration: 1.2,
@@ -39,12 +40,19 @@ export class TransitionManager {
         this.scene.add(this.projectScreen.mesh);
       },
       onComplete: () => {
-        this.postTransition.value = 0;
+        this.post.transitionEffects[
+          TransitionEffect.HomeProjects
+        ].uniforms.uProgress.value = 0;
         this.world.usePost = false;
       },
     });
 
-    t.to(this.postTransition, { value: 1 }, 0);
+    t.to(
+      this.post.transitionEffects[TransitionEffect.HomeProjects].uniforms
+        .uProgress,
+      { value: 1 },
+      0
+    );
     t.to(this.cameraPosition, { x: 0, y: this.initialHeight, z: -1 }, 0);
 
     GSAP.delayedCall(t.duration() / 4, () => {
@@ -61,7 +69,7 @@ export class TransitionManager {
   }
 
   projectsToHome() {
-    this.world.post.activeScene = this.world.post.homeAboutScene;
+    this.post.activeEffect = TransitionEffect.HomeProjects;
     const t = GSAP.timeline({
       defaults: {
         duration: 1.2,
@@ -72,12 +80,19 @@ export class TransitionManager {
         this.world.usePost = true;
       },
       onComplete: () => {
-        this.postTransition.value = 0;
+        this.post.transitionEffects[
+          TransitionEffect.HomeProjects
+        ].uniforms.uProgress.value = 0;
         this.world.usePost = false;
       },
     });
 
-    t.to(this.postTransition, { value: 1 }, 0);
+    t.to(
+      this.post.transitionEffects[TransitionEffect.HomeProjects].uniforms
+        .uProgress,
+      { value: 1 },
+      0
+    );
     t.to(this.cameraPosition, { x: 0, y: this.initialHeight, z: 1 }, 0);
 
     GSAP.delayedCall(t.duration() / 4, () => {
@@ -106,34 +121,13 @@ export class TransitionManager {
     });
 
     //camera
-    t.to(
-      this.cameraPosition,
-      {
-        x: 0,
-        y: this.initialHeight,
-        z: -1,
-      },
-      0
-    );
-    // GSAP.to(this.cameraRotation, {
-    //   x: -Math.PI,
-    //   y: 0,
-    //   z: Math.PI,
-    //   duration: 1,
-    //   onComplete: () => (this.world.parallax.enabled = true),
-    // });
+    t.to(this.cameraPosition, { x: 0, y: this.initialHeight, z: -1 }, 0);
 
     // screen
     const scaleX = 1 + aspect * 0.2;
     const scaleY = 1 * scaleX * (9 / 16);
-    t.to(
-      this.projectScreen.mesh.scale,
-      {
-        x: scaleX,
-        y: scaleY,
-      },
-      0
-    );
+
+    t.to(this.projectScreen.mesh.scale, { x: scaleX, y: scaleY }, 0);
 
     this.scene.add(
       this.titlesObject,
@@ -193,39 +187,51 @@ export class TransitionManager {
   }
 
   projectsToAbout() {
-    this.world.post.activeScene = this.world.post.aboutScene;
+    this.post.activeEffect = TransitionEffect.ProjectsAbout;
+
     const t = GSAP.timeline();
-    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
-      value: 1,
-      duration: 0.5,
-      onStart: () => {
-        this.world.usePost = true;
-      },
-      onComplete: () => {
-        this.scene.remove(
-          this.projectScreen.mesh,
-          this.titlesObject,
-          this.filtersObject,
-          this.projectsNavObject
-        );
-      },
-    });
-    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
-      value: 0,
-      duration: 0.5,
-      onStart: () => {
-        this.scene.add(
-          this.world.aboutViewManager.screen.mesh,
-          this.world.aboutViewManager.greeting.group,
-          this.world.aboutViewManager.overlay.group
-        );
-        this.cameraPosition.set(0, this.initialHeight, 1);
-        this.world.sky.mesh.rotation.y = 0;
-      },
-      onComplete: () => {
-        this.world.usePost = false;
-      },
-    });
+
+    t.to(
+      this.post.transitionEffects[TransitionEffect.ProjectsAbout].uniforms
+        .uProgress,
+      {
+        value: 1,
+        duration: 0.5,
+        onStart: () => {
+          this.world.usePost = true;
+        },
+        onComplete: () => {
+          this.scene.remove(
+            this.projectScreen.mesh,
+            this.titlesObject,
+            this.filtersObject,
+            this.projectsNavObject
+          );
+        },
+      }
+    );
+
+    t.to(
+      this.post.transitionEffects[TransitionEffect.ProjectsAbout].uniforms
+        .uProgress,
+      {
+        value: 0,
+        duration: 0.5,
+        onStart: () => {
+          this.scene.add(
+            this.world.aboutViewManager.screen.mesh,
+            this.world.aboutViewManager.greeting.group,
+            this.world.aboutViewManager.overlay.group
+          );
+          this.cameraPosition.set(0, this.initialHeight, 1);
+          this.world.sky.mesh.rotation.y = 0;
+        },
+        onComplete: () => {
+          this.world.usePost = false;
+        },
+      }
+    );
+
     t.to(
       this.world.aboutViewManager.screen.material.uniforms.uProgress,
       {
@@ -238,9 +244,10 @@ export class TransitionManager {
   }
 
   aboutToProjects() {
-    console.log("HELLO");
-    this.world.post.activeScene = this.world.post.aboutScene;
+    this.post.activeEffect = TransitionEffect.ProjectsAbout;
+
     const t = GSAP.timeline();
+
     t.to(
       this.world.aboutViewManager.screen.material.uniforms.uProgress,
       {
@@ -250,7 +257,8 @@ export class TransitionManager {
       "0"
     );
     t.to(
-      this.world.post.toAboutTransitionUniforms.uProgress,
+      this.post.transitionEffects[TransitionEffect.ProjectsAbout].uniforms
+        .uProgress,
       {
         value: 1,
         duration: 0.5,
@@ -258,7 +266,6 @@ export class TransitionManager {
           this.world.usePost = true;
         },
         onComplete: () => {
-          console.log("REMOVING!");
           this.scene.remove(
             this.world.aboutViewManager.screen.mesh,
             this.world.aboutViewManager.greeting.group,
@@ -268,23 +275,27 @@ export class TransitionManager {
       },
       "0"
     );
-    t.to(this.world.post.toAboutTransitionUniforms.uProgress, {
-      value: 0,
-      duration: 0.5,
-      onStart: () => {
-        this.scene.add(
-          this.projectScreen.mesh,
-          this.titlesObject,
-          this.filtersObject,
-          this.projectsNavObject
-        );
-        this.cameraPosition.z = -1;
-        this.world.sky.mesh.rotation.y = Math.PI;
-      },
-      onComplete: () => {
-        this.world.usePost = false;
-      },
-    });
+    t.to(
+      this.post.transitionEffects[TransitionEffect.ProjectsAbout].uniforms
+        .uProgress,
+      {
+        value: 0,
+        duration: 0.5,
+        onStart: () => {
+          this.scene.add(
+            this.projectScreen.mesh,
+            this.titlesObject,
+            this.filtersObject,
+            this.projectsNavObject
+          );
+          this.cameraPosition.z = -1;
+          this.world.sky.mesh.rotation.y = Math.PI;
+        },
+        onComplete: () => {
+          this.world.usePost = false;
+        },
+      }
+    );
   }
 
   setDebug() {

@@ -12,13 +12,13 @@ export class ProjectDetailViewManager {
   raycaster = this.world.raycaster;
   rayOrigin = new THREE.Vector3(0, 0, 1);
   rayTarget = new THREE.Vector3();
-  overlay: Overlay;
+  overlay = new Overlay();
   debug: any;
   down: any;
   target: any;
   hover: any;
   constructor() {
-    this.overlay = new Overlay();
+    this.world.water.hiddenObjects[View.Projects]?.push(this.overlay.group);
   }
 
   show() {

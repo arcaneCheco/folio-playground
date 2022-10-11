@@ -1,27 +1,76 @@
-import * as THREE from "three";
-import fragmentShader from "../shaders/sky/fragment.glsl";
-import vertexShader from "../shaders/sky/vertex.glsl";
-import { World } from "../app";
+import {
+  BackSide,
+  Color,
+  IUniform,
+  Matrix4,
+  Mesh,
+  ShaderMaterial,
+  SphereGeometry,
+  Vector3,
+} from "three";
+import fragmentShader from "@shaders/sky/fragment.glsl";
+import vertexShader from "@shaders/sky/vertex.glsl";
+import { World } from "@src/app";
+import { _Sky } from "@types";
+import { FolderApi } from "tweakpane";
 
 /**********ADD DIFFUSE LIGHTING TO SHADER */
 /***********add rgb shift to moon */
 /*********ADD OPTION TO REMOVE BORDER FROM MOUNTAINS */
 
-export class Sky {
+export class Sky implements _Sky {
   world = new World();
   scene = this.world.scene;
-  debug: any;
-  uniforms: any;
-  material: any;
-  mesh: any;
-  geometry: any;
-  rt: any;
-  materialPost: any;
-  postScene: any;
-  width: any;
-  height: any;
+  debug: FolderApi;
+  uniforms: Record<string, IUniform> = {
+    uTime: { value: 0 },
+    // sky
+    uSkyColor: { value: new Color("#b754ff") },
+    uSkyBrightness: { value: 0.6 },
+    // horizon
+    uHorizonBrightness: { value: 0.55 },
+    uHorizonIntensity: { value: 8 },
+    uHorizonHeight: { value: 0.2 },
+    // mountain
+    uMountain1Height: { value: 0.3 },
+    uMountain1Color: { value: new Color("#4C3326") },
+    uMountain2Height: { value: 0.2 },
+    // uMountain2Color: { value: new Color("#7f6d1d") },
+    uMountain2Color: { value: new Color("#010101") },
+    // clouds
+    // uCloudColor: { value: new Color("#010101") },
+    uCloudColor: { value: new Color("#33012a") },
+    uCloudsLowerBound: { value: 0 },
+    uCloudsGradient: { value: 0.3 },
+    uCloudSpeed: { value: 3 },
+    uCloudHardEdges: { value: true },
+    uCloudHardEdgeDensity: { value: 0.6 },
+    uCloudHardEdgeCut: { value: 0.3 },
+    // moon
+    uMoonSize: { value: 0.139 },
+    // uMoonPosition: { value: new Vector3(0, 0, -1) },
+    uMoonPosition: { value: new Vector3(2.39, 1.52, -0.43) },
+    uMoonHaloSize: { value: 0.3 },
+    uMoonHaloGradient: { value: 1.9 },
+    uMoonColor: { value: new Color("#ffffff") },
+    uMoonGradient: { value: 1.0111 },
+    // uGreyNoise
+    uGreyNoise: {
+      value: null,
+    },
+  };
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: this.uniforms,
+    side: BackSide,
+    depthWrite: false,
+  });
+  geometry = new SphereGeometry(1);
+  mesh = new Mesh(this.geometry, this.material);
   constructor() {
-    this.addObject();
+    this.geometry.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
+    this.scene.add(this.mesh);
   }
 
   skyDebug() {
@@ -222,84 +271,30 @@ export class Sky {
     });
   }
 
-  addObject() {
-    this.geometry = new THREE.SphereGeometry(1);
-    this.geometry.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
-
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        uTime: { value: 0 },
-        // sky
-        uSkyColor: { value: new THREE.Color("#b754ff") },
-        uSkyBrightness: { value: 0.6 },
-        // horizon
-        uHorizonBrightness: { value: 0.55 },
-        uHorizonIntensity: { value: 8 },
-        uHorizonHeight: { value: 0.2 },
-        // mountain
-        uMountain1Height: { value: 0.3 },
-        uMountain1Color: { value: new THREE.Color("#4C3326") },
-        uMountain2Height: { value: 0.2 },
-        // uMountain2Color: { value: new THREE.Color("#7f6d1d") },
-        uMountain2Color: { value: new THREE.Color("#010101") },
-        // clouds
-        // uCloudColor: { value: new THREE.Color("#010101") },
-        uCloudColor: { value: new THREE.Color("#33012a") },
-        uCloudsLowerBound: { value: 0 },
-        uCloudsGradient: { value: 0.3 },
-        uCloudSpeed: { value: 3 },
-        uCloudHardEdges: { value: true },
-        uCloudHardEdgeDensity: { value: 0.6 },
-        uCloudHardEdgeCut: { value: 0.3 },
-        // moon
-        uMoonSize: { value: 0.139 },
-        // uMoonPosition: { value: new THREE.Vector3(0, 0, -1) },
-        uMoonPosition: { value: new THREE.Vector3(2.39, 1.52, -0.43) },
-        uMoonHaloSize: { value: 0.3 },
-        uMoonHaloGradient: { value: 1.9 },
-        uMoonColor: { value: new THREE.Color("#ffffff") },
-        uMoonGradient: { value: 1.0111 },
-        // uGreyNoise
-        uGreyNoise: {
-          value: null,
-        },
-      },
-      side: THREE.BackSide,
-      depthWrite: false,
-    });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    // this.mesh.scale.set(2, 2, 1);
-    this.scene.add(this.mesh);
-  }
-
   onPreloaded() {
-    console.log("HEYYYY");
-    this.material.uniforms.uGreyNoise.value =
-      this.world.resources.assets.greyNoise;
+    this.uniforms.uGreyNoise.value = this.world.resources.assets.greyNoise;
   }
 
-  setPost() {
-    this.rt = new THREE.WebGLRenderTarget(this.width, this.height, {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-    });
-    this.materialPost = new THREE.ShaderMaterial({
-      // vertexShader: vertexPost,
-      // fragmentShader: fragmentPost,
-      uniforms: {
-        uMap: { value: this.rt.texture },
-      },
-    });
-    const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(2, 2),
-      this.materialPost
-    );
-    this.postScene = new THREE.Scene();
-    this.postScene.add(mesh);
-  }
+  // setPost() {
+  //   this.rt = new WebGLRenderTarget(this.width, this.height, {
+  //     minFilter: LinearFilter,
+  //     magFilter: LinearFilter,
+  //     format: RGBAFormat,
+  //   });
+  //   this.materialPost = new ShaderMaterial({
+  //     // vertexShader: vertexPost,
+  //     // fragmentShader: fragmentPost,
+  //     uniforms: {
+  //       uMap: { value: this.rt.texture },
+  //     },
+  //   });
+  //   const mesh = new THREE.Mesh(
+  //     new THREE.PlaneGeometry(2, 2),
+  //     this.materialPost
+  //   );
+  //   this.postScene = new THREE.Scene();
+  //   this.postScene.add(mesh);
+  // }
 
   onPointermove() {}
 
@@ -309,12 +304,9 @@ export class Sky {
 
   onWheel() {}
 
-  resize() {
-    // const aspect = window.innerWidth / window.innerHeight;
-    // this.mesh.scale.setScalar(window.innerWidth);
-  }
+  resize() {}
 
   update() {
-    this.material.uniforms.uTime.value = this.world.time;
+    this.uniforms.uTime.value = this.world.time;
   }
 }

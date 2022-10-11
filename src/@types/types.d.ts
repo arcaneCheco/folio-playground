@@ -5,8 +5,11 @@ import {
   Data3DTexture,
   Group,
   IUniform,
+  Matrix4,
   Mesh,
+  Object3D,
   PerspectiveCamera,
+  Plane,
   PlaneGeometry,
   Raycaster,
   Scene,
@@ -16,6 +19,7 @@ import {
   TextureLoader,
   Vector2,
   Vector3,
+  Vector4,
   VideoTexture,
   WebGLRenderer,
   WebGLRenderTarget,
@@ -299,11 +303,88 @@ interface ProjectState {
   max: number;
 }
 
-export interface _Water {}
+export interface _Mirror {
+  textureWidth: number;
+  textureHeight: number;
+  clipBias: number;
+  mirrorPlane: Plane;
+  normal: Vector3;
+  mirrorWorldPosition: Vector3;
+  cameraWorldPosition: Vector3;
+  rotationMatrix: Matrix4;
+  lookAtPosition: Vector3;
+  clipPlane: Vector4;
+  view: Vector3;
+  target: Vector3;
+  q: Vector4;
+  textureMatrix: Matrix4;
+  mirrorCamera: PerspectiveCamera;
+  renderTarget: WebGLRenderTarget;
+  updateTextureMatrix(object: Object3D, camera: PerspectiveCamera): void;
+  drawTexture(renderer: WebGLRenderer, object: Object3D, scene: Scene): void;
+  update(
+    object: Object3D,
+    renderer: WebGLRenderer,
+    camera: PerspectiveCamera,
+    scene: Scene
+  ): void;
+}
 
-export interface _Post {}
+export interface _WaterHeightMap extends _RenderBuffer {
+  bounds: number;
+  mesh: Mesh;
+  uniforms: Record<string, IUniform>;
+  material: ShaderMaterial;
+}
+export interface _Water extends _Mirror {
+  world: _World;
+  renderer: WebGLRenderer;
+  camera: PerspectiveCamera;
+  scene: Scene;
+  raycaster: Raycaster;
+  bounds: number;
+  scale: number;
+  heightMap: _WaterHeightMap;
+  geometry: PlaneGeometry;
+  uniforms: Record<string, IUniform>;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  intersectionPlane: Mesh;
+  debug: FolderApi;
+  hiddenObjects: { [key in View]?: Array<Object3D> };
+}
 
-export interface _Sky {}
+export interface _Post {
+  world: _World;
+  scene: Scene;
+  renderer: WebGLRenderer;
+  camera: PerspectiveCamera;
+  renderTarget: WebGLRenderTarget;
+  geometry: PlaneGeometry;
+  transitionEffects: Record<TransitionEffect, _TransitionScene>;
+  activeEffect: TransitionEffect;
+  debug: FolderApi;
+}
+
+export enum TransitionEffect {
+  HomeProjects = "HomeProjects",
+  ProjectsAbout = "ProjectsAbout",
+}
+
+export interface _TransitionScene extends Scene {
+  uniforms: Record<string, IUniform>;
+  updateScreen(texture: Texture): void;
+}
+
+export interface _Sky {
+  world: _World;
+  scene: Scene;
+  debug: FolderApi;
+  uniforms: Record<string, IUniform>;
+  material: ShaderMaterial;
+  mesh: Mesh;
+  geometry: SphereGeometry;
+}
 
 export interface _ProjectScreen {
   world: _World;
