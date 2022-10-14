@@ -29,6 +29,7 @@
     "@types/express": "^4.17.14",
     "@types/node": "^18.7.23",
     "@types/three": "^0.144.0",
+    "@vercel/node": "^2.5.24",
     "nodemon": "^2.0.20",
     "parcel-resolver-ts-base-url": "^1.2.0",
     "parcel-resolver-typescript-module": "^0.1.8",
