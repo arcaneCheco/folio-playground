@@ -102,4 +102,4 @@ app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
 });
 
-export default app;
+export { app };
