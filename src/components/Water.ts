@@ -70,7 +70,7 @@ export class Water extends Mirror implements _Water {
     this.intersectionPlane.updateMatrix();
   }
 
-  resize() {}
+  onResize() {}
 
   onPointerdown() {}
 

@@ -222,6 +222,13 @@ export interface _CurlBubble {
   debug: FolderApi;
   uniforms: Record<string, IUniform>;
   scale: number;
+  setDebug(): void;
+  onPointermove(mouse: Vector2): void;
+  onPointerdown(): void;
+  onPointerup(): void;
+  onResize(): void;
+  onWheel(): void;
+  update(): void;
 }
 
 export interface _HomeTitle {
@@ -239,7 +246,7 @@ export interface _HomeTitle {
   mesh: Mesh;
 }
 
-export interface _HomeViewManager {
+export interface _HomeViewManager extends _ViewManager {
   world: _World;
   scene: Scene;
   curlBubble: _CurlBubble;
@@ -352,6 +359,13 @@ export interface _Water extends _Mirror {
   intersectionPlane: Mesh;
   debug: FolderApi;
   hiddenObjects: { [key in View]?: Array<Object3D> };
+  setDebug(): void;
+  onPointermove(): void;
+  onPointerdown(): void;
+  onPointerup(): void;
+  onWheel(): void;
+  update(): void;
+  onResize(): void;
 }
 
 export interface _Post {
@@ -364,6 +378,8 @@ export interface _Post {
   transitionEffects: Record<TransitionEffect, _TransitionScene>;
   activeEffect: TransitionEffect;
   debug: FolderApi;
+  setDebug(): void;
+  render(): void;
 }
 
 export enum TransitionEffect {
@@ -384,6 +400,14 @@ export interface _Sky {
   material: ShaderMaterial;
   mesh: Mesh;
   geometry: SphereGeometry;
+  onPreloaded(): void;
+  setDebug(): void;
+  onPointermove(): void;
+  onPointerdown(): void;
+  onPointerup(): void;
+  onWheel(): void;
+  onResize(): void;
+  update(): void;
 }
 
 export interface _ProjectScreen {
@@ -396,6 +420,13 @@ export interface _ProjectScreen {
   material: ShaderMaterial;
   mesh: Mesh;
   debug: FolderApi;
+  onPointerdown(): void;
+  onPointermove(): void;
+  onPointerup(): void;
+  resizeProjectsView(size: any): void;
+  update(): void;
+  setDebug(): void;
+  onActiveChange(index: number): void;
 }
 
 export interface _RotateAlert {}
@@ -469,13 +500,54 @@ export interface _ProjectTitles {
   font: Font;
   meshes: Array<_TitleMesh>;
   debug: FolderApi;
+  setPositionsWithinGroup(): void;
+  onResize(sizes: any): void;
+  onWheel(deltaY: number): void;
+  update(): void;
 }
 
-export interface _ProjectsNav {}
+export interface _ViewManager {
+  onPointermove(mouse: Vector2, event?: PointerEvent): void;
+  onPointerdown(): void;
+  onPointerup(): void;
+  onWheel(event?: WheelEvent): void;
+  onResize(): void;
+  update(): void;
+  setDebug(): void;
+  show(): void;
+  hide(): void;
+}
 
-export interface _ProjectsFilters {}
+export interface _ProjectsNav {
+  world: _World;
+  font: Font;
+  group: Group;
+  lineThickness: number;
+  textLineSpacing: number;
+  material: ShaderMaterial;
+  navGroup: Group;
+  homeNav: Mesh;
+  aboutNav: Mesh;
+  sideline: Mesh;
+  onResize(sizes: any): void;
+}
 
-export interface _ProjectsViewManager {
+export interface _ProjectsFilters {
+  world: _World;
+  font: Font;
+  material: ShaderMaterial;
+  filters: Array<string>;
+  outerGroup: Group;
+  group: Group;
+  size: number;
+  underlineThickness: number;
+  gap: number;
+  gWidth: number;
+  underlineMaterial: ShaderMaterial;
+  onResize(sizes: any): void;
+}
+
+export interface _ProjectsViewManager extends _ViewManager {
   world: _World;
   scene: Scene;
   projectScreen: _ProjectScreen;
@@ -501,7 +573,24 @@ export interface _ProjectsViewManager {
   filters: _ProjectsFilters;
 }
 
-export interface _ProjectDetailViewManager {}
+export interface ProjectDetailOverlay {
+  group: Group;
+}
+
+export interface _ProjectDetailViewManager extends _ViewManager {
+  world: _World;
+  scene: Scene;
+  activeProjectState: ProjectState;
+  projectScreen: _ProjectScreen;
+  raycaster: Raycaster;
+  rayOrigin: Vector3;
+  rayTarget: Vector3;
+  overlay: ProjectDetailOverlay;
+  debug: any;
+  down: any;
+  target: any;
+  hover: any;
+}
 
 export interface _AboutScreen {
   world: _World;
@@ -523,7 +612,7 @@ export interface _AboutGreeting {
   mesh2: Mesh;
 }
 
-export interface _AboutViewManager {
+export interface _AboutViewManager extends _ViewManager {
   world: _World;
   scene: Scene;
   renderer: WebGLRenderer;

@@ -1,36 +1,32 @@
-import * as THREE from "three";
+import { Group, Mesh, PlaneGeometry, ShaderMaterial } from "three";
 import vertexSideline from "@shaders/projectsNav/sideline/vertex.glsl";
 import fragmentSideline from "@shaders/projectsNav/sideline/fragment.glsl";
 import vertexShader from "@shaders/projectsNav/text/vertex.glsl";
 import fragmentShader from "@shaders/projectsNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
-import { TextAlign } from "@types";
+import { TextAlign, _ProjectsNav, _World } from "@types";
 
-export class Nav {
-  group = new THREE.Group();
+export class Nav implements _ProjectsNav {
+  world: _World = new World();
+  font = this.world.resources.fonts.audiowideRegular;
+  group: Group = new Group();
   lineThickness = 3;
   textLineSpacing = 5;
-  material: any;
-  navGroup: any;
-  homeNav: any;
-  aboutNav: any;
-  sideline: any;
-  world;
-  font;
+  material = new ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      tMap: { value: this.font.map },
+    },
+    transparent: true,
+  });
+  navGroup = new Group();
+  homeNav: Mesh;
+  aboutNav: Mesh;
+  sideline: Mesh;
   constructor() {
-    this.world = new World();
-    this.font = this.world.resources.fonts.audiowideRegular;
     this.group.rotateZ(-Math.PI / 2);
-
-    this.material = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        tMap: { value: this.font.map },
-      },
-      transparent: true,
-    });
 
     this.setNavButtons();
 
@@ -38,8 +34,6 @@ export class Nav {
   }
 
   setNavButtons() {
-    this.navGroup = new THREE.Group();
-    // this.navGroup.position.y = 0.5 + this.lineThickness + this.textLineSpacing;
     this.group.add(this.navGroup);
     let homeGeometry = new TextGeometry();
     homeGeometry.setText({
@@ -48,7 +42,7 @@ export class Nav {
       align: TextAlign.Left,
     });
 
-    this.homeNav = new THREE.Mesh(homeGeometry, this.material);
+    this.homeNav = new Mesh(homeGeometry, this.material);
     this.homeNav.name = "home";
     this.navGroup.add(this.homeNav);
 
@@ -59,18 +53,18 @@ export class Nav {
       align: TextAlign.Right,
     });
 
-    this.aboutNav = new THREE.Mesh(aboutGeometry, this.material);
+    this.aboutNav = new Mesh(aboutGeometry, this.material);
     this.aboutNav.name = "about";
     this.navGroup.add(this.aboutNav);
   }
 
   setLine() {
-    let lineGeometry = new THREE.PlaneGeometry(2, 1);
-    let lineMaterial = new THREE.ShaderMaterial({
+    let lineGeometry = new PlaneGeometry(2, 1);
+    let lineMaterial = new ShaderMaterial({
       vertexShader: vertexSideline,
       fragmentShader: fragmentSideline,
     });
-    this.sideline = new THREE.Mesh(lineGeometry, lineMaterial);
+    this.sideline = new Mesh(lineGeometry, lineMaterial);
     this.group.add(this.sideline);
   }
 

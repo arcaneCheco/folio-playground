@@ -571,7 +571,7 @@ export class CurlBubble implements _CurlBubble {
 
   onWheel() {}
 
-  resize() {}
+  onResize() {}
 
   update() {
     this.mesh.material.uniforms.uTime.value = this.world.time;

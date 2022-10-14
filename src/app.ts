@@ -24,17 +24,21 @@ import {
   ProjectsViewManager,
   ProjectDetailViewManager,
 } from "./viewManagers";
-import { View, _World } from "@types";
-
-// const debounce = (func, timeout = 50) => {
-//   let timer;
-//   return (...args) => {
-//     if (timer) clearTimeout(timer);
-//     timer = setTimeout(() => {
-//       func(...args);
-//     }, timeout);
-//   };
-// };
+import {
+  View,
+  _AboutViewManager,
+  _CurlBubble,
+  _HomeViewManager,
+  _Post,
+  _ProjectDetailViewManager,
+  _ProjectScreen,
+  _ProjectsViewManager,
+  _Resources,
+  _Sky,
+  _ViewManager,
+  _Water,
+  _World,
+} from "@types";
 
 export class World implements _World {
   static instance: World;
@@ -63,24 +67,27 @@ export class World implements _World {
   });
   raycaster = new Raycaster();
   ndcRaycaster = new Raycaster();
-  resources: Resources;
-  water: Water;
-  post: Post;
-  sky: Sky;
-  curlBubble: CurlBubble;
-  projectScreen: ProjectScreen;
+  resources: _Resources;
+  water: _Water;
+  post: _Post;
+  sky: _Sky;
+  curlBubble: _CurlBubble;
+  projectScreen: _ProjectScreen;
   rotateAlert: RotateAlert;
   transitionManager: TransitionManager;
-  projectsViewManager: ProjectsViewManager;
-  projectDetailViewManager: ProjectDetailViewManager;
-  aboutViewManager: AboutViewManager;
-  homeViewManager: HomeViewManager;
+  projectsViewManager: _ProjectsViewManager;
+  projectDetailViewManager: _ProjectDetailViewManager;
+  aboutViewManager: _AboutViewManager;
+  homeViewManager: _HomeViewManager;
   parallax: Parallax;
   preloader: Preloader;
   dataCount: number;
   debug: FolderApi;
   pane: FolderApi;
   paneContainer: Pane;
+  viewManagers: {
+    [key in View]?: _ViewManager;
+  } = {};
   constructor({ container }: { container?: HTMLDivElement } = {}) {
     if (World.instance) {
       return World.instance;
@@ -90,7 +97,6 @@ export class World implements _World {
 
     this.camera.position.set(0, this.initialHeight, 1);
     this.renderer.setPixelRatio(1);
-    // this.renderer.autoClear = false;
     this.container.appendChild(this.renderer.domElement);
 
     this.init();
@@ -107,9 +113,10 @@ export class World implements _World {
 
     this.resources = new Resources();
     this.addListeners();
-    this.resize();
+    this.onResize();
     this.render();
     await this.resources.load();
+
     // await new Promise((res) => {
     //   window.addEventListener("click", () => {
     //     res(null);
@@ -123,17 +130,25 @@ export class World implements _World {
     this.projectsViewManager = new ProjectsViewManager();
     this.projectDetailViewManager = new ProjectDetailViewManager();
     this.aboutViewManager = new AboutViewManager();
+
+    this.viewManagers = {
+      Home: this.homeViewManager,
+      ProjectDetail: this.projectDetailViewManager,
+      About: this.aboutViewManager,
+      Projects: this.projectsViewManager,
+    };
+
     this.transitionManager = new TransitionManager();
 
     this.changeView(window.VIEW);
 
     this.setDebug();
 
-    this.resize();
+    this.onResize();
   }
 
   addListeners() {
-    window.addEventListener("resize", this.resize.bind(this));
+    window.addEventListener("resize", this.onResize.bind(this));
     window.addEventListener("pointermove", this.onPointermove.bind(this));
     window.addEventListener("pointerup", this.onPointerup.bind(this));
     window.addEventListener("pointerdown", this.onPointerdown.bind(this));
@@ -153,7 +168,8 @@ export class World implements _World {
       else if (this.view === View.About) {
         this.transitionManager.aboutToProjects();
       } else {
-        this.projectsViewManager.show();
+        // this.projectsViewManager.show();
+        this.transitionManager.homeToProjects();
       }
       window.history.pushState({}, "", "/projects");
     }
@@ -245,91 +261,50 @@ export class World implements _World {
     this.sky.onPointermove();
     this.water.onPointermove();
 
-    if (this.view === View.Projects)
-      this.projectsViewManager.onPointermove(this.mouse);
-    if (this.view === View.ProjectDetail)
-      this.projectDetailViewManager.onPointermove(this.mouse);
-    if (this.view === View.About)
-      this.aboutViewManager.onPointermove(this.mouse);
-    if (this.view === View.Home) {
-      this.homeViewManager.onPointermove(e, this.mouse);
-    }
+    this.viewManagers[this.view]?.onPointermove(this.mouse, e);
   }
 
   onPointerdown() {
     this.sky.onPointerdown();
     this.water.onPointerdown();
-
-    if (this.view === View.Projects) this.projectsViewManager.onPointerdown();
-    if (this.view === View.ProjectDetail)
-      this.projectDetailViewManager.onPointerdown();
-    if (this.view === View.About) this.aboutViewManager.onPointerdown();
-    if (this.view === View.Home) this.homeViewManager.onPointerdown();
+    this.viewManagers[this.view]?.onPointerdown();
   }
 
   onPointerup() {
     this.sky.onPointerup();
     this.water.onPointerup();
-
-    if (this.view === View.Projects) this.projectsViewManager.onPointerup();
-    if (this.view === View.ProjectDetail)
-      this.projectDetailViewManager.onPointerup();
-    if (this.view === View.About) this.aboutViewManager.onPointerup();
-    if (this.view === View.Home) this.homeViewManager.onPointerup();
+    this.viewManagers[this.view]?.onPointerup();
   }
 
   onWheel(ev: WheelEvent) {
     this.sky.onWheel();
     this.water.onWheel();
 
-    if (this.view === View.Projects) this.projectsViewManager.onWheel(ev);
-    if (this.view === View.ProjectDetail)
-      this.projectDetailViewManager.onWheel();
-    if (this.view === View.About) this.aboutViewManager.onWheel(ev);
-    if (this.view === View.Home) this.homeViewManager.onWheel();
+    this.viewManagers[this.view]?.onWheel(ev);
   }
 
-  resize() {
-    let device =
-      window.innerWidth > 749
-        ? "desktop"
-        : window.innerWidth > 481
-        ? "ipad"
-        : "mobile";
-
+  onResize() {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
 
-    this.sky.resize();
-    this.water.resize();
+    this.sky.onResize();
+    this.water.onResize();
 
     this.rotateAlert && this.rotateAlert.onResize(this.width / this.height);
 
-    if (this.projectsViewManager) {
-      this.projectsViewManager.resize();
-      this.projectDetailViewManager.resize();
-      this.aboutViewManager.onResize();
-      this.homeViewManager.resize();
-    }
-  }
-
-  updateWorld() {
-    this.parallax.update();
+    Object.values(this.viewManagers).map((viewManager) =>
+      viewManager.onResize()
+    );
   }
 
   update() {
-    this.updateWorld();
+    this.parallax.update();
     this.sky.update();
     this.water.update();
-
-    if (this.view === View.Projects) this.projectsViewManager.update();
-    if (this.view === View.ProjectDetail)
-      this.projectDetailViewManager.update();
-    if (this.view === View.About) this.aboutViewManager.update();
-    if (this.view === View.Home) this.homeViewManager.update();
+    this.viewManagers[this.view]?.update();
   }
 
   render() {

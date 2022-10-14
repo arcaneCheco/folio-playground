@@ -304,7 +304,7 @@ export class Sky implements _Sky {
 
   onWheel() {}
 
-  resize() {}
+  onResize() {}
 
   update() {
     this.uniforms.uTime.value = this.world.time;

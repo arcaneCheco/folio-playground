@@ -42,38 +42,38 @@ export class HomeViewManager implements _HomeViewManager {
         max: 1,
         step: 0.001,
       })
-      .on("change", () => this.resize());
+      .on("change", () => this.onResize());
     this.debug
       .addInput(this.resizeSettings, "posX", {
         min: -1,
         max: 0,
         step: 0.001,
       })
-      .on("change", () => this.resize());
+      .on("change", () => this.onResize());
     this.debug
       .addInput(this.resizeSettings, "scale", {
         min: 0,
         max: 1,
         step: 0.001,
       })
-      .on("change", () => this.resize());
+      .on("change", () => this.onResize());
     this.debug
       .addInput(this.resizeSettings, "contactRatio", {
         min: 0,
         max: 1.3,
         step: 0.001,
       })
-      .on("change", () => this.resize());
+      .on("change", () => this.onResize());
     this.debug
       .addInput(this.resizeSettings, "navSize", {
         min: 0,
         max: 1.3,
         step: 0.001,
       })
-      .on("change", () => this.resize());
+      .on("change", () => this.onResize());
   }
 
-  onPointermove(e: PointerEvent, mouse: Vector2) {
+  onPointermove(mouse: Vector2, e: PointerEvent) {
     this.rayTarget.set(mouse.x, mouse.y, -1);
     this.raycaster.set(this.rayOrigin, this.rayTarget.normalize());
 
@@ -183,13 +183,13 @@ export class HomeViewManager implements _HomeViewManager {
     return { title, contact, nav };
   }
 
-  resize() {
+  onResize() {
     const { title, contact, nav } = this.getSizes();
 
     this.title.resize(title);
     this.contact.resize(contact);
     this.nav.resize(nav);
-    this.curlBubble.resize();
+    this.curlBubble.onResize();
   }
 
   onWheel() {

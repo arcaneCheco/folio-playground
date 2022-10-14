@@ -1,17 +1,16 @@
-import * as THREE from "three";
-import { Vector2 } from "three";
+import { View, _ProjectDetailViewManager } from "@types";
+import { Vector2, Vector3 } from "three";
 import { World } from "@src/app";
 import { Overlay } from "./Overlay";
-import { View } from "@types";
 
-export class ProjectDetailViewManager {
+export class ProjectDetailViewManager implements _ProjectDetailViewManager {
   world = new World();
   scene = this.world.scene;
   activeProjectState = this.world.projectState;
   projectScreen = this.world.projectScreen;
   raycaster = this.world.raycaster;
-  rayOrigin = new THREE.Vector3(0, 0, 1);
-  rayTarget = new THREE.Vector3();
+  rayOrigin = new Vector3(0, 0, 1);
+  rayTarget = new Vector3();
   overlay = new Overlay();
   debug: any;
   down: any;
@@ -255,7 +254,7 @@ export class ProjectDetailViewManager {
     };
   }
 
-  resize() {
+  onResize() {
     if (this.world.view === View.ProjectDetail) {
       console.log("NOPW");
       const { screen } = this.getSizes();

@@ -9,9 +9,9 @@ import vertexIcon from "@shaders/projectDetailOverlay/icon/vertex.glsl";
 import fragmentIcon from "@shaders/projectDetailOverlay/icon/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
-import { TextAlign } from "@types";
+import { TextAlign, ProjectDetailOverlay } from "@types";
 
-export class Overlay {
+export class Overlay implements ProjectDetailOverlay {
   group = new THREE.Group();
   scale = 1.6;
   material: any;

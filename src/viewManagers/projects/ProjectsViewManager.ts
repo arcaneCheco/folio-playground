@@ -4,7 +4,13 @@ import GSAP from "gsap";
 import { Nav, Titles, Filters } from "./components";
 import { GradientLinear } from "@utils/gradientLinear";
 import { warm, natural } from "@utils/palettes";
-import { View, _ProjectsViewManager } from "@types";
+import {
+  View,
+  _ProjectsFilters,
+  _ProjectsNav,
+  _ProjectsViewManager,
+  _ProjectTitles,
+} from "@types";
 import { FolderApi } from "tweakpane";
 
 export class ProjectsViewManager implements _ProjectsViewManager {
@@ -28,9 +34,9 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   down: boolean;
   target: string;
   titleIndex: number;
-  titles = new Titles();
-  nav = new Nav();
-  filters = new Filters();
+  titles: _ProjectTitles = new Titles();
+  nav: _ProjectsNav = new Nav();
+  filters: _ProjectsFilters = new Filters();
   constructor() {
     this.filterAll();
     const n = this.titles.data.length;
@@ -300,7 +306,7 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     };
   }
 
-  resize() {
+  onResize() {
     const { projectsNav, screen, titles, filters } = this.getSizes();
 
     if (this.world.view !== View.ProjectDetail) {
@@ -311,7 +317,7 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     this.nav.onResize(projectsNav);
   }
 
-  onWheel({ deltaY }) {
+  onWheel({ deltaY }: WheelEvent) {
     this.titles.onWheel(deltaY);
   }
 

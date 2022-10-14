@@ -146,7 +146,7 @@ export class AboutViewManager implements _AboutViewManager {
     }
   }
 
-  onWheel({ deltaY }) {
+  onWheel({ deltaY }: WheelEvent) {
     this.screen.onWheel(deltaY, this.renderer, this.camera);
   }
 
