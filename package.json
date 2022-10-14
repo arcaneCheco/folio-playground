@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "npx parcel ./views/index.pug",
+    "dev": "npx nodemon ./api/server.mjs",
     "updateResources": "cp -r ./data/* ./dist/"
   },
   "author": "",
