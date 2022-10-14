@@ -1,7 +1,7 @@
 const express = require("express");
-const fetch = require("node-fetch");
+const fetch = require("node-fetch-commonjs");
 const path = require("path");
-const { getClient } = require("./client.js");
+const getClient = require("./client.js");
 require("dotenv").config();
 
 const app = express();
@@ -14,12 +14,12 @@ const client = getClient({
 
 const PORT = process.env.PORT || 3001;
 
-const __dirname = path.resolve("./");
+const __dirname2 = path.resolve("./");
 
-app.use(express.static(`${__dirname}/dist`));
+app.use(express.static(`${__dirname2}/dist`));
 
 app.set("view engine", "pug");
-app.set("index", `${__dirname}/views`);
+app.set("index", `${__dirname2}/views`);
 
 const handleRequest = async () => {
   const projects = (await client.getAllByType("project")).map((entry) => {
