@@ -25,6 +25,7 @@ import {
   ProjectDetailViewManager,
 } from "./viewManagers";
 import {
+  ProjectState,
   View,
   _AboutViewManager,
   _CurlBubble,
@@ -43,30 +44,19 @@ import {
 export class World implements _World {
   static instance: World;
   usePost = false;
-  projectState = {
-    active: 0,
-    progress: { value: 0 },
-    target: 0,
-    isTransitioning: { value: false },
-    min: 0,
-    max: 5,
-  };
+  projectState: ProjectState;
   view: View;
   time = 0;
-  mouse = new Vector2();
+  mouse: Vector2;
   container: HTMLDivElement;
   width: number;
   height: number;
-  scene = new Scene();
-  camera = new PerspectiveCamera(65, 1, 0.001, 10);
-  initialHeight = 0.14;
-  renderer = new WebGLRenderer({
-    alpha: true,
-    powerPreference: "high-performance",
-    antialias: true,
-  });
-  raycaster = new Raycaster();
-  ndcRaycaster = new Raycaster();
+  scene: Scene;
+  camera: PerspectiveCamera;
+  initialHeight: number;
+  renderer: WebGLRenderer;
+  raycaster: Raycaster;
+  ndcRaycaster: Raycaster;
   resources: _Resources;
   water: _Water;
   post: _Post;
@@ -95,6 +85,33 @@ export class World implements _World {
     World.instance = this;
     this.container = container!;
 
+    this.camera = new PerspectiveCamera(65, 1, 0.001, 10);
+
+    this.renderer = new WebGLRenderer({
+      alpha: true,
+      powerPreference: "high-performance",
+      antialias: true,
+    });
+
+    this.initialHeight = 0.14;
+
+    this.projectState = {
+      active: 0,
+      progress: { value: 0 },
+      target: 0,
+      isTransitioning: { value: false },
+      min: 0,
+      max: 5,
+    };
+
+    this.mouse = new Vector2();
+
+    this.scene = new Scene();
+
+    this.raycaster = new Raycaster();
+
+    this.ndcRaycaster = new Raycaster();
+
     this.camera.position.set(0, this.initialHeight, 1);
     this.renderer.setPixelRatio(1);
     this.container.appendChild(this.renderer.domElement);
@@ -117,11 +134,11 @@ export class World implements _World {
     this.render();
     await this.resources.load();
 
-    // await new Promise((res) => {
-    //   window.addEventListener("click", () => {
-    //     res(null);
-    //   });
-    // });
+    await new Promise((res) => {
+      window.addEventListener("click", () => {
+        res(null);
+      });
+    });
 
     this.sky.onPreloaded();
 
