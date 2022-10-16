@@ -135,11 +135,11 @@ export class World implements _World {
     this.render();
     await this.resources.load();
 
-    await new Promise((res) => {
-      window.addEventListener("click", () => {
-        res(null);
-      });
-    });
+    // await new Promise((res) => {
+    //   window.addEventListener("click", () => {
+    //     res(null);
+    //   });
+    // });
 
     this.sky.onPreloaded();
 

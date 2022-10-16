@@ -589,11 +589,11 @@ class World {
         this.onResize();
         this.render();
         await this.resources.load();
-        await new Promise((res)=>{
-            window.addEventListener("click", ()=>{
-                res(null);
-            });
-        });
+        // await new Promise((res) => {
+        //   window.addEventListener("click", () => {
+        //     res(null);
+        //   });
+        // });
         this.sky.onPreloaded();
         this.projectScreen = new (0, _components.ProjectScreen)();
         this.homeViewManager = new (0, _viewManagers.HomeViewManager)();
