@@ -16,7 +16,7 @@ export class Title implements _HomeTitle {
   flowmap = new Flowmap();
   textTexture = new TextTexture({
     lineHeight: 1.5,
-    font: this.world.resources.fonts.audiowideRegular,
+    font: this.world.resources.fonts.anironRegular,
     text: "Creative\nWeb\nDeveloper",
   });
   aspect: number;

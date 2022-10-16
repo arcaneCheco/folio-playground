@@ -57,11 +57,6 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
     this.debug
       .addButton({ title: "close" })
       .on("click", () => this.world.changeView(View.Projects));
-    // this.debug.addButton({ title: "visit" }).on("click", () => {
-    //   const url = this.world.data[this.activeProjectState.active].link;
-    //   console.log(url);
-    //   window.open(url, "_blank").focus();
-    // });
 
     this.overlayDebug();
   }
@@ -256,7 +251,6 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
 
   onResize() {
     if (this.world.view === View.ProjectDetail) {
-      console.log("NOPW");
       const { screen } = this.getSizes();
       // this.projectScreen.resizeProjectDetailView(screen);
     }

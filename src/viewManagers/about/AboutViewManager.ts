@@ -170,7 +170,7 @@ export class AboutViewManager implements _AboutViewManager {
 
     greeting.scaleX = 0.06;
     greeting.scaleY = greeting.scaleX;
-    greeting.posX = -screen.scaleX * 0.51;
+    greeting.posX = -screen.scaleX * 0.52;
     greeting.posY = screen.posY + screen.scaleY / 2 + greeting.scaleX * 1.2;
     greeting.mesh1posX = -screen.scaleX / 2 - greeting.scaleX / 2;
 

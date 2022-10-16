@@ -138,6 +138,31 @@ export class TransitionManager {
   }
 
   projectsToProjectDetail() {
+    this.post.activeEffect = TransitionEffect.ProjectsProjectDetail;
+    const t2 = GSAP.timeline({
+      defaults: {
+        duration: 1.2,
+        delay: 0,
+        ease: "power1.out",
+      },
+      onStart: () => {
+        this.world.usePost = true;
+      },
+      onComplete: () => {
+        this.post.transitionEffects[
+          TransitionEffect.ProjectsProjectDetail
+        ].uniforms.uProgress.value = 0;
+        this.world.usePost = false;
+      },
+    });
+
+    t2.to(
+      this.post.transitionEffects[TransitionEffect.ProjectsProjectDetail]
+        .uniforms.uProgress,
+      { value: 1 },
+      0
+    );
+
     this.world.parallax.enabled = false;
     const aspect = window.innerWidth / window.innerHeight;
     this.projectScreen.uniforms.uIsCurved.value = false;

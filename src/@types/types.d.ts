@@ -301,7 +301,14 @@ export enum View {
   Error = "404",
 }
 
-interface ProjectState {
+export enum ProjectCategory {
+  All = "All",
+  Sites = "Sites",
+  Sketches = "Sketches",
+  Publications = "Publications",
+}
+
+export interface ProjectState {
   active: number;
   progress: IUniform<number>;
   target: number;
@@ -385,6 +392,7 @@ export interface _Post {
 export enum TransitionEffect {
   HomeProjects = "HomeProjects",
   ProjectsAbout = "ProjectsAbout",
+  ProjectsProjectDetail = "ProjectsProjectDetail",
 }
 
 export interface _TransitionScene extends Scene {
@@ -504,6 +512,7 @@ export interface _ProjectTitles {
   onResize(sizes: any): void;
   onWheel(deltaY: number): void;
   update(): void;
+  filterTitles(category: ProjectCategory): void;
 }
 
 export interface _ViewManager {
@@ -514,8 +523,6 @@ export interface _ViewManager {
   onResize(): void;
   update(): void;
   setDebug(): void;
-  show(): void;
-  hide(): void;
 }
 
 export interface _ProjectsNav {
@@ -532,19 +539,23 @@ export interface _ProjectsNav {
   onResize(sizes: any): void;
 }
 
+export interface FilterGroup extends Group {
+  children: Array<Mesh<_TextGeometry, ShaderMaterial>>;
+}
+
 export interface _ProjectsFilters {
   world: _World;
   font: Font;
   material: ShaderMaterial;
-  filters: Array<string>;
   outerGroup: Group;
-  group: Group;
+  group: FilterGroup;
   size: number;
   underlineThickness: number;
   gap: number;
   gWidth: number;
   underlineMaterial: ShaderMaterial;
   onResize(sizes: any): void;
+  updateActiveFilter(category: ProjectCategory): void;
 }
 
 export interface _ProjectsViewManager extends _ViewManager {
@@ -555,7 +566,7 @@ export interface _ProjectsViewManager extends _ViewManager {
   activeFilter?: string;
   sky: _Sky;
   water: _Water;
-  timeline: GSAPTimeline;
+  screenTimeline: GSAPTimeline;
   raycaster: Raycaster;
   ndcRaycaster: Raycaster;
   rayOrigin: Vector3;
@@ -590,6 +601,7 @@ export interface _ProjectDetailViewManager extends _ViewManager {
   down: any;
   target: any;
   hover: any;
+  show(): void;
 }
 
 export interface _AboutScreen {

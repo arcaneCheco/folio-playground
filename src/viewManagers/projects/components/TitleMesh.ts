@@ -47,6 +47,7 @@ export class TitleMesh
       })
     );
     this.uniforms.uMap.value = font.map;
+    if (index === 0) this.uniforms.uProgress.value = 1;
     this.material.uniforms = this.uniforms;
     this.setGeometrySpecs({
       text: title,

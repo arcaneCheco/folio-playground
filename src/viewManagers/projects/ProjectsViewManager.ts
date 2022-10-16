@@ -1,15 +1,17 @@
 import { World } from "@src/app";
-import { Vector3 } from "three";
+import { Color, Vector2, Vector3 } from "three";
 import GSAP from "gsap";
 import { Nav, Titles, Filters } from "./components";
 import { GradientLinear } from "@utils/gradientLinear";
-import { warm, natural } from "@utils/palettes";
+import { warm, natural, seaside, circus2, warm3 } from "@utils/palettes";
 import {
+  ProjectCategory,
   View,
   _ProjectsFilters,
   _ProjectsNav,
   _ProjectsViewManager,
   _ProjectTitles,
+  _TextGeometry,
 } from "@types";
 import { FolderApi } from "tweakpane";
 
@@ -18,30 +20,32 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   scene = this.world.scene;
   projectScreen = this.world.projectScreen;
   projectState = this.world.projectState;
-  activeFilter = undefined;
+  activeFilter?: ProjectCategory;
   sky = this.world.sky;
   water = this.world.water;
-  timeline = GSAP.timeline();
   raycaster = this.world.raycaster;
   ndcRaycaster = this.world.ndcRaycaster;
   rayOrigin = new Vector3(0, 0, 1);
   rayTarget = new Vector3();
-  colorGradient = new GradientLinear(natural);
+  colorGradient = new GradientLinear(warm3);
+  screenTimeline = GSAP.timeline();
   debug: FolderApi;
-  titlesTimeline: GSAPTimeline;
+  titlesTimeline = GSAP.timeline();
   hover: boolean;
   hoverTitles: boolean;
   down: boolean;
   target: string;
-  titleIndex: number;
+  titleIndex: number = -1;
   titles: _ProjectTitles = new Titles();
+  nProjects = this.titles.data.length;
   nav: _ProjectsNav = new Nav();
   filters: _ProjectsFilters = new Filters();
   constructor() {
-    this.filterAll();
-    const n = this.titles.data.length;
+    this.filterProjects(ProjectCategory.All);
     this.titles.meshes.map((mesh, i) => {
-      mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
+      mesh.material.uniforms.uColor.value = this.colorGradient.getAt(
+        (i + 1) / this.nProjects
+      );
     });
 
     this.world.water.hiddenObjects[View.Projects]?.push(
@@ -50,116 +54,53 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     );
   }
 
-  setDebug() {
-    this.debug = this.world.pane.addFolder({
-      title: "projectsViewManager",
-      expanded: false,
-    });
-    this.debug
-      .addInput(this.projectState, "active", { min: 0, max: 5, step: 1 })
-      .on("change", () => {
-        this.onActiveChange(this.projectState.active);
-      });
+  setDebug() {}
+
+  filterProjects(category: ProjectCategory) {
+    this.filters.updateActiveFilter(category);
+    this.titles.filterTitles(category);
   }
 
-  setAtiveFilter(key) {
-    if (this.activeFilter === key) return;
-    this.activeFilter = key;
-    this.filters.group.children.map(
-      // (mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) =>
-      (mesh: any) =>
-        mesh.name === key
-          ? (mesh.material.uniforms.uActive.value = true)
-          : (mesh.material.uniforms.uActive.value = false)
-    );
+  setColors(color: Color) {
+    this.projectScreen.uniforms.uColor.value = color;
+    this.sky.material.uniforms.uSkyColor.value = color;
+    this.water.uniforms.uFresnelColor.value = color;
   }
 
-  filterAll() {
-    this.setAtiveFilter("all");
+  onActiveChange(newIndex: number) {
+    this.projectState.target = newIndex;
 
-    this.titles.meshes.map((mesh) => {
-      this.titles.group.add(mesh);
-    });
-    this.titles.setPositionsWithinGroup();
-  }
+    const color = this.colorGradient.getAt((newIndex + 1) / this.nProjects);
+    this.setColors(color);
 
-  filterSites() {
-    this.setAtiveFilter("sites");
-
-    this.titles.meshes.map((mesh) => {
-      if (mesh.userData.category === "site") {
-        this.titles.group.add(mesh);
-      } else {
-        this.titles.group.remove(mesh);
-      }
-    });
-    this.titles.setPositionsWithinGroup();
-  }
-
-  filterSketches() {
-    this.setAtiveFilter("sketches");
-
-    this.titles.meshes.map((mesh) => {
-      if (mesh.userData.category === "sketch") {
-        this.titles.group.add(mesh);
-      } else {
-        this.titles.group.remove(mesh);
-      }
-    });
-    this.titles.setPositionsWithinGroup();
-  }
-
-  filterPublications() {
-    this.setAtiveFilter("publications");
-
-    this.titles.meshes.map((mesh) => {
-      if (mesh.userData.category === "publication") {
-        this.titles.group.add(mesh);
-      } else {
-        this.titles.group.remove(mesh);
-      }
-    });
-    this.titles.setPositionsWithinGroup();
-  }
-
-  onActiveChange(newIndex) {
-    if (newIndex === 0) {
-      // this.world.testSrc.play();
-    }
-    this.world.projectState.target = newIndex;
-    const n = this.titles.data.length;
-    this.projectScreen.uniforms.uColor.value = this.colorGradient.getAt(
-      newIndex / n
-    );
-    this.sky.material.uniforms.uSkyColor.value = this.colorGradient.getAt(
-      newIndex / n
-    );
-    this.water.uniforms.uFresnelColor.value = this.colorGradient.getAt(
-      newIndex / n
-    );
     this.projectScreen.uniforms.uImage2.value =
       this.world.resources.projects[newIndex].texture;
-    this.world.projectState.isTransitioning.value = true;
-    if (this.timeline.parent) {
-      this.timeline.clear();
-      this.world.projectState.progress.value = 0.5;
+
+    this.projectState.isTransitioning.value = true;
+
+    if (this.screenTimeline.parent) {
+      this.screenTimeline.clear();
+      this.projectState.progress.value = 0.5;
     }
-    this.timeline.to(this.world.projectState.progress, {
+    this.screenTimeline.to(this.projectState.progress, {
       value: 1,
       duration: 1.5,
       onComplete: () => {
-        // screen
-        this.world.projectState.active = newIndex;
+        this.projectState.active = newIndex;
+
         this.projectScreen.uniforms.uImage1.value =
           this.world.resources.projects[newIndex].texture;
-        this.world.projectState.progress.value = 0;
-        this.world.projectState.isTransitioning.value = false;
+
+        this.projectState.progress.value = 0;
+
+        this.projectState.isTransitioning.value = false;
       },
     });
 
     // titles
-    this.titlesTimeline && this.titlesTimeline.clear();
-    this.titlesTimeline = GSAP.timeline();
+    if (this.screenTimeline.parent) {
+      this.titlesTimeline.clear();
+    }
     this.titles.meshes.map((mesh, index) => {
       let target = 0;
       if (index === newIndex) {
@@ -179,12 +120,13 @@ export class ProjectsViewManager implements _ProjectsViewManager {
 
   onPointerdown() {
     this.projectScreen.onPointerdown();
+
     if (this.hover || this.hoverTitles) {
       this.down = true;
     }
   }
 
-  onPointermove(mouse) {
+  onPointermove(mouse: Vector2) {
     if (this.down) return;
 
     this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
@@ -219,27 +161,10 @@ export class ProjectsViewManager implements _ProjectsViewManager {
 
     if (this.hover && this.down) {
       this.down = false;
-      switch (this.target) {
-        case "all":
-          this.filterAll();
-          break;
-        case "sites":
-          this.filterSites();
-          break;
-        case "sketches":
-          this.filterSketches();
-          break;
-        case "publications":
-          this.filterPublications();
-          break;
-        case "home":
-          this.world.changeView(View.Home);
-          break;
-        case "about":
-          this.world.changeView(View.About);
-          break;
-        default:
-          break;
+      if (this.target in ProjectCategory) {
+        this.filterProjects(this.target as ProjectCategory);
+      } else {
+        this.world.changeView(this.target as View);
       }
     }
   }
@@ -321,34 +246,6 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     this.titles.onWheel(deltaY);
   }
 
-  show() {
-    this.scene.add(this.titles.outerGroup);
-    this.scene.add(this.projectScreen.mesh);
-    this.scene.add(this.filters.outerGroup);
-    this.scene.add(this.nav.group);
-
-    // this.world.sky.material.uniforms.uSkyColor.value = new THREE.Color(
-    //   "#c5fffa"
-    // );
-    // this.world.sky.material.uniforms.uSkyBrightness.value = 1;
-    // this.world.sky.material.uniforms.uCloudColor.value = new THREE.Color(
-    //   "#ffb57a"
-    // );
-
-    this.projectScreen.material.uniforms.uIsCurved.value = true;
-
-    this.world.camera.position.set(0, 0.15, -1);
-
-    this.world.sky.mesh.rotation.y = Math.PI;
-  }
-
-  hide() {
-    this.scene.remove(this.titles.outerGroup);
-    this.scene.remove(this.projectScreen.mesh);
-    this.scene.remove(this.filters.outerGroup);
-    this.scene.remove(this.nav.group);
-  }
-
   update() {
     const [hitTitles] = this.raycaster.intersectObjects(
       this.titles.group.children
@@ -357,8 +254,8 @@ export class ProjectsViewManager implements _ProjectsViewManager {
     if (hitTitles) {
       this.titleIndex = hitTitles.object.userData.index;
       document.body.style.cursor = "pointer";
-      if (this.titleIndex !== this.world.projectState.target) {
-        this.hoverTitles = true;
+      this.hoverTitles = true;
+      if (this.titleIndex !== this.projectState.target) {
         this.onActiveChange(this.titleIndex);
       }
     } else {

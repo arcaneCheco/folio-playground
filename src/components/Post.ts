@@ -6,7 +6,7 @@ import {
 } from "three";
 import fragmentShader from "@shaders/post/transition.glsl";
 import projectsAboutShader from "@shaders/post/projectsAboutTransition.glsl";
-// import fragmentShader from "./shaders/post/transitionZoom.glsl";
+import fragmentShaderZoom from "@shaders/post/transitionZoom.glsl";
 import { World } from "@src/app";
 import { _Post, TransitionEffect, _TransitionScene } from "@types";
 import { FolderApi } from "tweakpane";
@@ -39,49 +39,16 @@ export class Post implements _Post {
       geometry: this.geometry,
       shader: projectsAboutShader,
     }),
+    ProjectsProjectDetail: new TransitionScene({
+      geometry: this.geometry,
+      shader: fragmentShaderZoom,
+    }),
   };
   activeEffect: TransitionEffect;
   debug: FolderApi;
 
   setDebug() {
     this.debug = this.world.pane.addFolder({ title: "post" });
-    // this.debug.addInput(this.transitionUniforms.uProgress, "value", {
-    //   min: 0,
-    //   max: 1,
-    //   step: 0.001,
-    //   label: "progress",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uSize, "value", {
-    //   min: 0,
-    //   max: 0.2,
-    //   step: 0.001,
-    //   label: "size",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uZoom, "value", {
-    //   min: 0,
-    //   max: 100,
-    //   step: 0.001,
-    //   label: "zoom",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uColorSeparation, "value", {
-    //   min: 0,
-    //   max: 1,
-    //   step: 0.001,
-    //   label: "color shift",
-    // });
-
-    // const aboutPost = this.debug.addFolder({ title: "about" });
-    // aboutPost
-    //   .addInput(this.toAboutTransitionUniforms.uProgress, "value", {
-    //     min: 0,
-    //     max: 1,
-    //     step: 0.001,
-    //     label: "progress",
-    //   })
-    //   .on("change", () => {
-    //     this.activeScene = this.aboutScene;
-    //     this.world.usePost = true;
-    //   });
   }
 
   render() {

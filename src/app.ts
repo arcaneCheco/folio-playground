@@ -26,6 +26,7 @@ import {
 } from "./viewManagers";
 import {
   ProjectState,
+  TransitionEffect,
   View,
   _AboutViewManager,
   _CurlBubble,
@@ -98,7 +99,7 @@ export class World implements _World {
     this.projectState = {
       active: 0,
       progress: { value: 0 },
-      target: 0,
+      target: -1,
       isTransitioning: { value: false },
       min: 0,
       max: 5,
@@ -185,7 +186,6 @@ export class World implements _World {
       else if (this.view === View.About) {
         this.transitionManager.aboutToProjects();
       } else {
-        // this.projectsViewManager.show();
         this.transitionManager.homeToProjects();
       }
       window.history.pushState({}, "", "/projects");

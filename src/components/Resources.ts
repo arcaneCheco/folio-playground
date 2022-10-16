@@ -19,7 +19,6 @@ export class Resources implements _Resources {
   onAssetLoaded() {
     this.assetsLoaded++;
     this.progress = this.assetsLoaded / this.numAssets;
-    console.log({ progress: this.progress });
     this.preloader.onAssetLoaded(this.progress);
   }
 

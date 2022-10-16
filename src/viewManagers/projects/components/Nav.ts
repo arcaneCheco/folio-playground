@@ -5,7 +5,7 @@ import vertexShader from "@shaders/projectsNav/text/vertex.glsl";
 import fragmentShader from "@shaders/projectsNav/text/fragment.glsl";
 import TextGeometry from "@utils/TextGeometry";
 import { World } from "@src/app";
-import { TextAlign, _ProjectsNav, _World } from "@types";
+import { TextAlign, View, _ProjectsNav, _World } from "@types";
 
 export class Nav implements _ProjectsNav {
   world: _World = new World();
@@ -43,7 +43,7 @@ export class Nav implements _ProjectsNav {
     });
 
     this.homeNav = new Mesh(homeGeometry, this.material);
-    this.homeNav.name = "home";
+    this.homeNav.name = View.Home;
     this.navGroup.add(this.homeNav);
 
     let aboutGeometry = new TextGeometry();
@@ -54,7 +54,7 @@ export class Nav implements _ProjectsNav {
     });
 
     this.aboutNav = new Mesh(aboutGeometry, this.material);
-    this.aboutNav.name = "about";
+    this.aboutNav.name = View.About;
     this.navGroup.add(this.aboutNav);
   }
 

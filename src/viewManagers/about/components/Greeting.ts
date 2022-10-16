@@ -7,7 +7,7 @@ import { TextAlign, _AboutGreeting } from "@types";
 
 export class Greeting implements _AboutGreeting {
   world = new World();
-  font = this.world.resources.fonts.audiowideRegular;
+  font = this.world.resources.fonts.anironRegular;
   group = new Group();
   textMaterial = new ShaderMaterial({
     vertexShader,
@@ -40,7 +40,7 @@ export class Greeting implements _AboutGreeting {
       fontData: this.font.data,
       text: "for stopping by!",
     });
-    this.geometry2.applyMatrix4(new Matrix4().makeTranslation(0, -0.5, 0));
+    this.geometry2.applyMatrix4(new Matrix4().makeTranslation(0.4, -0.5, 0));
   }
 
   onResize(sizes) {

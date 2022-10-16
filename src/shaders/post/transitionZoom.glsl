@@ -1,5 +1,5 @@
 // uniform float strength; // = 0.4
-const float strength = 0.8;
+const float strength = 0.4;
 uniform float uProgress;
 uniform sampler2D uScreen;
 varying vec2 vUv;

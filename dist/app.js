@@ -560,7 +560,7 @@ class World {
             progress: {
                 value: 0
             },
-            target: 0,
+            target: -1,
             isTransitioning: {
                 value: false
             },
@@ -627,8 +627,7 @@ class World {
             if (this.view === (0, _types.View).Home) this.transitionManager.homeToProjects();
             else if (this.view === (0, _types.View).ProjectDetail) this.transitionManager.projectDetailToProjects();
             else if (this.view === (0, _types.View).About) this.transitionManager.aboutToProjects();
-            else // this.projectsViewManager.show();
-            this.transitionManager.homeToProjects();
+            else this.transitionManager.homeToProjects();
             window.history.pushState({}, "", "/projects");
         }
         if (view === (0, _types.View).ProjectDetail) {
@@ -38718,6 +38717,7 @@ parcelHelpers.export(exports, "TextAlign", ()=>TextAlign);
 parcelHelpers.export(exports, "TextBufferAttributes", ()=>TextBufferAttributes);
 parcelHelpers.export(exports, "Shape", ()=>Shape);
 parcelHelpers.export(exports, "View", ()=>View);
+parcelHelpers.export(exports, "ProjectCategory", ()=>ProjectCategory);
 parcelHelpers.export(exports, "TransitionEffect", ()=>TransitionEffect);
 let TextAlign;
 (function(TextAlign) {
@@ -38749,10 +38749,18 @@ let View;
     View["ProjectDetail"] = "ProjectDetail";
     View["Error"] = "404";
 })(View || (View = {}));
+let ProjectCategory;
+(function(ProjectCategory) {
+    ProjectCategory["All"] = "All";
+    ProjectCategory["Sites"] = "Sites";
+    ProjectCategory["Sketches"] = "Sketches";
+    ProjectCategory["Publications"] = "Publications";
+})(ProjectCategory || (ProjectCategory = {}));
 let TransitionEffect;
 (function(TransitionEffect) {
     TransitionEffect["HomeProjects"] = "HomeProjects";
     TransitionEffect["ProjectsAbout"] = "ProjectsAbout";
+    TransitionEffect["ProjectsProjectDetail"] = "ProjectsProjectDetail";
 })(TransitionEffect || (TransitionEffect = {}));
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"8cO26":[function(require,module,exports) {
@@ -38764,7 +38772,8 @@ var _transitionGlsl = require("@shaders/post/transition.glsl");
 var _transitionGlslDefault = parcelHelpers.interopDefault(_transitionGlsl);
 var _projectsAboutTransitionGlsl = require("@shaders/post/projectsAboutTransition.glsl");
 var _projectsAboutTransitionGlslDefault = parcelHelpers.interopDefault(_projectsAboutTransitionGlsl);
-// import fragmentShader from "./shaders/post/transitionZoom.glsl";
+var _transitionZoomGlsl = require("@shaders/post/transitionZoom.glsl");
+var _transitionZoomGlslDefault = parcelHelpers.interopDefault(_transitionZoomGlsl);
 var _app = require("@src/app");
 var _ = require(".");
 class Post {
@@ -38793,48 +38802,16 @@ class Post {
         ProjectsAbout: new (0, _.TransitionScene)({
             geometry: this.geometry,
             shader: (0, _projectsAboutTransitionGlslDefault.default)
+        }),
+        ProjectsProjectDetail: new (0, _.TransitionScene)({
+            geometry: this.geometry,
+            shader: (0, _transitionZoomGlslDefault.default)
         })
     };
     setDebug() {
         this.debug = this.world.pane.addFolder({
             title: "post"
         });
-    // this.debug.addInput(this.transitionUniforms.uProgress, "value", {
-    //   min: 0,
-    //   max: 1,
-    //   step: 0.001,
-    //   label: "progress",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uSize, "value", {
-    //   min: 0,
-    //   max: 0.2,
-    //   step: 0.001,
-    //   label: "size",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uZoom, "value", {
-    //   min: 0,
-    //   max: 100,
-    //   step: 0.001,
-    //   label: "zoom",
-    // });
-    // this.debug.addInput(this.transitionUniforms.uColorSeparation, "value", {
-    //   min: 0,
-    //   max: 1,
-    //   step: 0.001,
-    //   label: "color shift",
-    // });
-    // const aboutPost = this.debug.addFolder({ title: "about" });
-    // aboutPost
-    //   .addInput(this.toAboutTransitionUniforms.uProgress, "value", {
-    //     min: 0,
-    //     max: 1,
-    //     step: 0.001,
-    //     label: "progress",
-    //   })
-    //   .on("change", () => {
-    //     this.activeScene = this.aboutScene;
-    //     this.world.usePost = true;
-    //   });
     }
     render() {
         let currentRT = this.renderer.getRenderTarget();
@@ -38846,11 +38823,14 @@ class Post {
     }
 }
 
-},{"three":"3XrwE","@shaders/post/transition.glsl":"dUet9","@shaders/post/projectsAboutTransition.glsl":"hk5ID","@src/app":"fJe33",".":"gIoYP","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dUet9":[function(require,module,exports) {
+},{"three":"3XrwE","@shaders/post/transition.glsl":"dUet9","@shaders/post/projectsAboutTransition.glsl":"hk5ID","@src/app":"fJe33",".":"gIoYP","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh","@shaders/post/transitionZoom.glsl":"al1Jc"}],"dUet9":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nuniform sampler2D uScreen;\nuniform float uProgress;\nuniform float uSize;\nuniform float uZoom;\nuniform float uColorSeparation;\nvarying vec2 vUv;\n\nvoid main() {\n\n    float inv = 1.0 - uProgress;\n    vec2 disp = uSize * vec2(cos(uZoom * vUv.x), sin(uZoom * vUv.y));\n    vec4 texTo = texture2D(uScreen, vUv + inv * disp);\n    vec4 texFrom = vec4(\n        texture2D(uScreen, vUv + uProgress * disp * (1.0 - uColorSeparation)).r,\n        texture2D(uScreen, vUv + uProgress * disp).g,\n        texture2D(uScreen, vUv + uProgress * disp * (1.0 + uColorSeparation)).b,\n        1.0\n    );\n    gl_FragColor = texTo * uProgress + texFrom * inv;\n\n    // vec4 base = texture2D(uScreen, vUv);\n    // gl_FragColor = base;\n}";
 
 },{}],"hk5ID":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nuniform sampler2D uScreen;\nuniform float uProgress;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 base = texture2D(uScreen, vUv).rgb;\n    vec3 final = mix(base, vec3(0.), uProgress);\n    gl_FragColor = vec4(final, 1.);\n}";
+
+},{}],"al1Jc":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\n// uniform float strength; // = 0.4\nconst float strength = 0.4;\nuniform float uProgress;\nuniform sampler2D uScreen;\nvarying vec2 vUv;\n\nconst float PI = 3.141592653589793;\n\nfloat Linear_ease(in float begin, in float change, in float duration, in float time) {\n    return change * time / duration + begin;\n}\n\nfloat Exponential_easeInOut(in float begin, in float change, in float duration, in float time) {\n    if (time == 0.0)\n        return begin;\n    else if (time == duration)\n        return begin + change;\n    time = time / (duration / 2.0);\n    if (time < 1.0)\n        return change / 2.0 * pow(2.0, 10.0 * (time - 1.0)) + begin;\n    return change / 2.0 * (-pow(2.0, -10.0 * (time - 1.0)) + 2.0) + begin;\n}\n\nfloat Sinusoidal_easeInOut(in float begin, in float change, in float duration, in float time) {\n    return -change / 2.0 * (cos(PI * time / duration) - 1.0) + begin;\n}\n\nfloat rand (vec2 co) {\n  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n}\n\nvec3 crossFade(in vec2 uv, in float dissolve) {\n    return mix(texture2D(uScreen, uv).rgb, texture2D(uScreen, uv).rgb, dissolve);\n}\n\nvec4 transition(vec2 uv) {\n    vec2 texCoord = uv.xy / vec2(1.0).xy;\n\n    // Linear interpolate center across center half of the image\n    vec2 center = vec2(Linear_ease(0.25, 0.5, 1.0, uProgress), 0.5);\n    float dissolve = Exponential_easeInOut(0.0, 1.0, 1.0, uProgress);\n\n    // Mirrored sinusoidal loop. 0->strength then strength->0\n    float strength = Sinusoidal_easeInOut(0.0, strength, 0.5, uProgress);\n\n    vec3 color = vec3(0.0);\n    float total = 0.0;\n    vec2 toCenter = center - texCoord;\n\n    /* randomize the lookup values to hide the fixed number of samples */\n    float offset = rand(uv);\n\n    for (float t = 0.0; t <= 40.0; t++) {\n        float percent = (t + offset) / 40.0;\n        float weight = 4.0 * (percent - percent * percent);\n        color += crossFade(texCoord + toCenter * percent * strength, dissolve) * weight;\n        total += weight;\n    }\n    return vec4(color / total, 1.0);\n}\n\nvoid main() {\n    gl_FragColor = transition(vUv);\n}";
 
 },{}],"jZZi2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -38887,7 +38867,8 @@ class ProjectScreen {
             value: 0.5
         },
         uImage1: {
-            value: this.data[this.projectState.active].texture
+            // value: this.data[this.projectState.active].texture,
+            value: null
         },
         uImage2: {
             value: null
@@ -39090,9 +39071,6 @@ class Resources {
     onAssetLoaded() {
         this.assetsLoaded++;
         this.progress = this.assetsLoaded / this.numAssets;
-        console.log({
-            progress: this.progress
-        });
         this.preloader.onAssetLoaded(this.progress);
     }
     async loadProjects() {
@@ -39308,6 +39286,24 @@ class TransitionManager {
         this.scene.remove(this.projectDetailOverlayObject);
     }
     projectsToProjectDetail() {
+        this.post.activeEffect = (0, _types.TransitionEffect).ProjectsProjectDetail;
+        const t2 = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: 1.2,
+                delay: 0,
+                ease: "power1.out"
+            },
+            onStart: ()=>{
+                this.world.usePost = true;
+            },
+            onComplete: ()=>{
+                this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsProjectDetail].uniforms.uProgress.value = 0;
+                this.world.usePost = false;
+            }
+        });
+        t2.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsProjectDetail].uniforms.uProgress, {
+            value: 1
+        }, 0);
         this.world.parallax.enabled = false;
         const aspect = window.innerWidth / window.innerHeight;
         this.projectScreen.uniforms.uIsCurved.value = false;
@@ -44533,7 +44529,7 @@ class Title {
     flowmap = new (0, _flowmap.Flowmap)();
     textTexture = new (0, _textTextureDefault.default)({
         lineHeight: 1.5,
-        font: this.world.resources.fonts.audiowideRegular,
+        font: this.world.resources.fonts.anironRegular,
         text: "Creative\nWeb\nDeveloper"
     });
     geometry = new (0, _three.PlaneGeometry)(2, 2);
@@ -44904,7 +44900,7 @@ class AboutViewManager {
         const greeting = {};
         greeting.scaleX = 0.06;
         greeting.scaleY = greeting.scaleX;
-        greeting.posX = -screen.scaleX * 0.51;
+        greeting.posX = -screen.scaleX * 0.52;
         greeting.posY = screen.posY + screen.scaleY / 2 + greeting.scaleX * 1.2;
         greeting.mesh1posX = -screen.scaleX / 2 - greeting.scaleX / 2;
         return {
@@ -45043,7 +45039,7 @@ var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
 var _types = require("@types");
 class Greeting {
     world = new (0, _app.World)();
-    font = this.world.resources.fonts.audiowideRegular;
+    font = this.world.resources.fonts.anironRegular;
     group = new (0, _three.Group)();
     textMaterial = new (0, _three.ShaderMaterial)({
         vertexShader: (0, _vertexGlslDefault.default),
@@ -45076,7 +45072,7 @@ class Greeting {
             fontData: this.font.data,
             text: "for stopping by!"
         });
-        this.geometry2.applyMatrix4(new (0, _three.Matrix4)().makeTranslation(0, -0.5, 0));
+        this.geometry2.applyMatrix4(new (0, _three.Matrix4)().makeTranslation(0.4, -0.5, 0));
     }
     onResize(sizes) {
         this.group.scale.set(sizes.scaleX, sizes.scaleY, 1);
@@ -45351,7 +45347,7 @@ class Screen {
             x: 0.2,
             y: 0.2
         },
-        font: this.world.resources.fonts.audiowideRegular,
+        font: this.world.resources.fonts.anironRegular,
         text: `
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
@@ -45505,103 +45501,59 @@ class ProjectsViewManager {
     scene = this.world.scene;
     projectScreen = this.world.projectScreen;
     projectState = this.world.projectState;
-    activeFilter = undefined;
     sky = this.world.sky;
     water = this.world.water;
-    timeline = (0, _gsapDefault.default).timeline();
     raycaster = this.world.raycaster;
     ndcRaycaster = this.world.ndcRaycaster;
     rayOrigin = new (0, _three.Vector3)(0, 0, 1);
     rayTarget = new (0, _three.Vector3)();
-    colorGradient = new (0, _gradientLinear.GradientLinear)((0, _palettes.natural));
+    colorGradient = new (0, _gradientLinear.GradientLinear)((0, _palettes.warm3));
+    screenTimeline = (0, _gsapDefault.default).timeline();
+    titlesTimeline = (0, _gsapDefault.default).timeline();
+    titleIndex = -1;
     titles = new (0, _components.Titles)();
+    nProjects = this.titles.data.length;
     nav = new (0, _components.Nav)();
     filters = new (0, _components.Filters)();
     constructor(){
-        this.filterAll();
-        const n = this.titles.data.length;
+        this.filterProjects((0, _types.ProjectCategory).All);
         this.titles.meshes.map((mesh, i)=>{
-            mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
+            mesh.material.uniforms.uColor.value = this.colorGradient.getAt((i + 1) / this.nProjects);
         });
         this.world.water.hiddenObjects[(0, _types.View).Projects]?.push(this.filters.outerGroup, this.nav.group);
     }
-    setDebug() {
-        this.debug = this.world.pane.addFolder({
-            title: "projectsViewManager",
-            expanded: false
-        });
-        this.debug.addInput(this.projectState, "active", {
-            min: 0,
-            max: 5,
-            step: 1
-        }).on("change", ()=>{
-            this.onActiveChange(this.projectState.active);
-        });
+    setDebug() {}
+    filterProjects(category) {
+        this.filters.updateActiveFilter(category);
+        this.titles.filterTitles(category);
     }
-    setAtiveFilter(key) {
-        if (this.activeFilter === key) return;
-        this.activeFilter = key;
-        this.filters.group.children.map(// (mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>) =>
-        (mesh)=>mesh.name === key ? mesh.material.uniforms.uActive.value = true : mesh.material.uniforms.uActive.value = false);
-    }
-    filterAll() {
-        this.setAtiveFilter("all");
-        this.titles.meshes.map((mesh)=>{
-            this.titles.group.add(mesh);
-        });
-        this.titles.setPositionsWithinGroup();
-    }
-    filterSites() {
-        this.setAtiveFilter("sites");
-        this.titles.meshes.map((mesh)=>{
-            if (mesh.userData.category === "site") this.titles.group.add(mesh);
-            else this.titles.group.remove(mesh);
-        });
-        this.titles.setPositionsWithinGroup();
-    }
-    filterSketches() {
-        this.setAtiveFilter("sketches");
-        this.titles.meshes.map((mesh)=>{
-            if (mesh.userData.category === "sketch") this.titles.group.add(mesh);
-            else this.titles.group.remove(mesh);
-        });
-        this.titles.setPositionsWithinGroup();
-    }
-    filterPublications() {
-        this.setAtiveFilter("publications");
-        this.titles.meshes.map((mesh)=>{
-            if (mesh.userData.category === "publication") this.titles.group.add(mesh);
-            else this.titles.group.remove(mesh);
-        });
-        this.titles.setPositionsWithinGroup();
+    setColors(color) {
+        this.projectScreen.uniforms.uColor.value = color;
+        this.sky.material.uniforms.uSkyColor.value = color;
+        this.water.uniforms.uFresnelColor.value = color;
     }
     onActiveChange(newIndex) {
-        newIndex;
-        this.world.projectState.target = newIndex;
-        const n = this.titles.data.length;
-        this.projectScreen.uniforms.uColor.value = this.colorGradient.getAt(newIndex / n);
-        this.sky.material.uniforms.uSkyColor.value = this.colorGradient.getAt(newIndex / n);
-        this.water.uniforms.uFresnelColor.value = this.colorGradient.getAt(newIndex / n);
+        this.projectState.target = newIndex;
+        const color = this.colorGradient.getAt((newIndex + 1) / this.nProjects);
+        this.setColors(color);
         this.projectScreen.uniforms.uImage2.value = this.world.resources.projects[newIndex].texture;
-        this.world.projectState.isTransitioning.value = true;
-        if (this.timeline.parent) {
-            this.timeline.clear();
-            this.world.projectState.progress.value = 0.5;
+        this.projectState.isTransitioning.value = true;
+        if (this.screenTimeline.parent) {
+            this.screenTimeline.clear();
+            this.projectState.progress.value = 0.5;
         }
-        this.timeline.to(this.world.projectState.progress, {
+        this.screenTimeline.to(this.projectState.progress, {
             value: 1,
             duration: 1.5,
             onComplete: ()=>{
-                // screen
-                this.world.projectState.active = newIndex;
+                this.projectState.active = newIndex;
                 this.projectScreen.uniforms.uImage1.value = this.world.resources.projects[newIndex].texture;
-                this.world.projectState.progress.value = 0;
-                this.world.projectState.isTransitioning.value = false;
+                this.projectState.progress.value = 0;
+                this.projectState.isTransitioning.value = false;
             }
         });
         // titles
-        this.titlesTimeline && this.titlesTimeline.clear();
-        this.titlesTimeline = (0, _gsapDefault.default).timeline();
+        if (this.screenTimeline.parent) this.titlesTimeline.clear();
         this.titles.meshes.map((mesh, index)=>{
             let target = 0;
             if (index === newIndex) target = 1;
@@ -45641,28 +45593,8 @@ class ProjectsViewManager {
         }
         if (this.hover && this.down) {
             this.down = false;
-            switch(this.target){
-                case "all":
-                    this.filterAll();
-                    break;
-                case "sites":
-                    this.filterSites();
-                    break;
-                case "sketches":
-                    this.filterSketches();
-                    break;
-                case "publications":
-                    this.filterPublications();
-                    break;
-                case "home":
-                    this.world.changeView((0, _types.View).Home);
-                    break;
-                case "about":
-                    this.world.changeView((0, _types.View).About);
-                    break;
-                default:
-                    break;
-            }
+            if (this.target in (0, _types.ProjectCategory)) this.filterProjects(this.target);
+            else this.world.changeView(this.target);
         }
     }
     getSizes() {
@@ -45721,37 +45653,13 @@ class ProjectsViewManager {
     onWheel({ deltaY  }) {
         this.titles.onWheel(deltaY);
     }
-    show() {
-        this.scene.add(this.titles.outerGroup);
-        this.scene.add(this.projectScreen.mesh);
-        this.scene.add(this.filters.outerGroup);
-        this.scene.add(this.nav.group);
-        // this.world.sky.material.uniforms.uSkyColor.value = new THREE.Color(
-        //   "#c5fffa"
-        // );
-        // this.world.sky.material.uniforms.uSkyBrightness.value = 1;
-        // this.world.sky.material.uniforms.uCloudColor.value = new THREE.Color(
-        //   "#ffb57a"
-        // );
-        this.projectScreen.material.uniforms.uIsCurved.value = true;
-        this.world.camera.position.set(0, 0.15, -1);
-        this.world.sky.mesh.rotation.y = Math.PI;
-    }
-    hide() {
-        this.scene.remove(this.titles.outerGroup);
-        this.scene.remove(this.projectScreen.mesh);
-        this.scene.remove(this.filters.outerGroup);
-        this.scene.remove(this.nav.group);
-    }
     update() {
         const [hitTitles] = this.raycaster.intersectObjects(this.titles.group.children);
         if (hitTitles) {
             this.titleIndex = hitTitles.object.userData.index;
             document.body.style.cursor = "pointer";
-            if (this.titleIndex !== this.world.projectState.target) {
-                this.hoverTitles = true;
-                this.onActiveChange(this.titleIndex);
-            }
+            this.hoverTitles = true;
+            if (this.titleIndex !== this.projectState.target) this.onActiveChange(this.titleIndex);
         } else {
             this.hoverTitles = false;
             if (!this.hover) document.body.style.cursor = "";
@@ -45761,7 +45669,7 @@ class ProjectsViewManager {
     }
 }
 
-},{"@src/app":"fJe33","three":"3XrwE","gsap":"gS77a","./components":"4KWqa","@utils/gradientLinear":"3t7Pp","@utils/palettes":"fPNKv","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4KWqa":[function(require,module,exports) {
+},{"@src/app":"fJe33","three":"3XrwE","gsap":"gS77a","./components":"4KWqa","@utils/gradientLinear":"3t7Pp","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh","@utils/palettes":"fPNKv"}],"4KWqa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Titles", ()=>(0, _titles.Titles));
@@ -45774,12 +45682,11 @@ var _filters = require("./Filters");
 },{"./Titles":"6Mk0r","./Nav":"gt2DC","./Filters":"d17d0","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"6Mk0r":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-/**
- * not sure if to show titles-reflection yet
- */ parcelHelpers.export(exports, "Titles", ()=>Titles);
+parcelHelpers.export(exports, "Titles", ()=>Titles);
 var _three = require("three");
 var _app = require("@src/app");
 var _mathUtils = require("three/src/math/MathUtils");
+var _types = require("@types");
 var _titleMesh = require("./TitleMesh");
 class Titles {
     world = new (0, _app.World)();
@@ -45797,7 +45704,7 @@ class Titles {
     outerGroup = new _three.Group();
     initialScrollOffset = 1.5;
     data = this.world.resources.projects;
-    font = this.world.resources.fonts.audiowideRegular;
+    font = this.world.resources.fonts.anironRegular;
     meshes = this.data.map(({ title , category  }, index)=>new (0, _titleMesh.TitleMesh)({
             title,
             category,
@@ -45806,15 +45713,9 @@ class Titles {
             baseWidth: this.baseWidth
         }));
     constructor(){
-        // const n = this.titles.data.length;
-        // this.titles.meshes.map((mesh, i) => {
-        //   mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
-        // });
         this.outerGroup.add(this.group);
         this.group.renderOrder = 1000;
-        // this.scroll.limitTop = -this.initialScrollOffset;
         this.outerGroup.rotation.y = Math.PI;
-        // this.outerGroup.rotation.y = (Math.PI * 13) / 12;
         this.outerGroup.position.z = 0.3;
     }
     setDebug() {
@@ -45869,6 +45770,13 @@ class Titles {
             label: "group - posX"
         });
     }
+    filterTitles(category) {
+        this.meshes.map((mesh)=>{
+            if (category === (0, _types.ProjectCategory).All || mesh.userData.category === category) this.group.add(mesh);
+            else this.group.remove(mesh);
+        });
+        this.setPositionsWithinGroup();
+    }
     setPositionsWithinGroup() {
         let currentOffset = 0;
         let limitOffset = 0;
@@ -45884,34 +45792,12 @@ class Titles {
                 currentOffset += mesh.geometry.userData.height + this.gap;
             }
         });
-        // this.scroll.limitBottom = limitOffset - this.initialScrollOffset;
         this.scroll.limitBottom = limitOffset;
         this.group.position.y = 0;
     }
     onWheel(deltaY) {
         let newPosition = this.group.position.y + deltaY * 0.01;
         newPosition = (0, _mathUtils.clamp)(newPosition, this.scroll.limitTop, this.scroll.limitBottom);
-        const diff = Math.abs(newPosition - this.group.position.y);
-        // this.outerGroup.rotation.x = -3 * Math.sqrt(diff) * 0.44613;
-        // this.outerGroup.rotation.z = 3 * Math.sqrt(diff) * 0.217449;
-        // if (Math.abs(diff) < 0.012) {
-        //   this.scroll.active = false;
-        //   GSAP.to(this.outerGroup.rotation, {
-        //     x: 0,
-        //     y: 0.5235987755982988,
-        //     z: 0,
-        //     duration: 1,
-        //   });
-        //   return;
-        // }
-        // if (!this.scroll.active) {
-        //   GSAP.to(this.outerGroup.rotation, {
-        //     x: -0.4461313914223183,
-        //     y: 0.4801810588538978,
-        //     z: 0.21744900405528222,
-        //     duration: 1,
-        //   });
-        // }
         this.group.position.y = newPosition;
     }
     onResize(sizes) {
@@ -45923,7 +45809,7 @@ class Titles {
     }
 }
 
-},{"three":"3XrwE","@src/app":"fJe33","three/src/math/MathUtils":"gMBZj","./TitleMesh":"jcZUy","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"jcZUy":[function(require,module,exports) {
+},{"three":"3XrwE","@src/app":"fJe33","three/src/math/MathUtils":"gMBZj","./TitleMesh":"jcZUy","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh","@types":"4mCt6"}],"jcZUy":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TitleMesh", ()=>TitleMesh);
@@ -45965,6 +45851,7 @@ class TitleMesh extends (0, _three.Mesh) {
             depthWrite: false
         }));
         this.uniforms.uMap.value = font.map;
+        if (index === 0) this.uniforms.uProgress.value = 1;
         this.material.uniforms = this.uniforms;
         this.setGeometrySpecs({
             text: title,
@@ -46070,7 +45957,7 @@ class Nav {
             align: (0, _types.TextAlign).Left
         });
         this.homeNav = new (0, _three.Mesh)(homeGeometry, this.material);
-        this.homeNav.name = "home";
+        this.homeNav.name = (0, _types.View).Home;
         this.navGroup.add(this.homeNav);
         let aboutGeometry = new (0, _textGeometryDefault.default)();
         aboutGeometry.setText({
@@ -46079,7 +45966,7 @@ class Nav {
             align: (0, _types.TextAlign).Right
         });
         this.aboutNav = new (0, _three.Mesh)(aboutGeometry, this.material);
-        this.aboutNav.name = "about";
+        this.aboutNav.name = (0, _types.View).About;
         this.navGroup.add(this.aboutNav);
     }
     setLine() {
@@ -46132,6 +46019,8 @@ var _fragmentGlsl1 = require("@shaders/projectFilters/underline/fragment.glsl");
 var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
 var _textGeometry = require("@utils/TextGeometry");
 var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+class FilterGroup extends (0, _three.Group) {
+}
 class Filters {
     world = new (0, _app.World)();
     font = this.world.resources.fonts.audiowideRegular;
@@ -46148,37 +46037,30 @@ class Filters {
         },
         transparent: true
     });
-    filters = [
-        "All",
-        "Sites",
-        "Sketches",
-        "Publications"
-    ];
     outerGroup = new (0, _three.Group)();
-    group = new (0, _three.Group)();
+    group = new FilterGroup();
     size = 150;
     underlineThickness = 0.1;
     gap = 1.2;
+    gWidth = 0;
     underlineMaterial = new (0, _three.ShaderMaterial)({
         vertexShader: (0, _vertexGlslDefault1.default),
         fragmentShader: (0, _fragmentGlslDefault1.default)
     });
     constructor(){
         this.outerGroup.add(this.group);
-        this.filters.map((text, i)=>{
+        Object.values((0, _types.ProjectCategory)).map((category, i)=>{
             let geometry = new (0, _textGeometryDefault.default)();
             geometry.setText({
                 fontData: this.font.data,
-                text,
+                text: category,
                 align: (0, _types.TextAlign).Right
             });
-            if (text === "Publications") {
-                geometry.computeBoundingBox();
-                const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-                this.gWidth = width;
-            }
+            geometry.computeBoundingBox();
+            const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+            if (width > this.gWidth) this.gWidth = width;
             let mesh = new (0, _three.Mesh)(geometry, this.material.clone());
-            mesh.name = text.toLowerCase();
+            mesh.name = category;
             mesh.position.y = -i * (1 + this.gap);
             this.group.add(mesh);
         });
@@ -46192,6 +46074,11 @@ class Filters {
             line.position.y = -0.5 - this.underlineThickness / 2;
             child.add(line);
         });
+    }
+    updateActiveFilter(filter) {
+        if (this.activeFilter === filter) return;
+        this.activeFilter = filter;
+        this.group.children.map((mesh)=>mesh.name === filter ? mesh.material.uniforms.uActive.value = true : mesh.material.uniforms.uActive.value = false);
     }
     onResize(sizes) {
         this.outerGroup.position.x = sizes.posX;
@@ -46376,11 +46263,6 @@ class ProjectDetailViewManager {
         this.debug.addButton({
             title: "close"
         }).on("click", ()=>this.world.changeView((0, _types.View).Projects));
-        // this.debug.addButton({ title: "visit" }).on("click", () => {
-        //   const url = this.world.data[this.activeProjectState.active].link;
-        //   console.log(url);
-        //   window.open(url, "_blank").focus();
-        // });
         this.overlayDebug();
     }
     overlayDebug() {
@@ -46525,7 +46407,6 @@ class ProjectDetailViewManager {
     }
     onResize() {
         if (this.world.view === (0, _types.View).ProjectDetail) {
-            console.log("NOPW");
             const { screen  } = this.getSizes();
         // this.projectScreen.resizeProjectDetailView(screen);
         }

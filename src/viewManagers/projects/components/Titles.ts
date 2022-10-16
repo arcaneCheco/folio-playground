@@ -1,13 +1,15 @@
 import * as THREE from "three";
 import { World } from "@src/app";
 import { clamp } from "three/src/math/MathUtils";
-import { Scroll, _ProjectTitles, _TextGeometry, _TitleMesh } from "@types";
+import {
+  ProjectCategory,
+  Scroll,
+  _ProjectTitles,
+  _TextGeometry,
+  _TitleMesh,
+} from "@types";
 import { TitleMesh } from "./TitleMesh";
 import { FolderApi } from "tweakpane";
-
-/**
- * not sure if to show titles-reflection yet
- */
 
 export class Titles implements _ProjectTitles {
   world = new World();
@@ -25,7 +27,7 @@ export class Titles implements _ProjectTitles {
   outerGroup = new THREE.Group();
   initialScrollOffset = 1.5;
   data = this.world.resources.projects;
-  font = this.world.resources.fonts.audiowideRegular;
+  font = this.world.resources.fonts.anironRegular;
   meshes: Array<_TitleMesh> = this.data.map(
     ({ title, category }, index) =>
       new TitleMesh({
@@ -38,17 +40,10 @@ export class Titles implements _ProjectTitles {
   );
   debug: FolderApi;
   constructor() {
-    // const n = this.titles.data.length;
-    // this.titles.meshes.map((mesh, i) => {
-    //   mesh.material.uniforms.uColor.value = this.colorGradient.getAt(i / n);
-    // });
-
     this.outerGroup.add(this.group);
     this.group.renderOrder = 1000;
-    // this.scroll.limitTop = -this.initialScrollOffset;
 
     this.outerGroup.rotation.y = Math.PI;
-    // this.outerGroup.rotation.y = (Math.PI * 13) / 12;
     this.outerGroup.position.z = 0.3;
   }
 
@@ -120,6 +115,20 @@ export class Titles implements _ProjectTitles {
     });
   }
 
+  filterTitles(category: ProjectCategory) {
+    this.meshes.map((mesh) => {
+      if (
+        category === ProjectCategory.All ||
+        mesh.userData.category === category
+      ) {
+        this.group.add(mesh);
+      } else {
+        this.group.remove(mesh);
+      }
+    });
+    this.setPositionsWithinGroup();
+  }
+
   setPositionsWithinGroup() {
     let currentOffset = 0;
     let limitOffset = 0;
@@ -138,7 +147,6 @@ export class Titles implements _ProjectTitles {
       }
     });
 
-    // this.scroll.limitBottom = limitOffset - this.initialScrollOffset;
     this.scroll.limitBottom = limitOffset;
     this.group.position.y = 0;
   }
@@ -150,28 +158,6 @@ export class Titles implements _ProjectTitles {
       this.scroll.limitTop,
       this.scroll.limitBottom
     );
-
-    const diff = Math.abs(newPosition - this.group.position.y);
-    // this.outerGroup.rotation.x = -3 * Math.sqrt(diff) * 0.44613;
-    // this.outerGroup.rotation.z = 3 * Math.sqrt(diff) * 0.217449;
-    // if (Math.abs(diff) < 0.012) {
-    //   this.scroll.active = false;
-    //   GSAP.to(this.outerGroup.rotation, {
-    //     x: 0,
-    //     y: 0.5235987755982988,
-    //     z: 0,
-    //     duration: 1,
-    //   });
-    //   return;
-    // }
-    // if (!this.scroll.active) {
-    //   GSAP.to(this.outerGroup.rotation, {
-    //     x: -0.4461313914223183,
-    //     y: 0.4801810588538978,
-    //     z: 0.21744900405528222,
-    //     duration: 1,
-    //   });
-    // }
     this.group.position.y = newPosition;
   }
 
