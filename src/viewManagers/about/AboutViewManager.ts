@@ -103,6 +103,7 @@ export class AboutViewManager implements _AboutViewManager {
 
     if (hit) {
       const { name } = hit.object;
+      console.log(name);
       this.target = name;
       this.hover = true;
       document.body.style.cursor = "pointer";
@@ -117,7 +118,7 @@ export class AboutViewManager implements _AboutViewManager {
 
     this.down = false;
     document.body.style.cursor = "";
-    let url;
+    let url: string;
     switch (this.target) {
       case "twitter":
         url = "https://twitter.com/checo272";
@@ -135,7 +136,7 @@ export class AboutViewManager implements _AboutViewManager {
         parent.location = "mailto:abc@abc.com";
         break;
       case "cv":
-        url = "CV.pdf";
+        url = "https://pdfhost.io/v/6LGrrqvCt_CV";
         window.open(url, "_blank")?.focus();
         break;
       case "aboutNav":

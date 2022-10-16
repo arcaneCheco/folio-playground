@@ -22,7 +22,7 @@ export class SocialIcons implements _AboutSocialIcons {
   github: Mesh<PlaneGeometry, ShaderMaterial>;
   linkedin: Mesh<PlaneGeometry, ShaderMaterial>;
   constructor() {
-    this.group.position.z = 0.1;
+    // this.group.position.z = 0.1;
 
     const { twitterIcon, githubIcon, linkedinIcon } =
       this.world.resources.assets;
