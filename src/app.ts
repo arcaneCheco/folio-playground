@@ -138,11 +138,11 @@ export class World implements _World {
     this.render();
     await this.resources.load();
 
-    await new Promise((res) => {
-      window.addEventListener("click", () => {
-        res(null);
-      });
-    });
+    // await new Promise((res) => {
+    //   window.addEventListener("click", () => {
+    //     res(null);
+    //   });
+    // });
 
     this.sky.onPreloaded();
 
@@ -195,6 +195,13 @@ export class World implements _World {
     }
     if (view === View.ProjectDetail) {
       if (window.VIEW === View.ProjectDetail) {
+        const index =
+          this.resources.projects.find(({ path }) =>
+            location.pathname.includes(path)
+          )?.index || 0;
+        this.projectState.active = index;
+        this.projectState.target = index;
+        this.projectScreen.onActiveChange({ newIndex: index });
         window.VIEW = View.Error;
         this.transitionManager.homeToProjects(0.0001);
         window.setTimeout(() => {

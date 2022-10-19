@@ -34,8 +34,8 @@ export class ProjectScreen implements _ProjectScreen {
     uTransitionStart: { value: 0 },
     uTransitionDuration: { value: 0.5 },
     uImage1: {
-      value: this.data[this.projectState.active].texture,
-      // value: null,
+      // value: this.data[this.projectState.active].texture,
+      value: null,
     },
     uImage2: {
       value: null,

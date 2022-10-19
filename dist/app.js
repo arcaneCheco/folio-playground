@@ -591,11 +591,11 @@ class World {
         this.onResize();
         this.render();
         await this.resources.load();
-        await new Promise((res)=>{
-            window.addEventListener("click", ()=>{
-                res(null);
-            });
-        });
+        // await new Promise((res) => {
+        //   window.addEventListener("click", () => {
+        //     res(null);
+        //   });
+        // });
         this.sky.onPreloaded();
         this.projectScreen = new (0, _components.ProjectScreen)();
         this.homeViewManager = new (0, _viewManagers.HomeViewManager)();
@@ -634,6 +634,12 @@ class World {
         }
         if (view === (0, _types.View).ProjectDetail) {
             if (window.VIEW === (0, _types.View).ProjectDetail) {
+                const index = this.resources.projects.find(({ path  })=>location.pathname.includes(path))?.index || 0;
+                this.projectState.active = index;
+                this.projectState.target = index;
+                this.projectScreen.onActiveChange({
+                    newIndex: index
+                });
                 window.VIEW = (0, _types.View).Error;
                 this.transitionManager.homeToProjects(0.0001);
                 window.setTimeout(()=>{
@@ -38876,7 +38882,8 @@ class ProjectScreen {
             value: 0.5
         },
         uImage1: {
-            value: this.data[this.projectState.active].texture
+            // value: this.data[this.projectState.active].texture,
+            value: null
         },
         uImage2: {
             value: null
