@@ -190,18 +190,4 @@ export class AboutViewManager implements _AboutViewManager {
   update() {
     // this.screen.textTexture.createTexture(this.renderer, this.camera);
   }
-
-  show() {
-    // this.world.camera.position.z = 0.35;
-    this.scene.add(this.screen.mesh);
-    this.scene.add(this.greeting.group);
-    this.scene.add(this.overlay.group);
-  }
-
-  hide() {
-    // this.world.camera.position.z = 1;
-    this.scene.remove(this.screen.mesh);
-    this.scene.remove(this.greeting.group);
-    this.scene.remove(this.overlay.group);
-  }
 }

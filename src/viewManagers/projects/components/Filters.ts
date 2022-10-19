@@ -28,7 +28,7 @@ export class Filters implements _ProjectsFilters {
     },
     transparent: true,
   });
-  activeFilter?: ProjectCategory;
+  activeFilter: ProjectCategory;
   outerGroup = new Group();
   group: FilterGroup = new FilterGroup();
   size = 150;

@@ -1,9 +1,17 @@
-import { IUniform, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
+import {
+  Color,
+  IUniform,
+  Mesh,
+  PlaneGeometry,
+  ShaderMaterial,
+  Vector3,
+} from "three";
 import { World } from "@src/app";
 import vertexShader from "../shaders/projectScreen/vertex.glsl";
 import fragmentShader from "../shaders/projectScreen/fragment.glsl";
 import { FolderApi } from "tweakpane";
 import { _ProjectScreen } from "@types";
+import GSAP from "gsap";
 
 /*****
  * figure out how to update active project when transition is already in progress
@@ -26,8 +34,8 @@ export class ProjectScreen implements _ProjectScreen {
     uTransitionStart: { value: 0 },
     uTransitionDuration: { value: 0.5 },
     uImage1: {
-      // value: this.data[this.projectState.active].texture,
-      value: null,
+      value: this.data[this.projectState.active].texture,
+      // value: null,
     },
     uImage2: {
       value: null,
@@ -51,6 +59,7 @@ export class ProjectScreen implements _ProjectScreen {
   });
   mesh = new Mesh(this.geometry, this.material);
   debug: FolderApi;
+  timeline = GSAP.timeline();
 
   positionDebug() {
     const position = this.debug.addFolder({
@@ -169,14 +178,31 @@ export class ProjectScreen implements _ProjectScreen {
     this.fragmentDebug();
   }
 
-  onActiveChange(activeProject: number) {
-    this.uniforms.uTransition.value = true;
-    this.uniforms.uImage2.value = this.data[activeProject].texture;
-    this.uniforms.uTransitionStart.value = this.world.time;
-    window.setTimeout(() => {
-      this.uniforms.uImage1.value = this.data[activeProject].texture;
-      this.uniforms.uTransition.value = false;
-    }, this.uniforms.uTransitionDuration.value * 1000);
+  onActiveChange({ color, newIndex }: { color?: Color; newIndex: number }) {
+    this.projectState.target = newIndex;
+    color && (this.uniforms.uColor.value = color);
+
+    this.uniforms.uImage2.value = this.data[newIndex].texture;
+
+    this.projectState.isTransitioning.value = true;
+
+    if (this.timeline.parent) {
+      this.timeline.clear();
+      this.projectState.progress.value = 0.5;
+    }
+    this.timeline.to(this.projectState.progress, {
+      value: 1,
+      duration: 1.5,
+      onComplete: () => {
+        this.projectState.active = newIndex;
+
+        this.uniforms.uImage1.value = this.data[newIndex].texture;
+
+        this.projectState.progress.value = 0;
+
+        this.projectState.isTransitioning.value = false;
+      },
+    });
   }
 
   onPointerdown() {}

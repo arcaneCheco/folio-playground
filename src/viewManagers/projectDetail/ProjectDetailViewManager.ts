@@ -1,36 +1,25 @@
-import { View, _ProjectDetailViewManager } from "@types";
+import { ProjectCategory, View, _ProjectDetailViewManager } from "@types";
 import { Vector2, Vector3 } from "three";
 import { World } from "@src/app";
 import { Overlay } from "./Overlay";
+import { FolderApi } from "tweakpane";
 
 export class ProjectDetailViewManager implements _ProjectDetailViewManager {
   world = new World();
   scene = this.world.scene;
-  activeProjectState = this.world.projectState;
+  projectState = this.world.projectState;
   projectScreen = this.world.projectScreen;
   raycaster = this.world.raycaster;
   rayOrigin = new Vector3(0, 0, 1);
   rayTarget = new Vector3();
   overlay = new Overlay();
-  debug: any;
-  down: any;
-  target: any;
-  hover: any;
+  debug: FolderApi;
+  down: boolean;
+  target: string;
+  lastCommand?: string;
+  hover: boolean;
   constructor() {
     this.world.water.hiddenObjects[View.Projects]?.push(this.overlay.group);
-  }
-
-  show() {
-    this.scene.add(this.projectScreen.mesh);
-    this.scene.add(this.overlay.group);
-    this.projectScreen.material.uniforms.uIsCurved.value = false;
-    this.world.parallax.enabled = false;
-    this.world.sky.mesh.rotation.y = Math.PI;
-  }
-
-  hide() {
-    this.scene.remove(this.projectScreen.mesh);
-    this.scene.remove(this.overlay.group);
   }
 
   setDebug() {
@@ -38,26 +27,6 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
       title: "projectDetailViewManager",
       expanded: false,
     });
-    this.debug.addButton({ title: "next" }).on("click", () => {
-      this.activeProjectState.active = Math.min(
-        this.activeProjectState.active + 1,
-        this.activeProjectState.max
-      );
-      this.world.changeView(View.ProjectDetail);
-      this.projectScreen.onActiveChange(this.activeProjectState.active);
-    });
-    this.debug.addButton({ title: "previous" }).on("click", () => {
-      this.activeProjectState.active = Math.max(
-        this.activeProjectState.min,
-        this.activeProjectState.active - 1
-      );
-      this.world.changeView(View.ProjectDetail);
-      this.projectScreen.onActiveChange(this.activeProjectState.active);
-    });
-    this.debug
-      .addButton({ title: "close" })
-      .on("click", () => this.world.changeView(View.Projects));
-
     this.overlayDebug();
   }
 
@@ -185,6 +154,34 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
     }
   }
 
+  onActiveChange(command: "next" | "prev") {
+    let target = 0;
+    const activeIndices = this.projectState.activeIndices;
+    if (command === "next") {
+      const maxIndex = Math.max(...activeIndices);
+      target = this.projectState.active + 1;
+      target = Math.min(target, maxIndex);
+      if (this.projectScreen.timeline.parent && this.lastCommand === "next") {
+        this.projectState.active = target;
+        target++;
+      }
+      target = Math.min(target, maxIndex);
+      this.lastCommand = "next";
+    } else if (command === "prev") {
+      const minIndex = Math.min(...activeIndices);
+      target = this.projectState.active - 1;
+      target = Math.max(target, minIndex);
+      if (this.projectScreen.timeline.parent && this.lastCommand === "prev") {
+        this.projectState.active = target;
+        target--;
+      }
+      target = Math.max(target, minIndex);
+      this.lastCommand = "prev";
+    }
+    this.projectScreen.onActiveChange({ newIndex: target });
+    this.world.changeView(View.ProjectDetail);
+  }
+
   onPointerup() {
     if (!this.down) return;
 
@@ -196,21 +193,10 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
         this.world.changeView(View.Projects);
         break;
       case "prev":
-        this.activeProjectState.active = Math.max(
-          this.activeProjectState.min,
-          this.activeProjectState.active - 1
-        );
-        this.world.changeView(View.ProjectDetail);
-        this.projectScreen.onActiveChange(this.activeProjectState.active);
+        this.onActiveChange("prev");
         break;
       case "next":
-        this.activeProjectState.active = Math.min(
-          this.activeProjectState.active + 1,
-          this.activeProjectState.max
-        );
-        // have some kind of special case here. It's unneccesary to to show and hide again
-        this.world.changeView(View.ProjectDetail);
-        this.projectScreen.onActiveChange(this.activeProjectState.active);
+        this.onActiveChange("next");
         break;
       case "visit":
         // const url = this.world.data[this.activeProjectState.active].link;

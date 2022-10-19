@@ -2,6 +2,7 @@ import { World } from "@src/app";
 import { TextProps } from "@src/utils/Text";
 import {
   BufferGeometry,
+  Color,
   Data3DTexture,
   Group,
   IUniform,
@@ -34,6 +35,7 @@ export interface Project {
   source: string;
   texture: VideoTexture;
   title: string;
+  index: number;
 }
 
 export interface FontChar {
@@ -315,6 +317,8 @@ export interface ProjectState {
   isTransitioning: IUniform<boolean>;
   min: number;
   max: number;
+  filter: ProjectCategory;
+  activeIndices: Array<number>;
 }
 
 export interface _Mirror {
@@ -428,13 +432,20 @@ export interface _ProjectScreen {
   material: ShaderMaterial;
   mesh: Mesh;
   debug: FolderApi;
+  timeline: gsap.core.Timeline;
   onPointerdown(): void;
   onPointermove(): void;
   onPointerup(): void;
   resizeProjectsView(size: any): void;
   update(): void;
   setDebug(): void;
-  onActiveChange(index: number): void;
+  onActiveChange({
+    newIndex,
+    color,
+  }: {
+    newIndex: number;
+    color?: Color;
+  }): void;
 }
 
 export interface _RotateAlert {}
@@ -553,6 +564,7 @@ export interface _ProjectsFilters {
   underlineThickness: number;
   gap: number;
   gWidth: number;
+  activeFilter: ProjectCategory;
   underlineMaterial: ShaderMaterial;
   onResize(sizes: any): void;
   updateActiveFilter(category: ProjectCategory): void;
@@ -582,6 +594,7 @@ export interface _ProjectsViewManager extends _ViewManager {
   titles: _ProjectTitles;
   nav: _ProjectsNav;
   filters: _ProjectsFilters;
+  onActiveChange(newIndex: number): void;
 }
 
 export interface ProjectDetailOverlay {
@@ -591,7 +604,7 @@ export interface ProjectDetailOverlay {
 export interface _ProjectDetailViewManager extends _ViewManager {
   world: _World;
   scene: Scene;
-  activeProjectState: ProjectState;
+  projectState: ProjectState;
   projectScreen: _ProjectScreen;
   raycaster: Raycaster;
   rayOrigin: Vector3;
@@ -601,7 +614,6 @@ export interface _ProjectDetailViewManager extends _ViewManager {
   down: any;
   target: any;
   hover: any;
-  show(): void;
 }
 
 export interface _AboutScreen {

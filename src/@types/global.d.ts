@@ -10,6 +10,7 @@ declare global {
       demo: string;
       source: string;
       path: string;
+      index: number;
     }>;
     ASSETS: { [name: string]: string };
     FONTS: { [name: string]: { map: string; data: any } };

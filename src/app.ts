@@ -25,6 +25,7 @@ import {
   ProjectDetailViewManager,
 } from "./viewManagers";
 import {
+  ProjectCategory,
   ProjectState,
   TransitionEffect,
   View,
@@ -99,10 +100,12 @@ export class World implements _World {
     this.projectState = {
       active: 0,
       progress: { value: 0 },
-      target: -1,
+      target: 0,
       isTransitioning: { value: false },
       min: 0,
       max: 5,
+      filter: ProjectCategory.All,
+      activeIndices: [],
     };
 
     this.mouse = new Vector2();
@@ -135,11 +138,11 @@ export class World implements _World {
     this.render();
     await this.resources.load();
 
-    // await new Promise((res) => {
-    //   window.addEventListener("click", () => {
-    //     res(null);
-    //   });
-    // });
+    await new Promise((res) => {
+      window.addEventListener("click", () => {
+        res(null);
+      });
+    });
 
     this.sky.onPreloaded();
 
@@ -191,10 +194,17 @@ export class World implements _World {
       window.history.pushState({}, "", "/projects");
     }
     if (view === View.ProjectDetail) {
-      if (this.view === View.Projects)
-        this.transitionManager.projectsToProjectDetail();
-      else this.projectDetailViewManager.show();
-      const path = this.resources.projects[this.projectState.active].path;
+      if (window.VIEW === View.ProjectDetail) {
+        window.VIEW = View.Error;
+        this.transitionManager.homeToProjects(0.0001);
+        window.setTimeout(() => {
+          this.transitionManager.projectsToProjectDetail();
+        }, 75);
+      } else {
+        this.view !== View.ProjectDetail &&
+          this.transitionManager.projectsToProjectDetail();
+      }
+      const path = this.resources.projects[this.projectState.target].path;
       window.history.pushState({}, "", path);
     }
     if (view === View.About) {

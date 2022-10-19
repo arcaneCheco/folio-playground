@@ -29,7 +29,7 @@ export class Titles implements _ProjectTitles {
   data = this.world.resources.projects;
   font = this.world.resources.fonts.anironRegular;
   meshes: Array<_TitleMesh> = this.data.map(
-    ({ title, category }, index) =>
+    ({ title, category, index }) =>
       new TitleMesh({
         title,
         category,

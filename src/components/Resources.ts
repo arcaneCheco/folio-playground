@@ -48,7 +48,7 @@ export class Resources implements _Resources {
           ...entry,
           texture,
         };
-      });
+      }).sort((a, b) => a.index - b.index);
       resolve();
     });
   }

@@ -24,11 +24,11 @@ export class TransitionManager {
   debug: any;
   constructor() {}
 
-  homeToProjects() {
+  homeToProjects(test: number = 1.2) {
     this.post.activeEffect = TransitionEffect.HomeProjects;
     const t = GSAP.timeline({
       defaults: {
-        duration: 1.2,
+        duration: test,
         delay: 0,
         ease: "power1.out",
       },
@@ -208,7 +208,7 @@ export class TransitionManager {
       this.projectsNavObject
     );
 
-    this.scene.add(this.projectDetailOverlayObject);
+    this.scene.add(this.projectDetailOverlayObject, this.projectScreen.mesh);
   }
 
   projectsToAbout() {

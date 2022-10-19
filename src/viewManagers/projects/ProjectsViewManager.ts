@@ -20,7 +20,6 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   scene = this.world.scene;
   projectScreen = this.world.projectScreen;
   projectState = this.world.projectState;
-  activeFilter?: ProjectCategory;
   sky = this.world.sky;
   water = this.world.water;
   raycaster = this.world.raycaster;
@@ -57,53 +56,35 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   setDebug() {}
 
   filterProjects(category: ProjectCategory) {
+    this.projectState.filter = category;
+    this.projectState.activeIndices = this.titles.data
+      .filter(
+        (entry) =>
+          category === ProjectCategory.All || entry.category === category
+      )
+      .map((entry) => entry.index);
     this.filters.updateActiveFilter(category);
     this.titles.filterTitles(category);
   }
 
   setColors(color: Color) {
-    this.projectScreen.uniforms.uColor.value = color;
     this.sky.material.uniforms.uSkyColor.value = color;
     this.water.uniforms.uFresnelColor.value = color;
   }
 
   onActiveChange(newIndex: number) {
-    this.projectState.target = newIndex;
-
     const color = this.colorGradient.getAt((newIndex + 1) / this.nProjects);
     this.setColors(color);
 
-    this.projectScreen.uniforms.uImage2.value =
-      this.world.resources.projects[newIndex].texture;
-
-    this.projectState.isTransitioning.value = true;
-
-    if (this.screenTimeline.parent) {
-      this.screenTimeline.clear();
-      this.projectState.progress.value = 0.5;
-    }
-    this.screenTimeline.to(this.projectState.progress, {
-      value: 1,
-      duration: 1.5,
-      onComplete: () => {
-        this.projectState.active = newIndex;
-
-        this.projectScreen.uniforms.uImage1.value =
-          this.world.resources.projects[newIndex].texture;
-
-        this.projectState.progress.value = 0;
-
-        this.projectState.isTransitioning.value = false;
-      },
-    });
+    this.projectScreen.onActiveChange({ newIndex, color });
 
     // titles
-    if (this.screenTimeline.parent) {
+    if (this.projectScreen.timeline.parent) {
       this.titlesTimeline.clear();
     }
-    this.titles.meshes.map((mesh, index) => {
+    this.titles.meshes.map((mesh) => {
       let target = 0;
-      if (index === newIndex) {
+      if (mesh.userData.index === newIndex) {
         target = 1;
       }
       this.titlesTimeline.to(
