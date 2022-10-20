@@ -103,7 +103,6 @@ export class AboutViewManager implements _AboutViewManager {
 
     if (hit) {
       const { name } = hit.object;
-      console.log(name);
       this.target = name;
       this.hover = true;
       document.body.style.cursor = "pointer";

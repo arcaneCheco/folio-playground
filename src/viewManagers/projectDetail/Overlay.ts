@@ -13,7 +13,7 @@ import { TextAlign, ProjectDetailOverlay } from "@types";
 
 export class Overlay implements ProjectDetailOverlay {
   group = new THREE.Group();
-  scale = 1.6;
+  scale = 1.8;
   material: any;
   geometry: any;
   lineMesh: any;
@@ -42,7 +42,7 @@ export class Overlay implements ProjectDetailOverlay {
             window.innerHeight / 2
           ),
         },
-        uLineThickness: { value: 3 / this.scale },
+        uLineThickness: { value: 1 / this.scale },
         uLengthBottom: { value: 250 / this.scale },
         uLengthCorner: { value: 150 / this.scale },
         uCenterGap: { value: 100 / this.scale },
@@ -83,9 +83,9 @@ export class Overlay implements ProjectDetailOverlay {
       // depthWrite: false,
       uniforms: {
         uSize: { value: 2 * size },
-        uBorderThickness: { value: 5 },
+        uBorderThickness: { value: 2 },
         uBorderStrength: { value: 0.7 },
-        uCrossThickness: { value: 5 },
+        uCrossThickness: { value: 2 },
         uCrossSize: { value: 50 },
         uBackgroundStrength: { value: 0.4 },
       },
@@ -177,7 +177,7 @@ export class Overlay implements ProjectDetailOverlay {
   onResize() {
     //closeButton
     let sizeClose = (0.98 - 0.5 * this.scale) * window.innerHeight;
-    sizeClose = Math.min(sizeClose, 100);
+    sizeClose = Math.max(Math.min(sizeClose, 100), 50);
     let scaleXClose = (sizeClose * 2) / window.innerWidth;
     let scaleY = (sizeClose * 2) / window.innerHeight;
     this.close.scale.set(scaleXClose, scaleY, 1);
@@ -200,7 +200,7 @@ export class Overlay implements ProjectDetailOverlay {
       this.material.uniforms.uLengthBottom.value * 0.3;
 
     // nav buttons;
-    let navScale = Math.min(100, window.innerWidth / 10);
+    let navScale = Math.min(75, window.innerWidth / 10);
     let navScaleX = navScale / window.innerWidth;
     let navScaleY = navScale / window.innerHeight;
     const navButtonOffset = this.material.uniforms.uLengthBottom.value * 0.1;

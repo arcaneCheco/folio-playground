@@ -540,6 +540,8 @@ var _tweakpane = require("tweakpane");
 var _components = require("./components");
 var _viewManagers = require("./viewManagers");
 var _types = require("@types");
+var _gradientLinear = require("@utils/gradientLinear");
+var _palettes = require("@utils/palettes");
 class World {
     usePost = false;
     time = 0;
@@ -549,6 +551,7 @@ class World {
         World.instance = this;
         this.container = container;
         this.camera = new (0, _three.PerspectiveCamera)(65, 1, 0.001, 10);
+        this.colorGradient = new (0, _gradientLinear.GradientLinear)((0, _palettes.warm3));
         this.renderer = new (0, _three.WebGLRenderer)({
             alpha: true,
             powerPreference: "high-performance",
@@ -610,7 +613,7 @@ class World {
         };
         this.transitionManager = new (0, _components.TransitionManager)();
         this.changeView(window.VIEW);
-        this.setDebug();
+        // this.setDebug();
         this.onResize();
     }
     addListeners() {
@@ -766,7 +769,7 @@ new World({
     container: document.querySelector("#canvas")
 });
 
-},{"three":"3XrwE","tweakpane":"1Z8QC","./components":"gIoYP","./viewManagers":"7m3pU","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3XrwE":[function(require,module,exports) {
+},{"three":"3XrwE","tweakpane":"1Z8QC","./components":"gIoYP","./viewManagers":"7m3pU","@types":"4mCt6","@utils/gradientLinear":"3t7Pp","@utils/palettes":"fPNKv","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3XrwE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ACESFilmicToneMapping", ()=>ACESFilmicToneMapping);
@@ -38882,7 +38885,6 @@ class ProjectScreen {
             value: 0.5
         },
         uImage1: {
-            // value: this.data[this.projectState.active].texture,
             value: null
         },
         uImage2: {
@@ -38911,6 +38913,9 @@ class ProjectScreen {
         },
         uOpacity: {
             value: 1
+        },
+        uvRate: {
+            value: new (0, _three.Vector2)(1, 1)
         }
     };
     material = new (0, _three.ShaderMaterial)({
@@ -39062,6 +39067,10 @@ class ProjectScreen {
         this.mesh.scale.y = sizes.scaleY;
         this.mesh.position.x = sizes.posX;
         this.mesh.position.z = sizes.posZ;
+        this.mesh.rotation.y = sizes.rotY;
+        this.uniforms.uAspect.value = sizes.aspect;
+        if (sizes.aspect > 16 / 9) this.uniforms.uvRate.value.set(1, 16 / 9 / sizes.aspect);
+        else this.uniforms.uvRate.value.set(sizes.aspect / (16 / 9), 1);
     }
     resizeProjectsView(sizes) {
         this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
@@ -39069,6 +39078,7 @@ class ProjectScreen {
         this.mesh.position.z = sizes.posZ;
         this.mesh.rotation.y = sizes.rotY;
         this.uniforms.uAspect.value = sizes.aspect;
+        this.uniforms.uvRate.value.set(1, 1);
     }
     update() {
         this.uniforms.uTime.value = this.world.time;
@@ -39076,10 +39086,10 @@ class ProjectScreen {
 }
 
 },{"three":"3XrwE","@src/app":"fJe33","../shaders/projectScreen/vertex.glsl":"kVikq","../shaders/projectScreen/fragment.glsl":"fZ7Fv","gsap":"gS77a","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"kVikq":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float uAspect;\nuniform float uIsCurved;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 newPos = position;\n    newPos.z -= sin(uv.x * 3.1415) * (0.1 + uAspect * 0.1) * uIsCurved;\n    newPos.y += 0.5;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n}";
+module.exports = "#define GLSLIFY 1\nuniform float uAspect;\nuniform float uIsCurved;\nuniform vec2 uvRate;\n\nvarying vec2 vUv;\nvarying vec2 vUv1;\n\nvoid main() {\n    vec3 newPos = position;\n    newPos.z -= sin(uv.x * 3.1415) * (0.1 + uAspect * 0.1) * uIsCurved;\n    newPos.y += 0.5;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n\n    // vec2 uvRate = vec2(1., (16./9.) / uAspect);\n\n    vec2 _uv = uv - 0.5;\n    vUv1 = _uv;\n    vUv1 *= uvRate;\n    vUv1 += 0.5;\n}";
 
 },{}],"fZ7Fv":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float uTime;\nuniform float uTransition;\nuniform float uTransitionStart;\nuniform float uTransitionDuration;\nuniform vec3 uColor;\nuniform float uOpacity;\n\nuniform sampler2D uImage1;\nuniform sampler2D uImage2;\nuniform float uProgress;\nuniform sampler2D uAbstract;\nuniform float uVignetteIntensity;\nuniform float uVignetteInfluence;\n\nvarying vec2 vUv;\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((uTime + 10.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nfloat getTransition(float progress) {\n    return max(min(2. * progress, -2. * (progress - 1.)), 0.);\n}\n\nvec3 rgb2hsv(vec3 c) {\n    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n    \n    float d = q.x - min(q.w, q.y);\n    float e = 1.0e-10;\n    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n}\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nfloat dBorder(float t, vec2 st) {\n    vec2 p1 = vec2(t);\n    vec2 p2 = vec2(1. - t);\n    vec2 p3 = vec2(t, 1. - t);\n    vec2 p4 = vec2(1. - t, t);\n    float d1 = step(p1.x,st.x) * step(st.x,p4.x) * abs(st.y-p1.y) + step(st.x,p1.x) * distance(st,p1) + step(p4.x,st.x) * distance(st,p4);\n    d1 = min(step(p3.x,st.x) * step(st.x,p2.x)  *abs(st.y-p2.y) + step(st.x,p3.x) * distance(st,p3) + step(p2.x,st.x) * distance(st,p2), d1);\n    d1 = min(step(p1.y,st.y)*step(st.y,p3.y)*abs(st.x-p1.x)+ step(st.y,p1.y)*distance(st,p1)+step(p3.y,st.y)*distance(st,p3),d1);\n    d1 = min(step(p4.y,st.y)*step(st.y,p2.y)*abs(st.x-p2.x)+ step(st.y,p4.y)*distance(st,p4)+step(p2.y,st.y)*distance(st,p2),d1);\n\n    return d1;\n}\n\nvoid main() {\n\n    vec3 image1 = texture2D(uImage1, vUv).rgb;\n    vec3 image2 = texture2D(uImage2, vUv).rgb;\n\n    vec3 final = image1;\n\n    if (uTransition > 0.5) {\n        vec3 image = mix(image1, image2, uProgress);\n        vec3 staticSample = vec3(tvNoise(vUv));\n        float staticRatio = getTransition(uProgress);\n\n        final = mix(image, staticSample, staticRatio);\n    }\n\n    // border shape\n    vec2 angleUV = vUv - vec2(0.5);\n    angleUV.x *= 2.;\n    float angle = atan(angleUV.x,angleUV.y) / 6.28 + 0.5;\n    float angleDist = 0.05 + sin(uTime) * 0.04;\n    float angleSpeed = 0.1;\n    float angleS = smoothstep(1. - angleDist, 1., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(angleDist, 0., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(1. - angleDist, 1., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n    angleS += smoothstep(angleDist, 0., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n\n    float d1 = dBorder(0.01, vUv);\n    float nos = texture2D(uAbstract, vUv + vec2(cos(uTime * angleSpeed), sin(uTime * angleSpeed))).r / 50.;\n    float f1 = .01 / abs(d1 + nos);\n    angleS *= f1;\n\n    vec3 borderColor = uColor;\n    borderColor = rgb2hsv(borderColor);\n\n    borderColor.z -= 0.4;\n    borderColor.z += angleS * 2.;\n    borderColor.g -= angleS;\n    borderColor.r -= 0.08 * sin(uTime * 5.) * f1;\n\n    borderColor = hsv2rgb(borderColor);\n\n    // vignette\n    vec2 vigUv = vUv * (1.0 - vUv.yx);\n    \n    float vig = vigUv.x*vigUv.y * uVignetteIntensity;\n    \n    vig = pow(vig, uVignetteInfluence);\n    vig = clamp(vig, 0., 1.);\n    final *= vec3(vig);\n\n    final += borderColor * f1;\n\n    final = pow( final, vec3(1.5,1.2,1.0) );    \n    final *= clamp(1.0-0.3*length(vUv), 0.0, 1.0 );\n\n    gl_FragColor = vec4(final, 1.) * uOpacity;\n}";
+module.exports = "#define GLSLIFY 1\nuniform float uTime;\nuniform float uTransition;\nuniform float uTransitionStart;\nuniform float uTransitionDuration;\nuniform vec3 uColor;\nuniform float uOpacity;\n\nuniform sampler2D uImage1;\nuniform sampler2D uImage2;\nuniform float uProgress;\nuniform sampler2D uAbstract;\nuniform float uVignetteIntensity;\nuniform float uVignetteInfluence;\n\nvarying vec2 vUv;\nvarying vec2 vUv1;\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((uTime + 10.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nfloat getTransition(float progress) {\n    return max(min(2. * progress, -2. * (progress - 1.)), 0.);\n}\n\nvec3 rgb2hsv(vec3 c) {\n    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n    \n    float d = q.x - min(q.w, q.y);\n    float e = 1.0e-10;\n    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n}\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nfloat dBorder(float t, vec2 st) {\n    vec2 p1 = vec2(t);\n    vec2 p2 = vec2(1. - t);\n    vec2 p3 = vec2(t, 1. - t);\n    vec2 p4 = vec2(1. - t, t);\n    float d1 = step(p1.x,st.x) * step(st.x,p4.x) * abs(st.y-p1.y) + step(st.x,p1.x) * distance(st,p1) + step(p4.x,st.x) * distance(st,p4);\n    d1 = min(step(p3.x,st.x) * step(st.x,p2.x)  *abs(st.y-p2.y) + step(st.x,p3.x) * distance(st,p3) + step(p2.x,st.x) * distance(st,p2), d1);\n    d1 = min(step(p1.y,st.y)*step(st.y,p3.y)*abs(st.x-p1.x)+ step(st.y,p1.y)*distance(st,p1)+step(p3.y,st.y)*distance(st,p3),d1);\n    d1 = min(step(p4.y,st.y)*step(st.y,p2.y)*abs(st.x-p2.x)+ step(st.y,p4.y)*distance(st,p4)+step(p2.y,st.y)*distance(st,p2),d1);\n\n    return d1;\n}\n\nvoid main() {\n\n    vec3 image1 = texture2D(uImage1, vUv1).rgb;\n    vec3 image2 = texture2D(uImage2, vUv1).rgb;\n\n    vec3 final = image1;\n\n    if (uTransition > 0.5) {\n        vec3 image = mix(image1, image2, uProgress);\n        vec3 staticSample = vec3(tvNoise(vUv));\n        float staticRatio = getTransition(uProgress);\n\n        final = mix(image, staticSample, staticRatio);\n    }\n\n    // border shape\n    vec2 angleUV = vUv - vec2(0.5);\n    angleUV.x *= 2.;\n    float angle = atan(angleUV.x,angleUV.y) / 6.28 + 0.5;\n    float angleDist = 0.05 + sin(uTime) * 0.04;\n    float angleSpeed = 0.1;\n    float angleS = smoothstep(1. - angleDist, 1., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(angleDist, 0., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(1. - angleDist, 1., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n    angleS += smoothstep(angleDist, 0., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n\n    float d1 = dBorder(0.01, vUv);\n    float nos = texture2D(uAbstract, vUv + vec2(cos(uTime * angleSpeed), sin(uTime * angleSpeed))).r / 50.;\n    float f1 = .01 / abs(d1 + nos);\n    angleS *= f1;\n\n    vec3 borderColor = uColor;\n    borderColor = rgb2hsv(borderColor);\n\n    borderColor.z -= 0.4;\n    borderColor.z += angleS * 2.;\n    borderColor.g -= angleS;\n    borderColor.r -= 0.08 * sin(uTime * 5.) * f1;\n\n    borderColor = hsv2rgb(borderColor);\n\n    // vignette\n    vec2 vigUv = vUv * (1.0 - vUv.yx);\n    \n    float vig = vigUv.x*vigUv.y * uVignetteIntensity;\n    \n    vig = pow(vig, uVignetteInfluence);\n    vig = clamp(vig, 0., 1.);\n    final *= vec3(vig);\n\n    final += borderColor * f1;\n\n    final = pow( final, vec3(1.5,1.2,1.0) );    \n    final *= clamp(1.0-0.3*length(vUv), 0.0, 1.0 );\n\n    gl_FragColor = vec4(final, 1.) * uOpacity;\n}";
 
 },{}],"gS77a":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -43253,6 +43263,7 @@ class TransitionManager {
         });
     }
     projectDetailToProjects() {
+        this.projectScreen.uniforms.uvRate.value.set(1, 1);
         this.projectScreen.uniforms.uIsCurved.value = true;
         const aspect = window.innerWidth / window.innerHeight;
         const t = (0, _gsapDefault.default).timeline({
@@ -43301,6 +43312,8 @@ class TransitionManager {
         this.world.parallax.enabled = false;
         const aspect = window.innerWidth / window.innerHeight;
         this.projectScreen.uniforms.uIsCurved.value = false;
+        if (aspect > 16 / 9) this.projectScreen.uniforms.uvRate.value.set(1, 16 / 9 / aspect);
+        else this.projectScreen.uniforms.uvRate.value.set(aspect / (16 / 9), 1);
         const t = (0, _gsapDefault.default).timeline({
             defaults: {
                 duration: 0.8,
@@ -43423,6 +43436,7 @@ var _vertexGlsl = require("@shaders/water/vertex.glsl");
 var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
 var _fragmentGlsl = require("@shaders/water/fragment.glsl");
 var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _types = require("@types");
 class Water extends (0, _mirrorDefault.default) {
     world = new (0, _app.World)();
     renderer = this.world.renderer;
@@ -43553,6 +43567,7 @@ class Water extends (0, _mirrorDefault.default) {
     }
     onWheel() {}
     update() {
+        if (this.world.view === (0, _types.View).ProjectDetail) return;
         this.hiddenObjects[this.world.view]?.map((object)=>object.visible = false);
         super.update(this.mesh, this.renderer, this.camera, this.scene);
         this.hiddenObjects[this.world.view]?.map((object)=>object.visible = true);
@@ -43560,7 +43575,7 @@ class Water extends (0, _mirrorDefault.default) {
     }
 }
 
-},{"@src/app":"fJe33","three":"3XrwE","@utils/Mirror":"645CP","./WaterHeightMap":"dq6To","@shaders/water/vertex.glsl":"39big","@shaders/water/fragment.glsl":"fmpVD","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"645CP":[function(require,module,exports) {
+},{"@src/app":"fJe33","three":"3XrwE","@utils/Mirror":"645CP","./WaterHeightMap":"dq6To","@shaders/water/vertex.glsl":"39big","@shaders/water/fragment.glsl":"fmpVD","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"645CP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _three = require("three");
@@ -44868,7 +44883,6 @@ class AboutViewManager {
         const [hit] = this.raycaster.intersectObjects(this.overlay.group.children);
         if (hit) {
             const { name  } = hit.object;
-            console.log(name);
             this.target = name;
             this.hover = true;
             document.body.style.cursor = "pointer";
@@ -45509,8 +45523,6 @@ var _three = require("three");
 var _gsap = require("gsap");
 var _gsapDefault = parcelHelpers.interopDefault(_gsap);
 var _components = require("./components");
-var _gradientLinear = require("@utils/gradientLinear");
-var _palettes = require("@utils/palettes");
 var _types = require("@types");
 class ProjectsViewManager {
     world = new (0, _app.World)();
@@ -45523,7 +45535,7 @@ class ProjectsViewManager {
     ndcRaycaster = this.world.ndcRaycaster;
     rayOrigin = new (0, _three.Vector3)(0, 0, 1);
     rayTarget = new (0, _three.Vector3)();
-    colorGradient = new (0, _gradientLinear.GradientLinear)((0, _palettes.warm3));
+    colorGradient = this.world.colorGradient;
     screenTimeline = (0, _gsapDefault.default).timeline();
     titlesTimeline = (0, _gsapDefault.default).timeline();
     titleIndex = -1;
@@ -45533,9 +45545,6 @@ class ProjectsViewManager {
     filters = new (0, _components.Filters)();
     constructor(){
         this.filterProjects((0, _types.ProjectCategory).All);
-        this.titles.meshes.map((mesh, i)=>{
-            mesh.material.uniforms.uColor.value = this.colorGradient.getAt((i + 1) / this.nProjects);
-        });
         this.world.water.hiddenObjects[(0, _types.View).Projects]?.push(this.filters.outerGroup, this.nav.group);
     }
     setDebug() {}
@@ -45673,7 +45682,7 @@ class ProjectsViewManager {
     }
 }
 
-},{"@src/app":"fJe33","three":"3XrwE","gsap":"gS77a","./components":"4KWqa","@utils/gradientLinear":"3t7Pp","@utils/palettes":"fPNKv","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4KWqa":[function(require,module,exports) {
+},{"@src/app":"fJe33","three":"3XrwE","gsap":"gS77a","./components":"4KWqa","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4KWqa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Titles", ()=>(0, _titles.Titles));
@@ -45694,6 +45703,7 @@ var _types = require("@types");
 var _titleMesh = require("./TitleMesh");
 class Titles {
     world = new (0, _app.World)();
+    colorGradient = this.world.colorGradient;
     scene = this.world.scene;
     scroll = {
         current: 0,
@@ -45714,7 +45724,8 @@ class Titles {
             category,
             index,
             font: this.font,
-            baseWidth: this.baseWidth
+            baseWidth: this.baseWidth,
+            color: this.colorGradient.getAt((index + 1) / this.data.length)
         }));
     constructor(){
         this.outerGroup.add(this.group);
@@ -45846,7 +45857,7 @@ class TitleMesh extends (0, _three.Mesh) {
             value: 0
         }
     };
-    constructor({ title , category , index , font , baseWidth  }){
+    constructor({ title , category , index , font , baseWidth , color  }){
         super(new (0, _textGeometryDefault.default)(), new (0, _three.ShaderMaterial)({
             vertexShader: (0, _vertexGlslDefault.default),
             fragmentShader: (0, _fragmentGlslDefault.default),
@@ -45854,6 +45865,7 @@ class TitleMesh extends (0, _three.Mesh) {
             depthTest: false,
             depthWrite: false
         }));
+        this.uniforms.uColor.value = color;
         this.uniforms.uMap.value = font.map;
         if (index === 0) this.uniforms.uProgress.value = 1;
         this.material.uniforms = this.uniforms;
@@ -46103,118 +46115,7 @@ module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_
 },{}],"f9iI8":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 1.);\n}";
 
-},{}],"3t7Pp":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "GradientLinear", ()=>GradientLinear);
-var _three = require("three");
-var _mathUtils = require("three/src/math/MathUtils");
-const mix = (x, y, r)=>{
-    return r * x + (1 - r) * y;
-};
-class GradientLinear {
-    constructor(colors){
-        this.colors = colors.map((c)=>new (0, _three.Color)(c));
-    }
-    getAt(t) {
-        t = (0, _mathUtils.clamp)(t, 0, 1);
-        const from = Math.floor(t * this.colors.length * 0.9999);
-        const to = (0, _mathUtils.clamp)(from + 1, 0, this.colors.length - 1);
-        const fc = this.colors[from];
-        const ft = this.colors[to];
-        const p = (t - from / this.colors.length) / (1 / this.colors.length);
-        const res = new (0, _three.Color)();
-        res.r = mix(fc.r, ft.r, p);
-        res.g = mix(fc.g, ft.g, p);
-        res.b = mix(fc.b, ft.b, p);
-        return res;
-    }
-}
-
-},{"three":"3XrwE","three/src/math/MathUtils":"gMBZj","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"fPNKv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "warm", ()=>warm);
-parcelHelpers.export(exports, "natural", ()=>natural);
-parcelHelpers.export(exports, "natural2", ()=>natural2);
-parcelHelpers.export(exports, "circus", ()=>circus);
-parcelHelpers.export(exports, "seaside", ()=>seaside);
-parcelHelpers.export(exports, "warm2", ()=>warm2);
-parcelHelpers.export(exports, "warm3", ()=>warm3);
-parcelHelpers.export(exports, "circus2", ()=>circus2);
-const warm = [
-    "#FF2000",
-    "#FF5900",
-    "#FE9100",
-    "#FEFDFC",
-    "#FEC194",
-    "#FE9F5B", 
-];
-const natural = [
-    "#FF6D00",
-    "#FBF8EB",
-    "#008B99",
-    "#F8E1A6",
-    "#FDA81F",
-    "#B80A01",
-    "#480D07", 
-];
-const natural2 = [
-    "#EF2006",
-    "#350000",
-    "#A11104",
-    "#ED5910",
-    "#F1B52E",
-    "#7B5614",
-    "#F7F1AC", 
-];
-const circus = [
-    "#F62D62",
-    "#FFFFFF",
-    "#FDB600",
-    "#F42D2D",
-    "#544C98",
-    "#ECACBC", 
-];
-const seaside = [
-    "#FEB019",
-    "#F46002",
-    "#E1E7F1",
-    "#0A1D69",
-    "#138FE2",
-    "#0652C4",
-    "#D23401",
-    "#B0A12F", 
-];
-const warm2 = [
-    "#FFFEFE",
-    "#0D0211",
-    "#FBCEA0",
-    "#FFAD5D",
-    "#530E1D",
-    "#FE9232",
-    "#B93810",
-    "#907996", 
-];
-const warm3 = [
-    "#EDEBE7",
-    "#13595A",
-    "#DE1408",
-    "#161814",
-    "#E1610A",
-    "#B7BDB3",
-    "#9F9772", 
-];
-const circus2 = [
-    "#F62D62",
-    "#FFFFFF",
-    "#FDB600",
-    "#F42D2D",
-    "#544C98",
-    "#ECACBC", 
-];
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"7rjaB":[function(require,module,exports) {
+},{}],"7rjaB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ProjectDetailViewManager", ()=>ProjectDetailViewManager);
@@ -46359,7 +46260,8 @@ class ProjectDetailViewManager {
             this.lastCommand = "prev";
         }
         this.projectScreen.onActiveChange({
-            newIndex: target
+            newIndex: target,
+            color: this.world.colorGradient.getAt((target + 1) / 5)
         });
         this.world.changeView((0, _types.View).ProjectDetail);
     }
@@ -46386,19 +46288,20 @@ class ProjectDetailViewManager {
     getSizes() {
         const aspect = window.innerWidth / window.innerHeight;
         const screen = {};
+        screen.aspect = aspect;
         const dist = 0.65;
         const fov2 = this.world.camera.fov * 0.5 * Math.PI / 180;
-        const scaleY = 2 * dist * Math.tan(fov2); // scaleX = 2*dist*Math.tan(fov/2)
-        const scaleX = scaleY * aspect;
-        this.projectScreen.mesh.scale.set(scaleX, scaleY, 1);
+        screen.scaleY = 2 * dist * Math.tan(fov2);
+        screen.scaleX = screen.scaleY * aspect;
+        // this.projectScreen.mesh.scale.set(screen.scaleX, screen.scaleY, 1);
         let offset = 210 + aspect * 8; // 30
         offset *= Math.PI / 180;
-        const posX = Math.sin(offset) * dist;
-        const posZ = -Math.cos(offset) * dist;
-        this.projectScreen.mesh.position.set(posX, 0, posZ);
-        const rotY = -offset;
-        this.projectScreen.mesh.rotation.y = rotY;
-        this.world.camera.position.set(0, scaleY / 2, 0);
+        screen.posX = Math.sin(offset) * dist;
+        screen.posZ = -Math.cos(offset) * dist;
+        // this.projectScreen.mesh.position.set(screen.posX, 0, screen.posZ);
+        screen.rotY = -offset;
+        // this.projectScreen.mesh.rotation.y = screen.rotY;
+        this.world.camera.position.set(0, screen.scaleY / 2, 0);
         const rotation = (30 + aspect * 8) * (Math.PI / 180);
         this.world.camera.rotation.set(-Math.PI, rotation, Math.PI);
         return {
@@ -46408,7 +46311,7 @@ class ProjectDetailViewManager {
     onResize() {
         if (this.world.view === (0, _types.View).ProjectDetail) {
             const { screen  } = this.getSizes();
-        // this.projectScreen.resizeProjectDetailView(screen);
+            this.projectScreen.resizeProjectDetailView(screen);
         }
         //resize overlay
         this.overlay.onResize();
@@ -46446,7 +46349,7 @@ var _app = require("@src/app");
 var _types = require("@types");
 class Overlay {
     group = new _three.Group();
-    scale = 1.6;
+    scale = 1.8;
     constructor(){
         this.world = new (0, _app.World)();
         this.font = this.world.resources.fonts.audiowideRegular;
@@ -46459,7 +46362,7 @@ class Overlay {
                     value: new _three.Vector2(window.innerWidth / 2, window.innerHeight / 2)
                 },
                 uLineThickness: {
-                    value: 3 / this.scale
+                    value: 1 / this.scale
                 },
                 uLengthBottom: {
                     value: 250 / this.scale
@@ -46503,13 +46406,13 @@ class Overlay {
                     value: 2 * size
                 },
                 uBorderThickness: {
-                    value: 5
+                    value: 2
                 },
                 uBorderStrength: {
                     value: 0.7
                 },
                 uCrossThickness: {
-                    value: 5
+                    value: 2
                 },
                 uCrossSize: {
                     value: 50
@@ -46590,7 +46493,7 @@ class Overlay {
     onResize() {
         //closeButton
         let sizeClose = (0.98 - 0.5 * this.scale) * window.innerHeight;
-        sizeClose = Math.min(sizeClose, 100);
+        sizeClose = Math.max(Math.min(sizeClose, 100), 50);
         let scaleXClose = sizeClose * 2 / window.innerWidth;
         let scaleY = sizeClose * 2 / window.innerHeight;
         this.close.scale.set(scaleXClose, scaleY, 1);
@@ -46603,7 +46506,7 @@ class Overlay {
         this.material.uniforms.uCenterGap.value = sizeClose * 0.5;
         this.material.uniforms.uLengthCorner.value = this.material.uniforms.uLengthBottom.value * 0.3;
         // nav buttons;
-        let navScale = Math.min(100, window.innerWidth / 10);
+        let navScale = Math.min(75, window.innerWidth / 10);
         let navScaleX = navScale / window.innerWidth;
         let navScaleY = navScale / window.innerHeight;
         const navButtonOffset = this.material.uniforms.uLengthBottom.value * 0.1;
@@ -46646,5 +46549,116 @@ module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    vec
 },{}],"jaw4s":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nuniform sampler2D uIcon;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uIcon, vUv);\n    gl_FragColor = icon;\n\n    // vec4 shadow = texture2D(uIcon, (vUv - vec2(0.05,-0.05)) * 1.1);\n\n    // shadow = vec4 (vec3(0., 1., 0.), shadow.r);\n\n    // gl_FragColor += shadow;\n}";
 
-},{}]},["1SneK","fJe33"], "fJe33", "parcelRequire65f9")
+},{}],"3t7Pp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "GradientLinear", ()=>GradientLinear);
+var _three = require("three");
+var _mathUtils = require("three/src/math/MathUtils");
+const mix = (x, y, r)=>{
+    return r * x + (1 - r) * y;
+};
+class GradientLinear {
+    constructor(colors){
+        this.colors = colors.map((c)=>new (0, _three.Color)(c));
+    }
+    getAt(t) {
+        t = (0, _mathUtils.clamp)(t, 0, 1);
+        const from = Math.floor(t * this.colors.length * 0.9999);
+        const to = (0, _mathUtils.clamp)(from + 1, 0, this.colors.length - 1);
+        const fc = this.colors[from];
+        const ft = this.colors[to];
+        const p = (t - from / this.colors.length) / (1 / this.colors.length);
+        const res = new (0, _three.Color)();
+        res.r = mix(fc.r, ft.r, p);
+        res.g = mix(fc.g, ft.g, p);
+        res.b = mix(fc.b, ft.b, p);
+        return res;
+    }
+}
+
+},{"three":"3XrwE","three/src/math/MathUtils":"gMBZj","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"fPNKv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "warm", ()=>warm);
+parcelHelpers.export(exports, "natural", ()=>natural);
+parcelHelpers.export(exports, "natural2", ()=>natural2);
+parcelHelpers.export(exports, "circus", ()=>circus);
+parcelHelpers.export(exports, "seaside", ()=>seaside);
+parcelHelpers.export(exports, "warm2", ()=>warm2);
+parcelHelpers.export(exports, "warm3", ()=>warm3);
+parcelHelpers.export(exports, "circus2", ()=>circus2);
+const warm = [
+    "#FF2000",
+    "#FF5900",
+    "#FE9100",
+    "#FEFDFC",
+    "#FEC194",
+    "#FE9F5B", 
+];
+const natural = [
+    "#FF6D00",
+    "#FBF8EB",
+    "#008B99",
+    "#F8E1A6",
+    "#FDA81F",
+    "#B80A01",
+    "#480D07", 
+];
+const natural2 = [
+    "#EF2006",
+    "#350000",
+    "#A11104",
+    "#ED5910",
+    "#F1B52E",
+    "#7B5614",
+    "#F7F1AC", 
+];
+const circus = [
+    "#F62D62",
+    "#FFFFFF",
+    "#FDB600",
+    "#F42D2D",
+    "#544C98",
+    "#ECACBC", 
+];
+const seaside = [
+    "#FEB019",
+    "#F46002",
+    "#E1E7F1",
+    "#0A1D69",
+    "#138FE2",
+    "#0652C4",
+    "#D23401",
+    "#B0A12F", 
+];
+const warm2 = [
+    "#FFFEFE",
+    "#0D0211",
+    "#FBCEA0",
+    "#FFAD5D",
+    "#530E1D",
+    "#FE9232",
+    "#B93810",
+    "#907996", 
+];
+const warm3 = [
+    "#EDEBE7",
+    "#13595A",
+    "#DE1408",
+    "#161814",
+    "#E1610A",
+    "#B7BDB3",
+    "#9F9772", 
+];
+const circus2 = [
+    "#F62D62",
+    "#FFFFFF",
+    "#FDB600",
+    "#F42D2D",
+    "#544C98",
+    "#ECACBC", 
+];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["1SneK","fJe33"], "fJe33", "parcelRequire65f9")
 

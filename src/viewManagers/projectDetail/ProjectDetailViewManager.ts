@@ -178,7 +178,10 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
       target = Math.max(target, minIndex);
       this.lastCommand = "prev";
     }
-    this.projectScreen.onActiveChange({ newIndex: target });
+    this.projectScreen.onActiveChange({
+      newIndex: target,
+      color: this.world.colorGradient.getAt((target + 1) / 5),
+    });
     this.world.changeView(View.ProjectDetail);
   }
 
@@ -210,23 +213,26 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
 
   getSizes() {
     const aspect = window.innerWidth / window.innerHeight;
-    const screen = {};
+    const screen: any = {};
+
+    screen.aspect = aspect;
 
     const dist = 0.65;
     const fov2 = (this.world.camera.fov * 0.5 * Math.PI) / 180;
-    const scaleY = 2 * dist * Math.tan(fov2); // scaleX = 2*dist*Math.tan(fov/2)
-    const scaleX = scaleY * aspect;
-    this.projectScreen.mesh.scale.set(scaleX, scaleY, 1);
+    screen.scaleY = 2 * dist * Math.tan(fov2);
+    screen.scaleX = screen.scaleY * aspect;
+
+    // this.projectScreen.mesh.scale.set(screen.scaleX, screen.scaleY, 1);
 
     let offset = 210 + aspect * 8; // 30
     offset *= Math.PI / 180;
-    const posX = Math.sin(offset) * dist;
-    const posZ = -Math.cos(offset) * dist;
-    this.projectScreen.mesh.position.set(posX, 0, posZ);
-    const rotY = -offset;
-    this.projectScreen.mesh.rotation.y = rotY;
+    screen.posX = Math.sin(offset) * dist;
+    screen.posZ = -Math.cos(offset) * dist;
+    // this.projectScreen.mesh.position.set(screen.posX, 0, screen.posZ);
+    screen.rotY = -offset;
+    // this.projectScreen.mesh.rotation.y = screen.rotY;
 
-    this.world.camera.position.set(0, scaleY / 2, 0);
+    this.world.camera.position.set(0, screen.scaleY / 2, 0);
     const rotation = (30 + aspect * 8) * (Math.PI / 180);
     this.world.camera.rotation.set(-Math.PI, rotation, Math.PI);
 
@@ -238,7 +244,7 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
   onResize() {
     if (this.world.view === View.ProjectDetail) {
       const { screen } = this.getSizes();
-      // this.projectScreen.resizeProjectDetailView(screen);
+      this.projectScreen.resizeProjectDetailView(screen);
     }
     //resize overlay
     this.overlay.onResize();

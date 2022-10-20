@@ -151,6 +151,7 @@ export class Water extends Mirror implements _Water {
   onWheel() {}
 
   update() {
+    if (this.world.view === View.ProjectDetail) return;
     this.hiddenObjects[this.world.view]?.map(
       (object) => (object.visible = false)
     );

@@ -108,6 +108,7 @@ export class TransitionManager {
   }
 
   projectDetailToProjects() {
+    this.projectScreen.uniforms.uvRate.value.set(1, 1);
     this.projectScreen.uniforms.uIsCurved.value = true;
     const aspect = window.innerWidth / window.innerHeight;
 
@@ -166,6 +167,11 @@ export class TransitionManager {
     this.world.parallax.enabled = false;
     const aspect = window.innerWidth / window.innerHeight;
     this.projectScreen.uniforms.uIsCurved.value = false;
+    if (aspect > 16 / 9) {
+      this.projectScreen.uniforms.uvRate.value.set(1, 16 / 9 / aspect);
+    } else {
+      this.projectScreen.uniforms.uvRate.value.set(aspect / (16 / 9), 1);
+    }
 
     const t = GSAP.timeline({
       defaults: {

@@ -31,6 +31,7 @@ import {
   View,
   _AboutViewManager,
   _CurlBubble,
+  _GradientLinear,
   _HomeViewManager,
   _Post,
   _ProjectDetailViewManager,
@@ -42,6 +43,8 @@ import {
   _Water,
   _World,
 } from "@types";
+import { GradientLinear } from "@utils/gradientLinear";
+import { warm, natural, seaside, circus2, warm3 } from "@utils/palettes";
 
 export class World implements _World {
   static instance: World;
@@ -76,6 +79,7 @@ export class World implements _World {
   dataCount: number;
   debug: FolderApi;
   pane: FolderApi;
+  colorGradient: _GradientLinear;
   paneContainer: Pane;
   viewManagers: {
     [key in View]?: _ViewManager;
@@ -88,6 +92,8 @@ export class World implements _World {
     this.container = container!;
 
     this.camera = new PerspectiveCamera(65, 1, 0.001, 10);
+
+    this.colorGradient = new GradientLinear(warm3);
 
     this.renderer = new WebGLRenderer({
       alpha: true,
@@ -163,7 +169,7 @@ export class World implements _World {
 
     this.changeView(window.VIEW);
 
-    this.setDebug();
+    // this.setDebug();
 
     this.onResize();
   }
@@ -285,7 +291,7 @@ export class World implements _World {
     this.mouse.y = (-2 * e.clientY) / this.height + 1;
   }
 
-  onPointermove(e: PointerEvent) {
+  onPointermove(e: any) {
     // world updates
     this.mouseNDC(e);
     this.parallax.updateTarget();

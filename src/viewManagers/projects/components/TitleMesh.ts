@@ -1,6 +1,7 @@
 import TextGeometry from "@src/utils/TextGeometry";
 import {
   BufferAttribute,
+  Color,
   IUniform,
   Matrix4,
   Mesh,
@@ -29,12 +30,14 @@ export class TitleMesh
     index,
     font,
     baseWidth,
+    color,
   }: {
     title: string;
     category: string;
     index: number;
     font: Font;
     baseWidth: number;
+    color: Color;
   }) {
     super(
       new TextGeometry(),
@@ -46,6 +49,7 @@ export class TitleMesh
         depthWrite: false,
       })
     );
+    this.uniforms.uColor.value = color;
     this.uniforms.uMap.value = font.map;
     if (index === 0) this.uniforms.uProgress.value = 1;
     this.material.uniforms = this.uniforms;

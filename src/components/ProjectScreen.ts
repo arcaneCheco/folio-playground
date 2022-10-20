@@ -4,6 +4,7 @@ import {
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
+  Vector2,
   Vector3,
 } from "three";
 import { World } from "@src/app";
@@ -34,7 +35,6 @@ export class ProjectScreen implements _ProjectScreen {
     uTransitionStart: { value: 0 },
     uTransitionDuration: { value: 0.5 },
     uImage1: {
-      // value: this.data[this.projectState.active].texture,
       value: null,
     },
     uImage2: {
@@ -50,6 +50,7 @@ export class ProjectScreen implements _ProjectScreen {
     uAspect: { value: 1 },
     uIsCurved: { value: false },
     uOpacity: { value: 1 },
+    uvRate: { value: new Vector2(1, 1) },
   };
   material = new ShaderMaterial({
     vertexShader,
@@ -216,6 +217,13 @@ export class ProjectScreen implements _ProjectScreen {
     this.mesh.scale.y = sizes.scaleY;
     this.mesh.position.x = sizes.posX;
     this.mesh.position.z = sizes.posZ;
+    this.mesh.rotation.y = sizes.rotY;
+    this.uniforms.uAspect.value = sizes.aspect;
+    if (sizes.aspect > 16 / 9) {
+      this.uniforms.uvRate.value.set(1, 16 / 9 / sizes.aspect);
+    } else {
+      this.uniforms.uvRate.value.set(sizes.aspect / (16 / 9), 1);
+    }
   }
 
   resizeProjectsView(sizes) {
@@ -224,6 +232,7 @@ export class ProjectScreen implements _ProjectScreen {
     this.mesh.position.z = sizes.posZ;
     this.mesh.rotation.y = sizes.rotY;
     this.uniforms.uAspect.value = sizes.aspect;
+    this.uniforms.uvRate.value.set(1, 1);
   }
 
   update() {

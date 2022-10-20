@@ -13,6 +13,7 @@ uniform float uVignetteIntensity;
 uniform float uVignetteInfluence;
 
 varying vec2 vUv;
+varying vec2 vUv1;
 
 const float e = 2.7182818284590452353602874713527;
 
@@ -59,8 +60,8 @@ float dBorder(float t, vec2 st) {
 
 void main() {
 
-    vec3 image1 = texture2D(uImage1, vUv).rgb;
-    vec3 image2 = texture2D(uImage2, vUv).rgb;
+    vec3 image1 = texture2D(uImage1, vUv1).rgb;
+    vec3 image2 = texture2D(uImage2, vUv1).rgb;
 
 
     vec3 final = image1;

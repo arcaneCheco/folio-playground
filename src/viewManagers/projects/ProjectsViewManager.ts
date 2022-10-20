@@ -2,8 +2,6 @@ import { World } from "@src/app";
 import { Color, Vector2, Vector3 } from "three";
 import GSAP from "gsap";
 import { Nav, Titles, Filters } from "./components";
-import { GradientLinear } from "@utils/gradientLinear";
-import { warm, natural, seaside, circus2, warm3 } from "@utils/palettes";
 import {
   ProjectCategory,
   View,
@@ -26,7 +24,7 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   ndcRaycaster = this.world.ndcRaycaster;
   rayOrigin = new Vector3(0, 0, 1);
   rayTarget = new Vector3();
-  colorGradient = new GradientLinear(warm3);
+  colorGradient = this.world.colorGradient;
   screenTimeline = GSAP.timeline();
   debug: FolderApi;
   titlesTimeline = GSAP.timeline();
@@ -41,11 +39,6 @@ export class ProjectsViewManager implements _ProjectsViewManager {
   filters: _ProjectsFilters = new Filters();
   constructor() {
     this.filterProjects(ProjectCategory.All);
-    this.titles.meshes.map((mesh, i) => {
-      mesh.material.uniforms.uColor.value = this.colorGradient.getAt(
-        (i + 1) / this.nProjects
-      );
-    });
 
     this.world.water.hiddenObjects[View.Projects]?.push(
       this.filters.outerGroup,

@@ -13,6 +13,7 @@ import { FolderApi } from "tweakpane";
 
 export class Titles implements _ProjectTitles {
   world = new World();
+  colorGradient = this.world.colorGradient;
   scene = this.world.scene;
   scroll: Scroll = {
     current: 0,
@@ -36,6 +37,7 @@ export class Titles implements _ProjectTitles {
         index,
         font: this.font,
         baseWidth: this.baseWidth,
+        color: this.colorGradient.getAt((index + 1) / this.data.length),
       })
   );
   debug: FolderApi;

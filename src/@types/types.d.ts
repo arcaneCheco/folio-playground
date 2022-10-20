@@ -437,6 +437,7 @@ export interface _ProjectScreen {
   onPointermove(): void;
   onPointerup(): void;
   resizeProjectsView(size: any): void;
+  resizeProjectDetailView(size: any): void;
   update(): void;
   setDebug(): void;
   onActiveChange({
@@ -452,7 +453,9 @@ export interface _RotateAlert {}
 
 export interface _TransitionManager {}
 
-export interface _GradientLinear {}
+export interface _GradientLinear {
+  getAt(t: number): Color;
+}
 
 export interface _AboutOverlay {
   socialIcons: _AboutSocialIcons;
