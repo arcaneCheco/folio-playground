@@ -1,4 +1,1223 @@
-(()=>{function t(t){return t&&t.__esModule?t.default:t}
+// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+
+(function (modules, entry, mainEntry, parcelRequireName, globalName) {
+  /* eslint-disable no-undef */
+  var globalObject =
+    typeof globalThis !== 'undefined'
+      ? globalThis
+      : typeof self !== 'undefined'
+      ? self
+      : typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+      ? global
+      : {};
+  /* eslint-enable no-undef */
+
+  // Save the require from previous bundle to this closure if any
+  var previousRequire =
+    typeof globalObject[parcelRequireName] === 'function' &&
+    globalObject[parcelRequireName];
+
+  var cache = previousRequire.cache || {};
+  // Do not use `require` to prevent Webpack from trying to bundle this call
+  var nodeRequire =
+    typeof module !== 'undefined' &&
+    typeof module.require === 'function' &&
+    module.require.bind(module);
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire =
+          typeof globalObject[parcelRequireName] === 'function' &&
+          globalObject[parcelRequireName];
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error("Cannot find module '" + name + "'");
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+      localRequire.cache = {};
+
+      var module = (cache[name] = new newRequire.Module(name));
+
+      modules[name][0].call(
+        module.exports,
+        localRequire,
+        module,
+        module.exports,
+        this
+      );
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x) {
+      var res = localRequire.resolve(x);
+      return res === false ? {} : newRequire(res);
+    }
+
+    function resolve(x) {
+      var id = modules[name][1][x];
+      return id != null ? id : x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+  newRequire.register = function (id, exports) {
+    modules[id] = [
+      function (require, module) {
+        module.exports = exports;
+      },
+      {},
+    ];
+  };
+
+  Object.defineProperty(newRequire, 'root', {
+    get: function () {
+      return globalObject[parcelRequireName];
+    },
+  });
+
+  globalObject[parcelRequireName] = newRequire;
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  if (mainEntry) {
+    // Expose entry point to Node, AMD or browser globals
+    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
+    var mainExports = newRequire(mainEntry);
+
+    // CommonJS
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
+      module.exports = mainExports;
+
+      // RequireJS
+    } else if (typeof define === 'function' && define.amd) {
+      define(function () {
+        return mainExports;
+      });
+
+      // <script>
+    } else if (globalName) {
+      this[globalName] = mainExports;
+    }
+  }
+})({"c8kBf":[function(require,module,exports) {
+"use strict";
+var global = arguments[3];
+var HMR_HOST = null;
+var HMR_PORT = 61193;
+var HMR_SECURE = false;
+var HMR_ENV_HASH = "42036d7a98ade5a7";
+module.bundle.HMR_BUNDLE_ID = "bfcbaa651269b41d";
+/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, globalThis, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
+import type {
+  HMRAsset,
+  HMRMessage,
+} from '@parcel/reporter-dev-server/src/HMRServer.js';
+interface ParcelRequire {
+  (string): mixed;
+  cache: {|[string]: ParcelModule|};
+  hotData: mixed;
+  Module: any;
+  parent: ?ParcelRequire;
+  isParcelRequire: true;
+  modules: {|[string]: [Function, {|[string]: string|}]|};
+  HMR_BUNDLE_ID: string;
+  root: ParcelRequire;
+}
+interface ParcelModule {
+  hot: {|
+    data: mixed,
+    accept(cb: (Function) => void): void,
+    dispose(cb: (mixed) => void): void,
+    // accept(deps: Array<string> | string, cb: (Function) => void): void,
+    // decline(): void,
+    _acceptCallbacks: Array<(Function) => void>,
+    _disposeCallbacks: Array<(mixed) => void>,
+  |};
+}
+interface ExtensionContext {
+  runtime: {|
+    reload(): void,
+    getURL(url: string): string;
+    getManifest(): {manifest_version: number, ...};
+  |};
+}
+declare var module: {bundle: ParcelRequire, ...};
+declare var HMR_HOST: string;
+declare var HMR_PORT: string;
+declare var HMR_ENV_HASH: string;
+declare var HMR_SECURE: boolean;
+declare var chrome: ExtensionContext;
+declare var browser: ExtensionContext;
+declare var __parcel__import__: (string) => Promise<void>;
+declare var __parcel__importScripts__: (string) => Promise<void>;
+declare var globalThis: typeof self;
+declare var ServiceWorkerGlobalScope: Object;
+*/ var OVERLAY_ID = "__parcel__error__overlay__";
+var OldModule = module.bundle.Module;
+function Module(moduleName) {
+    OldModule.call(this, moduleName);
+    this.hot = {
+        data: module.bundle.hotData,
+        _acceptCallbacks: [],
+        _disposeCallbacks: [],
+        accept: function(fn) {
+            this._acceptCallbacks.push(fn || function() {});
+        },
+        dispose: function(fn) {
+            this._disposeCallbacks.push(fn);
+        }
+    };
+    module.bundle.hotData = undefined;
+}
+module.bundle.Module = Module;
+var checkedAssets, acceptedAssets, assetsToAccept /*: Array<[ParcelRequire, string]> */ ;
+function getHostname() {
+    return HMR_HOST || (location.protocol.indexOf("http") === 0 ? location.hostname : "localhost");
+}
+function getPort() {
+    return HMR_PORT || location.port;
+} // eslint-disable-next-line no-redeclare
+var parent = module.bundle.parent;
+if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
+    var hostname = getHostname();
+    var port = getPort();
+    var protocol = HMR_SECURE || location.protocol == "https:" && !/localhost|127.0.0.1|0.0.0.0/.test(hostname) ? "wss" : "ws";
+    var ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/"); // Web extension context
+    var extCtx = typeof chrome === "undefined" ? typeof browser === "undefined" ? null : browser : chrome; // Safari doesn't support sourceURL in error stacks.
+    // eval may also be disabled via CSP, so do a quick check.
+    var supportsSourceURL = false;
+    try {
+        (0, eval)('throw new Error("test"); //# sourceURL=test.js');
+    } catch (err) {
+        supportsSourceURL = err.stack.includes("test.js");
+    } // $FlowFixMe
+    ws.onmessage = async function(event) {
+        checkedAssets = {} /*: {|[string]: boolean|} */ ;
+        acceptedAssets = {} /*: {|[string]: boolean|} */ ;
+        assetsToAccept = [];
+        var data = JSON.parse(event.data);
+        if (data.type === "update") {
+            // Remove error overlay if there is one
+            if (typeof document !== "undefined") removeErrorOverlay();
+            let assets = data.assets.filter((asset)=>asset.envHash === HMR_ENV_HASH); // Handle HMR Update
+            let handled = assets.every((asset)=>{
+                return asset.type === "css" || asset.type === "js" && hmrAcceptCheck(module.bundle.root, asset.id, asset.depsByBundle);
+            });
+            if (handled) {
+                console.clear(); // Dispatch custom event so other runtimes (e.g React Refresh) are aware.
+                if (typeof window !== "undefined" && typeof CustomEvent !== "undefined") window.dispatchEvent(new CustomEvent("parcelhmraccept"));
+                await hmrApplyUpdates(assets);
+                for(var i = 0; i < assetsToAccept.length; i++){
+                    var id = assetsToAccept[i][1];
+                    if (!acceptedAssets[id]) hmrAcceptRun(assetsToAccept[i][0], id);
+                }
+            } else fullReload();
+        }
+        if (data.type === "error") {
+            // Log parcel errors to console
+            for (let ansiDiagnostic of data.diagnostics.ansi){
+                let stack = ansiDiagnostic.codeframe ? ansiDiagnostic.codeframe : ansiDiagnostic.stack;
+                console.error("\uD83D\uDEA8 [parcel]: " + ansiDiagnostic.message + "\n" + stack + "\n\n" + ansiDiagnostic.hints.join("\n"));
+            }
+            if (typeof document !== "undefined") {
+                // Render the fancy html overlay
+                removeErrorOverlay();
+                var overlay = createErrorOverlay(data.diagnostics.html); // $FlowFixMe
+                document.body.appendChild(overlay);
+            }
+        }
+    };
+    ws.onerror = function(e) {
+        console.error(e.message);
+    };
+    ws.onclose = function() {
+        console.warn("[parcel] \uD83D\uDEA8 Connection to the HMR server was lost");
+    };
+}
+function removeErrorOverlay() {
+    var overlay = document.getElementById(OVERLAY_ID);
+    if (overlay) {
+        overlay.remove();
+        console.log("[parcel] ✨ Error resolved");
+    }
+}
+function createErrorOverlay(diagnostics) {
+    var overlay = document.createElement("div");
+    overlay.id = OVERLAY_ID;
+    let errorHTML = '<div style="background: black; opacity: 0.85; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; font-family: Menlo, Consolas, monospace; z-index: 9999;">';
+    for (let diagnostic of diagnostics){
+        let stack = diagnostic.frames.length ? diagnostic.frames.reduce((p, frame)=>{
+            return `${p}
+<a href="/__parcel_launch_editor?file=${encodeURIComponent(frame.location)}" style="text-decoration: underline; color: #888" onclick="fetch(this.href); return false">${frame.location}</a>
+${frame.code}`;
+        }, "") : diagnostic.stack;
+        errorHTML += `
+      <div>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 20px;">
+          🚨 ${diagnostic.message}
+        </div>
+        <pre>${stack}</pre>
+        <div>
+          ${diagnostic.hints.map((hint)=>"<div>\uD83D\uDCA1 " + hint + "</div>").join("")}
+        </div>
+        ${diagnostic.documentation ? `<div>📝 <a style="color: violet" href="${diagnostic.documentation}" target="_blank">Learn more</a></div>` : ""}
+      </div>
+    `;
+    }
+    errorHTML += "</div>";
+    overlay.innerHTML = errorHTML;
+    return overlay;
+}
+function fullReload() {
+    if ("reload" in location) location.reload();
+    else if (extCtx && extCtx.runtime && extCtx.runtime.reload) extCtx.runtime.reload();
+}
+function getParents(bundle, id) /*: Array<[ParcelRequire, string]> */ {
+    var modules = bundle.modules;
+    if (!modules) return [];
+    var parents = [];
+    var k, d, dep;
+    for(k in modules)for(d in modules[k][1]){
+        dep = modules[k][1][d];
+        if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) parents.push([
+            bundle,
+            k
+        ]);
+    }
+    if (bundle.parent) parents = parents.concat(getParents(bundle.parent, id));
+    return parents;
+}
+function updateLink(link) {
+    var newLink = link.cloneNode();
+    newLink.onload = function() {
+        if (link.parentNode !== null) // $FlowFixMe
+        link.parentNode.removeChild(link);
+    };
+    newLink.setAttribute("href", link.getAttribute("href").split("?")[0] + "?" + Date.now()); // $FlowFixMe
+    link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+var cssTimeout = null;
+function reloadCSS() {
+    if (cssTimeout) return;
+    cssTimeout = setTimeout(function() {
+        var links = document.querySelectorAll('link[rel="stylesheet"]');
+        for(var i = 0; i < links.length; i++){
+            // $FlowFixMe[incompatible-type]
+            var href = links[i].getAttribute("href");
+            var hostname = getHostname();
+            var servedFromHMRServer = hostname === "localhost" ? new RegExp("^(https?:\\/\\/(0.0.0.0|127.0.0.1)|localhost):" + getPort()).test(href) : href.indexOf(hostname + ":" + getPort());
+            var absolute = /^https?:\/\//i.test(href) && href.indexOf(location.origin) !== 0 && !servedFromHMRServer;
+            if (!absolute) updateLink(links[i]);
+        }
+        cssTimeout = null;
+    }, 50);
+}
+function hmrDownload(asset) {
+    if (asset.type === "js") {
+        if (typeof document !== "undefined") {
+            let script = document.createElement("script");
+            script.src = asset.url + "?t=" + Date.now();
+            if (asset.outputFormat === "esmodule") script.type = "module";
+            return new Promise((resolve, reject)=>{
+                var _document$head;
+                script.onload = ()=>resolve(script);
+                script.onerror = reject;
+                (_document$head = document.head) === null || _document$head === void 0 || _document$head.appendChild(script);
+            });
+        } else if (typeof importScripts === "function") {
+            // Worker scripts
+            if (asset.outputFormat === "esmodule") return import(asset.url + "?t=" + Date.now());
+            else return new Promise((resolve, reject)=>{
+                try {
+                    importScripts(asset.url + "?t=" + Date.now());
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+    }
+}
+async function hmrApplyUpdates(assets) {
+    global.parcelHotUpdate = Object.create(null);
+    let scriptsToRemove;
+    try {
+        // If sourceURL comments aren't supported in eval, we need to load
+        // the update from the dev server over HTTP so that stack traces
+        // are correct in errors/logs. This is much slower than eval, so
+        // we only do it if needed (currently just Safari).
+        // https://bugs.webkit.org/show_bug.cgi?id=137297
+        // This path is also taken if a CSP disallows eval.
+        if (!supportsSourceURL) {
+            let promises = assets.map((asset)=>{
+                var _hmrDownload;
+                return (_hmrDownload = hmrDownload(asset)) === null || _hmrDownload === void 0 ? void 0 : _hmrDownload.catch((err)=>{
+                    // Web extension bugfix for Chromium
+                    // https://bugs.chromium.org/p/chromium/issues/detail?id=1255412#c12
+                    if (extCtx && extCtx.runtime && extCtx.runtime.getManifest().manifest_version == 3) {
+                        if (typeof ServiceWorkerGlobalScope != "undefined" && global instanceof ServiceWorkerGlobalScope) {
+                            extCtx.runtime.reload();
+                            return;
+                        }
+                        asset.url = extCtx.runtime.getURL("/__parcel_hmr_proxy__?url=" + encodeURIComponent(asset.url + "?t=" + Date.now()));
+                        return hmrDownload(asset);
+                    }
+                    throw err;
+                });
+            });
+            scriptsToRemove = await Promise.all(promises);
+        }
+        assets.forEach(function(asset) {
+            hmrApply(module.bundle.root, asset);
+        });
+    } finally{
+        delete global.parcelHotUpdate;
+        if (scriptsToRemove) scriptsToRemove.forEach((script)=>{
+            if (script) {
+                var _document$head2;
+                (_document$head2 = document.head) === null || _document$head2 === void 0 || _document$head2.removeChild(script);
+            }
+        });
+    }
+}
+function hmrApply(bundle, asset) {
+    var modules = bundle.modules;
+    if (!modules) return;
+    if (asset.type === "css") reloadCSS();
+    else if (asset.type === "js") {
+        let deps = asset.depsByBundle[bundle.HMR_BUNDLE_ID];
+        if (deps) {
+            if (modules[asset.id]) {
+                // Remove dependencies that are removed and will become orphaned.
+                // This is necessary so that if the asset is added back again, the cache is gone, and we prevent a full page reload.
+                let oldDeps = modules[asset.id][1];
+                for(let dep in oldDeps)if (!deps[dep] || deps[dep] !== oldDeps[dep]) {
+                    let id = oldDeps[dep];
+                    let parents = getParents(module.bundle.root, id);
+                    if (parents.length === 1) hmrDelete(module.bundle.root, id);
+                }
+            }
+            if (supportsSourceURL) // Global eval. We would use `new Function` here but browser
+            // support for source maps is better with eval.
+            (0, eval)(asset.output);
+             // $FlowFixMe
+            let fn = global.parcelHotUpdate[asset.id];
+            modules[asset.id] = [
+                fn,
+                deps
+            ];
+        } else if (bundle.parent) hmrApply(bundle.parent, asset);
+    }
+}
+function hmrDelete(bundle, id) {
+    let modules = bundle.modules;
+    if (!modules) return;
+    if (modules[id]) {
+        // Collect dependencies that will become orphaned when this module is deleted.
+        let deps = modules[id][1];
+        let orphans = [];
+        for(let dep in deps){
+            let parents = getParents(module.bundle.root, deps[dep]);
+            if (parents.length === 1) orphans.push(deps[dep]);
+        } // Delete the module. This must be done before deleting dependencies in case of circular dependencies.
+        delete modules[id];
+        delete bundle.cache[id]; // Now delete the orphans.
+        orphans.forEach((id)=>{
+            hmrDelete(module.bundle.root, id);
+        });
+    } else if (bundle.parent) hmrDelete(bundle.parent, id);
+}
+function hmrAcceptCheck(bundle, id, depsByBundle) {
+    if (hmrAcceptCheckOne(bundle, id, depsByBundle)) return true;
+     // Traverse parents breadth first. All possible ancestries must accept the HMR update, or we'll reload.
+    let parents = getParents(module.bundle.root, id);
+    let accepted = false;
+    while(parents.length > 0){
+        let v = parents.shift();
+        let a = hmrAcceptCheckOne(v[0], v[1], null);
+        if (a) // If this parent accepts, stop traversing upward, but still consider siblings.
+        accepted = true;
+        else {
+            // Otherwise, queue the parents in the next level upward.
+            let p = getParents(module.bundle.root, v[1]);
+            if (p.length === 0) {
+                // If there are no parents, then we've reached an entry without accepting. Reload.
+                accepted = false;
+                break;
+            }
+            parents.push(...p);
+        }
+    }
+    return accepted;
+}
+function hmrAcceptCheckOne(bundle, id, depsByBundle) {
+    var modules = bundle.modules;
+    if (!modules) return;
+    if (depsByBundle && !depsByBundle[bundle.HMR_BUNDLE_ID]) {
+        // If we reached the root bundle without finding where the asset should go,
+        // there's nothing to do. Mark as "accepted" so we don't reload the page.
+        if (!bundle.parent) return true;
+        return hmrAcceptCheck(bundle.parent, id, depsByBundle);
+    }
+    if (checkedAssets[id]) return true;
+    checkedAssets[id] = true;
+    var cached = bundle.cache[id];
+    assetsToAccept.push([
+        bundle,
+        id
+    ]);
+    if (!cached || cached.hot && cached.hot._acceptCallbacks.length) return true;
+}
+function hmrAcceptRun(bundle, id) {
+    var cached = bundle.cache[id];
+    bundle.hotData = {};
+    if (cached && cached.hot) cached.hot.data = bundle.hotData;
+    if (cached && cached.hot && cached.hot._disposeCallbacks.length) cached.hot._disposeCallbacks.forEach(function(cb) {
+        cb(bundle.hotData);
+    });
+    delete bundle.cache[id];
+    bundle(id);
+    cached = bundle.cache[id];
+    if (cached && cached.hot && cached.hot._acceptCallbacks.length) cached.hot._acceptCallbacks.forEach(function(cb) {
+        var assetsToAlsoAccept = cb(function() {
+            return getParents(module.bundle.root, id);
+        });
+        if (assetsToAlsoAccept && assetsToAccept.length) // $FlowFixMe[method-unbinding]
+        assetsToAccept.push.apply(assetsToAccept, assetsToAlsoAccept);
+    });
+    acceptedAssets[id] = true;
+}
+
+},{}],"fJe33":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "World", ()=>World);
+var _three = require("three");
+var _tweakpane = require("tweakpane");
+var _components = require("./components");
+var _viewManagers = require("./viewManagers");
+var _types = require("@types");
+var _gradientLinear = require("@utils/gradientLinear");
+var _palettes = require("@utils/palettes");
+class World {
+    usePost = false;
+    time = 0;
+    viewManagers = {};
+    constructor({ container  } = {}){
+        if (World.instance) return World.instance;
+        World.instance = this;
+        this.container = container;
+        this.camera = new (0, _three.PerspectiveCamera)(65, 1, 0.001, 10);
+        this.colorGradient = new (0, _gradientLinear.GradientLinear)((0, _palettes.warm3));
+        this.renderer = new (0, _three.WebGLRenderer)({
+            alpha: true,
+            powerPreference: "high-performance",
+            antialias: true
+        });
+        this.initialHeight = 0.14;
+        this.projectState = {
+            active: 0,
+            progress: {
+                value: 0
+            },
+            target: 0,
+            isTransitioning: {
+                value: false
+            },
+            min: 0,
+            max: 5,
+            filter: (0, _types.ProjectCategory).All,
+            activeIndices: []
+        };
+        this.mouse = new (0, _three.Vector2)();
+        this.scene = new (0, _three.Scene)();
+        this.raycaster = new (0, _three.Raycaster)();
+        this.ndcRaycaster = new (0, _three.Raycaster)();
+        this.camera.position.set(0, this.initialHeight, 1);
+        this.renderer.setPixelRatio(1);
+        this.container.appendChild(this.renderer.domElement);
+        this.init();
+        const wip = document.querySelector(".wip");
+        window.setTimeout(()=>{
+            wip?.classList.add("wip__visible");
+        }, 2000);
+        wip.onclick = ()=>wip.classList.add("wip__onclick");
+    }
+    async init() {
+        this.preloader = new (0, _components.Preloader)();
+        this.parallax = new (0, _components.Parallax)();
+        this.sky = new (0, _components.Sky)();
+        this.post = new (0, _components.Post)();
+        this.curlBubble = new (0, _components.CurlBubble)();
+        this.water = new (0, _components.Water)();
+        this.rotateAlert = new (0, _components.RotateAlert)();
+        this.resources = new (0, _components.Resources)();
+        this.addListeners();
+        this.onResize();
+        this.render();
+        await this.resources.load();
+        // await new Promise((res) => {
+        //   window.addEventListener("click", () => {
+        //     res(null);
+        //   });
+        // });
+        this.sky.onPreloaded();
+        this.projectScreen = new (0, _components.ProjectScreen)();
+        this.homeViewManager = new (0, _viewManagers.HomeViewManager)();
+        this.projectsViewManager = new (0, _viewManagers.ProjectsViewManager)();
+        this.projectDetailViewManager = new (0, _viewManagers.ProjectDetailViewManager)();
+        this.aboutViewManager = new (0, _viewManagers.AboutViewManager)();
+        this.viewManagers = {
+            Home: this.homeViewManager,
+            ProjectDetail: this.projectDetailViewManager,
+            About: this.aboutViewManager,
+            Projects: this.projectsViewManager
+        };
+        this.transitionManager = new (0, _components.TransitionManager)();
+        this.changeView(window.VIEW);
+        // this.setDebug();
+        this.onResize();
+    }
+    addListeners() {
+        window.addEventListener("resize", this.onResize.bind(this));
+        window.addEventListener("pointermove", this.onPointermove.bind(this));
+        window.addEventListener("pointerup", this.onPointerup.bind(this));
+        window.addEventListener("pointerdown", this.onPointerdown.bind(this));
+        window.addEventListener("wheel", this.onWheel.bind(this));
+    }
+    changeView(view) {
+        if (view === (0, _types.View).Home) {
+            this.transitionManager.projectsToHome();
+            window.history.pushState({}, "", "/");
+        }
+        if (view === (0, _types.View).Projects) {
+            if (this.view === (0, _types.View).Home) this.transitionManager.homeToProjects();
+            else if (this.view === (0, _types.View).ProjectDetail) this.transitionManager.projectDetailToProjects();
+            else if (this.view === (0, _types.View).About) this.transitionManager.aboutToProjects();
+            else this.transitionManager.homeToProjects();
+            window.history.pushState({}, "", "/projects");
+        }
+        if (view === (0, _types.View).ProjectDetail) {
+            if (window.VIEW === (0, _types.View).ProjectDetail) {
+                const index = this.resources.projects.find(({ path  })=>location.pathname.includes(path))?.index || 0;
+                this.projectState.active = index;
+                this.projectState.target = index;
+                this.projectScreen.onActiveChange({
+                    newIndex: index
+                });
+                window.VIEW = (0, _types.View).Error;
+                this.transitionManager.homeToProjects(0.0001);
+                window.setTimeout(()=>{
+                    this.transitionManager.projectsToProjectDetail();
+                }, 75);
+            } else this.view !== (0, _types.View).ProjectDetail && this.transitionManager.projectsToProjectDetail();
+            const path = this.resources.projects[this.projectState.target].path;
+            window.history.pushState({}, "", path);
+        }
+        if (view === (0, _types.View).About) {
+            if (this.view === (0, _types.View).Projects) this.transitionManager.projectsToAbout();
+            else this.transitionManager.projectsToAbout();
+            window.history.pushState({}, "", "/about");
+        }
+        if (view === (0, _types.View).Error) alert("heyy :-)");
+        this.view = view;
+    }
+    worldDebug() {
+        this.debug = this.pane.addFolder({
+            title: "world",
+            expanded: false
+        });
+        this.debugCamera();
+        this.debug.addButton({
+            title: "toggle autoclear"
+        }).on("click", ()=>{
+            this.renderer.autoClear = !this.renderer.autoClear;
+        });
+    }
+    debugCamera() {
+        const camera = this.debug.addFolder({
+            title: "camera",
+            expanded: false
+        });
+        camera.addButton({
+            title: "print camera state"
+        }).on("click", ()=>{
+            console.log(this.camera.position.x.toFixed(4), ", ", this.camera.position.y.toFixed(4), ", ", this.camera.position.z.toFixed(4));
+            console.log(this.camera.rotation.x.toFixed(4), ", ", this.camera.rotation.y.toFixed(4), ", ", this.camera.rotation.z.toFixed(4));
+        });
+        camera.addButton({
+            title: "toggle parallax"
+        }).on("click", ()=>{
+            this.parallax.enabled = !this.parallax.enabled;
+        });
+        camera.addInput(this, "initialHeight", {
+            min: 0,
+            max: 0.5,
+            step: 0.001
+        });
+    }
+    setDebug() {
+        this.paneContainer = new (0, _tweakpane.Pane)();
+        this.pane = this.paneContainer.addFolder({
+            title: "",
+            expanded: false
+        });
+        this.worldDebug();
+        this.sky && this.sky.setDebug();
+        this.curlBubble && this.curlBubble.setDebug();
+        this.water && this.water.setDebug();
+        this.projectScreen.setDebug();
+        this.projectsViewManager.setDebug();
+        this.projectDetailViewManager.setDebug();
+        this.aboutViewManager.setDebug();
+        this.homeViewManager.setDebug();
+        this.post.setDebug();
+        this.transitionManager.setDebug();
+    }
+    mouseNDC(e) {
+        this.mouse.x = 2 * e.clientX / this.width - 1;
+        this.mouse.y = -2 * e.clientY / this.height + 1;
+    }
+    onPointermove(e) {
+        // world updates
+        this.mouseNDC(e);
+        this.parallax.updateTarget();
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        this.sky.onPointermove();
+        this.water.onPointermove();
+        this.viewManagers[this.view]?.onPointermove(this.mouse, e);
+    }
+    onPointerdown() {
+        this.sky.onPointerdown();
+        this.water.onPointerdown();
+        this.viewManagers[this.view]?.onPointerdown();
+    }
+    onPointerup() {
+        this.sky.onPointerup();
+        this.water.onPointerup();
+        this.viewManagers[this.view]?.onPointerup();
+    }
+    onWheel(ev) {
+        this.sky.onWheel();
+        this.water.onWheel();
+        this.viewManagers[this.view]?.onWheel(ev);
+    }
+    onResize() {
+        this.width = this.container.offsetWidth;
+        this.height = this.container.offsetHeight;
+        this.renderer.setSize(this.width, this.height);
+        this.camera.aspect = this.width / this.height;
+        this.camera.updateProjectionMatrix();
+        this.sky.onResize();
+        this.water.onResize();
+        this.rotateAlert && this.rotateAlert.onResize(this.width / this.height);
+        Object.values(this.viewManagers).map((viewManager)=>viewManager.onResize());
+    }
+    update() {
+        this.parallax.update();
+        this.sky.update();
+        this.water.update();
+        this.viewManagers[this.view]?.update();
+    }
+    render() {
+        this.time += 0.01633;
+        this.update();
+        if (this.usePost) this.post.render();
+        else this.renderer.render(this.scene, this.camera);
+        window.requestAnimationFrame(this.render.bind(this));
+    }
+}
+new World({
+    container: document.querySelector("#canvas")
+});
+
+},{"three":"3XrwE","tweakpane":"1Z8QC","./components":"gIoYP","./viewManagers":"7m3pU","@types":"4mCt6","@utils/gradientLinear":"3t7Pp","@utils/palettes":"fPNKv","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3XrwE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ACESFilmicToneMapping", ()=>ACESFilmicToneMapping);
+parcelHelpers.export(exports, "AddEquation", ()=>AddEquation);
+parcelHelpers.export(exports, "AddOperation", ()=>AddOperation);
+parcelHelpers.export(exports, "AdditiveAnimationBlendMode", ()=>AdditiveAnimationBlendMode);
+parcelHelpers.export(exports, "AdditiveBlending", ()=>AdditiveBlending);
+parcelHelpers.export(exports, "AlphaFormat", ()=>AlphaFormat);
+parcelHelpers.export(exports, "AlwaysDepth", ()=>AlwaysDepth);
+parcelHelpers.export(exports, "AlwaysStencilFunc", ()=>AlwaysStencilFunc);
+parcelHelpers.export(exports, "AmbientLight", ()=>AmbientLight);
+parcelHelpers.export(exports, "AmbientLightProbe", ()=>AmbientLightProbe);
+parcelHelpers.export(exports, "AnimationClip", ()=>AnimationClip);
+parcelHelpers.export(exports, "AnimationLoader", ()=>AnimationLoader);
+parcelHelpers.export(exports, "AnimationMixer", ()=>AnimationMixer);
+parcelHelpers.export(exports, "AnimationObjectGroup", ()=>AnimationObjectGroup);
+parcelHelpers.export(exports, "AnimationUtils", ()=>AnimationUtils);
+parcelHelpers.export(exports, "ArcCurve", ()=>ArcCurve);
+parcelHelpers.export(exports, "ArrayCamera", ()=>ArrayCamera);
+parcelHelpers.export(exports, "ArrowHelper", ()=>ArrowHelper);
+parcelHelpers.export(exports, "Audio", ()=>Audio);
+parcelHelpers.export(exports, "AudioAnalyser", ()=>AudioAnalyser);
+parcelHelpers.export(exports, "AudioContext", ()=>AudioContext);
+parcelHelpers.export(exports, "AudioListener", ()=>AudioListener);
+parcelHelpers.export(exports, "AudioLoader", ()=>AudioLoader);
+parcelHelpers.export(exports, "AxesHelper", ()=>AxesHelper);
+parcelHelpers.export(exports, "AxisHelper", ()=>AxisHelper);
+parcelHelpers.export(exports, "BackSide", ()=>BackSide);
+parcelHelpers.export(exports, "BasicDepthPacking", ()=>BasicDepthPacking);
+parcelHelpers.export(exports, "BasicShadowMap", ()=>BasicShadowMap);
+parcelHelpers.export(exports, "BinaryTextureLoader", ()=>BinaryTextureLoader);
+parcelHelpers.export(exports, "Bone", ()=>Bone);
+parcelHelpers.export(exports, "BooleanKeyframeTrack", ()=>BooleanKeyframeTrack);
+parcelHelpers.export(exports, "BoundingBoxHelper", ()=>BoundingBoxHelper);
+parcelHelpers.export(exports, "Box2", ()=>Box2);
+parcelHelpers.export(exports, "Box3", ()=>Box3);
+parcelHelpers.export(exports, "Box3Helper", ()=>Box3Helper);
+parcelHelpers.export(exports, "BoxBufferGeometry", ()=>BoxGeometry);
+parcelHelpers.export(exports, "BoxGeometry", ()=>BoxGeometry);
+parcelHelpers.export(exports, "BoxHelper", ()=>BoxHelper);
+parcelHelpers.export(exports, "BufferAttribute", ()=>BufferAttribute);
+parcelHelpers.export(exports, "BufferGeometry", ()=>BufferGeometry);
+parcelHelpers.export(exports, "BufferGeometryLoader", ()=>BufferGeometryLoader);
+parcelHelpers.export(exports, "ByteType", ()=>ByteType);
+parcelHelpers.export(exports, "Cache", ()=>Cache);
+parcelHelpers.export(exports, "Camera", ()=>Camera);
+parcelHelpers.export(exports, "CameraHelper", ()=>CameraHelper);
+parcelHelpers.export(exports, "CanvasRenderer", ()=>CanvasRenderer);
+parcelHelpers.export(exports, "CanvasTexture", ()=>CanvasTexture);
+parcelHelpers.export(exports, "CatmullRomCurve3", ()=>CatmullRomCurve3);
+parcelHelpers.export(exports, "CineonToneMapping", ()=>CineonToneMapping);
+parcelHelpers.export(exports, "CircleBufferGeometry", ()=>CircleGeometry);
+parcelHelpers.export(exports, "CircleGeometry", ()=>CircleGeometry);
+parcelHelpers.export(exports, "ClampToEdgeWrapping", ()=>ClampToEdgeWrapping);
+parcelHelpers.export(exports, "Clock", ()=>Clock);
+parcelHelpers.export(exports, "Color", ()=>Color);
+parcelHelpers.export(exports, "ColorKeyframeTrack", ()=>ColorKeyframeTrack);
+parcelHelpers.export(exports, "CompressedTexture", ()=>CompressedTexture);
+parcelHelpers.export(exports, "CompressedTextureLoader", ()=>CompressedTextureLoader);
+parcelHelpers.export(exports, "ConeBufferGeometry", ()=>ConeGeometry);
+parcelHelpers.export(exports, "ConeGeometry", ()=>ConeGeometry);
+parcelHelpers.export(exports, "CubeCamera", ()=>CubeCamera);
+parcelHelpers.export(exports, "CubeReflectionMapping", ()=>CubeReflectionMapping);
+parcelHelpers.export(exports, "CubeRefractionMapping", ()=>CubeRefractionMapping);
+parcelHelpers.export(exports, "CubeTexture", ()=>CubeTexture);
+parcelHelpers.export(exports, "CubeTextureLoader", ()=>CubeTextureLoader);
+parcelHelpers.export(exports, "CubeUVReflectionMapping", ()=>CubeUVReflectionMapping);
+parcelHelpers.export(exports, "CubeUVRefractionMapping", ()=>CubeUVRefractionMapping);
+parcelHelpers.export(exports, "CubicBezierCurve", ()=>CubicBezierCurve);
+parcelHelpers.export(exports, "CubicBezierCurve3", ()=>CubicBezierCurve3);
+parcelHelpers.export(exports, "CubicInterpolant", ()=>CubicInterpolant);
+parcelHelpers.export(exports, "CullFaceBack", ()=>CullFaceBack);
+parcelHelpers.export(exports, "CullFaceFront", ()=>CullFaceFront);
+parcelHelpers.export(exports, "CullFaceFrontBack", ()=>CullFaceFrontBack);
+parcelHelpers.export(exports, "CullFaceNone", ()=>CullFaceNone);
+parcelHelpers.export(exports, "Curve", ()=>Curve);
+parcelHelpers.export(exports, "CurvePath", ()=>CurvePath);
+parcelHelpers.export(exports, "CustomBlending", ()=>CustomBlending);
+parcelHelpers.export(exports, "CustomToneMapping", ()=>CustomToneMapping);
+parcelHelpers.export(exports, "CylinderBufferGeometry", ()=>CylinderGeometry);
+parcelHelpers.export(exports, "CylinderGeometry", ()=>CylinderGeometry);
+parcelHelpers.export(exports, "Cylindrical", ()=>Cylindrical);
+parcelHelpers.export(exports, "Data3DTexture", ()=>Data3DTexture);
+parcelHelpers.export(exports, "DataArrayTexture", ()=>DataArrayTexture);
+parcelHelpers.export(exports, "DataTexture", ()=>DataTexture);
+parcelHelpers.export(exports, "DataTexture2DArray", ()=>DataTexture2DArray);
+parcelHelpers.export(exports, "DataTexture3D", ()=>DataTexture3D);
+parcelHelpers.export(exports, "DataTextureLoader", ()=>DataTextureLoader);
+parcelHelpers.export(exports, "DataUtils", ()=>DataUtils);
+parcelHelpers.export(exports, "DecrementStencilOp", ()=>DecrementStencilOp);
+parcelHelpers.export(exports, "DecrementWrapStencilOp", ()=>DecrementWrapStencilOp);
+parcelHelpers.export(exports, "DefaultLoadingManager", ()=>DefaultLoadingManager);
+parcelHelpers.export(exports, "DepthFormat", ()=>DepthFormat);
+parcelHelpers.export(exports, "DepthStencilFormat", ()=>DepthStencilFormat);
+parcelHelpers.export(exports, "DepthTexture", ()=>DepthTexture);
+parcelHelpers.export(exports, "DirectionalLight", ()=>DirectionalLight);
+parcelHelpers.export(exports, "DirectionalLightHelper", ()=>DirectionalLightHelper);
+parcelHelpers.export(exports, "DiscreteInterpolant", ()=>DiscreteInterpolant);
+parcelHelpers.export(exports, "DodecahedronBufferGeometry", ()=>DodecahedronGeometry);
+parcelHelpers.export(exports, "DodecahedronGeometry", ()=>DodecahedronGeometry);
+parcelHelpers.export(exports, "DoubleSide", ()=>DoubleSide);
+parcelHelpers.export(exports, "DstAlphaFactor", ()=>DstAlphaFactor);
+parcelHelpers.export(exports, "DstColorFactor", ()=>DstColorFactor);
+parcelHelpers.export(exports, "DynamicBufferAttribute", ()=>DynamicBufferAttribute);
+parcelHelpers.export(exports, "DynamicCopyUsage", ()=>DynamicCopyUsage);
+parcelHelpers.export(exports, "DynamicDrawUsage", ()=>DynamicDrawUsage);
+parcelHelpers.export(exports, "DynamicReadUsage", ()=>DynamicReadUsage);
+parcelHelpers.export(exports, "EdgesGeometry", ()=>EdgesGeometry);
+parcelHelpers.export(exports, "EdgesHelper", ()=>EdgesHelper);
+parcelHelpers.export(exports, "EllipseCurve", ()=>EllipseCurve);
+parcelHelpers.export(exports, "EqualDepth", ()=>EqualDepth);
+parcelHelpers.export(exports, "EqualStencilFunc", ()=>EqualStencilFunc);
+parcelHelpers.export(exports, "EquirectangularReflectionMapping", ()=>EquirectangularReflectionMapping);
+parcelHelpers.export(exports, "EquirectangularRefractionMapping", ()=>EquirectangularRefractionMapping);
+parcelHelpers.export(exports, "Euler", ()=>Euler);
+parcelHelpers.export(exports, "EventDispatcher", ()=>EventDispatcher);
+parcelHelpers.export(exports, "ExtrudeBufferGeometry", ()=>ExtrudeGeometry);
+parcelHelpers.export(exports, "ExtrudeGeometry", ()=>ExtrudeGeometry);
+parcelHelpers.export(exports, "FaceColors", ()=>FaceColors);
+parcelHelpers.export(exports, "FileLoader", ()=>FileLoader);
+parcelHelpers.export(exports, "FlatShading", ()=>FlatShading);
+parcelHelpers.export(exports, "Float16BufferAttribute", ()=>Float16BufferAttribute);
+parcelHelpers.export(exports, "Float32Attribute", ()=>Float32Attribute);
+parcelHelpers.export(exports, "Float32BufferAttribute", ()=>Float32BufferAttribute);
+parcelHelpers.export(exports, "Float64Attribute", ()=>Float64Attribute);
+parcelHelpers.export(exports, "Float64BufferAttribute", ()=>Float64BufferAttribute);
+parcelHelpers.export(exports, "FloatType", ()=>FloatType);
+parcelHelpers.export(exports, "Fog", ()=>Fog);
+parcelHelpers.export(exports, "FogExp2", ()=>FogExp2);
+parcelHelpers.export(exports, "Font", ()=>Font);
+parcelHelpers.export(exports, "FontLoader", ()=>FontLoader);
+parcelHelpers.export(exports, "FramebufferTexture", ()=>FramebufferTexture);
+parcelHelpers.export(exports, "FrontSide", ()=>FrontSide);
+parcelHelpers.export(exports, "Frustum", ()=>Frustum);
+parcelHelpers.export(exports, "GLBufferAttribute", ()=>GLBufferAttribute);
+parcelHelpers.export(exports, "GLSL1", ()=>GLSL1);
+parcelHelpers.export(exports, "GLSL3", ()=>GLSL3);
+parcelHelpers.export(exports, "GreaterDepth", ()=>GreaterDepth);
+parcelHelpers.export(exports, "GreaterEqualDepth", ()=>GreaterEqualDepth);
+parcelHelpers.export(exports, "GreaterEqualStencilFunc", ()=>GreaterEqualStencilFunc);
+parcelHelpers.export(exports, "GreaterStencilFunc", ()=>GreaterStencilFunc);
+parcelHelpers.export(exports, "GridHelper", ()=>GridHelper);
+parcelHelpers.export(exports, "Group", ()=>Group);
+parcelHelpers.export(exports, "HalfFloatType", ()=>HalfFloatType);
+parcelHelpers.export(exports, "HemisphereLight", ()=>HemisphereLight);
+parcelHelpers.export(exports, "HemisphereLightHelper", ()=>HemisphereLightHelper);
+parcelHelpers.export(exports, "HemisphereLightProbe", ()=>HemisphereLightProbe);
+parcelHelpers.export(exports, "IcosahedronBufferGeometry", ()=>IcosahedronGeometry);
+parcelHelpers.export(exports, "IcosahedronGeometry", ()=>IcosahedronGeometry);
+parcelHelpers.export(exports, "ImageBitmapLoader", ()=>ImageBitmapLoader);
+parcelHelpers.export(exports, "ImageLoader", ()=>ImageLoader);
+parcelHelpers.export(exports, "ImageUtils", ()=>ImageUtils);
+parcelHelpers.export(exports, "ImmediateRenderObject", ()=>ImmediateRenderObject);
+parcelHelpers.export(exports, "IncrementStencilOp", ()=>IncrementStencilOp);
+parcelHelpers.export(exports, "IncrementWrapStencilOp", ()=>IncrementWrapStencilOp);
+parcelHelpers.export(exports, "InstancedBufferAttribute", ()=>InstancedBufferAttribute);
+parcelHelpers.export(exports, "InstancedBufferGeometry", ()=>InstancedBufferGeometry);
+parcelHelpers.export(exports, "InstancedInterleavedBuffer", ()=>InstancedInterleavedBuffer);
+parcelHelpers.export(exports, "InstancedMesh", ()=>InstancedMesh);
+parcelHelpers.export(exports, "Int16Attribute", ()=>Int16Attribute);
+parcelHelpers.export(exports, "Int16BufferAttribute", ()=>Int16BufferAttribute);
+parcelHelpers.export(exports, "Int32Attribute", ()=>Int32Attribute);
+parcelHelpers.export(exports, "Int32BufferAttribute", ()=>Int32BufferAttribute);
+parcelHelpers.export(exports, "Int8Attribute", ()=>Int8Attribute);
+parcelHelpers.export(exports, "Int8BufferAttribute", ()=>Int8BufferAttribute);
+parcelHelpers.export(exports, "IntType", ()=>IntType);
+parcelHelpers.export(exports, "InterleavedBuffer", ()=>InterleavedBuffer);
+parcelHelpers.export(exports, "InterleavedBufferAttribute", ()=>InterleavedBufferAttribute);
+parcelHelpers.export(exports, "Interpolant", ()=>Interpolant);
+parcelHelpers.export(exports, "InterpolateDiscrete", ()=>InterpolateDiscrete);
+parcelHelpers.export(exports, "InterpolateLinear", ()=>InterpolateLinear);
+parcelHelpers.export(exports, "InterpolateSmooth", ()=>InterpolateSmooth);
+parcelHelpers.export(exports, "InvertStencilOp", ()=>InvertStencilOp);
+parcelHelpers.export(exports, "JSONLoader", ()=>JSONLoader);
+parcelHelpers.export(exports, "KeepStencilOp", ()=>KeepStencilOp);
+parcelHelpers.export(exports, "KeyframeTrack", ()=>KeyframeTrack);
+parcelHelpers.export(exports, "LOD", ()=>LOD);
+parcelHelpers.export(exports, "LatheBufferGeometry", ()=>LatheGeometry);
+parcelHelpers.export(exports, "LatheGeometry", ()=>LatheGeometry);
+parcelHelpers.export(exports, "Layers", ()=>Layers);
+parcelHelpers.export(exports, "LensFlare", ()=>LensFlare);
+parcelHelpers.export(exports, "LessDepth", ()=>LessDepth);
+parcelHelpers.export(exports, "LessEqualDepth", ()=>LessEqualDepth);
+parcelHelpers.export(exports, "LessEqualStencilFunc", ()=>LessEqualStencilFunc);
+parcelHelpers.export(exports, "LessStencilFunc", ()=>LessStencilFunc);
+parcelHelpers.export(exports, "Light", ()=>Light);
+parcelHelpers.export(exports, "LightProbe", ()=>LightProbe);
+parcelHelpers.export(exports, "Line", ()=>Line);
+parcelHelpers.export(exports, "Line3", ()=>Line3);
+parcelHelpers.export(exports, "LineBasicMaterial", ()=>LineBasicMaterial);
+parcelHelpers.export(exports, "LineCurve", ()=>LineCurve);
+parcelHelpers.export(exports, "LineCurve3", ()=>LineCurve3);
+parcelHelpers.export(exports, "LineDashedMaterial", ()=>LineDashedMaterial);
+parcelHelpers.export(exports, "LineLoop", ()=>LineLoop);
+parcelHelpers.export(exports, "LinePieces", ()=>LinePieces);
+parcelHelpers.export(exports, "LineSegments", ()=>LineSegments);
+parcelHelpers.export(exports, "LineStrip", ()=>LineStrip);
+parcelHelpers.export(exports, "LinearEncoding", ()=>LinearEncoding);
+parcelHelpers.export(exports, "LinearFilter", ()=>LinearFilter);
+parcelHelpers.export(exports, "LinearInterpolant", ()=>LinearInterpolant);
+parcelHelpers.export(exports, "LinearMipMapLinearFilter", ()=>LinearMipMapLinearFilter);
+parcelHelpers.export(exports, "LinearMipMapNearestFilter", ()=>LinearMipMapNearestFilter);
+parcelHelpers.export(exports, "LinearMipmapLinearFilter", ()=>LinearMipmapLinearFilter);
+parcelHelpers.export(exports, "LinearMipmapNearestFilter", ()=>LinearMipmapNearestFilter);
+parcelHelpers.export(exports, "LinearToneMapping", ()=>LinearToneMapping);
+parcelHelpers.export(exports, "Loader", ()=>Loader);
+parcelHelpers.export(exports, "LoaderUtils", ()=>LoaderUtils);
+parcelHelpers.export(exports, "LoadingManager", ()=>LoadingManager);
+parcelHelpers.export(exports, "LoopOnce", ()=>LoopOnce);
+parcelHelpers.export(exports, "LoopPingPong", ()=>LoopPingPong);
+parcelHelpers.export(exports, "LoopRepeat", ()=>LoopRepeat);
+parcelHelpers.export(exports, "LuminanceAlphaFormat", ()=>LuminanceAlphaFormat);
+parcelHelpers.export(exports, "LuminanceFormat", ()=>LuminanceFormat);
+parcelHelpers.export(exports, "MOUSE", ()=>MOUSE);
+parcelHelpers.export(exports, "Material", ()=>Material);
+parcelHelpers.export(exports, "MaterialLoader", ()=>MaterialLoader);
+parcelHelpers.export(exports, "Math", ()=>MathUtils);
+parcelHelpers.export(exports, "MathUtils", ()=>MathUtils);
+parcelHelpers.export(exports, "Matrix3", ()=>Matrix3);
+parcelHelpers.export(exports, "Matrix4", ()=>Matrix4);
+parcelHelpers.export(exports, "MaxEquation", ()=>MaxEquation);
+parcelHelpers.export(exports, "Mesh", ()=>Mesh);
+parcelHelpers.export(exports, "MeshBasicMaterial", ()=>MeshBasicMaterial);
+parcelHelpers.export(exports, "MeshDepthMaterial", ()=>MeshDepthMaterial);
+parcelHelpers.export(exports, "MeshDistanceMaterial", ()=>MeshDistanceMaterial);
+parcelHelpers.export(exports, "MeshFaceMaterial", ()=>MeshFaceMaterial);
+parcelHelpers.export(exports, "MeshLambertMaterial", ()=>MeshLambertMaterial);
+parcelHelpers.export(exports, "MeshMatcapMaterial", ()=>MeshMatcapMaterial);
+parcelHelpers.export(exports, "MeshNormalMaterial", ()=>MeshNormalMaterial);
+parcelHelpers.export(exports, "MeshPhongMaterial", ()=>MeshPhongMaterial);
+parcelHelpers.export(exports, "MeshPhysicalMaterial", ()=>MeshPhysicalMaterial);
+parcelHelpers.export(exports, "MeshStandardMaterial", ()=>MeshStandardMaterial);
+parcelHelpers.export(exports, "MeshToonMaterial", ()=>MeshToonMaterial);
+parcelHelpers.export(exports, "MinEquation", ()=>MinEquation);
+parcelHelpers.export(exports, "MirroredRepeatWrapping", ()=>MirroredRepeatWrapping);
+parcelHelpers.export(exports, "MixOperation", ()=>MixOperation);
+parcelHelpers.export(exports, "MultiMaterial", ()=>MultiMaterial);
+parcelHelpers.export(exports, "MultiplyBlending", ()=>MultiplyBlending);
+parcelHelpers.export(exports, "MultiplyOperation", ()=>MultiplyOperation);
+parcelHelpers.export(exports, "NearestFilter", ()=>NearestFilter);
+parcelHelpers.export(exports, "NearestMipMapLinearFilter", ()=>NearestMipMapLinearFilter);
+parcelHelpers.export(exports, "NearestMipMapNearestFilter", ()=>NearestMipMapNearestFilter);
+parcelHelpers.export(exports, "NearestMipmapLinearFilter", ()=>NearestMipmapLinearFilter);
+parcelHelpers.export(exports, "NearestMipmapNearestFilter", ()=>NearestMipmapNearestFilter);
+parcelHelpers.export(exports, "NeverDepth", ()=>NeverDepth);
+parcelHelpers.export(exports, "NeverStencilFunc", ()=>NeverStencilFunc);
+parcelHelpers.export(exports, "NoBlending", ()=>NoBlending);
+parcelHelpers.export(exports, "NoColors", ()=>NoColors);
+parcelHelpers.export(exports, "NoToneMapping", ()=>NoToneMapping);
+parcelHelpers.export(exports, "NormalAnimationBlendMode", ()=>NormalAnimationBlendMode);
+parcelHelpers.export(exports, "NormalBlending", ()=>NormalBlending);
+parcelHelpers.export(exports, "NotEqualDepth", ()=>NotEqualDepth);
+parcelHelpers.export(exports, "NotEqualStencilFunc", ()=>NotEqualStencilFunc);
+parcelHelpers.export(exports, "NumberKeyframeTrack", ()=>NumberKeyframeTrack);
+parcelHelpers.export(exports, "Object3D", ()=>Object3D);
+parcelHelpers.export(exports, "ObjectLoader", ()=>ObjectLoader);
+parcelHelpers.export(exports, "ObjectSpaceNormalMap", ()=>ObjectSpaceNormalMap);
+parcelHelpers.export(exports, "OctahedronBufferGeometry", ()=>OctahedronGeometry);
+parcelHelpers.export(exports, "OctahedronGeometry", ()=>OctahedronGeometry);
+parcelHelpers.export(exports, "OneFactor", ()=>OneFactor);
+parcelHelpers.export(exports, "OneMinusDstAlphaFactor", ()=>OneMinusDstAlphaFactor);
+parcelHelpers.export(exports, "OneMinusDstColorFactor", ()=>OneMinusDstColorFactor);
+parcelHelpers.export(exports, "OneMinusSrcAlphaFactor", ()=>OneMinusSrcAlphaFactor);
+parcelHelpers.export(exports, "OneMinusSrcColorFactor", ()=>OneMinusSrcColorFactor);
+parcelHelpers.export(exports, "OrthographicCamera", ()=>OrthographicCamera);
+parcelHelpers.export(exports, "PCFShadowMap", ()=>PCFShadowMap);
+parcelHelpers.export(exports, "PCFSoftShadowMap", ()=>PCFSoftShadowMap);
+parcelHelpers.export(exports, "PMREMGenerator", ()=>PMREMGenerator);
+parcelHelpers.export(exports, "ParametricGeometry", ()=>ParametricGeometry);
+parcelHelpers.export(exports, "Particle", ()=>Particle);
+parcelHelpers.export(exports, "ParticleBasicMaterial", ()=>ParticleBasicMaterial);
+parcelHelpers.export(exports, "ParticleSystem", ()=>ParticleSystem);
+parcelHelpers.export(exports, "ParticleSystemMaterial", ()=>ParticleSystemMaterial);
+parcelHelpers.export(exports, "Path", ()=>Path);
+parcelHelpers.export(exports, "PerspectiveCamera", ()=>PerspectiveCamera);
+parcelHelpers.export(exports, "Plane", ()=>Plane);
+parcelHelpers.export(exports, "PlaneBufferGeometry", ()=>PlaneGeometry);
+parcelHelpers.export(exports, "PlaneGeometry", ()=>PlaneGeometry);
+parcelHelpers.export(exports, "PlaneHelper", ()=>PlaneHelper);
+parcelHelpers.export(exports, "PointCloud", ()=>PointCloud);
+parcelHelpers.export(exports, "PointCloudMaterial", ()=>PointCloudMaterial);
+parcelHelpers.export(exports, "PointLight", ()=>PointLight);
+parcelHelpers.export(exports, "PointLightHelper", ()=>PointLightHelper);
+parcelHelpers.export(exports, "Points", ()=>Points);
+parcelHelpers.export(exports, "PointsMaterial", ()=>PointsMaterial);
+parcelHelpers.export(exports, "PolarGridHelper", ()=>PolarGridHelper);
+parcelHelpers.export(exports, "PolyhedronBufferGeometry", ()=>PolyhedronGeometry);
+parcelHelpers.export(exports, "PolyhedronGeometry", ()=>PolyhedronGeometry);
+parcelHelpers.export(exports, "PositionalAudio", ()=>PositionalAudio);
+parcelHelpers.export(exports, "PropertyBinding", ()=>PropertyBinding);
+parcelHelpers.export(exports, "PropertyMixer", ()=>PropertyMixer);
+parcelHelpers.export(exports, "QuadraticBezierCurve", ()=>QuadraticBezierCurve);
+parcelHelpers.export(exports, "QuadraticBezierCurve3", ()=>QuadraticBezierCurve3);
+parcelHelpers.export(exports, "Quaternion", ()=>Quaternion);
+parcelHelpers.export(exports, "QuaternionKeyframeTrack", ()=>QuaternionKeyframeTrack);
+parcelHelpers.export(exports, "QuaternionLinearInterpolant", ()=>QuaternionLinearInterpolant);
+parcelHelpers.export(exports, "REVISION", ()=>REVISION);
+parcelHelpers.export(exports, "RGBADepthPacking", ()=>RGBADepthPacking);
+parcelHelpers.export(exports, "RGBAFormat", ()=>RGBAFormat);
+parcelHelpers.export(exports, "RGBAIntegerFormat", ()=>RGBAIntegerFormat);
+parcelHelpers.export(exports, "RGBA_ASTC_10x10_Format", ()=>RGBA_ASTC_10x10_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_10x5_Format", ()=>RGBA_ASTC_10x5_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_10x6_Format", ()=>RGBA_ASTC_10x6_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_10x8_Format", ()=>RGBA_ASTC_10x8_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_12x10_Format", ()=>RGBA_ASTC_12x10_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_12x12_Format", ()=>RGBA_ASTC_12x12_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_4x4_Format", ()=>RGBA_ASTC_4x4_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_5x4_Format", ()=>RGBA_ASTC_5x4_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_5x5_Format", ()=>RGBA_ASTC_5x5_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_6x5_Format", ()=>RGBA_ASTC_6x5_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_6x6_Format", ()=>RGBA_ASTC_6x6_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_8x5_Format", ()=>RGBA_ASTC_8x5_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_8x6_Format", ()=>RGBA_ASTC_8x6_Format);
+parcelHelpers.export(exports, "RGBA_ASTC_8x8_Format", ()=>RGBA_ASTC_8x8_Format);
+parcelHelpers.export(exports, "RGBA_BPTC_Format", ()=>RGBA_BPTC_Format);
+parcelHelpers.export(exports, "RGBA_ETC2_EAC_Format", ()=>RGBA_ETC2_EAC_Format);
+parcelHelpers.export(exports, "RGBA_PVRTC_2BPPV1_Format", ()=>RGBA_PVRTC_2BPPV1_Format);
+parcelHelpers.export(exports, "RGBA_PVRTC_4BPPV1_Format", ()=>RGBA_PVRTC_4BPPV1_Format);
+parcelHelpers.export(exports, "RGBA_S3TC_DXT1_Format", ()=>RGBA_S3TC_DXT1_Format);
+parcelHelpers.export(exports, "RGBA_S3TC_DXT3_Format", ()=>RGBA_S3TC_DXT3_Format);
+parcelHelpers.export(exports, "RGBA_S3TC_DXT5_Format", ()=>RGBA_S3TC_DXT5_Format);
+parcelHelpers.export(exports, "RGBFormat", ()=>RGBFormat);
+parcelHelpers.export(exports, "RGB_ETC1_Format", ()=>RGB_ETC1_Format);
+parcelHelpers.export(exports, "RGB_ETC2_Format", ()=>RGB_ETC2_Format);
+parcelHelpers.export(exports, "RGB_PVRTC_2BPPV1_Format", ()=>RGB_PVRTC_2BPPV1_Format);
+parcelHelpers.export(exports, "RGB_PVRTC_4BPPV1_Format", ()=>RGB_PVRTC_4BPPV1_Format);
+parcelHelpers.export(exports, "RGB_S3TC_DXT1_Format", ()=>RGB_S3TC_DXT1_Format);
+parcelHelpers.export(exports, "RGFormat", ()=>RGFormat);
+parcelHelpers.export(exports, "RGIntegerFormat", ()=>RGIntegerFormat);
+parcelHelpers.export(exports, "RawShaderMaterial", ()=>RawShaderMaterial);
+parcelHelpers.export(exports, "Ray", ()=>Ray);
+parcelHelpers.export(exports, "Raycaster", ()=>Raycaster);
+parcelHelpers.export(exports, "RectAreaLight", ()=>RectAreaLight);
+parcelHelpers.export(exports, "RedFormat", ()=>RedFormat);
+parcelHelpers.export(exports, "RedIntegerFormat", ()=>RedIntegerFormat);
+parcelHelpers.export(exports, "ReinhardToneMapping", ()=>ReinhardToneMapping);
+parcelHelpers.export(exports, "RepeatWrapping", ()=>RepeatWrapping);
+parcelHelpers.export(exports, "ReplaceStencilOp", ()=>ReplaceStencilOp);
+parcelHelpers.export(exports, "ReverseSubtractEquation", ()=>ReverseSubtractEquation);
+parcelHelpers.export(exports, "RingBufferGeometry", ()=>RingGeometry);
+parcelHelpers.export(exports, "RingGeometry", ()=>RingGeometry);
+parcelHelpers.export(exports, "Scene", ()=>Scene);
+parcelHelpers.export(exports, "SceneUtils", ()=>SceneUtils);
+parcelHelpers.export(exports, "ShaderChunk", ()=>ShaderChunk);
+parcelHelpers.export(exports, "ShaderLib", ()=>ShaderLib);
+parcelHelpers.export(exports, "ShaderMaterial", ()=>ShaderMaterial);
+parcelHelpers.export(exports, "ShadowMaterial", ()=>ShadowMaterial);
+parcelHelpers.export(exports, "Shape", ()=>Shape);
+parcelHelpers.export(exports, "ShapeBufferGeometry", ()=>ShapeGeometry);
+parcelHelpers.export(exports, "ShapeGeometry", ()=>ShapeGeometry);
+parcelHelpers.export(exports, "ShapePath", ()=>ShapePath);
+parcelHelpers.export(exports, "ShapeUtils", ()=>ShapeUtils);
+parcelHelpers.export(exports, "ShortType", ()=>ShortType);
+parcelHelpers.export(exports, "Skeleton", ()=>Skeleton);
+parcelHelpers.export(exports, "SkeletonHelper", ()=>SkeletonHelper);
+parcelHelpers.export(exports, "SkinnedMesh", ()=>SkinnedMesh);
+parcelHelpers.export(exports, "SmoothShading", ()=>SmoothShading);
+parcelHelpers.export(exports, "Sphere", ()=>Sphere);
+parcelHelpers.export(exports, "SphereBufferGeometry", ()=>SphereGeometry);
+parcelHelpers.export(exports, "SphereGeometry", ()=>SphereGeometry);
+parcelHelpers.export(exports, "Spherical", ()=>Spherical);
+parcelHelpers.export(exports, "SphericalHarmonics3", ()=>SphericalHarmonics3);
+parcelHelpers.export(exports, "SplineCurve", ()=>SplineCurve);
+parcelHelpers.export(exports, "SpotLight", ()=>SpotLight);
+parcelHelpers.export(exports, "SpotLightHelper", ()=>SpotLightHelper);
+parcelHelpers.export(exports, "Sprite", ()=>Sprite);
+parcelHelpers.export(exports, "SpriteMaterial", ()=>SpriteMaterial);
+parcelHelpers.export(exports, "SrcAlphaFactor", ()=>SrcAlphaFactor);
+parcelHelpers.export(exports, "SrcAlphaSaturateFactor", ()=>SrcAlphaSaturateFactor);
+parcelHelpers.export(exports, "SrcColorFactor", ()=>SrcColorFactor);
+parcelHelpers.export(exports, "StaticCopyUsage", ()=>StaticCopyUsage);
+parcelHelpers.export(exports, "StaticDrawUsage", ()=>StaticDrawUsage);
+parcelHelpers.export(exports, "StaticReadUsage", ()=>StaticReadUsage);
+parcelHelpers.export(exports, "StereoCamera", ()=>StereoCamera);
+parcelHelpers.export(exports, "StreamCopyUsage", ()=>StreamCopyUsage);
+parcelHelpers.export(exports, "StreamDrawUsage", ()=>StreamDrawUsage);
+parcelHelpers.export(exports, "StreamReadUsage", ()=>StreamReadUsage);
+parcelHelpers.export(exports, "StringKeyframeTrack", ()=>StringKeyframeTrack);
+parcelHelpers.export(exports, "SubtractEquation", ()=>SubtractEquation);
+parcelHelpers.export(exports, "SubtractiveBlending", ()=>SubtractiveBlending);
+parcelHelpers.export(exports, "TOUCH", ()=>TOUCH);
+parcelHelpers.export(exports, "TangentSpaceNormalMap", ()=>TangentSpaceNormalMap);
+parcelHelpers.export(exports, "TetrahedronBufferGeometry", ()=>TetrahedronGeometry);
+parcelHelpers.export(exports, "TetrahedronGeometry", ()=>TetrahedronGeometry);
+parcelHelpers.export(exports, "TextGeometry", ()=>TextGeometry);
+parcelHelpers.export(exports, "Texture", ()=>Texture);
+parcelHelpers.export(exports, "TextureLoader", ()=>TextureLoader);
+parcelHelpers.export(exports, "TorusBufferGeometry", ()=>TorusGeometry);
+parcelHelpers.export(exports, "TorusGeometry", ()=>TorusGeometry);
+parcelHelpers.export(exports, "TorusKnotBufferGeometry", ()=>TorusKnotGeometry);
+parcelHelpers.export(exports, "TorusKnotGeometry", ()=>TorusKnotGeometry);
+parcelHelpers.export(exports, "Triangle", ()=>Triangle);
+parcelHelpers.export(exports, "TriangleFanDrawMode", ()=>TriangleFanDrawMode);
+parcelHelpers.export(exports, "TriangleStripDrawMode", ()=>TriangleStripDrawMode);
+parcelHelpers.export(exports, "TrianglesDrawMode", ()=>TrianglesDrawMode);
+parcelHelpers.export(exports, "TubeBufferGeometry", ()=>TubeGeometry);
+parcelHelpers.export(exports, "TubeGeometry", ()=>TubeGeometry);
+parcelHelpers.export(exports, "UVMapping", ()=>UVMapping);
+parcelHelpers.export(exports, "Uint16Attribute", ()=>Uint16Attribute);
+parcelHelpers.export(exports, "Uint16BufferAttribute", ()=>Uint16BufferAttribute);
+parcelHelpers.export(exports, "Uint32Attribute", ()=>Uint32Attribute);
+parcelHelpers.export(exports, "Uint32BufferAttribute", ()=>Uint32BufferAttribute);
+parcelHelpers.export(exports, "Uint8Attribute", ()=>Uint8Attribute);
+parcelHelpers.export(exports, "Uint8BufferAttribute", ()=>Uint8BufferAttribute);
+parcelHelpers.export(exports, "Uint8ClampedAttribute", ()=>Uint8ClampedAttribute);
+parcelHelpers.export(exports, "Uint8ClampedBufferAttribute", ()=>Uint8ClampedBufferAttribute);
+parcelHelpers.export(exports, "Uniform", ()=>Uniform);
+parcelHelpers.export(exports, "UniformsLib", ()=>UniformsLib);
+parcelHelpers.export(exports, "UniformsUtils", ()=>UniformsUtils);
+parcelHelpers.export(exports, "UnsignedByteType", ()=>UnsignedByteType);
+parcelHelpers.export(exports, "UnsignedInt248Type", ()=>UnsignedInt248Type);
+parcelHelpers.export(exports, "UnsignedIntType", ()=>UnsignedIntType);
+parcelHelpers.export(exports, "UnsignedShort4444Type", ()=>UnsignedShort4444Type);
+parcelHelpers.export(exports, "UnsignedShort5551Type", ()=>UnsignedShort5551Type);
+parcelHelpers.export(exports, "UnsignedShortType", ()=>UnsignedShortType);
+parcelHelpers.export(exports, "VSMShadowMap", ()=>VSMShadowMap);
+parcelHelpers.export(exports, "Vector2", ()=>Vector2);
+parcelHelpers.export(exports, "Vector3", ()=>Vector3);
+parcelHelpers.export(exports, "Vector4", ()=>Vector4);
+parcelHelpers.export(exports, "VectorKeyframeTrack", ()=>VectorKeyframeTrack);
+parcelHelpers.export(exports, "Vertex", ()=>Vertex);
+parcelHelpers.export(exports, "VertexColors", ()=>VertexColors);
+parcelHelpers.export(exports, "VideoTexture", ()=>VideoTexture);
+parcelHelpers.export(exports, "WebGL1Renderer", ()=>WebGL1Renderer);
+parcelHelpers.export(exports, "WebGL3DRenderTarget", ()=>WebGL3DRenderTarget);
+parcelHelpers.export(exports, "WebGLArrayRenderTarget", ()=>WebGLArrayRenderTarget);
+parcelHelpers.export(exports, "WebGLCubeRenderTarget", ()=>WebGLCubeRenderTarget);
+parcelHelpers.export(exports, "WebGLMultipleRenderTargets", ()=>WebGLMultipleRenderTargets);
+parcelHelpers.export(exports, "WebGLMultisampleRenderTarget", ()=>WebGLMultisampleRenderTarget);
+parcelHelpers.export(exports, "WebGLRenderTarget", ()=>WebGLRenderTarget);
+parcelHelpers.export(exports, "WebGLRenderTargetCube", ()=>WebGLRenderTargetCube);
+parcelHelpers.export(exports, "WebGLRenderer", ()=>WebGLRenderer);
+parcelHelpers.export(exports, "WebGLUtils", ()=>WebGLUtils);
+parcelHelpers.export(exports, "WireframeGeometry", ()=>WireframeGeometry);
+parcelHelpers.export(exports, "WireframeHelper", ()=>WireframeHelper);
+parcelHelpers.export(exports, "WrapAroundEnding", ()=>WrapAroundEnding);
+parcelHelpers.export(exports, "XHRLoader", ()=>XHRLoader);
+parcelHelpers.export(exports, "ZeroCurvatureEnding", ()=>ZeroCurvatureEnding);
+parcelHelpers.export(exports, "ZeroFactor", ()=>ZeroFactor);
+parcelHelpers.export(exports, "ZeroSlopeEnding", ()=>ZeroSlopeEnding);
+parcelHelpers.export(exports, "ZeroStencilOp", ()=>ZeroStencilOp);
+parcelHelpers.export(exports, "_SRGBAFormat", ()=>_SRGBAFormat);
+parcelHelpers.export(exports, "sRGBEncoding", ()=>sRGBEncoding);
 /**
  * @license
  * Copyright 2010-2022 Three.js Authors
@@ -13,4 +1232,7455 @@
  * Subject to the terms at https://greensock.com/standard-license or for
  * Club GreenSock members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
+<<<<<<< HEAD
 */var Ch,Ph,Ah,Lh,Rh,Dh,Ih,zh,kh,Oh,Nh,Bh,Uh,Fh,Vh,Hh,Gh,Wh,jh,qh,Xh,Yh,Kh,Jh,Zh,$h,Qh,tc,ec,nc,ic={autoSleep:120,force3D:"auto",nullTargetWarn:1,units:{lineHeight:""}},rc={duration:.5,overwrite:!1,delay:0},sc=1e8,oc=1e-8,ac=2*Math.PI,lc=ac/4,hc=0,cc=Math.sqrt,uc=Math.cos,dc=Math.sin,pc=function(t){return"string"==typeof t},mc=function(t){return"function"==typeof t},fc=function(t){return"number"==typeof t},gc=function(t){return void 0===t},vc=function(t){return"object"==typeof t},_c=function(t){return!1!==t},xc=function(){return"undefined"!=typeof window},yc=function(t){return mc(t)||pc(t)},bc="function"==typeof ArrayBuffer&&ArrayBuffer.isView||function(){},wc=Array.isArray,Mc=/(?:-?\.?\d|\.)+/gi,Sc=/[-+=.]*\d+[.e\-+]*\d*[e\-+]*\d*/g,Tc=/[-+=.]*\d+[.e-]*\d*[a-z%]*/g,Ec=/[-+=.]*\d+\.?\d*(?:e-|e\+)?\d*/gi,Cc=/[+-]=-?[.\d]+/,Pc=/[^,'"\[\]\s]+/gi,Ac=/^[+\-=e\s\d]*\d+[.\d]*([a-z]*|%)\s*$/i,Lc={},Rc={},Dc=function(t){return(Rc=au(t,Lc))&&op},Ic=function(t,e){return console.warn("Invalid property",t,"set to",e,"Missing plugin? gsap.registerPlugin()")},zc=function(t,e){return!e&&console.warn(t)},kc=function(t,e){return t&&(Lc[t]=e)&&Rc&&(Rc[t]=e)||Lc},Oc=function(){return 0},Nc={suppressEvents:!0,isStart:!0,kill:!1},Bc={suppressEvents:!0,kill:!1},Uc={suppressEvents:!0},Fc={},Vc=[],Hc={},Gc={},Wc={},jc=30,qc=[],Xc="",Yc=function(t){var e,n,i=t[0];if(vc(i)||mc(i)||(t=[t]),!(e=(i._gsap||{}).harness)){for(n=qc.length;n--&&!qc[n].targetTest(i););e=qc[n]}for(n=t.length;n--;)t[n]&&(t[n]._gsap||(t[n]._gsap=new bd(t[n],e)))||t.splice(n,1);return t},Kc=function(t){return t._gsap||Yc(Uu(t))[0]._gsap},Jc=function(t,e,n){return(n=t[e])&&mc(n)?t[e]():gc(n)&&t.getAttribute&&t.getAttribute(e)||n},Zc=function(t,e){return(t=t.split(",")).forEach(e)||t},$c=function(t){return Math.round(1e5*t)/1e5||0},Qc=function(t){return Math.round(1e7*t)/1e7||0},tu=function(t,e){var n=e.charAt(0),i=parseFloat(e.substr(2));return t=parseFloat(t),"+"===n?t+i:"-"===n?t-i:"*"===n?t*i:t/i},eu=function(t,e){for(var n=e.length,i=0;t.indexOf(e[i])<0&&++i<n;);return i<n},nu=function(){var t,e,n=Vc.length,i=Vc.slice(0);for(Hc={},Vc.length=0,t=0;t<n;t++)(e=i[t])&&e._lazy&&(e.render(e._lazy[0],e._lazy[1],!0)._lazy=0)},iu=function(t,e,n,i){Vc.length&&nu(),t.render(e,n,i||Ph&&e<0&&(t._initted||t._startAt)),Vc.length&&nu()},ru=function(t){var e=parseFloat(t);return(e||0===e)&&(t+"").match(Pc).length<2?e:pc(t)?t.trim():t},su=function(t){return t},ou=function(t,e){for(var n in e)n in t||(t[n]=e[n]);return t},au=function(t,e){for(var n in e)t[n]=e[n];return t},lu=function t(e,n){for(var i in n)"__proto__"!==i&&"constructor"!==i&&"prototype"!==i&&(e[i]=vc(n[i])?t(e[i]||(e[i]={}),n[i]):n[i]);return e},hu=function(t,e){var n,i={};for(n in t)n in e||(i[n]=t[n]);return i},cu=function(t){var e,n=t.parent||Lh,i=t.keyframes?(e=wc(t.keyframes),function(t,n){for(var i in n)i in t||"duration"===i&&e||"ease"===i||(t[i]=n[i])}):ou;if(_c(t.inherit))for(;n;)i(t,n.vars.defaults),n=n.parent||n._dp;return t},uu=function(t,e,n,i,r){void 0===n&&(n="_first"),void 0===i&&(i="_last");var s,o=t[i];if(r)for(s=e[r];o&&o[r]>s;)o=o._prev;return o?(e._next=o._next,o._next=e):(e._next=t[n],t[n]=e),e._next?e._next._prev=e:t[i]=e,e._prev=o,e.parent=e._dp=t,e},du=function(t,e,n,i){void 0===n&&(n="_first"),void 0===i&&(i="_last");var r=e._prev,s=e._next;r?r._next=s:t[n]===e&&(t[n]=s),s?s._prev=r:t[i]===e&&(t[i]=r),e._next=e._prev=e.parent=null},pu=function(t,e){t.parent&&(!e||t.parent.autoRemoveChildren)&&t.parent.remove(t),t._act=0},mu=function(t,e){if(t&&(!e||e._end>t._dur||e._start<0))for(var n=t;n;)n._dirty=1,n=n.parent;return t},fu=function(t){for(var e=t.parent;e&&e.parent;)e._dirty=1,e.totalDuration(),e=e.parent;return t},gu=function(t,e,n,i){return t._startAt&&(Ph?t._startAt.revert(Bc):t.vars.immediateRender&&!t.vars.autoRevert||t._startAt.render(e,!0,i))},vu=function t(e){return!e||e._ts&&t(e.parent)},_u=function(t){return t._repeat?xu(t._tTime,t=t.duration()+t._rDelay)*t:0},xu=function(t,e){var n=Math.floor(t/=e);return t&&n===t?n-1:n},yu=function(t,e){return(t-e._start)*e._ts+(e._ts>=0?0:e._dirty?e.totalDuration():e._tDur)},bu=function(t){return t._end=Qc(t._start+(t._tDur/Math.abs(t._ts||t._rts||oc)||0))},wu=function(t,e){var n=t._dp;return n&&n.smoothChildTiming&&t._ts&&(t._start=Qc(n._time-(t._ts>0?e/t._ts:((t._dirty?t.totalDuration():t._tDur)-e)/-t._ts)),bu(t),n._dirty||mu(n,t)),t},Mu=function(t,e){var n;if((e._time||e._initted&&!e._dur)&&(n=yu(t.rawTime(),e),(!e._dur||ku(0,e.totalDuration(),n)-e._tTime>oc)&&e.render(n,!0)),mu(t,e)._dp&&t._initted&&t._time>=t._dur&&t._ts){if(t._dur<t.duration())for(n=t;n._dp;)n.rawTime()>=0&&n.totalTime(n._tTime),n=n._dp;t._zTime=-1e-8}},Su=function(t,e,n,i){return e.parent&&pu(e),e._start=Qc((fc(n)?n:n||t!==Lh?Du(t,n,e):t._time)+e._delay),e._end=Qc(e._start+(e.totalDuration()/Math.abs(e.timeScale())||0)),uu(t,e,"_first","_last",t._sort?"_start":0),Pu(e)||(t._recent=e),i||Mu(t,e),t._ts<0&&wu(t,t._tTime),t},Tu=function(t,e){return(Lc.ScrollTrigger||Ic("scrollTrigger",e))&&Lc.ScrollTrigger.create(e,t)},Eu=function(t,e,n,i,r){return Ad(t,e,r),t._initted?!n&&t._pt&&!Ph&&(t._dur&&!1!==t.vars.lazy||!t._dur&&t.vars.lazy)&&kh!==ld.frame?(Vc.push(t),t._lazy=[r,i],1):void 0:1},Cu=function t(e){var n=e.parent;return n&&n._ts&&n._initted&&!n._lock&&(n.rawTime()<0||t(n))},Pu=function(t){var e=t.data;return"isFromStart"===e||"isStart"===e},Au=function(t,e,n,i){var r=t._repeat,s=Qc(e)||0,o=t._tTime/t._tDur;return o&&!i&&(t._time*=s/t._dur),t._dur=s,t._tDur=r?r<0?1e10:Qc(s*(r+1)+t._rDelay*r):s,o>0&&!i&&wu(t,t._tTime=t._tDur*o),t.parent&&bu(t),n||mu(t.parent,t),t},Lu=function(t){return t instanceof Md?mu(t):Au(t,t._dur)},Ru={_start:0,endTime:Oc,totalDuration:Oc},Du=function t(e,n,i){var r,s,o,a=e.labels,l=e._recent||Ru,h=e.duration()>=sc?l.endTime(!1):e._dur;return pc(n)&&(isNaN(n)||n in a)?(s=n.charAt(0),o="%"===n.substr(-1),r=n.indexOf("="),"<"===s||">"===s?(r>=0&&(n=n.replace(/=/,"")),("<"===s?l._start:l.endTime(l._repeat>=0))+(parseFloat(n.substr(1))||0)*(o?(r<0?l:i).totalDuration()/100:1)):r<0?(n in a||(a[n]=h),a[n]):(s=parseFloat(n.charAt(r-1)+n.substr(r+1)),o&&i&&(s=s/100*(wc(i)?i[0]:i).totalDuration()),r>1?t(e,n.substr(0,r-1),i)+s:h+s)):null==n?h:+n},Iu=function(t,e,n){var i,r,s=fc(e[1]),o=(s?2:1)+(t<2?0:1),a=e[o];if(s&&(a.duration=e[1]),a.parent=n,t){for(i=a,r=n;r&&!("immediateRender"in i);)i=r.vars.defaults||{},r=_c(r.vars.inherit)&&r.parent;a.immediateRender=_c(i.immediateRender),t<2?a.runBackwards=1:a.startAt=e[o-1]}return new zd(e[0],a,e[o+1])},zu=function(t,e){return t||0===t?e(t):e},ku=function(t,e,n){return n<t?t:n>e?e:n},Ou=function(t,e){return pc(t)&&(e=Ac.exec(t))?e[1]:""},Nu=[].slice,Bu=function(t,e){return t&&vc(t)&&"length"in t&&(!e&&!t.length||t.length-1 in t&&vc(t[0]))&&!t.nodeType&&t!==Rh},Uu=function(t,e,n){return Ah&&!e&&Ah.selector?Ah.selector(t):!pc(t)||n||!Dh&&hd()?wc(t)?function(t,e,n){return void 0===n&&(n=[]),t.forEach((function(t){var i;return pc(t)&&!e||Bu(t,1)?(i=n).push.apply(i,Uu(t)):n.push(t)}))||n}(t,n):Bu(t)?Nu.call(t,0):t?[t]:[]:Nu.call((e||Ih).querySelectorAll(t),0)},Fu=function(t){return t=Uu(t)[0]||zc("Invalid scope")||{},function(e){var n=t.current||t.nativeElement||t;return Uu(e,n.querySelectorAll?n:n===t?zc("Invalid scope")||Ih.createElement("div"):t)}},Vu=function(t){return t.sort((function(){return.5-Math.random()}))},Hu=function(t){if(mc(t))return t;var e=vc(t)?t:{each:t},n=gd(e.ease),i=e.from||0,r=parseFloat(e.base)||0,s={},o=i>0&&i<1,a=isNaN(i)||o,l=e.axis,h=i,c=i;return pc(i)?h=c={center:.5,edges:.5,end:1}[i]||0:!o&&a&&(h=i[0],c=i[1]),function(t,o,u){var d,p,m,f,g,v,_,x,y,b=(u||e).length,w=s[b];if(!w){if(!(y="auto"===e.grid?0:(e.grid||[1,sc])[1])){for(_=-1e8;_<(_=u[y++].getBoundingClientRect().left)&&y<b;);y--}for(w=s[b]=[],d=a?Math.min(y,b)*h-.5:i%y,p=y===sc?0:a?b*c/y-.5:i/y|0,_=0,x=sc,v=0;v<b;v++)m=v%y-d,f=p-(v/y|0),w[v]=g=l?Math.abs("y"===l?f:m):cc(m*m+f*f),g>_&&(_=g),g<x&&(x=g);"random"===i&&Vu(w),w.max=_-x,w.min=x,w.v=b=(parseFloat(e.amount)||parseFloat(e.each)*(y>b?b-1:l?"y"===l?b/y:y:Math.max(y,b/y))||0)*("edges"===i?-1:1),w.b=b<0?r-b:r,w.u=Ou(e.amount||e.each)||0,n=n&&b<0?md(n):n}return b=(w[t]-w.min)/w.max||0,Qc(w.b+(n?n(b):b)*w.v)+w.u}},Gu=function(t){var e=Math.pow(10,((t+"").split(".")[1]||"").length);return function(n){var i=Qc(Math.round(parseFloat(n)/t)*t*e);return(i-i%1)/e+(fc(n)?0:Ou(n))}},Wu=function(t,e){var n,i,r=wc(t);return!r&&vc(t)&&(n=r=t.radius||sc,t.values?(t=Uu(t.values),(i=!fc(t[0]))&&(n*=n)):t=Gu(t.increment)),zu(e,r?mc(t)?function(e){return i=t(e),Math.abs(i-e)<=n?i:e}:function(e){for(var r,s,o=parseFloat(i?e.x:e),a=parseFloat(i?e.y:0),l=sc,h=0,c=t.length;c--;)(r=i?(r=t[c].x-o)*r+(s=t[c].y-a)*s:Math.abs(t[c]-o))<l&&(l=r,h=c);return h=!n||l<=n?t[h]:e,i||h===e||fc(e)?h:h+Ou(e)}:Gu(t))},ju=function(t,e,n,i){return zu(wc(t)?!e:!0===n?(n=0,!1):!i,(function(){return wc(t)?t[~~(Math.random()*t.length)]:(i=(n=n||1e-5)<1?Math.pow(10,(n+"").length-2):1)&&Math.floor(Math.round((t-n/2+Math.random()*(e-t+.99*n))/n)*n*i)/i}))},qu=function(t,e,n){return zu(n,(function(n){return t[~~e(n)]}))},Xu=function(t){for(var e,n,i,r,s=0,o="";~(e=t.indexOf("random(",s));)i=t.indexOf(")",e),r="["===t.charAt(e+7),n=t.substr(e+7,i-e-7).match(r?Pc:Mc),o+=t.substr(s,e-s)+ju(r?n:+n[0],r?0:+n[1],+n[2]||1e-5),s=i+1;return o+t.substr(s,t.length-s)},Yu=function(t,e,n,i,r){var s=e-t,o=i-n;return zu(r,(function(e){return n+((e-t)/s*o||0)}))},Ku=function(t,e,n){var i,r,s,o=t.labels,a=sc;for(i in o)(r=o[i]-e)<0==!!n&&r&&a>(r=Math.abs(r))&&(s=i,a=r);return s},Ju=function(t,e,n){var i,r,s,o=t.vars,a=o[e],l=Ah,h=t._ctx;if(a)return i=o[e+"Params"],r=o.callbackScope||t,n&&Vc.length&&nu(),h&&(Ah=h),s=i?a.apply(r,i):a.call(r),Ah=l,s},Zu=function(t){return pu(t),t.scrollTrigger&&t.scrollTrigger.kill(!!Ph),t.progress()<1&&Ju(t,"onInterrupt"),t},$u=function(t){var e=(t=!t.name&&t.default||t).name,n=mc(t),i=e&&!n&&t.init?function(){this._props=[]}:t,r={init:Oc,render:Gd,add:Cd,kill:jd,modifier:Wd,rawVars:0},s={targetTest:0,get:0,getSetter:Ud,aliases:{},register:0};if(hd(),t!==i){if(Gc[e])return;ou(i,ou(hu(t,r),s)),au(i.prototype,au(r,hu(t,s))),Gc[i.prop=e]=i,t.targetTest&&(qc.push(i),Fc[e]=1),e=("css"===e?"CSS":e.charAt(0).toUpperCase()+e.substr(1))+"Plugin"}kc(e,i),t.register&&t.register(op,i,Yd)},Qu=255,td={aqua:[0,Qu,Qu],lime:[0,Qu,0],silver:[192,192,192],black:[0,0,0],maroon:[128,0,0],teal:[0,128,128],blue:[0,0,Qu],navy:[0,0,128],white:[Qu,Qu,Qu],olive:[128,128,0],yellow:[Qu,Qu,0],orange:[Qu,165,0],gray:[128,128,128],purple:[128,0,128],green:[0,128,0],red:[Qu,0,0],pink:[Qu,192,203],cyan:[0,Qu,Qu],transparent:[Qu,Qu,Qu,0]},ed=function(t,e,n){return(6*(t+=t<0?1:t>1?-1:0)<1?e+(n-e)*t*6:t<.5?n:3*t<2?e+(n-e)*(2/3-t)*6:e)*Qu+.5|0},nd=function(t,e,n){var i,r,s,o,a,l,h,c,u,d,p=t?fc(t)?[t>>16,t>>8&Qu,t&Qu]:0:td.black;if(!p){if(","===t.substr(-1)&&(t=t.substr(0,t.length-1)),td[t])p=td[t];else if("#"===t.charAt(0)){if(t.length<6&&(i=t.charAt(1),r=t.charAt(2),s=t.charAt(3),t="#"+i+i+r+r+s+s+(5===t.length?t.charAt(4)+t.charAt(4):"")),9===t.length)return[(p=parseInt(t.substr(1,6),16))>>16,p>>8&Qu,p&Qu,parseInt(t.substr(7),16)/255];p=[(t=parseInt(t.substr(1),16))>>16,t>>8&Qu,t&Qu]}else if("hsl"===t.substr(0,3))if(p=d=t.match(Mc),e){if(~t.indexOf("="))return p=t.match(Sc),n&&p.length<4&&(p[3]=1),p}else o=+p[0]%360/360,a=+p[1]/100,i=2*(l=+p[2]/100)-(r=l<=.5?l*(a+1):l+a-l*a),p.length>3&&(p[3]*=1),p[0]=ed(o+1/3,i,r),p[1]=ed(o,i,r),p[2]=ed(o-1/3,i,r);else p=t.match(Mc)||td.transparent;p=p.map(Number)}return e&&!d&&(i=p[0]/Qu,r=p[1]/Qu,s=p[2]/Qu,l=((h=Math.max(i,r,s))+(c=Math.min(i,r,s)))/2,h===c?o=a=0:(u=h-c,a=l>.5?u/(2-h-c):u/(h+c),o=h===i?(r-s)/u+(r<s?6:0):h===r?(s-i)/u+2:(i-r)/u+4,o*=60),p[0]=~~(o+.5),p[1]=~~(100*a+.5),p[2]=~~(100*l+.5)),n&&p.length<4&&(p[3]=1),p},id=function(t){var e=[],n=[],i=-1;return t.split(sd).forEach((function(t){var r=t.match(Tc)||[];e.push.apply(e,r),n.push(i+=r.length+1)})),e.c=n,e},rd=function(t,e,n){var i,r,s,o,a="",l=(t+a).match(sd),h=e?"hsla(":"rgba(",c=0;if(!l)return t;if(l=l.map((function(t){return(t=nd(t,e,1))&&h+(e?t[0]+","+t[1]+"%,"+t[2]+"%,"+t[3]:t.join(","))+")"})),n&&(s=id(t),(i=n.c).join(a)!==s.c.join(a)))for(o=(r=t.replace(sd,"1").split(Tc)).length-1;c<o;c++)a+=r[c]+(~i.indexOf(c)?l.shift()||h+"0,0,0,0)":(s.length?s:l.length?l:n).shift());if(!r)for(o=(r=t.split(sd)).length-1;c<o;c++)a+=r[c]+l[c];return a+r[o]},sd=function(){var t,e="(?:\\b(?:(?:rgb|rgba|hsl|hsla)\\(.+?\\))|\\B#(?:[0-9a-f]{3,4}){1,2}\\b";for(t in td)e+="|"+t+"\\b";return new RegExp(e+")","gi")}(),od=/hsl[a]?\(/,ad=function(t){var e,n=t.join(" ");if(sd.lastIndex=0,sd.test(n))return e=od.test(n),t[1]=rd(t[1],e),t[0]=rd(t[0],e,id(t[1])),!0},ld=(Wh=Date.now,jh=500,qh=33,Xh=Wh(),Yh=Xh,Jh=Kh=1e3/240,$h=function t(e){var n,i,r,s,o=Wh()-Yh,a=!0===e;if(o>jh&&(Xh+=o-qh),((n=(r=(Yh+=o)-Xh)-Jh)>0||a)&&(s=++Vh.frame,Hh=r-1e3*Vh.time,Vh.time=r/=1e3,Jh+=n+(n>=Kh?4:Kh-n),i=1),a||(Bh=Uh(t)),i)for(Gh=0;Gh<Zh.length;Gh++)Zh[Gh](r,Hh,s,e)},Vh={time:0,frame:0,tick:function(){$h(!0)},deltaRatio:function(t){return Hh/(1e3/(t||60))},wake:function(){zh&&(!Dh&&xc()&&(Rh=Dh=window,Ih=Rh.document||{},Lc.gsap=op,(Rh.gsapVersions||(Rh.gsapVersions=[])).push(op.version),Dc(Rc||Rh.GreenSockGlobals||!Rh.gsap&&Rh||{}),Fh=Rh.requestAnimationFrame),Bh&&Vh.sleep(),Uh=Fh||function(t){return setTimeout(t,Jh-1e3*Vh.time+1|0)},Nh=1,$h(2))},sleep:function(){(Fh?Rh.cancelAnimationFrame:clearTimeout)(Bh),Nh=0,Uh=Oc},lagSmoothing:function(t,e){jh=t||1e8,qh=Math.min(e,jh,0)},fps:function(t){Kh=1e3/(t||240),Jh=1e3*Vh.time+Kh},add:function(t,e,n){var i=e?function(e,n,r,s){t(e,n,r,s),Vh.remove(i)}:t;return Vh.remove(t),Zh[n?"unshift":"push"](i),hd(),i},remove:function(t,e){~(e=Zh.indexOf(t))&&Zh.splice(e,1)&&Gh>=e&&Gh--},_listeners:Zh=[]}),hd=function(){return!Nh&&ld.wake()},cd={},ud=/^[\d.\-M][\d.\-,\s]/,dd=/["']/g,pd=function(t){for(var e,n,i,r={},s=t.substr(1,t.length-3).split(":"),o=s[0],a=1,l=s.length;a<l;a++)n=s[a],e=a!==l-1?n.lastIndexOf(","):n.length,i=n.substr(0,e),r[o]=isNaN(i)?i.replace(dd,"").trim():+i,o=n.substr(e+1).trim();return r},md=function(t){return function(e){return 1-t(1-e)}},fd=function t(e,n){for(var i,r=e._first;r;)r instanceof Md?t(r,n):!r.vars.yoyoEase||r._yoyo&&r._repeat||r._yoyo===n||(r.timeline?t(r.timeline,n):(i=r._ease,r._ease=r._yEase,r._yEase=i,r._yoyo=n)),r=r._next},gd=function(t,e){return t&&(mc(t)?t:cd[t]||function(t){var e,n,i,r,s=(t+"").split("("),o=cd[s[0]];return o&&s.length>1&&o.config?o.config.apply(null,~t.indexOf("{")?[pd(s[1])]:(e=t,n=e.indexOf("(")+1,i=e.indexOf(")"),r=e.indexOf("(",n),e.substring(n,~r&&r<i?e.indexOf(")",i+1):i)).split(",").map(ru)):cd._CE&&ud.test(t)?cd._CE("",t):o}(t))||e},vd=function(t,e,n,i){void 0===n&&(n=function(t){return 1-e(1-t)}),void 0===i&&(i=function(t){return t<.5?e(2*t)/2:1-e(2*(1-t))/2});var r,s={easeIn:e,easeOut:n,easeInOut:i};return Zc(t,(function(t){for(var e in cd[t]=Lc[t]=s,cd[r=t.toLowerCase()]=n,s)cd[r+("easeIn"===e?".in":"easeOut"===e?".out":".inOut")]=cd[t+"."+e]=s[e]})),s},_d=function(t){return function(e){return e<.5?(1-t(1-2*e))/2:.5+t(2*(e-.5))/2}},xd=function t(e,n,i){var r=n>=1?n:1,s=(i||(e?.3:.45))/(n<1?n:1),o=s/ac*(Math.asin(1/r)||0),a=function(t){return 1===t?1:r*Math.pow(2,-10*t)*dc((t-o)*s)+1},l="out"===e?a:"in"===e?function(t){return 1-a(1-t)}:_d(a);return s=ac/s,l.config=function(n,i){return t(e,n,i)},l},yd=function t(e,n){void 0===n&&(n=1.70158);var i=function(t){return t?--t*t*((n+1)*t+n)+1:0},r="out"===e?i:"in"===e?function(t){return 1-i(1-t)}:_d(i);return r.config=function(n){return t(e,n)},r};Zc("Linear,Quad,Cubic,Quart,Quint,Strong",(function(t,e){var n=e<5?e+1:e;vd(t+",Power"+(n-1),e?function(t){return Math.pow(t,n)}:function(t){return t},(function(t){return 1-Math.pow(1-t,n)}),(function(t){return t<.5?Math.pow(2*t,n)/2:1-Math.pow(2*(1-t),n)/2}))})),cd.Linear.easeNone=cd.none=cd.Linear.easeIn,vd("Elastic",xd("in"),xd("out"),xd()),Qh=7.5625,ec=1/(tc=2.75),vd("Bounce",(function(t){return 1-nc(1-t)}),nc=function(t){return t<ec?Qh*t*t:t<.7272727272727273?Qh*Math.pow(t-1.5/tc,2)+.75:t<.9090909090909092?Qh*(t-=2.25/tc)*t+.9375:Qh*Math.pow(t-2.625/tc,2)+.984375}),vd("Expo",(function(t){return t?Math.pow(2,10*(t-1)):0})),vd("Circ",(function(t){return-(cc(1-t*t)-1)})),vd("Sine",(function(t){return 1===t?1:1-uc(t*lc)})),vd("Back",yd("in"),yd("out"),yd()),cd.SteppedEase=cd.steps=Lc.SteppedEase={config:function(t,e){void 0===t&&(t=1);var n=1/t,i=t+(e?0:1),r=e?1:0;return function(t){return((i*ku(0,.99999999,t)|0)+r)*n}}},rc.ease=cd["quad.out"],Zc("onComplete,onUpdate,onStart,onRepeat,onReverseComplete,onInterrupt",(function(t){return Xc+=t+","+t+"Params,"}));var bd=function(t,e){this.id=hc++,t._gsap=this,this.target=t,this.harness=e,this.get=e?e.get:Jc,this.set=e?e.getSetter:Ud},wd=function(){function t(t){this.vars=t,this._delay=+t.delay||0,(this._repeat=t.repeat===1/0?-2:t.repeat||0)&&(this._rDelay=t.repeatDelay||0,this._yoyo=!!t.yoyo||!!t.yoyoEase),this._ts=1,Au(this,+t.duration,1,1),this.data=t.data,Ah&&(this._ctx=Ah,Ah.data.push(this)),Nh||ld.wake()}var e=t.prototype;return e.delay=function(t){return t||0===t?(this.parent&&this.parent.smoothChildTiming&&this.startTime(this._start+t-this._delay),this._delay=t,this):this._delay},e.duration=function(t){return arguments.length?this.totalDuration(this._repeat>0?t+(t+this._rDelay)*this._repeat:t):this.totalDuration()&&this._dur},e.totalDuration=function(t){return arguments.length?(this._dirty=0,Au(this,this._repeat<0?t:(t-this._repeat*this._rDelay)/(this._repeat+1))):this._tDur},e.totalTime=function(t,e){if(hd(),!arguments.length)return this._tTime;var n=this._dp;if(n&&n.smoothChildTiming&&this._ts){for(wu(this,t),!n._dp||n.parent||Mu(n,this);n&&n.parent;)n.parent._time!==n._start+(n._ts>=0?n._tTime/n._ts:(n.totalDuration()-n._tTime)/-n._ts)&&n.totalTime(n._tTime,!0),n=n.parent;!this.parent&&this._dp.autoRemoveChildren&&(this._ts>0&&t<this._tDur||this._ts<0&&t>0||!this._tDur&&!t)&&Su(this._dp,this,this._start-this._delay)}return(this._tTime!==t||!this._dur&&!e||this._initted&&Math.abs(this._zTime)===oc||!t&&!this._initted&&(this.add||this._ptLookup))&&(this._ts||(this._pTime=t),iu(this,t,e)),this},e.time=function(t,e){return arguments.length?this.totalTime(Math.min(this.totalDuration(),t+_u(this))%(this._dur+this._rDelay)||(t?this._dur:0),e):this._time},e.totalProgress=function(t,e){return arguments.length?this.totalTime(this.totalDuration()*t,e):this.totalDuration()?Math.min(1,this._tTime/this._tDur):this.ratio},e.progress=function(t,e){return arguments.length?this.totalTime(this.duration()*(!this._yoyo||1&this.iteration()?t:1-t)+_u(this),e):this.duration()?Math.min(1,this._time/this._dur):this.ratio},e.iteration=function(t,e){var n=this.duration()+this._rDelay;return arguments.length?this.totalTime(this._time+(t-1)*n,e):this._repeat?xu(this._tTime,n)+1:1},e.timeScale=function(t){if(!arguments.length)return-1e-8===this._rts?0:this._rts;if(this._rts===t)return this;var e=this.parent&&this._ts?yu(this.parent._time,this):this._tTime;return this._rts=+t||0,this._ts=this._ps||-1e-8===t?0:this._rts,this.totalTime(ku(-this._delay,this._tDur,e),!0),bu(this),fu(this)},e.paused=function(t){return arguments.length?(this._ps!==t&&(this._ps=t,t?(this._pTime=this._tTime||Math.max(-this._delay,this.rawTime()),this._ts=this._act=0):(hd(),this._ts=this._rts,this.totalTime(this.parent&&!this.parent.smoothChildTiming?this.rawTime():this._tTime||this._pTime,1===this.progress()&&Math.abs(this._zTime)!==oc&&(this._tTime-=oc)))),this):this._ps},e.startTime=function(t){if(arguments.length){this._start=t;var e=this.parent||this._dp;return e&&(e._sort||!this.parent)&&Su(e,this,t-this._delay),this}return this._start},e.endTime=function(t){return this._start+(_c(t)?this.totalDuration():this.duration())/Math.abs(this._ts||1)},e.rawTime=function(t){var e=this.parent||this._dp;return e?t&&(!this._ts||this._repeat&&this._time&&this.totalProgress()<1)?this._tTime%(this._dur+this._rDelay):this._ts?yu(e.rawTime(t),this):this._tTime:this._tTime},e.revert=function(t){void 0===t&&(t=Uc);var e=Ph;return Ph=t,(this._initted||this._startAt)&&(this.timeline&&this.timeline.revert(t),this.totalTime(-.01,t.suppressEvents)),"nested"!==this.data&&!1!==t.kill&&this.kill(),Ph=e,this},e.globalTime=function(t){for(var e=this,n=arguments.length?t:e.rawTime();e;)n=e._start+n/(e._ts||1),e=e._dp;return!this.parent&&this.vars.immediateRender?-1:n},e.repeat=function(t){return arguments.length?(this._repeat=t===1/0?-2:t,Lu(this)):-2===this._repeat?1/0:this._repeat},e.repeatDelay=function(t){if(arguments.length){var e=this._time;return this._rDelay=t,Lu(this),e?this.time(e):this}return this._rDelay},e.yoyo=function(t){return arguments.length?(this._yoyo=t,this):this._yoyo},e.seek=function(t,e){return this.totalTime(Du(this,t),_c(e))},e.restart=function(t,e){return this.play().totalTime(t?-this._delay:0,_c(e))},e.play=function(t,e){return null!=t&&this.seek(t,e),this.reversed(!1).paused(!1)},e.reverse=function(t,e){return null!=t&&this.seek(t||this.totalDuration(),e),this.reversed(!0).paused(!1)},e.pause=function(t,e){return null!=t&&this.seek(t,e),this.paused(!0)},e.resume=function(){return this.paused(!1)},e.reversed=function(t){return arguments.length?(!!t!==this.reversed()&&this.timeScale(-this._rts||(t?-1e-8:0)),this):this._rts<0},e.invalidate=function(){return this._initted=this._act=0,this._zTime=-1e-8,this},e.isActive=function(){var t,e=this.parent||this._dp,n=this._start;return!(e&&!(this._ts&&this._initted&&e.isActive()&&(t=e.rawTime(!0))>=n&&t<this.endTime(!0)-oc))},e.eventCallback=function(t,e,n){var i=this.vars;return arguments.length>1?(e?(i[t]=e,n&&(i[t+"Params"]=n),"onUpdate"===t&&(this._onUpdate=e)):delete i[t],this):i[t]},e.then=function(t){var e=this;return new Promise((function(n){var i=mc(t)?t:su,r=function(){var t=e.then;e.then=null,mc(i)&&(i=i(e))&&(i.then||i===e)&&(e.then=t),n(i),e.then=t};e._initted&&1===e.totalProgress()&&e._ts>=0||!e._tTime&&e._ts<0?r():e._prom=r}))},e.kill=function(){Zu(this)},t}();ou(wd.prototype,{_time:0,_start:0,_end:0,_tTime:0,_tDur:0,_dirty:0,_repeat:0,_yoyo:!1,parent:null,_initted:!1,_rDelay:0,_ts:1,_dp:0,ratio:0,_zTime:-1e-8,_prom:0,_ps:!1,_rts:1});var Md=function(t){function e(e,n){var i;return void 0===e&&(e={}),(i=t.call(this,e)||this).labels={},i.smoothChildTiming=!!e.smoothChildTiming,i.autoRemoveChildren=!!e.autoRemoveChildren,i._sort=_c(e.sortChildren),Lh&&Su(e.parent||Lh,Th(i),n),e.reversed&&i.reverse(),e.paused&&i.paused(!0),e.scrollTrigger&&Tu(Th(i),e.scrollTrigger),i}Eh(e,t);var n=e.prototype;return n.to=function(t,e,n){return Iu(0,arguments,this),this},n.from=function(t,e,n){return Iu(1,arguments,this),this},n.fromTo=function(t,e,n,i){return Iu(2,arguments,this),this},n.set=function(t,e,n){return e.duration=0,e.parent=this,cu(e).repeatDelay||(e.repeat=0),e.immediateRender=!!e.immediateRender,new zd(t,e,Du(this,n),1),this},n.call=function(t,e,n){return Su(this,zd.delayedCall(0,t,e),n)},n.staggerTo=function(t,e,n,i,r,s,o){return n.duration=e,n.stagger=n.stagger||i,n.onComplete=s,n.onCompleteParams=o,n.parent=this,new zd(t,n,Du(this,r)),this},n.staggerFrom=function(t,e,n,i,r,s,o){return n.runBackwards=1,cu(n).immediateRender=_c(n.immediateRender),this.staggerTo(t,e,n,i,r,s,o)},n.staggerFromTo=function(t,e,n,i,r,s,o,a){return i.startAt=n,cu(i).immediateRender=_c(i.immediateRender),this.staggerTo(t,e,i,r,s,o,a)},n.render=function(t,e,n){var i,r,s,o,a,l,h,c,u,d,p,m,f=this._time,g=this._dirty?this.totalDuration():this._tDur,v=this._dur,_=t<=0?0:Qc(t),x=this._zTime<0!=t<0&&(this._initted||!v);if(this!==Lh&&_>g&&t>=0&&(_=g),_!==this._tTime||n||x){if(f!==this._time&&v&&(_+=this._time-f,t+=this._time-f),i=_,u=this._start,l=!(c=this._ts),x&&(v||(f=this._zTime),(t||!e)&&(this._zTime=t)),this._repeat){if(p=this._yoyo,a=v+this._rDelay,this._repeat<-1&&t<0)return this.totalTime(100*a+t,e,n);if(i=Qc(_%a),_===g?(o=this._repeat,i=v):((o=~~(_/a))&&o===_/a&&(i=v,o--),i>v&&(i=v)),d=xu(this._tTime,a),!f&&this._tTime&&d!==o&&(d=o),p&&1&o&&(i=v-i,m=1),o!==d&&!this._lock){var y=p&&1&d,b=y===(p&&1&o);if(o<d&&(y=!y),f=y?0:v,this._lock=1,this.render(f||(m?0:Qc(o*a)),e,!v)._lock=0,this._tTime=_,!e&&this.parent&&Ju(this,"onRepeat"),this.vars.repeatRefresh&&!m&&(this.invalidate()._lock=1),f&&f!==this._time||l!==!this._ts||this.vars.onRepeat&&!this.parent&&!this._act)return this;if(v=this._dur,g=this._tDur,b&&(this._lock=2,f=y?v:-1e-4,this.render(f,!0),this.vars.repeatRefresh&&!m&&this.invalidate()),this._lock=0,!this._ts&&!l)return this;fd(this,m)}}if(this._hasPause&&!this._forcing&&this._lock<2&&(h=function(t,e,n){var i;if(n>e)for(i=t._first;i&&i._start<=n;){if("isPause"===i.data&&i._start>e)return i;i=i._next}else for(i=t._last;i&&i._start>=n;){if("isPause"===i.data&&i._start<e)return i;i=i._prev}}(this,Qc(f),Qc(i)),h&&(_-=i-(i=h._start))),this._tTime=_,this._time=i,this._act=!c,this._initted||(this._onUpdate=this.vars.onUpdate,this._initted=1,this._zTime=t,f=0),!f&&i&&!e&&(Ju(this,"onStart"),this._tTime!==_))return this;if(i>=f&&t>=0)for(r=this._first;r;){if(s=r._next,(r._act||i>=r._start)&&r._ts&&h!==r){if(r.parent!==this)return this.render(t,e,n);if(r.render(r._ts>0?(i-r._start)*r._ts:(r._dirty?r.totalDuration():r._tDur)+(i-r._start)*r._ts,e,n),i!==this._time||!this._ts&&!l){h=0,s&&(_+=this._zTime=-1e-8);break}}r=s}else{r=this._last;for(var w=t<0?t:i;r;){if(s=r._prev,(r._act||w<=r._end)&&r._ts&&h!==r){if(r.parent!==this)return this.render(t,e,n);if(r.render(r._ts>0?(w-r._start)*r._ts:(r._dirty?r.totalDuration():r._tDur)+(w-r._start)*r._ts,e,n||Ph&&(r._initted||r._startAt)),i!==this._time||!this._ts&&!l){h=0,s&&(_+=this._zTime=w?-1e-8:oc);break}}r=s}}if(h&&!e&&(this.pause(),h.render(i>=f?0:-1e-8)._zTime=i>=f?1:-1,this._ts))return this._start=u,bu(this),this.render(t,e,n);this._onUpdate&&!e&&Ju(this,"onUpdate",!0),(_===g&&this._tTime>=this.totalDuration()||!_&&f)&&(u!==this._start&&Math.abs(c)===Math.abs(this._ts)||this._lock||((t||!v)&&(_===g&&this._ts>0||!_&&this._ts<0)&&pu(this,1),e||t<0&&!f||!_&&!f&&g||(Ju(this,_===g&&t>=0?"onComplete":"onReverseComplete",!0),this._prom&&!(_<g&&this.timeScale()>0)&&this._prom())))}return this},n.add=function(t,e){var n=this;if(fc(e)||(e=Du(this,e,t)),!(t instanceof wd)){if(wc(t))return t.forEach((function(t){return n.add(t,e)})),this;if(pc(t))return this.addLabel(t,e);if(!mc(t))return this;t=zd.delayedCall(0,t)}return this!==t?Su(this,t,e):this},n.getChildren=function(t,e,n,i){void 0===t&&(t=!0),void 0===e&&(e=!0),void 0===n&&(n=!0),void 0===i&&(i=-1e8);for(var r=[],s=this._first;s;)s._start>=i&&(s instanceof zd?e&&r.push(s):(n&&r.push(s),t&&r.push.apply(r,s.getChildren(!0,e,n)))),s=s._next;return r},n.getById=function(t){for(var e=this.getChildren(1,1,1),n=e.length;n--;)if(e[n].vars.id===t)return e[n]},n.remove=function(t){return pc(t)?this.removeLabel(t):mc(t)?this.killTweensOf(t):(du(this,t),t===this._recent&&(this._recent=this._last),mu(this))},n.totalTime=function(e,n){return arguments.length?(this._forcing=1,!this._dp&&this._ts&&(this._start=Qc(ld.time-(this._ts>0?e/this._ts:(this.totalDuration()-e)/-this._ts))),t.prototype.totalTime.call(this,e,n),this._forcing=0,this):this._tTime},n.addLabel=function(t,e){return this.labels[t]=Du(this,e),this},n.removeLabel=function(t){return delete this.labels[t],this},n.addPause=function(t,e,n){var i=zd.delayedCall(0,e||Oc,n);return i.data="isPause",this._hasPause=1,Su(this,i,Du(this,t))},n.removePause=function(t){var e=this._first;for(t=Du(this,t);e;)e._start===t&&"isPause"===e.data&&pu(e),e=e._next},n.killTweensOf=function(t,e,n){for(var i=this.getTweensOf(t,n),r=i.length;r--;)Sd!==i[r]&&i[r].kill(t,e);return this},n.getTweensOf=function(t,e){for(var n,i=[],r=Uu(t),s=this._first,o=fc(e);s;)s instanceof zd?eu(s._targets,r)&&(o?(!Sd||s._initted&&s._ts)&&s.globalTime(0)<=e&&s.globalTime(s.totalDuration())>e:!e||s.isActive())&&i.push(s):(n=s.getTweensOf(r,e)).length&&i.push.apply(i,n),s=s._next;return i},n.tweenTo=function(t,e){e=e||{};var n,i=this,r=Du(i,t),s=e,o=s.startAt,a=s.onStart,l=s.onStartParams,h=s.immediateRender,c=zd.to(i,ou({ease:e.ease||"none",lazy:!1,immediateRender:!1,time:r,overwrite:"auto",duration:e.duration||Math.abs((r-(o&&"time"in o?o.time:i._time))/i.timeScale())||oc,onStart:function(){if(i.pause(),!n){var t=e.duration||Math.abs((r-(o&&"time"in o?o.time:i._time))/i.timeScale());c._dur!==t&&Au(c,t,0,1).render(c._time,!0,!0),n=1}a&&a.apply(c,l||[])}},e));return h?c.render(0):c},n.tweenFromTo=function(t,e,n){return this.tweenTo(e,ou({startAt:{time:Du(this,t)}},n))},n.recent=function(){return this._recent},n.nextLabel=function(t){return void 0===t&&(t=this._time),Ku(this,Du(this,t))},n.previousLabel=function(t){return void 0===t&&(t=this._time),Ku(this,Du(this,t),1)},n.currentLabel=function(t){return arguments.length?this.seek(t,!0):this.previousLabel(this._time+oc)},n.shiftChildren=function(t,e,n){void 0===n&&(n=0);for(var i,r=this._first,s=this.labels;r;)r._start>=n&&(r._start+=t,r._end+=t),r=r._next;if(e)for(i in s)s[i]>=n&&(s[i]+=t);return mu(this)},n.invalidate=function(e){var n=this._first;for(this._lock=0;n;)n.invalidate(e),n=n._next;return t.prototype.invalidate.call(this,e)},n.clear=function(t){void 0===t&&(t=!0);for(var e,n=this._first;n;)e=n._next,this.remove(n),n=e;return this._dp&&(this._time=this._tTime=this._pTime=0),t&&(this.labels={}),mu(this)},n.totalDuration=function(t){var e,n,i,r=0,s=this,o=s._last,a=sc;if(arguments.length)return s.timeScale((s._repeat<0?s.duration():s.totalDuration())/(s.reversed()?-t:t));if(s._dirty){for(i=s.parent;o;)e=o._prev,o._dirty&&o.totalDuration(),(n=o._start)>a&&s._sort&&o._ts&&!s._lock?(s._lock=1,Su(s,o,n-o._delay,1)._lock=0):a=n,n<0&&o._ts&&(r-=n,(!i&&!s._dp||i&&i.smoothChildTiming)&&(s._start+=n/s._ts,s._time-=n,s._tTime-=n),s.shiftChildren(-n,!1,-1/0),a=0),o._end>r&&o._ts&&(r=o._end),o=e;Au(s,s===Lh&&s._time>r?s._time:r,1,1),s._dirty=0}return s._tDur},e.updateRoot=function(t){if(Lh._ts&&(iu(Lh,yu(t,Lh)),kh=ld.frame),ld.frame>=jc){jc+=ic.autoSleep||120;var e=Lh._first;if((!e||!e._ts)&&ic.autoSleep&&ld._listeners.length<2){for(;e&&!e._ts;)e=e._next;e||ld.sleep()}}},e}(wd);ou(Md.prototype,{_lock:0,_hasPause:0,_forcing:0});var Sd,Td,Ed=function(t,e,n,i,r,s,o){var a,l,h,c,u,d,p,m,f=new Yd(this._pt,t,e,0,1,Hd,null,r),g=0,v=0;for(f.b=n,f.e=i,n+="",(p=~(i+="").indexOf("random("))&&(i=Xu(i)),s&&(s(m=[n,i],t,e),n=m[0],i=m[1]),l=n.match(Ec)||[];a=Ec.exec(i);)c=a[0],u=i.substring(g,a.index),h?h=(h+1)%5:"rgba("===u.substr(-5)&&(h=1),c!==l[v++]&&(d=parseFloat(l[v-1])||0,f._pt={_next:f._pt,p:u||1===v?u:",",s:d,c:"="===c.charAt(1)?tu(d,c)-d:parseFloat(c)-d,m:h&&h<4?Math.round:0},g=Ec.lastIndex);return f.c=g<i.length?i.substring(g,i.length):"",f.fp=o,(Cc.test(i)||p)&&(f.e=0),this._pt=f,f},Cd=function(t,e,n,i,r,s,o,a,l,h){mc(i)&&(i=i(r||0,t,s));var c,u=t[e],d="get"!==n?n:mc(u)?l?t[e.indexOf("set")||!mc(t["get"+e.substr(3)])?e:"get"+e.substr(3)](l):t[e]():u,p=mc(u)?l?Nd:Od:kd;if(pc(i)&&(~i.indexOf("random(")&&(i=Xu(i)),"="===i.charAt(1)&&((c=tu(d,i)+(Ou(d)||0))||0===c)&&(i=c)),!h||d!==i||Td)return isNaN(d*i)||""===i?(!u&&!(e in t)&&Ic(e,i),Ed.call(this,t,e,d,i,p,a||ic.stringFilter,l)):(c=new Yd(this._pt,t,e,+d||0,i-(d||0),"boolean"==typeof u?Vd:Fd,0,p),l&&(c.fp=l),o&&c.modifier(o,this,t),this._pt=c)},Pd=function(t,e,n,i,r,s){var o,a,l,h;if(Gc[t]&&!1!==(o=new Gc[t]).init(r,o.rawVars?e[t]:function(t,e,n,i,r){if(mc(t)&&(t=Rd(t,r,e,n,i)),!vc(t)||t.style&&t.nodeType||wc(t)||bc(t))return pc(t)?Rd(t,r,e,n,i):t;var s,o={};for(s in t)o[s]=Rd(t[s],r,e,n,i);return o}(e[t],i,r,s,n),n,i,s)&&(n._pt=a=new Yd(n._pt,r,t,0,1,o.render,o,0,o.priority),n!==Oh))for(l=n._ptLookup[n._targets.indexOf(r)],h=o._props.length;h--;)l[o._props[h]]=a;return o},Ad=function t(e,n,i){var r,s,o,a,l,h,c,u,d,p,m,f,g,v=e.vars,_=v.ease,x=v.startAt,y=v.immediateRender,b=v.lazy,w=v.onUpdate,M=v.onUpdateParams,S=v.callbackScope,T=v.runBackwards,E=v.yoyoEase,C=v.keyframes,P=v.autoRevert,A=e._dur,L=e._startAt,R=e._targets,D=e.parent,I=D&&"nested"===D.data?D.vars.targets:R,z="auto"===e._overwrite&&!Ch,k=e.timeline;if(k&&(!C||!_)&&(_="none"),e._ease=gd(_,rc.ease),e._yEase=E?md(gd(!0===E?_:E,rc.ease)):0,E&&e._yoyo&&!e._repeat&&(E=e._yEase,e._yEase=e._ease,e._ease=E),e._from=!k&&!!v.runBackwards,!k||C&&!v.stagger){if(f=(u=R[0]?Kc(R[0]).harness:0)&&v[u.prop],r=hu(v,Fc),L&&(L._zTime<0&&L.progress(1),n<0&&T&&y&&!P?L.render(-1,!0):L.revert(T&&A?Bc:Nc),L._lazy=0),x){if(pu(e._startAt=zd.set(R,ou({data:"isStart",overwrite:!1,parent:D,immediateRender:!0,lazy:_c(b),startAt:null,delay:0,onUpdate:w,onUpdateParams:M,callbackScope:S,stagger:0},x))),n<0&&(Ph||!y&&!P)&&e._startAt.revert(Bc),y&&A&&n<=0&&i<=0)return void(n&&(e._zTime=n))}else if(T&&A&&!L)if(n&&(y=!1),o=ou({overwrite:!1,data:"isFromStart",lazy:y&&_c(b),immediateRender:y,stagger:0,parent:D},r),f&&(o[u.prop]=f),pu(e._startAt=zd.set(R,o)),n<0&&(Ph?e._startAt.revert(Bc):e._startAt.render(-1,!0)),e._zTime=n,y){if(!n)return}else t(e._startAt,oc,oc);for(e._pt=e._ptCache=0,b=A&&_c(b)||b&&!A,s=0;s<R.length;s++){if(c=(l=R[s])._gsap||Yc(R)[s]._gsap,e._ptLookup[s]=p={},Hc[c.id]&&Vc.length&&nu(),m=I===R?s:I.indexOf(l),u&&!1!==(d=new u).init(l,f||r,e,m,I)&&(e._pt=a=new Yd(e._pt,l,d.name,0,1,d.render,d,0,d.priority),d._props.forEach((function(t){p[t]=a})),d.priority&&(h=1)),!u||f)for(o in r)Gc[o]&&(d=Pd(o,r,e,m,l,I))?d.priority&&(h=1):p[o]=a=Cd.call(e,l,o,"get",r[o],m,I,0,v.stringFilter);e._op&&e._op[s]&&e.kill(l,e._op[s]),z&&e._pt&&(Sd=e,Lh.killTweensOf(l,p,e.globalTime(n)),g=!e.parent,Sd=0),e._pt&&b&&(Hc[c.id]=1)}h&&Xd(e),e._onInit&&e._onInit(e)}e._onUpdate=w,e._initted=(!e._op||e._pt)&&!g,C&&n<=0&&k.render(sc,!0,!0)},Ld=function(t,e,n,i){var r,s,o=e.ease||i||"power1.inOut";if(wc(e))s=n[t]||(n[t]=[]),e.forEach((function(t,n){return s.push({t:n/(e.length-1)*100,v:t,e:o})}));else for(r in e)s=n[r]||(n[r]=[]),"ease"===r||s.push({t:parseFloat(t),v:e[r],e:o})},Rd=function(t,e,n,i,r){return mc(t)?t.call(e,n,i,r):pc(t)&&~t.indexOf("random(")?Xu(t):t},Dd=Xc+"repeat,repeatDelay,yoyo,repeatRefresh,yoyoEase,autoRevert",Id={};Zc(Dd+",id,stagger,delay,duration,paused,scrollTrigger",(function(t){return Id[t]=1}));var zd=function(t){function e(e,n,i,r){var s;"number"==typeof n&&(i.duration=n,n=i,i=null);var o,a,l,h,c,u,d,p,m=(s=t.call(this,r?n:cu(n))||this).vars,f=m.duration,g=m.delay,v=m.immediateRender,_=m.stagger,x=m.overwrite,y=m.keyframes,b=m.defaults,w=m.scrollTrigger,M=m.yoyoEase,S=n.parent||Lh,T=(wc(e)||bc(e)?fc(e[0]):"length"in n)?[e]:Uu(e);if(s._targets=T.length?Yc(T):zc("GSAP target "+e+" not found. https://greensock.com",!ic.nullTargetWarn)||[],s._ptLookup=[],s._overwrite=x,y||_||yc(f)||yc(g)){if(n=s.vars,(o=s.timeline=new Md({data:"nested",defaults:b||{},targets:S&&"nested"===S.data?S.vars.targets:T})).kill(),o.parent=o._dp=Th(s),o._start=0,_||yc(f)||yc(g)){if(h=T.length,d=_&&Hu(_),vc(_))for(c in _)~Dd.indexOf(c)&&(p||(p={}),p[c]=_[c]);for(a=0;a<h;a++)(l=hu(n,Id)).stagger=0,M&&(l.yoyoEase=M),p&&au(l,p),u=T[a],l.duration=+Rd(f,Th(s),a,u,T),l.delay=(+Rd(g,Th(s),a,u,T)||0)-s._delay,!_&&1===h&&l.delay&&(s._delay=g=l.delay,s._start+=g,l.delay=0),o.to(u,l,d?d(a,u,T):0),o._ease=cd.none;o.duration()?f=g=0:s.timeline=0}else if(y){cu(ou(o.vars.defaults,{ease:"none"})),o._ease=gd(y.ease||n.ease||"none");var E,C,P,A=0;if(wc(y))y.forEach((function(t){return o.to(T,t,">")})),o.duration();else{for(c in l={},y)"ease"===c||"easeEach"===c||Ld(c,y[c],l,y.easeEach);for(c in l)for(E=l[c].sort((function(t,e){return t.t-e.t})),A=0,a=0;a<E.length;a++)(P={ease:(C=E[a]).e,duration:(C.t-(a?E[a-1].t:0))/100*f})[c]=C.v,o.to(T,P,A),A+=P.duration;o.duration()<f&&o.to({},{duration:f-o.duration()})}}f||s.duration(f=o.duration())}else s.timeline=0;return!0!==x||Ch||(Sd=Th(s),Lh.killTweensOf(T),Sd=0),Su(S,Th(s),i),n.reversed&&s.reverse(),n.paused&&s.paused(!0),(v||!f&&!y&&s._start===Qc(S._time)&&_c(v)&&vu(Th(s))&&"nested"!==S.data)&&(s._tTime=-1e-8,s.render(Math.max(0,-g)||0)),w&&Tu(Th(s),w),s}Eh(e,t);var n=e.prototype;return n.render=function(t,e,n){var i,r,s,o,a,l,h,c,u,d=this._time,p=this._tDur,m=this._dur,f=t<0,g=t>p-oc&&!f?p:t<oc?0:t;if(m){if(g!==this._tTime||!t||n||!this._initted&&this._tTime||this._startAt&&this._zTime<0!==f){if(i=g,c=this.timeline,this._repeat){if(o=m+this._rDelay,this._repeat<-1&&f)return this.totalTime(100*o+t,e,n);if(i=Qc(g%o),g===p?(s=this._repeat,i=m):((s=~~(g/o))&&s===g/o&&(i=m,s--),i>m&&(i=m)),(l=this._yoyo&&1&s)&&(u=this._yEase,i=m-i),a=xu(this._tTime,o),i===d&&!n&&this._initted)return this._tTime=g,this;s!==a&&(c&&this._yEase&&fd(c,l),!this.vars.repeatRefresh||l||this._lock||(this._lock=n=1,this.render(Qc(o*s),!0).invalidate()._lock=0))}if(!this._initted){if(Eu(this,f?t:i,n,e,g))return this._tTime=0,this;if(d!==this._time)return this;if(m!==this._dur)return this.render(t,e,n)}if(this._tTime=g,this._time=i,!this._act&&this._ts&&(this._act=1,this._lazy=0),this.ratio=h=(u||this._ease)(i/m),this._from&&(this.ratio=h=1-h),i&&!d&&!e&&(Ju(this,"onStart"),this._tTime!==g))return this;for(r=this._pt;r;)r.r(h,r.d),r=r._next;c&&c.render(t<0?t:!i&&l?-1e-8:c._dur*c._ease(i/this._dur),e,n)||this._startAt&&(this._zTime=t),this._onUpdate&&!e&&(f&&gu(this,t,0,n),Ju(this,"onUpdate")),this._repeat&&s!==a&&this.vars.onRepeat&&!e&&this.parent&&Ju(this,"onRepeat"),g!==this._tDur&&g||this._tTime!==g||(f&&!this._onUpdate&&gu(this,t,0,!0),(t||!m)&&(g===this._tDur&&this._ts>0||!g&&this._ts<0)&&pu(this,1),e||f&&!d||!(g||d||l)||(Ju(this,g===p?"onComplete":"onReverseComplete",!0),this._prom&&!(g<p&&this.timeScale()>0)&&this._prom()))}}else!function(t,e,n,i){var r,s,o,a=t.ratio,l=e<0||!e&&(!t._start&&Cu(t)&&(t._initted||!Pu(t))||(t._ts<0||t._dp._ts<0)&&!Pu(t))?0:1,h=t._rDelay,c=0;if(h&&t._repeat&&(c=ku(0,t._tDur,e),s=xu(c,h),t._yoyo&&1&s&&(l=1-l),s!==xu(t._tTime,h)&&(a=1-l,t.vars.repeatRefresh&&t._initted&&t.invalidate())),l!==a||Ph||i||t._zTime===oc||!e&&t._zTime){if(!t._initted&&Eu(t,e,i,n,c))return;for(o=t._zTime,t._zTime=e||(n?oc:0),n||(n=e&&!o),t.ratio=l,t._from&&(l=1-l),t._time=0,t._tTime=c,r=t._pt;r;)r.r(l,r.d),r=r._next;e<0&&gu(t,e,0,!0),t._onUpdate&&!n&&Ju(t,"onUpdate"),c&&t._repeat&&!n&&t.parent&&Ju(t,"onRepeat"),(e>=t._tDur||e<0)&&t.ratio===l&&(l&&pu(t,1),n||Ph||(Ju(t,l?"onComplete":"onReverseComplete",!0),t._prom&&t._prom()))}else t._zTime||(t._zTime=e)}(this,t,e,n);return this},n.targets=function(){return this._targets},n.invalidate=function(e){return(!e||!this.vars.runBackwards)&&(this._startAt=0),this._pt=this._op=this._onUpdate=this._lazy=this.ratio=0,this._ptLookup=[],this.timeline&&this.timeline.invalidate(e),t.prototype.invalidate.call(this,e)},n.resetTo=function(t,e,n,i){Nh||ld.wake(),this._ts||this.play();var r=Math.min(this._dur,(this._dp._time-this._start)*this._ts);return this._initted||Ad(this,r),function(t,e,n,i,r,s,o){var a,l,h,c,u=(t._pt&&t._ptCache||(t._ptCache={}))[e];if(!u)for(u=t._ptCache[e]=[],h=t._ptLookup,c=t._targets.length;c--;){if((a=h[c][e])&&a.d&&a.d._pt)for(a=a.d._pt;a&&a.p!==e&&a.fp!==e;)a=a._next;if(!a)return Td=1,t.vars[e]="+=0",Ad(t,o),Td=0,1;u.push(a)}for(c=u.length;c--;)(a=(l=u[c])._pt||l).s=!i&&0!==i||r?a.s+(i||0)+s*a.c:i,a.c=n-a.s,l.e&&(l.e=$c(n)+Ou(l.e)),l.b&&(l.b=a.s+Ou(l.b))}(this,t,e,n,i,this._ease(r/this._dur),r)?this.resetTo(t,e,n,i):(wu(this,0),this.parent||uu(this._dp,this,"_first","_last",this._dp._sort?"_start":0),this.render(0))},n.kill=function(t,e){if(void 0===e&&(e="all"),!(t||e&&"all"!==e))return this._lazy=this._pt=0,this.parent?Zu(this):this;if(this.timeline){var n=this.timeline.totalDuration();return this.timeline.killTweensOf(t,e,Sd&&!0!==Sd.vars.overwrite)._first||Zu(this),this.parent&&n!==this.timeline.totalDuration()&&Au(this,this._dur*this.timeline._tDur/n,0,1),this}var i,r,s,o,a,l,h,c=this._targets,u=t?Uu(t):c,d=this._ptLookup,p=this._pt;if((!e||"all"===e)&&function(t,e){for(var n=t.length,i=n===e.length;i&&n--&&t[n]===e[n];);return n<0}(c,u))return"all"===e&&(this._pt=0),Zu(this);for(i=this._op=this._op||[],"all"!==e&&(pc(e)&&(a={},Zc(e,(function(t){return a[t]=1})),e=a),e=function(t,e){var n,i,r,s,o=t[0]?Kc(t[0]).harness:0,a=o&&o.aliases;if(!a)return e;for(i in n=au({},e),a)if(i in n)for(r=(s=a[i].split(",")).length;r--;)n[s[r]]=n[i];return n}(c,e)),h=c.length;h--;)if(~u.indexOf(c[h]))for(a in r=d[h],"all"===e?(i[h]=e,o=r,s={}):(s=i[h]=i[h]||{},o=e),o)(l=r&&r[a])&&("kill"in l.d&&!0!==l.d.kill(a)||du(this,l,"_pt"),delete r[a]),"all"!==s&&(s[a]=1);return this._initted&&!this._pt&&p&&Zu(this),this},e.to=function(t,n){return new e(t,n,arguments[2])},e.from=function(t,e){return Iu(1,arguments)},e.delayedCall=function(t,n,i,r){return new e(n,0,{immediateRender:!1,lazy:!1,overwrite:!1,delay:t,onComplete:n,onReverseComplete:n,onCompleteParams:i,onReverseCompleteParams:i,callbackScope:r})},e.fromTo=function(t,e,n){return Iu(2,arguments)},e.set=function(t,n){return n.duration=0,n.repeatDelay||(n.repeat=0),new e(t,n)},e.killTweensOf=function(t,e,n){return Lh.killTweensOf(t,e,n)},e}(wd);ou(zd.prototype,{_targets:[],_lazy:0,_startAt:0,_op:0,_onInit:0}),Zc("staggerTo,staggerFrom,staggerFromTo",(function(t){zd[t]=function(){var e=new Md,n=Nu.call(arguments,0);return n.splice("staggerFromTo"===t?5:4,0,0),e[t].apply(e,n)}}));var kd=function(t,e,n){return t[e]=n},Od=function(t,e,n){return t[e](n)},Nd=function(t,e,n,i){return t[e](i.fp,n)},Bd=function(t,e,n){return t.setAttribute(e,n)},Ud=function(t,e){return mc(t[e])?Od:gc(t[e])&&t.setAttribute?Bd:kd},Fd=function(t,e){return e.set(e.t,e.p,Math.round(1e6*(e.s+e.c*t))/1e6,e)},Vd=function(t,e){return e.set(e.t,e.p,!!(e.s+e.c*t),e)},Hd=function(t,e){var n=e._pt,i="";if(!t&&e.b)i=e.b;else if(1===t&&e.e)i=e.e;else{for(;n;)i=n.p+(n.m?n.m(n.s+n.c*t):Math.round(1e4*(n.s+n.c*t))/1e4)+i,n=n._next;i+=e.c}e.set(e.t,e.p,i,e)},Gd=function(t,e){for(var n=e._pt;n;)n.r(t,n.d),n=n._next},Wd=function(t,e,n,i){for(var r,s=this._pt;s;)r=s._next,s.p===i&&s.modifier(t,e,n),s=r},jd=function(t){for(var e,n,i=this._pt;i;)n=i._next,i.p===t&&!i.op||i.op===t?du(this,i,"_pt"):i.dep||(e=1),i=n;return!e},qd=function(t,e,n,i){i.mSet(t,e,i.m.call(i.tween,n,i.mt),i)},Xd=function(t){for(var e,n,i,r,s=t._pt;s;){for(e=s._next,n=i;n&&n.pr>s.pr;)n=n._next;(s._prev=n?n._prev:r)?s._prev._next=s:i=s,(s._next=n)?n._prev=s:r=s,s=e}t._pt=i},Yd=function(){function t(t,e,n,i,r,s,o,a,l){this.t=e,this.s=i,this.c=r,this.p=n,this.r=s||Fd,this.d=o||this,this.set=a||kd,this.pr=l||0,this._next=t,t&&(t._prev=this)}return t.prototype.modifier=function(t,e,n){this.mSet=this.mSet||this.set,this.set=qd,this.m=t,this.mt=n,this.tween=e},t}();Zc(Xc+"parent,duration,ease,delay,overwrite,runBackwards,startAt,yoyo,immediateRender,repeat,repeatDelay,data,paused,reversed,lazy,callbackScope,stringFilter,id,yoyoEase,stagger,inherit,repeatRefresh,keyframes,autoRevert,scrollTrigger",(function(t){return Fc[t]=1})),Lc.TweenMax=Lc.TweenLite=zd,Lc.TimelineLite=Lc.TimelineMax=Md,Lh=new Md({sortChildren:!1,defaults:rc,autoRemoveChildren:!0,id:"root",smoothChildTiming:!0}),ic.stringFilter=ad;var Kd=[],Jd={},Zd=[],$d=0,Qd=function(t){return(Jd[t]||Zd).map((function(t){return t()}))},tp=function(){var t=Date.now(),e=[];t-$d>2&&(Qd("matchMediaInit"),Kd.forEach((function(t){var n,i,r,s,o=t.queries,a=t.conditions;for(i in o)(n=Rh.matchMedia(o[i]).matches)&&(r=1),n!==a[i]&&(a[i]=n,s=1);s&&(t.revert(),r&&e.push(t))})),Qd("matchMediaRevert"),e.forEach((function(t){return t.onMatch(t)})),$d=t,Qd("matchMedia"))},ep=function(){function t(t,e){this.selector=e&&Fu(e),this.data=[],this._r=[],this.isReverted=!1,t&&this.add(t)}var e=t.prototype;return e.add=function(t,e,n){mc(t)&&(n=e,e=t,t=mc);var i=this,r=function(){var t,r=Ah,s=i.selector;return r&&r!==i&&r.data.push(i),n&&(i.selector=Fu(n)),Ah=i,t=e.apply(i,arguments),mc(t)&&i._r.push(t),Ah=r,i.selector=s,i.isReverted=!1,t};return i.last=r,t===mc?r(i):t?i[t]=r:r},e.ignore=function(t){var e=Ah;Ah=null,t(this),Ah=e},e.getTweens=function(){var e=[];return this.data.forEach((function(n){return n instanceof t?e.push.apply(e,n.getTweens()):n instanceof zd&&!(n.parent&&"nested"===n.parent.data)&&e.push(n)})),e},e.clear=function(){this._r.length=this.data.length=0},e.kill=function(t,e){var n=this;if(t){var i=this.getTweens();this.data.forEach((function(t){"isFlip"===t.data&&(t.revert(),t.getChildren(!0,!0,!1).forEach((function(t){return i.splice(i.indexOf(t),1)})))})),i.map((function(t){return{g:t.globalTime(0),t:t}})).sort((function(t,e){return e.g-t.g||-1})).forEach((function(e){return e.t.revert(t)})),this.data.forEach((function(e){return!(e instanceof wd)&&e.revert&&e.revert(t)})),this._r.forEach((function(e){return e(t,n)})),this.isReverted=!0}else this.data.forEach((function(t){return t.kill&&t.kill()}));if(this.clear(),e){var r=Kd.indexOf(this);~r&&Kd.splice(r,1)}},e.revert=function(t){this.kill(t||{})},t}(),np=function(){function t(t){this.contexts=[],this.scope=t}var e=t.prototype;return e.add=function(t,e,n){vc(t)||(t={matches:t});var i,r,s,o=new ep(0,n||this.scope),a=o.conditions={};for(r in this.contexts.push(o),e=o.add("onMatch",e),o.queries=t,t)"all"===r?s=1:(i=Rh.matchMedia(t[r]))&&(Kd.indexOf(o)<0&&Kd.push(o),(a[r]=i.matches)&&(s=1),i.addListener?i.addListener(tp):i.addEventListener("change",tp));return s&&e(o),this},e.revert=function(t){this.kill(t||{})},e.kill=function(t){this.contexts.forEach((function(e){return e.kill(t,!0)}))},t}(),ip={registerPlugin:function(){for(var t=arguments.length,e=new Array(t),n=0;n<t;n++)e[n]=arguments[n];e.forEach((function(t){return $u(t)}))},timeline:function(t){return new Md(t)},getTweensOf:function(t,e){return Lh.getTweensOf(t,e)},getProperty:function(t,e,n,i){pc(t)&&(t=Uu(t)[0]);var r=Kc(t||{}).get,s=n?su:ru;return"native"===n&&(n=""),t?e?s((Gc[e]&&Gc[e].get||r)(t,e,n,i)):function(e,n,i){return s((Gc[e]&&Gc[e].get||r)(t,e,n,i))}:t},quickSetter:function(t,e,n){if((t=Uu(t)).length>1){var i=t.map((function(t){return op.quickSetter(t,e,n)})),r=i.length;return function(t){for(var e=r;e--;)i[e](t)}}t=t[0]||{};var s=Gc[e],o=Kc(t),a=o.harness&&(o.harness.aliases||{})[e]||e,l=s?function(e){var i=new s;Oh._pt=0,i.init(t,n?e+n:e,Oh,0,[t]),i.render(1,i),Oh._pt&&Gd(1,Oh)}:o.set(t,a);return s?l:function(e){return l(t,a,n?e+n:e,o,1)}},quickTo:function(t,e,n){var i,r=op.to(t,au(((i={})[e]="+=0.1",i.paused=!0,i),n||{})),s=function(t,n,i){return r.resetTo(e,t,n,i)};return s.tween=r,s},isTweening:function(t){return Lh.getTweensOf(t,!0).length>0},defaults:function(t){return t&&t.ease&&(t.ease=gd(t.ease,rc.ease)),lu(rc,t||{})},config:function(t){return lu(ic,t||{})},registerEffect:function(t){var e=t.name,n=t.effect,i=t.plugins,r=t.defaults,s=t.extendTimeline;(i||"").split(",").forEach((function(t){return t&&!Gc[t]&&!Lc[t]&&zc(e+" effect requires "+t+" plugin.")})),Wc[e]=function(t,e,i){return n(Uu(t),ou(e||{},r),i)},s&&(Md.prototype[e]=function(t,n,i){return this.add(Wc[e](t,vc(n)?n:(i=n)&&{},this),i)})},registerEase:function(t,e){cd[t]=gd(e)},parseEase:function(t,e){return arguments.length?gd(t,e):cd},getById:function(t){return Lh.getById(t)},exportRoot:function(t,e){void 0===t&&(t={});var n,i,r=new Md(t);for(r.smoothChildTiming=_c(t.smoothChildTiming),Lh.remove(r),r._dp=0,r._time=r._tTime=Lh._time,n=Lh._first;n;)i=n._next,!e&&!n._dur&&n instanceof zd&&n.vars.onComplete===n._targets[0]||Su(r,n,n._start-n._delay),n=i;return Su(Lh,r,0),r},context:function(t,e){return t?new ep(t,e):Ah},matchMedia:function(t){return new np(t)},matchMediaRefresh:function(){return Kd.forEach((function(t){var e,n,i=t.conditions;for(n in i)i[n]&&(i[n]=!1,e=1);e&&t.revert()}))||tp()},addEventListener:function(t,e){var n=Jd[t]||(Jd[t]=[]);~n.indexOf(e)||n.push(e)},removeEventListener:function(t,e){var n=Jd[t],i=n&&n.indexOf(e);i>=0&&n.splice(i,1)},utils:{wrap:function t(e,n,i){var r=n-e;return wc(e)?qu(e,t(0,e.length),n):zu(i,(function(t){return(r+(t-e)%r)%r+e}))},wrapYoyo:function t(e,n,i){var r=n-e,s=2*r;return wc(e)?qu(e,t(0,e.length-1),n):zu(i,(function(t){return e+((t=(s+(t-e)%s)%s||0)>r?s-t:t)}))},distribute:Hu,random:ju,snap:Wu,normalize:function(t,e,n){return Yu(t,e,0,1,n)},getUnit:Ou,clamp:function(t,e,n){return zu(n,(function(n){return ku(t,e,n)}))},splitColor:nd,toArray:Uu,selector:Fu,mapRange:Yu,pipe:function(){for(var t=arguments.length,e=new Array(t),n=0;n<t;n++)e[n]=arguments[n];return function(t){return e.reduce((function(t,e){return e(t)}),t)}},unitize:function(t,e){return function(n){return t(parseFloat(n))+(e||Ou(n))}},interpolate:function t(e,n,i,r){var s=isNaN(e+n)?0:function(t){return(1-t)*e+t*n};if(!s){var o,a,l,h,c,u=pc(e),d={};if(!0===i&&(r=1)&&(i=null),u)e={p:e},n={p:n};else if(wc(e)&&!wc(n)){for(l=[],h=e.length,c=h-2,a=1;a<h;a++)l.push(t(e[a-1],e[a]));h--,s=function(t){t*=h;var e=Math.min(c,~~t);return l[e](t-e)},i=n}else r||(e=au(wc(e)?[]:{},e));if(!l){for(o in n)Cd.call(d,e,o,"get",n[o]);s=function(t){return Gd(t,d)||(u?e.p:e)}}}return zu(i,s)},shuffle:Vu},install:Dc,effects:Wc,ticker:ld,updateRoot:Md.updateRoot,plugins:Gc,globalTimeline:Lh,core:{PropTween:Yd,globals:kc,Tween:zd,Timeline:Md,Animation:wd,getCache:Kc,_removeLinkedListItem:du,reverting:function(){return Ph},context:function(t){return t&&Ah&&(Ah.data.push(t),t._ctx=Ah),Ah},suppressOverwrites:function(t){return Ch=t}}};Zc("to,from,fromTo,delayedCall,set,killTweensOf",(function(t){return ip[t]=zd[t]})),ld.add(Md.updateRoot),Oh=ip.to({},{duration:0});var rp=function(t,e){for(var n=t._pt;n&&n.p!==e&&n.op!==e&&n.fp!==e;)n=n._next;return n},sp=function(t,e){return{name:t,rawVars:1,init:function(t,n,i){i._onInit=function(t){var i,r;if(pc(n)&&(i={},Zc(n,(function(t){return i[t]=1})),n=i),e){for(r in i={},n)i[r]=e(n[r]);n=i}!function(t,e){var n,i,r,s=t._targets;for(n in e)for(i=s.length;i--;)(r=t._ptLookup[i][n])&&(r=r.d)&&(r._pt&&(r=rp(r,n)),r&&r.modifier&&r.modifier(e[n],t,s[i],n))}(t,n)}}}},op=ip.registerPlugin({name:"attr",init:function(t,e,n,i,r){var s,o,a;for(s in this.tween=n,e)a=t.getAttribute(s)||"",(o=this.add(t,"setAttribute",(a||0)+"",e[s],i,r,0,0,s)).op=s,o.b=a,this._props.push(s)},render:function(t,e){for(var n=e._pt;n;)Ph?n.set(n.t,n.p,n.b,n):n.r(t,n.d),n=n._next}},{name:"endArray",init:function(t,e){for(var n=e.length;n--;)this.add(t,n,t[n]||0,e[n],0,0,0,0,0,1)}},sp("roundProps",Gu),sp("modifiers"),sp("snap",Wu))||ip;zd.version=Md.version=op.version="3.11.2",zh=1,xc()&&hd();cd.Power0,cd.Power1,cd.Power2,cd.Power3,cd.Power4,cd.Linear,cd.Quad,cd.Cubic,cd.Quart,cd.Quint,cd.Strong,cd.Elastic,cd.Back,cd.SteppedEase,cd.Bounce,cd.Sine,cd.Expo,cd.Circ;var ap,lp,hp,cp,up,dp,pp,mp,fp={},gp=180/Math.PI,vp=Math.PI/180,_p=Math.atan2,xp=/([A-Z])/g,yp=/(left|right|width|margin|padding|x)/i,bp=/[\s,\(]\S/,wp={autoAlpha:"opacity,visibility",scale:"scaleX,scaleY",alpha:"opacity"},Mp=function(t,e){return e.set(e.t,e.p,Math.round(1e4*(e.s+e.c*t))/1e4+e.u,e)},Sp=function(t,e){return e.set(e.t,e.p,1===t?e.e:Math.round(1e4*(e.s+e.c*t))/1e4+e.u,e)},Tp=function(t,e){return e.set(e.t,e.p,t?Math.round(1e4*(e.s+e.c*t))/1e4+e.u:e.b,e)},Ep=function(t,e){var n=e.s+e.c*t;e.set(e.t,e.p,~~(n+(n<0?-.5:.5))+e.u,e)},Cp=function(t,e){return e.set(e.t,e.p,t?e.e:e.b,e)},Pp=function(t,e){return e.set(e.t,e.p,1!==t?e.b:e.e,e)},Ap=function(t,e,n){return t.style[e]=n},Lp=function(t,e,n){return t.style.setProperty(e,n)},Rp=function(t,e,n){return t._gsap[e]=n},Dp=function(t,e,n){return t._gsap.scaleX=t._gsap.scaleY=n},Ip=function(t,e,n,i,r){var s=t._gsap;s.scaleX=s.scaleY=n,s.renderTransform(r,s)},zp=function(t,e,n,i,r){var s=t._gsap;s[e]=n,s.renderTransform(r,s)},kp="transform",Op=kp+"Origin",Np=function(t,e){var n=this,i=this.target,r=i.style;if(t in fp){if(this.tfm=this.tfm||{},"transform"!==t&&(~(t=wp[t]||t).indexOf(",")?t.split(",").forEach((function(t){return n.tfm[t]=em(i,t)})):this.tfm[t]=i._gsap.x?i._gsap[t]:em(i,t)),this.props.indexOf(kp)>=0)return;i._gsap.svg&&(this.svgo=i.getAttribute("data-svg-origin"),this.props.push(Op,e,"")),t=kp}(r||e)&&this.props.push(t,e,r[t])},Bp=function(t){t.translate&&(t.removeProperty("translate"),t.removeProperty("scale"),t.removeProperty("rotate"))},Up=function(){var t,e,n=this.props,i=this.target,r=i.style,s=i._gsap;for(t=0;t<n.length;t+=3)n[t+1]?i[n[t]]=n[t+2]:n[t+2]?r[n[t]]=n[t+2]:r.removeProperty(n[t].replace(xp,"-$1").toLowerCase());if(this.tfm){for(e in this.tfm)s[e]=this.tfm[e];s.svg&&(s.renderTransform(),i.setAttribute("data-svg-origin",this.svgo||"")),!(t=pp())||t.isStart||r[kp]||(Bp(r),s.uncache=1)}},Fp=function(t,e){var n={target:t,props:[],revert:Up,save:Np};return e&&e.split(",").forEach((function(t){return n.save(t)})),n},Vp=function(t,e){var n=lp.createElementNS?lp.createElementNS((e||"http://www.w3.org/1999/xhtml").replace(/^https/,"http"),t):lp.createElement(t);return n.style?n:lp.createElement(t)},Hp=function t(e,n,i){var r=getComputedStyle(e);return r[n]||r.getPropertyValue(n.replace(xp,"-$1").toLowerCase())||r.getPropertyValue(n)||!i&&t(e,Wp(n)||n,1)||""},Gp="O,Moz,ms,Ms,Webkit".split(","),Wp=function(t,e,n){var i=(e||up).style,r=5;if(t in i&&!n)return t;for(t=t.charAt(0).toUpperCase()+t.substr(1);r--&&!(Gp[r]+t in i););return r<0?null:(3===r?"ms":r>=0?Gp[r]:"")+t},jp=function(){"undefined"!=typeof window&&window.document&&(ap=window,lp=ap.document,hp=lp.documentElement,up=Vp("div")||{style:{}},Vp("div"),kp=Wp(kp),Op=kp+"Origin",up.style.cssText="border-width:0;line-height:0;position:absolute;padding:0",mp=!!Wp("perspective"),pp=op.core.reverting,cp=1)},qp=function t(e){var n,i=Vp("svg",this.ownerSVGElement&&this.ownerSVGElement.getAttribute("xmlns")||"http://www.w3.org/2000/svg"),r=this.parentNode,s=this.nextSibling,o=this.style.cssText;if(hp.appendChild(i),i.appendChild(this),this.style.display="block",e)try{n=this.getBBox(),this._gsapBBox=this.getBBox,this.getBBox=t}catch(t){}else this._gsapBBox&&(n=this._gsapBBox());return r&&(s?r.insertBefore(this,s):r.appendChild(this)),hp.removeChild(i),this.style.cssText=o,n},Xp=function(t,e){for(var n=e.length;n--;)if(t.hasAttribute(e[n]))return t.getAttribute(e[n])},Yp=function(t){var e;try{e=t.getBBox()}catch(n){e=qp.call(t,!0)}return e&&(e.width||e.height)||t.getBBox===qp||(e=qp.call(t,!0)),!e||e.width||e.x||e.y?e:{x:+Xp(t,["x","cx","x1"])||0,y:+Xp(t,["y","cy","y1"])||0,width:0,height:0}},Kp=function(t){return!(!t.getCTM||t.parentNode&&!t.ownerSVGElement||!Yp(t))},Jp=function(t,e){if(e){var n=t.style;e in fp&&e!==Op&&(e=kp),n.removeProperty?("ms"!==e.substr(0,2)&&"webkit"!==e.substr(0,6)||(e="-"+e),n.removeProperty(e.replace(xp,"-$1").toLowerCase())):n.removeAttribute(e)}},Zp=function(t,e,n,i,r,s){var o=new Yd(t._pt,e,n,0,1,s?Pp:Cp);return t._pt=o,o.b=i,o.e=r,t._props.push(n),o},$p={deg:1,rad:1,turn:1},Qp={grid:1,flex:1},tm=function t(e,n,i,r){var s,o,a,l,h=parseFloat(i)||0,c=(i+"").trim().substr((h+"").length)||"px",u=up.style,d=yp.test(n),p="svg"===e.tagName.toLowerCase(),m=(p?"client":"offset")+(d?"Width":"Height"),f=100,g="px"===r,v="%"===r;return r===c||!h||$p[r]||$p[c]?h:("px"!==c&&!g&&(h=t(e,n,i,"px")),l=e.getCTM&&Kp(e),!v&&"%"!==c||!fp[n]&&!~n.indexOf("adius")?(u[d?"width":"height"]=f+(g?c:r),o=~n.indexOf("adius")||"em"===r&&e.appendChild&&!p?e:e.parentNode,l&&(o=(e.ownerSVGElement||{}).parentNode),o&&o!==lp&&o.appendChild||(o=lp.body),(a=o._gsap)&&v&&a.width&&d&&a.time===ld.time&&!a.uncache?$c(h/a.width*f):((v||"%"===c)&&!Qp[Hp(o,"display")]&&(u.position=Hp(e,"position")),o===e&&(u.position="static"),o.appendChild(up),s=up[m],o.removeChild(up),u.position="absolute",d&&v&&((a=Kc(o)).time=ld.time,a.width=o[m]),$c(g?s*h/f:s&&h?f/s*h:0))):(s=l?e.getBBox()[d?"width":"height"]:e[m],$c(v?h/s*f:h/100*s)))},em=function(t,e,n,i){var r;return cp||jp(),e in wp&&"transform"!==e&&~(e=wp[e]).indexOf(",")&&(e=e.split(",")[0]),fp[e]&&"transform"!==e?(r=dm(t,i),r="transformOrigin"!==e?r[e]:r.svg?r.origin:pm(Hp(t,Op))+" "+r.zOrigin+"px"):(!(r=t.style[e])||"auto"===r||i||~(r+"").indexOf("calc("))&&(r=sm[e]&&sm[e](t,e,n)||Hp(t,e)||Jc(t,e)||("opacity"===e?1:0)),n&&!~(r+"").trim().indexOf(" ")?tm(t,e,r,n)+n:r},nm=function(t,e,n,i){if(!n||"none"===n){var r=Wp(e,t,1),s=r&&Hp(t,r,1);s&&s!==n?(e=r,n=s):"borderColor"===e&&(n=Hp(t,"borderTopColor"))}var o,a,l,h,c,u,d,p,m,f,g,v=new Yd(this._pt,t.style,e,0,1,Hd),_=0,x=0;if(v.b=n,v.e=i,n+="","auto"===(i+="")&&(t.style[e]=i,i=Hp(t,e)||i,t.style[e]=n),ad(o=[n,i]),i=o[1],l=(n=o[0]).match(Tc)||[],(i.match(Tc)||[]).length){for(;a=Tc.exec(i);)d=a[0],m=i.substring(_,a.index),c?c=(c+1)%5:"rgba("!==m.substr(-5)&&"hsla("!==m.substr(-5)||(c=1),d!==(u=l[x++]||"")&&(h=parseFloat(u)||0,g=u.substr((h+"").length),"="===d.charAt(1)&&(d=tu(h,d)+g),p=parseFloat(d),f=d.substr((p+"").length),_=Tc.lastIndex-f.length,f||(f=f||ic.units[e]||g,_===i.length&&(i+=f,v.e+=f)),g!==f&&(h=tm(t,e,u,f)||0),v._pt={_next:v._pt,p:m||1===x?m:",",s:h,c:p-h,m:c&&c<4||"zIndex"===e?Math.round:0});v.c=_<i.length?i.substring(_,i.length):""}else v.r="display"===e&&"none"===i?Pp:Cp;return Cc.test(i)&&(v.e=0),this._pt=v,v},im={top:"0%",bottom:"100%",left:"0%",right:"100%",center:"50%"},rm=function(t,e){if(e.tween&&e.tween._time===e.tween._dur){var n,i,r,s=e.t,o=s.style,a=e.u,l=s._gsap;if("all"===a||!0===a)o.cssText="",i=1;else for(r=(a=a.split(",")).length;--r>-1;)n=a[r],fp[n]&&(i=1,n="transformOrigin"===n?Op:kp),Jp(s,n);i&&(Jp(s,kp),l&&(l.svg&&s.removeAttribute("transform"),dm(s,1),l.uncache=1,Bp(o)))}},sm={clearProps:function(t,e,n,i,r){if("isFromStart"!==r.data){var s=t._pt=new Yd(t._pt,e,n,0,0,rm);return s.u=i,s.pr=-10,s.tween=r,t._props.push(n),1}}},om=[1,0,0,1,0,0],am={},lm=function(t){return"matrix(1, 0, 0, 1, 0, 0)"===t||"none"===t||!t},hm=function(t){var e=Hp(t,kp);return lm(e)?om:e.substr(7).match(Sc).map($c)},cm=function(t,e){var n,i,r,s,o=t._gsap||Kc(t),a=t.style,l=hm(t);return o.svg&&t.getAttribute("transform")?"1,0,0,1,0,0"===(l=[(r=t.transform.baseVal.consolidate().matrix).a,r.b,r.c,r.d,r.e,r.f]).join(",")?om:l:(l!==om||t.offsetParent||t===hp||o.svg||(r=a.display,a.display="block",(n=t.parentNode)&&t.offsetParent||(s=1,i=t.nextElementSibling,hp.appendChild(t)),l=hm(t),r?a.display=r:Jp(t,"display"),s&&(i?n.insertBefore(t,i):n?n.appendChild(t):hp.removeChild(t))),e&&l.length>6?[l[0],l[1],l[4],l[5],l[12],l[13]]:l)},um=function(t,e,n,i,r,s){var o,a,l,h=t._gsap,c=r||cm(t,!0),u=h.xOrigin||0,d=h.yOrigin||0,p=h.xOffset||0,m=h.yOffset||0,f=c[0],g=c[1],v=c[2],_=c[3],x=c[4],y=c[5],b=e.split(" "),w=parseFloat(b[0])||0,M=parseFloat(b[1])||0;n?c!==om&&(a=f*_-g*v)&&(l=w*(-g/a)+M*(f/a)-(f*y-g*x)/a,w=w*(_/a)+M*(-v/a)+(v*y-_*x)/a,M=l):(w=(o=Yp(t)).x+(~b[0].indexOf("%")?w/100*o.width:w),M=o.y+(~(b[1]||b[0]).indexOf("%")?M/100*o.height:M)),i||!1!==i&&h.smooth?(x=w-u,y=M-d,h.xOffset=p+(x*f+y*v)-x,h.yOffset=m+(x*g+y*_)-y):h.xOffset=h.yOffset=0,h.xOrigin=w,h.yOrigin=M,h.smooth=!!i,h.origin=e,h.originIsAbsolute=!!n,t.style[Op]="0px 0px",s&&(Zp(s,h,"xOrigin",u,w),Zp(s,h,"yOrigin",d,M),Zp(s,h,"xOffset",p,h.xOffset),Zp(s,h,"yOffset",m,h.yOffset)),t.setAttribute("data-svg-origin",w+" "+M)},dm=function(t,e){var n=t._gsap||new bd(t);if("x"in n&&!e&&!n.uncache)return n;var i,r,s,o,a,l,h,c,u,d,p,m,f,g,v,_,x,y,b,w,M,S,T,E,C,P,A,L,R,D,I,z,k=t.style,O=n.scaleX<0,N="px",B="deg",U=getComputedStyle(t),F=Hp(t,Op)||"0";return i=r=s=l=h=c=u=d=p=0,o=a=1,n.svg=!(!t.getCTM||!Kp(t)),U.translate&&("none"===U.translate&&"none"===U.scale&&"none"===U.rotate||(k[kp]=("none"!==U.translate?"translate3d("+(U.translate+" 0 0").split(" ").slice(0,3).join(", ")+") ":"")+("none"!==U.rotate?"rotate("+U.rotate+") ":"")+("none"!==U.scale?"scale("+U.scale.split(" ").join(",")+") ":"")+("none"!==U[kp]?U[kp]:"")),k.scale=k.rotate=k.translate="none"),g=cm(t,n.svg),n.svg&&(n.uncache?(C=t.getBBox(),F=n.xOrigin-C.x+"px "+(n.yOrigin-C.y)+"px",E=""):E=!e&&t.getAttribute("data-svg-origin"),um(t,E||F,!!E||n.originIsAbsolute,!1!==n.smooth,g)),m=n.xOrigin||0,f=n.yOrigin||0,g!==om&&(y=g[0],b=g[1],w=g[2],M=g[3],i=S=g[4],r=T=g[5],6===g.length?(o=Math.sqrt(y*y+b*b),a=Math.sqrt(M*M+w*w),l=y||b?_p(b,y)*gp:0,(u=w||M?_p(w,M)*gp+l:0)&&(a*=Math.abs(Math.cos(u*vp))),n.svg&&(i-=m-(m*y+f*w),r-=f-(m*b+f*M))):(z=g[6],D=g[7],A=g[8],L=g[9],R=g[10],I=g[11],i=g[12],r=g[13],s=g[14],h=(v=_p(z,R))*gp,v&&(E=S*(_=Math.cos(-v))+A*(x=Math.sin(-v)),C=T*_+L*x,P=z*_+R*x,A=S*-x+A*_,L=T*-x+L*_,R=z*-x+R*_,I=D*-x+I*_,S=E,T=C,z=P),c=(v=_p(-w,R))*gp,v&&(_=Math.cos(-v),I=M*(x=Math.sin(-v))+I*_,y=E=y*_-A*x,b=C=b*_-L*x,w=P=w*_-R*x),l=(v=_p(b,y))*gp,v&&(E=y*(_=Math.cos(v))+b*(x=Math.sin(v)),C=S*_+T*x,b=b*_-y*x,T=T*_-S*x,y=E,S=C),h&&Math.abs(h)+Math.abs(l)>359.9&&(h=l=0,c=180-c),o=$c(Math.sqrt(y*y+b*b+w*w)),a=$c(Math.sqrt(T*T+z*z)),v=_p(S,T),u=Math.abs(v)>2e-4?v*gp:0,p=I?1/(I<0?-I:I):0),n.svg&&(E=t.getAttribute("transform"),n.forceCSS=t.setAttribute("transform","")||!lm(Hp(t,kp)),E&&t.setAttribute("transform",E))),Math.abs(u)>90&&Math.abs(u)<270&&(O?(o*=-1,u+=l<=0?180:-180,l+=l<=0?180:-180):(a*=-1,u+=u<=0?180:-180)),e=e||n.uncache,n.x=i-((n.xPercent=i&&(!e&&n.xPercent||(Math.round(t.offsetWidth/2)===Math.round(-i)?-50:0)))?t.offsetWidth*n.xPercent/100:0)+N,n.y=r-((n.yPercent=r&&(!e&&n.yPercent||(Math.round(t.offsetHeight/2)===Math.round(-r)?-50:0)))?t.offsetHeight*n.yPercent/100:0)+N,n.z=s+N,n.scaleX=$c(o),n.scaleY=$c(a),n.rotation=$c(l)+B,n.rotationX=$c(h)+B,n.rotationY=$c(c)+B,n.skewX=u+B,n.skewY=d+B,n.transformPerspective=p+N,(n.zOrigin=parseFloat(F.split(" ")[2])||0)&&(k[Op]=pm(F)),n.xOffset=n.yOffset=0,n.force3D=ic.force3D,n.renderTransform=n.svg?ym:mp?xm:fm,n.uncache=0,n},pm=function(t){return(t=t.split(" "))[0]+" "+t[1]},mm=function(t,e,n){var i=Ou(e);return $c(parseFloat(e)+parseFloat(tm(t,"x",n+"px",i)))+i},fm=function(t,e){e.z="0px",e.rotationY=e.rotationX="0deg",e.force3D=0,xm(t,e)},gm="0deg",vm="0px",_m=") ",xm=function(t,e){var n=e||this,i=n.xPercent,r=n.yPercent,s=n.x,o=n.y,a=n.z,l=n.rotation,h=n.rotationY,c=n.rotationX,u=n.skewX,d=n.skewY,p=n.scaleX,m=n.scaleY,f=n.transformPerspective,g=n.force3D,v=n.target,_=n.zOrigin,x="",y="auto"===g&&t&&1!==t||!0===g;if(_&&(c!==gm||h!==gm)){var b,w=parseFloat(h)*vp,M=Math.sin(w),S=Math.cos(w);w=parseFloat(c)*vp,b=Math.cos(w),s=mm(v,s,M*b*-_),o=mm(v,o,-Math.sin(w)*-_),a=mm(v,a,S*b*-_+_)}f!==vm&&(x+="perspective("+f+_m),(i||r)&&(x+="translate("+i+"%, "+r+"%) "),(y||s!==vm||o!==vm||a!==vm)&&(x+=a!==vm||y?"translate3d("+s+", "+o+", "+a+") ":"translate("+s+", "+o+_m),l!==gm&&(x+="rotate("+l+_m),h!==gm&&(x+="rotateY("+h+_m),c!==gm&&(x+="rotateX("+c+_m),u===gm&&d===gm||(x+="skew("+u+", "+d+_m),1===p&&1===m||(x+="scale("+p+", "+m+_m),v.style[kp]=x||"translate(0, 0)"},ym=function(t,e){var n,i,r,s,o,a=e||this,l=a.xPercent,h=a.yPercent,c=a.x,u=a.y,d=a.rotation,p=a.skewX,m=a.skewY,f=a.scaleX,g=a.scaleY,v=a.target,_=a.xOrigin,x=a.yOrigin,y=a.xOffset,b=a.yOffset,w=a.forceCSS,M=parseFloat(c),S=parseFloat(u);d=parseFloat(d),p=parseFloat(p),(m=parseFloat(m))&&(p+=m=parseFloat(m),d+=m),d||p?(d*=vp,p*=vp,n=Math.cos(d)*f,i=Math.sin(d)*f,r=Math.sin(d-p)*-g,s=Math.cos(d-p)*g,p&&(m*=vp,o=Math.tan(p-m),r*=o=Math.sqrt(1+o*o),s*=o,m&&(o=Math.tan(m),n*=o=Math.sqrt(1+o*o),i*=o)),n=$c(n),i=$c(i),r=$c(r),s=$c(s)):(n=f,s=g,i=r=0),(M&&!~(c+"").indexOf("px")||S&&!~(u+"").indexOf("px"))&&(M=tm(v,"x",c,"px"),S=tm(v,"y",u,"px")),(_||x||y||b)&&(M=$c(M+_-(_*n+x*r)+y),S=$c(S+x-(_*i+x*s)+b)),(l||h)&&(o=v.getBBox(),M=$c(M+l/100*o.width),S=$c(S+h/100*o.height)),o="matrix("+n+","+i+","+r+","+s+","+M+","+S+")",v.setAttribute("transform",o),w&&(v.style[kp]=o)},bm=function(t,e,n,i,r){var s,o,a=360,l=pc(r),h=parseFloat(r)*(l&&~r.indexOf("rad")?gp:1)-i,c=i+h+"deg";return l&&("short"===(s=r.split("_")[1])&&(h%=a)!==h%180&&(h+=h<0?a:-360),"cw"===s&&h<0?h=(h+36e9)%a-~~(h/a)*a:"ccw"===s&&h>0&&(h=(h-36e9)%a-~~(h/a)*a)),t._pt=o=new Yd(t._pt,e,n,i,h,Sp),o.e=c,o.u="deg",t._props.push(n),o},wm=function(t,e){for(var n in e)t[n]=e[n];return t},Mm=function(t,e,n){var i,r,s,o,a,l,h,c=wm({},n._gsap),u=n.style;for(r in c.svg?(s=n.getAttribute("transform"),n.setAttribute("transform",""),u[kp]=e,i=dm(n,1),Jp(n,kp),n.setAttribute("transform",s)):(s=getComputedStyle(n)[kp],u[kp]=e,i=dm(n,1),u[kp]=s),fp)(s=c[r])!==(o=i[r])&&"perspective,force3D,transformOrigin,svgOrigin".indexOf(r)<0&&(a=Ou(s)!==(h=Ou(o))?tm(n,r,s,h):parseFloat(s),l=parseFloat(o),t._pt=new Yd(t._pt,i,r,a,l-a,Mp),t._pt.u=h||0,t._props.push(r));wm(i,c)};Zc("padding,margin,Width,Radius",(function(t,e){var n="Top",i="Right",r="Bottom",s="Left",o=(e<3?[n,i,r,s]:[n+s,n+i,r+i,r+s]).map((function(n){return e<2?t+n:"border"+n+t}));sm[e>1?"border"+t:t]=function(t,e,n,i,r){var s,a;if(arguments.length<4)return s=o.map((function(e){return em(t,e,n)})),5===(a=s.join(" ")).split(s[0]).length?s[0]:a;s=(i+"").split(" "),a={},o.forEach((function(t,e){return a[t]=s[e]=s[e]||s[(e-1)/2|0]})),t.init(e,a,r)}}));var Sm,Tm,Em,Cm={name:"css",register:jp,targetTest:function(t){return t.style&&t.nodeType},init:function(t,e,n,i,r){var s,o,a,l,h,c,u,d,p,m,f,g,v,_,x,y,b,w,M,S,T=this._props,E=t.style,C=n.vars.startAt;for(u in cp||jp(),this.styles=this.styles||Fp(t),y=this.styles.props,this.tween=n,e)if("autoRound"!==u&&(o=e[u],!Gc[u]||!Pd(u,e,n,i,t,r)))if(h=typeof o,c=sm[u],"function"===h&&(h=typeof(o=o.call(n,i,t,r))),"string"===h&&~o.indexOf("random(")&&(o=Xu(o)),c)c(this,t,u,o,n)&&(x=1);else if("--"===u.substr(0,2))s=(getComputedStyle(t).getPropertyValue(u)+"").trim(),o+="",sd.lastIndex=0,sd.test(s)||(d=Ou(s),p=Ou(o)),p?d!==p&&(s=tm(t,u,s,p)+p):d&&(o+=d),this.add(E,"setProperty",s,o,i,r,0,0,u),T.push(u),y.push(u,0,E[u]);else if("undefined"!==h){if(C&&u in C?(s="function"==typeof C[u]?C[u].call(n,i,t,r):C[u],pc(s)&&~s.indexOf("random(")&&(s=Xu(s)),Ou(s+"")||(s+=ic.units[u]||Ou(em(t,u))||""),"="===(s+"").charAt(1)&&(s=em(t,u))):s=em(t,u),l=parseFloat(s),(m="string"===h&&"="===o.charAt(1)&&o.substr(0,2))&&(o=o.substr(2)),a=parseFloat(o),u in wp&&("autoAlpha"===u&&(1===l&&"hidden"===em(t,"visibility")&&a&&(l=0),y.push("visibility",0,E.visibility),Zp(this,E,"visibility",l?"inherit":"hidden",a?"inherit":"hidden",!a)),"scale"!==u&&"transform"!==u&&~(u=wp[u]).indexOf(",")&&(u=u.split(",")[0])),f=u in fp)if(this.styles.save(u),g||((v=t._gsap).renderTransform&&!e.parseTransform||dm(t,e.parseTransform),_=!1!==e.smoothOrigin&&v.smooth,(g=this._pt=new Yd(this._pt,E,kp,0,1,v.renderTransform,v,0,-1)).dep=1),"scale"===u)this._pt=new Yd(this._pt,v,"scaleY",l,(m?tu(l,m+a):a)-l||0,Mp),this._pt.u=0,T.push("scaleY",u),u+="X";else{if("transformOrigin"===u){y.push(Op,0,E[Op]),w=void 0,M=void 0,S=void 0,w=(b=o).split(" "),M=w[0],S=w[1]||"50%","top"!==M&&"bottom"!==M&&"left"!==S&&"right"!==S||(b=M,M=S,S=b),w[0]=im[M]||M,w[1]=im[S]||S,o=w.join(" "),v.svg?um(t,o,0,_,0,this):((p=parseFloat(o.split(" ")[2])||0)!==v.zOrigin&&Zp(this,v,"zOrigin",v.zOrigin,p),Zp(this,E,u,pm(s),pm(o)));continue}if("svgOrigin"===u){um(t,o,1,_,0,this);continue}if(u in am){bm(this,v,u,l,m?tu(l,m+o):o);continue}if("smoothOrigin"===u){Zp(this,v,"smooth",v.smooth,o);continue}if("force3D"===u){v[u]=o;continue}if("transform"===u){Mm(this,o,t);continue}}else u in E||(u=Wp(u)||u);if(f||(a||0===a)&&(l||0===l)&&!bp.test(o)&&u in E)a||(a=0),(d=(s+"").substr((l+"").length))!==(p=Ou(o)||(u in ic.units?ic.units[u]:d))&&(l=tm(t,u,s,p)),this._pt=new Yd(this._pt,f?v:E,u,l,(m?tu(l,m+a):a)-l,f||"px"!==p&&"zIndex"!==u||!1===e.autoRound?Mp:Ep),this._pt.u=p||0,d!==p&&"%"!==p&&(this._pt.b=s,this._pt.r=Tp);else if(u in E)nm.call(this,t,u,s,m?m+o:o);else{if(!(u in t)){Ic(u,o);continue}this.add(t,u,s||t[u],m?m+o:o,i,r)}f||(u in E?y.push(u,0,E[u]):y.push(u,1,s||t[u])),T.push(u)}x&&Xd(this)},render:function(t,e){if(e.tween._time||!pp())for(var n=e._pt;n;)n.r(t,n.d),n=n._next;else e.styles.revert()},get:em,aliases:wp,getSetter:function(t,e,n){var i=wp[e];return i&&i.indexOf(",")<0&&(e=i),e in fp&&e!==Op&&(t._gsap.x||em(t,"x"))?n&&dp===n?"scale"===e?Dp:Rp:(dp=n||{},"scale"===e?Ip:zp):t.style&&!gc(t.style[e])?Ap:~e.indexOf("-")?Lp:Ud(t,e)},core:{_removeProperty:Jp,_getMatrix:cm}};op.utils.checkPrefix=Wp,op.core.getStyleSaver=Fp,Em=Zc((Sm="x,y,z,scale,scaleX,scaleY,xPercent,yPercent")+","+(Tm="rotation,rotationX,rotationY,skewX,skewY")+",transform,transformOrigin,svgOrigin,force3D,smoothOrigin,transformPerspective",(function(t){fp[t]=1})),Zc(Tm,(function(t){ic.units[t]="deg",am[t]=1})),wp[Em[13]]=Sm+","+Tm,Zc("0:translateX,1:translateY,2:translateZ,8:rotate,8:rotationZ,8:rotateZ,9:rotateX,10:rotateY",(function(t){var e=t.split(":");wp[e[1]]=Em[e[0]]})),Zc("x,y,z,top,right,bottom,left,width,height,fontSize,padding,margin,perspective",(function(t){ic.units[t]="px"})),op.registerPlugin(Cm);var Pm=op.registerPlugin(Cm)||op;Pm.core.Tween;class Am{world=new ff;scene=this.world.scene;projectState=this.world.projectState;data=this.world.resources.projects;geometry=new Fn(1,1,50,1);uniforms={uTime:{value:0},uProgress:this.world.projectState.progress,uTransition:this.world.projectState.isTransitioning,uTransitionStart:{value:0},uTransitionDuration:{value:.5},uImage1:{value:null},uImage2:{value:null},uBorderColor:{value:new Mt},uAbstract:{value:this.world.resources.assets.abstract},uColor:{value:new Mt},uVignetteIntensity:{value:40},uVignetteInfluence:{value:.5},uAspect:{value:1},uIsCurved:{value:!1},uOpacity:{value:1},uvRate:{value:new et(1,1)}};material=new Sn({vertexShader:t("#define GLSLIFY 1\nuniform float uAspect;\nuniform float uIsCurved;\nuniform vec2 uvRate;\n\nvarying vec2 vUv;\nvarying vec2 vUv1;\n\nvoid main() {\n    vec3 newPos = position;\n    newPos.z -= sin(uv.x * 3.1415) * (0.1 + uAspect * 0.1) * uIsCurved;\n    newPos.y += 0.5;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n\n    // vec2 uvRate = vec2(1., (16./9.) / uAspect);\n\n    vec2 _uv = uv - 0.5;\n    vUv1 = _uv;\n    vUv1 *= uvRate;\n    vUv1 += 0.5;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform float uTime;\nuniform float uTransition;\nuniform float uTransitionStart;\nuniform float uTransitionDuration;\nuniform vec3 uColor;\nuniform float uOpacity;\n\nuniform sampler2D uImage1;\nuniform sampler2D uImage2;\nuniform float uProgress;\nuniform sampler2D uAbstract;\nuniform float uVignetteIntensity;\nuniform float uVignetteInfluence;\n\nvarying vec2 vUv;\nvarying vec2 vUv1;\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((uTime + 10.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nfloat getTransition(float progress) {\n    return max(min(2. * progress, -2. * (progress - 1.)), 0.);\n}\n\nvec3 rgb2hsv(vec3 c) {\n    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n    \n    float d = q.x - min(q.w, q.y);\n    float e = 1.0e-10;\n    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n}\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nfloat dBorder(float t, vec2 st) {\n    vec2 p1 = vec2(t);\n    vec2 p2 = vec2(1. - t);\n    vec2 p3 = vec2(t, 1. - t);\n    vec2 p4 = vec2(1. - t, t);\n    float d1 = step(p1.x,st.x) * step(st.x,p4.x) * abs(st.y-p1.y) + step(st.x,p1.x) * distance(st,p1) + step(p4.x,st.x) * distance(st,p4);\n    d1 = min(step(p3.x,st.x) * step(st.x,p2.x)  *abs(st.y-p2.y) + step(st.x,p3.x) * distance(st,p3) + step(p2.x,st.x) * distance(st,p2), d1);\n    d1 = min(step(p1.y,st.y)*step(st.y,p3.y)*abs(st.x-p1.x)+ step(st.y,p1.y)*distance(st,p1)+step(p3.y,st.y)*distance(st,p3),d1);\n    d1 = min(step(p4.y,st.y)*step(st.y,p2.y)*abs(st.x-p2.x)+ step(st.y,p4.y)*distance(st,p4)+step(p2.y,st.y)*distance(st,p2),d1);\n\n    return d1;\n}\n\nvoid main() {\n\n    vec3 image1 = texture2D(uImage1, vUv1).rgb;\n    vec3 image2 = texture2D(uImage2, vUv1).rgb;\n\n    vec3 final = image1;\n\n    if (uTransition > 0.5) {\n        vec3 image = mix(image1, image2, uProgress);\n        vec3 staticSample = vec3(tvNoise(vUv));\n        float staticRatio = getTransition(uProgress);\n\n        final = mix(image, staticSample, staticRatio);\n    }\n\n    // border shape\n    vec2 angleUV = vUv - vec2(0.5);\n    angleUV.x *= 2.;\n    float angle = atan(angleUV.x,angleUV.y) / 6.28 + 0.5;\n    float angleDist = 0.05 + sin(uTime) * 0.04;\n    float angleSpeed = 0.1;\n    float angleS = smoothstep(1. - angleDist, 1., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(angleDist, 0., fract(angle + uTime * angleSpeed));\n    angleS += smoothstep(1. - angleDist, 1., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n    angleS += smoothstep(angleDist, 0., fract(angle + 0.5 + uTime * angleSpeed * 2.));\n\n    float d1 = dBorder(0.01, vUv);\n    float nos = texture2D(uAbstract, vUv + vec2(cos(uTime * angleSpeed), sin(uTime * angleSpeed))).r / 50.;\n    float f1 = .01 / abs(d1 + nos);\n    angleS *= f1;\n\n    vec3 borderColor = uColor;\n    borderColor = rgb2hsv(borderColor);\n\n    borderColor.z -= 0.4;\n    borderColor.z += angleS * 2.;\n    borderColor.g -= angleS;\n    borderColor.r -= 0.08 * sin(uTime * 5.) * f1;\n\n    borderColor = hsv2rgb(borderColor);\n\n    // vignette\n    vec2 vigUv = vUv * (1.0 - vUv.yx);\n    \n    float vig = vigUv.x*vigUv.y * uVignetteIntensity;\n    \n    vig = pow(vig, uVignetteInfluence);\n    vig = clamp(vig, 0., 1.);\n    final *= vec3(vig);\n\n    final += borderColor * f1;\n\n    final = pow( final, vec3(1.5,1.2,1.0) );    \n    final *= clamp(1.0-0.3*length(vUv), 0.0, 1.0 );\n\n    gl_FragColor = vec4(final, 1.) * uOpacity;\n}"),uniforms:this.uniforms,transparent:!0});mesh=new _n(this.geometry,this.material);timeline=Pm.timeline();positionDebug(){const t=this.debug.addFolder({title:"position",expanded:!1});t.addInput(this.mesh.position,"x",{min:-2,max:2,step:.001}),t.addInput(this.mesh.position,"y",{min:-2,max:2,step:.001}),t.addInput(this.mesh.position,"z",{min:-2,max:2,step:.001})}rotationDebug(){const t=this.debug.addFolder({title:"rotation",expanded:!1});t.addInput(this.mesh.rotation,"x",{min:-2,max:2,step:.001}),t.addInput(this.mesh.rotation,"y",{min:-2,max:2,step:.001}),t.addInput(this.mesh.rotation,"z",{min:-2,max:2,step:.001})}scaleDebug(){const t=this.debug.addFolder({title:"scale",expanded:!1}),e={value:1};t.addInput(e,"value",{min:0,max:2,step:.001,label:"uniform scaling"}).on("change",(()=>this.mesh.scale.setScalar(e.value))),t.addInput(this.mesh.scale,"x",{min:-2,max:2,step:.001}),t.addInput(this.mesh.scale,"y",{min:-2,max:2,step:.001}),t.addInput(this.mesh.scale,"z",{min:-2,max:2,step:.001})}transitionDebug(){this.debug.addFolder({title:"transition",expanded:!1}).addInput(this.uniforms.uProgress,"value",{min:0,max:1,step:.001,label:"progress"})}fragmentDebug(){const t=this.debug.addFolder({title:"fragment",expanded:!1});t.addInput(this.uniforms.uVignetteIntensity,"value",{min:0,max:50,step:.01,label:"vignette intensity"}),t.addInput(this.uniforms.uVignetteInfluence,"value",{min:0,max:1,step:.001,label:"vignette influence"})}setDebug(){this.debug=this.world.pane.addFolder({title:"projectScreen",expanded:!1}),this.positionDebug(),this.rotationDebug(),this.scaleDebug(),this.transitionDebug(),this.fragmentDebug()}onActiveChange({color:t,newIndex:e}){this.projectState.target=e,t&&(this.uniforms.uColor.value=t),this.uniforms.uImage2.value=this.data[e].texture,this.projectState.isTransitioning.value=!0,this.timeline.parent&&(this.timeline.clear(),this.projectState.progress.value=.5),this.timeline.to(this.projectState.progress,{value:1,duration:1.5,onComplete:()=>{this.projectState.active=e,this.uniforms.uImage1.value=this.data[e].texture,this.projectState.progress.value=0,this.projectState.isTransitioning.value=!1}})}onPointerdown(){}onPointermove(){}onPointerup(){}resizeProjectDetailView(t){this.mesh.scale.x=t.scaleX,this.mesh.scale.y=t.scaleY,this.mesh.position.x=t.posX,this.mesh.position.z=t.posZ,this.mesh.rotation.y=t.rotY,this.uniforms.uAspect.value=t.aspect,t.aspect>16/9?this.uniforms.uvRate.value.set(1,16/9/t.aspect):this.uniforms.uvRate.value.set(t.aspect/(16/9),1)}resizeProjectsView(t){this.mesh.scale.set(t.scaleX,t.scaleY,1),this.mesh.position.x=t.posX,this.mesh.position.z=t.posZ,this.mesh.rotation.y=t.rotY,this.uniforms.uAspect.value=t.aspect,this.uniforms.uvRate.value.set(1,1)}update(){this.uniforms.uTime.value=this.world.time}}class Lm{world=new ff;textureLoader=new el;assetsLoaded=0;progress=0;preloader=this.world.preloader;projects=[];numAssets=window.PROJECTS.length+Object.keys(window.ASSETS).length+Object.keys(window.FONTS).length;onAssetLoaded(){this.assetsLoaded++,this.progress=this.assetsLoaded/this.numAssets,this.preloader.onAssetLoaded(this.progress)}async loadProjects(){const t=document.querySelector(".vids");return new Promise((e=>{this.projects=window.PROJECTS.map((e=>{const n=document.createElement("video");t.appendChild(n),n.muted=!0,n.src=e.source,n.autoplay=!0,n.playsInline=!0,n.crossOrigin="anonymous",n.width=500,n.height=500,n.loop=!0,n.style.objectFit="contain",n.play();const i=new xo(n);return this.onAssetLoaded(),{...e,texture:i}})).sort(((t,e)=>t.index-e.index)),e()}))}async loadFonts(){this.fonts={};let t=Object.keys(window.FONTS).length,e=0;return new Promise((n=>{Object.entries(window.FONTS).map((([i,{map:r,data:s}])=>{this.textureLoader.load(r,(r=>{this.fonts[i]={data:s,map:r},this.onAssetLoaded(),e++,e===t&&n()}))}))}))}async loadAssets(){this.assets={};let t=Object.keys(window.ASSETS).length,e=0;return new Promise((n=>{Object.entries(window.ASSETS).map((([i,r])=>{this.textureLoader.load(r,(r=>{this.assets[i]=r,this.onAssetLoaded(),e++,e===t&&n()}))}))}))}async load(){await Promise.all([this.loadProjects(),this.loadAssets(),this.loadFonts()])}}class Rm{container=document.querySelector(".portraitAlert");animateWrapper=document.querySelector(".rotate_device_container");constructor(){}onResize(t){t<1?this.activate():this.deactivate()}activate(){this.isActive||(this.isActive=!0,this.container.classList.add("visible"),this.animateWrapper.classList.add("active"))}deactivate(){this.isActive&&(this.isActive=!1,this.container.classList.remove("visible"),this.animateWrapper.classList.remove("active"))}}class Dm{world=new ff;scene=this.world.scene;post=this.world.post;projectScreen=this.world.projectScreen;cameraPosition=this.world.camera.position;cameraRotation=this.world.camera.rotation;initialHeight=this.world.initialHeight;homeObjects=[this.world.homeViewManager.title.group,this.world.homeViewManager.contact.group,this.world.homeViewManager.nav.group,this.world.curlBubble.mesh];titlesObject=this.world.projectsViewManager.titles.outerGroup;filtersObject=this.world.projectsViewManager.filters.outerGroup;projectsNavObject=this.world.projectsViewManager.nav.group;projectDetailOverlayObject=this.world.projectDetailViewManager.overlay.group;constructor(){}homeToProjects(t=1.2){this.post.activeEffect=bh.HomeProjects;const e=Pm.timeline({defaults:{duration:t,delay:0,ease:"power1.out"},onStart:()=>{this.world.usePost=!0,this.projectScreen.uniforms.uOpacity.value=0,this.projectScreen.uniforms.uIsCurved.value=!0,this.scene.add(this.projectScreen.mesh)},onComplete:()=>{this.post.transitionEffects[bh.HomeProjects].uniforms.uProgress.value=0,this.world.usePost=!1}});e.to(this.post.transitionEffects[bh.HomeProjects].uniforms.uProgress,{value:1},0),e.to(this.cameraPosition,{x:0,y:this.initialHeight,z:-1},0),Pm.delayedCall(e.duration()/4,(()=>{this.world.sky.mesh.rotation.y=Math.PI,this.scene.remove(...this.homeObjects),this.projectScreen.uniforms.uOpacity.value=1,this.scene.add(this.titlesObject,this.filtersObject,this.projectsNavObject)}))}projectsToHome(){this.post.activeEffect=bh.HomeProjects;const t=Pm.timeline({defaults:{duration:1.2,delay:0,ease:"power1.out"},onStart:()=>{this.world.usePost=!0},onComplete:()=>{this.post.transitionEffects[bh.HomeProjects].uniforms.uProgress.value=0,this.world.usePost=!1}});t.to(this.post.transitionEffects[bh.HomeProjects].uniforms.uProgress,{value:1},0),t.to(this.cameraPosition,{x:0,y:this.initialHeight,z:1},0),Pm.delayedCall(t.duration()/4,(()=>{this.world.sky.mesh.rotation.y=0,this.scene.remove(this.titlesObject,this.filtersObject,this.projectsNavObject,this.projectScreen.mesh),this.scene.add(...this.homeObjects)}))}projectDetailToProjects(){this.projectScreen.uniforms.uvRate.value.set(1,1),this.projectScreen.uniforms.uIsCurved.value=!0;const t=window.innerWidth/window.innerHeight,e=Pm.timeline({defaults:{duration:1,delay:0,ease:"power1.out"},onStart:()=>this.world.parallax.enabled=!0});e.to(this.cameraPosition,{x:0,y:this.initialHeight,z:-1},0);const n=1+.2*t,i=1*n*.5625;e.to(this.projectScreen.mesh.scale,{x:n,y:i},0),this.scene.add(this.titlesObject,this.filtersObject,this.projectsNavObject),this.scene.remove(this.projectDetailOverlayObject)}projectsToProjectDetail(){this.post.activeEffect=bh.ProjectsProjectDetail;Pm.timeline({defaults:{duration:1.2,delay:0,ease:"power1.out"},onStart:()=>{this.world.usePost=!0},onComplete:()=>{this.post.transitionEffects[bh.ProjectsProjectDetail].uniforms.uProgress.value=0,this.world.usePost=!1}}).to(this.post.transitionEffects[bh.ProjectsProjectDetail].uniforms.uProgress,{value:1},0),this.world.parallax.enabled=!1;const t=window.innerWidth/window.innerHeight;this.projectScreen.uniforms.uIsCurved.value=!1,t>16/9?this.projectScreen.uniforms.uvRate.value.set(1,16/9/t):this.projectScreen.uniforms.uvRate.value.set(t/(16/9),1);const e=Pm.timeline({defaults:{duration:.8,delay:0,ease:"power1.in"}}),n=.5*this.world.camera.fov*Math.PI/180,i=1.3*Math.tan(n),r=i*t;e.to(this.projectScreen.mesh.scale,{x:r,y:i},.1);const s=(30+8*t)*(Math.PI/180);e.to(this.cameraPosition,{x:0,y:i/2,z:0},0),e.to(this.cameraRotation,{x:-Math.PI,y:s,z:Math.PI*Math.sign(this.cameraRotation.z)},.1),this.scene.remove(this.titlesObject,this.filtersObject,this.projectsNavObject),this.scene.add(this.projectDetailOverlayObject,this.projectScreen.mesh)}projectsToAbout(){this.post.activeEffect=bh.ProjectsAbout;const t=Pm.timeline();t.to(this.post.transitionEffects[bh.ProjectsAbout].uniforms.uProgress,{value:1,duration:.5,onStart:()=>{this.world.usePost=!0},onComplete:()=>{this.scene.remove(this.projectScreen.mesh,this.titlesObject,this.filtersObject,this.projectsNavObject)}}),t.to(this.post.transitionEffects[bh.ProjectsAbout].uniforms.uProgress,{value:0,duration:.5,onStart:()=>{this.scene.add(this.world.aboutViewManager.screen.mesh,this.world.aboutViewManager.greeting.group,this.world.aboutViewManager.overlay.group),this.cameraPosition.set(0,this.initialHeight,1),this.world.sky.mesh.rotation.y=0},onComplete:()=>{this.world.usePost=!1}}),t.to(this.world.aboutViewManager.screen.material.uniforms.uProgress,{delay:.5,duration:.5,value:1},"0")}aboutToProjects(){this.post.activeEffect=bh.ProjectsAbout;const t=Pm.timeline();t.to(this.world.aboutViewManager.screen.material.uniforms.uProgress,{duration:.5,value:0},"0"),t.to(this.post.transitionEffects[bh.ProjectsAbout].uniforms.uProgress,{value:1,duration:.5,onStart:()=>{this.world.usePost=!0},onComplete:()=>{this.scene.remove(this.world.aboutViewManager.screen.mesh,this.world.aboutViewManager.greeting.group,this.world.aboutViewManager.overlay.group)}},"0"),t.to(this.post.transitionEffects[bh.ProjectsAbout].uniforms.uProgress,{value:0,duration:.5,onStart:()=>{this.scene.add(this.projectScreen.mesh,this.titlesObject,this.filtersObject,this.projectsNavObject),this.cameraPosition.z=-1,this.world.sky.mesh.rotation.y=Math.PI},onComplete:()=>{this.world.usePost=!1}})}setDebug(){this.debug=this.world.pane.addFolder({title:"transition manager"}),this.debug.addButton({title:"home => projects"}).on("click",(()=>this.homeToProjects())),this.debug.addButton({title:"projects => projectDetail"}).on("click",(()=>this.projectsToProjectDetail())),this.debug.addButton({title:"projectDetail => projects"}).on("click",(()=>this.projectDetailToProjects()))}}class Im{texture={value:null};scene=new ys;geometry=new Fn(2,2);camera=new En;constructor(t){this.size=t?.size||128,this.rtOptions={minFilter:f,type:y,magFilter:f,format:M,generateMipmaps:!1,stencilBuffer:!1,depthBuffer:!1,...t?.rtOptions},this.read=new xt(this.size,this.size,this.rtOptions),this.write=new xt(this.size,this.size,this.rtOptions),this.swap()}swap(){let t=this.read;this.read=this.write,this.write=t,this.texture.value=this.read.texture}update(t){const e=t.getRenderTarget();t.setRenderTarget(this.write),t.render(this.scene,this.camera),t.setRenderTarget(e),t.clear(),this.swap()}}class zm extends Im{uniforms={uBuffer:this.texture,uMouse:{value:new et(-1,-1)},uAddWave:{value:!1},uViscosity:{value:.985},uAmplitude:{value:.48},uMouseSize:{value:20}};constructor(e){super(),this.bounds=e,this.material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = vec4( position, 1.0 );\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uBuffer;\nuniform vec2 uMouse;\nuniform float uAddWave;\nuniform float uViscosity;\nuniform float uMouseSize;\nuniform float uAmplitude;\n\nvarying vec2 vUv;\n\nvec4 waves2() {\n    vec2 cellSize = 1.0 /vec2(RESOLUTION);\n    vec3 e = vec3(cellSize, 0.);\n\n    vec4 heightmapValue = texture2D(uBuffer, vUv);\n\n    float t = texture2D(uBuffer, vUv-e.zy).x;\n    float r = texture2D(uBuffer, vUv-e.xz).x;\n    float b = texture2D(uBuffer, vUv+e.xz).x;\n    float l = texture2D(uBuffer, vUv+e.zy).x;\n\n    float newHeight = ( ( t + b + r +l ) * 0.5 - heightmapValue.y ) * uViscosity;\n\n    float mouseSize = uMouseSize / BOUNDS;\n    float mousePhase = clamp( length( vUv - uMouse ) * PI / mouseSize, 0.0, PI );\n\n    newHeight += uAddWave * (( cos( mousePhase ) + 1.0 )) * uAmplitude;\n\n    heightmapValue.y = heightmapValue.x;\n    heightmapValue.x = newHeight;\n\n    return heightmapValue;\n}\n\nvoid main() {\n    gl_FragColor = waves2();\n}\n\n// uniform sampler2D uBuffer;\n// uniform vec2 uMouse;\n// uniform vec2 uResolution;\n// uniform float uAddWave;\n// uniform float uViscosity;\n// uniform float uDisipation;\n// uniform float uMouseSize;\n// uniform float uWaveGradient;\n// uniform float uFrequency;\n// uniform float uMinWaveSize;\n// uniform float uTransitionTime;\n// uniform float uTransitionSpeed;\n// uniform float uWaveMagnitude;\n// uniform float uMouseSize;\n\n// // temp\n// uniform float uTime;\n\n// varying vec2 vUv;\n\n// vec4 waves() {\n//     vec2 cellSize = 1.0 / vec2(128.);\n//     vec3 e = vec3(cellSize, 0.);\n//     vec2 mouse = vUv - uMouse;\n\n//     vec4 heightmapValue = texture2D(uBuffer, vUv);\n\n//     float t = texture2D(uBuffer, vUv-e.zy).x;\n//     float r = texture2D(uBuffer, vUv-e.xz).x;\n//     float b = texture2D(uBuffer, vUv+e.xz).x;\n//     float l = texture2D(uBuffer, vUv+e.zy).x;\n\n//     float newHeight = uViscosity * ((t + r + b + l) * 0.5 - heightmapValue.y);\n\n//     float mouseSize = uMouseSize;\n//     float mousePhase = uAddWave * smoothstep(uMinWaveSize + abs(sin(uTime*uFrequency) * uWaveGradient), .0, length(mouse) / mouseSize) * uWaveMagnitude; \n//     // float mousePhase = mix(0., uAddWave, smoothstep(0., uTransitionTime + 2., + uTime*uTransitionSpeed)) * smoothstep(uMinWaveSize + abs(cos(uTime*uFrequency + 1.) * uWaveGradient), .0, length(mouse) / uMouseSize) * uWaveMagnitude; \n//     // float mousePhase = uAddWave * min(((uTime - uTransitionTime) * uTransitionSpeed), 1.) * smoothstep(uMinWaveSize + abs(cos(uTime*uFrequency + 1.) * uWaveGradient), .0, length(mouse) / uMouseSize) * uWaveMagnitude; \n//     // make add wave a transtion\n//     // maybe somthing like\n//     // smoothstep()\n\n//     // // mode2\n//     // mousePhase = clamp( length( mouse ) * PI / uMouseSize, 0.0, PI * 5. );\n//     // mousePhase = ( cos( mousePhase ) + 1.0 ) * 0.38 * uAddWave;\n\n//     float amp = 1.;\n//     newHeight += mousePhase * amp;\n\n//     heightmapValue.y = heightmapValue.x;\n//     heightmapValue.x = newHeight;\n\n//     return heightmapValue;\n// }"),uniforms:this.uniforms,defines:{BOUNDS:this.bounds.toFixed(1),RESOLUTION:this.size.toFixed(1),PI:Math.PI.toFixed(8)}}),this.mesh=new _n(this.geometry,this.material),this.scene.add(this.mesh)}onPointermove(t){this.uniforms.uAddWave.value=!0,this.uniforms.uMouse.value.x=t.x,this.uniforms.uMouse.value.y=t.y}update(t){super.update(t),this.uniforms.uAddWave.value=!1}}class km extends class{mirrorPlane=new zn;normal=new Mt;mirrorWorldPosition=new Mt;cameraWorldPosition=new Mt;rotationMatrix=new te;lookAtPosition=new Mt(0,0,-1);clipPlane=new _t;view=new Mt;target=new Mt;q=new _t;textureMatrix=new te;mirrorCamera=new En;constructor(t){this.textureWidth=t?.textureWidth||512,this.textureHeight=t?.textureHeight||512,this.clipBias=t?.clipBias||0,this.renderTarget=new xt(this.textureWidth,this.textureHeight)}updateTextureMatrix(t,e){if(this.mirrorWorldPosition.setFromMatrixPosition(t.matrixWorld),this.cameraWorldPosition.setFromMatrixPosition(e.matrixWorld),this.rotationMatrix.extractRotation(t.matrixWorld),this.normal.set(0,0,1),this.normal.applyMatrix4(this.rotationMatrix),this.view.subVectors(this.mirrorWorldPosition,this.cameraWorldPosition),this.view.dot(this.normal)>0)return;this.view.reflect(this.normal).negate(),this.view.add(this.mirrorWorldPosition),this.rotationMatrix.extractRotation(e.matrixWorld),this.lookAtPosition.set(0,0,-1),this.lookAtPosition.applyMatrix4(this.rotationMatrix),this.lookAtPosition.add(this.cameraWorldPosition),this.target.subVectors(this.mirrorWorldPosition,this.lookAtPosition),this.target.reflect(this.normal).negate(),this.target.add(this.mirrorWorldPosition),this.mirrorCamera.position.copy(this.view),this.mirrorCamera.up.set(0,1,0),this.mirrorCamera.up.applyMatrix4(this.rotationMatrix),this.mirrorCamera.up.reflect(this.normal),this.mirrorCamera.lookAt(this.target),this.mirrorCamera.far=e.far,this.mirrorCamera.updateMatrixWorld(),this.mirrorCamera.projectionMatrix.copy(e.projectionMatrix),this.textureMatrix.set(.5,0,0,.5,0,.5,0,.5,0,0,.5,.5,0,0,0,1),this.textureMatrix.multiply(this.mirrorCamera.projectionMatrix),this.textureMatrix.multiply(this.mirrorCamera.matrixWorldInverse),this.mirrorPlane.setFromNormalAndCoplanarPoint(this.normal,this.mirrorWorldPosition),this.mirrorPlane.applyMatrix4(this.mirrorCamera.matrixWorldInverse),this.clipPlane.set(this.mirrorPlane.normal.x,this.mirrorPlane.normal.y,this.mirrorPlane.normal.z,this.mirrorPlane.constant);const n=this.mirrorCamera.projectionMatrix;this.q.x=(Math.sign(this.clipPlane.x)+n.elements[8])/n.elements[0],this.q.y=(Math.sign(this.clipPlane.y)+n.elements[9])/n.elements[5],this.q.z=-1,this.q.w=(1+n.elements[10])/n.elements[14],this.clipPlane.multiplyScalar(2/this.clipPlane.dot(this.q)),n.elements[2]=this.clipPlane.x,n.elements[6]=this.clipPlane.y,n.elements[10]=this.clipPlane.z+1-this.clipBias,n.elements[14]=this.clipPlane.w}drawTexture(t,e,n){const i=t.getRenderTarget();e.visible=!1,t.setRenderTarget(this.renderTarget),t.state.buffers.depth.setMask(!0),!1===t.autoClear&&t.clear(),t.render(n,this.mirrorCamera),e.visible=!0,t.setRenderTarget(i)}update(t,e,n,i){this.updateTextureMatrix(t,n),this.drawTexture(e,t,i)}}{world=new ff;renderer=this.world.renderer;camera=this.world.camera;scene=this.world.scene;raycaster=this.world.raycaster;bounds=512;scale=2;heightMap=new zm(this.bounds);geometry=new Fn(this.bounds,this.bounds,this.heightMap.size-1,this.heightMap.size-1);uniforms={uHeightMap:this.heightMap.texture,uBaseColor:{value:new ut("#f9f9f9")},uFresnelColor:{value:new ut("#b754ff")},uFresnelPower:{value:3},uTextureMatrix:{value:this.textureMatrix},uMirrorMap:{value:this.renderTarget.texture}};material=new Sn({vertexShader:t("#define GLSLIFY 1\nuniform sampler2D uHeightMap;\nuniform mat4 uTextureMatrix;\n\nvarying vec4 vMirrorCoord;\nvarying vec3 vWorldNormal;\nvarying vec3 vViewDirection;\n\nfloat heightSample(vec2 st) {\n    return texture2D(uHeightMap, st).x;\n}\n\nvec3 getNormal() {\n    vec2 cellSize = 1. / vec2(RESOLUTION);\n    vec3 e = vec3(cellSize, 0.);\n    float unitResolution = RESOLUTION / BOUNDS;\n    return  normalize(vec3(\n\t\t\t\t\t(heightSample(uv - e.xz) - heightSample(uv + e.xz)) * unitResolution,\n                    (heightSample(uv - e.yz) - heightSample(uv + e.yz)) * unitResolution,\n\t\t\t\t\tSCALE));\n}\n\nvoid main() {\n    vec4 worldPosition = modelMatrix * vec4(position, 1.0);\n\n    vMirrorCoord = uTextureMatrix * worldPosition;\n\n    vec3 objectNormal = getNormal();\n\n    vWorldNormal = normalize(modelMatrix * vec4(objectNormal, 0.0)).xyz;\n    vViewDirection = normalize(cameraPosition - worldPosition.xyz);\n    // vViewDirection = normalize(vec3(1., 0.65, -0.9) - worldPosition.xyz);\n\n    float heightValue = heightSample(uv) * SCALE;\n    vec3 newPos = vec3(position.x, position.y, heightValue);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uMirrorMap;\nuniform vec3 uBaseColor;\nuniform vec3 uFresnelColor;\nuniform float uFresnelPower;\n\nvarying vec4 vMirrorCoord;\nvarying vec3 vWorldNormal;\nvarying vec3 vViewDirection;\n\n// void sunLight( const vec3 surfaceNormal, const vec3 eyeDirection, float shiny, float spec, float diffuse, inout vec3 diffuseColor, inout vec3 specularColor ) {\n//     vec3 reflection = normalize( reflect( -sunDirection, surfaceNormal ) );\n//     float direction = max( 0.0, dot( eyeDirection, reflection ) );\n//     specularColor += pow( direction, shiny ) * sunColor * spec;\n//     diffuseColor += max( dot( sunDirection, surfaceNormal ), 0.0 ) * sunColor * diffuse;\n// }\n\nfloat blendOverlay( float base, float blend ) {\n    return( base < 0.5 ? ( 2.0 * base * blend ) : ( 1.0 - 2.0 * ( 1.0 - base ) * ( 1.0 - blend ) ) );\n}\n\nvec3 blendOverlay( vec3 base, vec3 blend ) {\n    return vec3( blendOverlay( base.r, blend.r ), blendOverlay( base.g, blend.g ), blendOverlay( base.b, blend.b ) );\n}\n\nvoid main() {\n    vec3 mirrorSample = vec3( texture2D( uMirrorMap, vMirrorCoord.xy / vMirrorCoord.w ) );\n\n    float fresnelFactor = abs(dot(vViewDirection, vWorldNormal));\n    float inversefresnelFactor = 1.0 - fresnelFactor;\n\n    fresnelFactor = pow(fresnelFactor, uFresnelPower);\n    inversefresnelFactor = pow(inversefresnelFactor, uFresnelPower);\n\n    vec3 fresnel = fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor;\n\n    vec3 color = blendOverlay(fresnel, mirrorSample);\n\n    gl_FragColor = vec4(color, 1.);\n}"),uniforms:this.uniforms,defines:{RESOLUTION:this.heightMap.size.toFixed(1),BOUNDS:this.bounds.toFixed(1),SCALE:(this.scale/this.bounds).toFixed(10)}});mesh=new _n(this.geometry,this.material);hiddenObjects={Home:[],Projects:[],ProjectDetail:[],About:[]};constructor(){super(),this.mesh.renderOrder=-1,this.mesh.scale.set(this.scale/this.bounds,this.scale/this.bounds,1),this.mesh.rotation.x=-Math.PI/2,this.mesh.matrixAutoUpdate=!1,this.mesh.updateMatrix(),this.scene.add(this.mesh),this.setIntersectionPlane()}setIntersectionPlane(){this.intersectionPlane=new _n(new Fn(this.scale,this.scale,1,1),new Sn({visible:!1})),this.intersectionPlane.rotation.x=-Math.PI/2,this.scene.add(this.intersectionPlane),this.intersectionPlane.matrixAutoUpdate=!1,this.intersectionPlane.updateMatrix()}onResize(){}onPointerdown(){}onPointermove(){const[t]=this.raycaster.intersectObject(this.intersectionPlane);t&&this.heightMap.onPointermove(t.uv)}onPointerup(){}setDebug(){this.debug=this.world.pane.addFolder({title:"water",expanded:!1}),this.debug.addButton({title:"toggle wireframe"}).on("click",(()=>{this.material.wireframe=!this.material.wireframe})),this.debugHeightMap(),this.debugMaterial()}debugHeightMap(){const t=this.debug.addFolder({title:"heightMap",expanded:!1});t.addInput(this.heightMap.uniforms.uViscosity,"value",{min:0,max:.999,step:.001,label:"viscosity"}),t.addInput(this.heightMap.uniforms.uAmplitude,"value",{min:0,max:.999,step:.001,label:"amplitude"}),t.addInput(this.heightMap.uniforms.uMouseSize,"value",{min:0,max:50,step:.001,label:"mouseSize"})}debugMaterial(){const t=this.debug.addFolder({title:"material",expanded:!0});t.addInput(this.uniforms.uBaseColor,"value",{view:"color",label:"base color"}).on("change",(()=>this.uniforms.uBaseColor.value.multiplyScalar(1/255))),t.addInput(this.uniforms.uFresnelColor,"value",{view:"color",label:"fresnel color"}).on("change",(()=>this.uniforms.uFresnelColor.value.multiplyScalar(1/255))),t.addInput(this.uniforms.uFresnelPower,"value",{min:0,max:5,step:1e-4,label:"fresnel power"})}onWheel(){}update(){this.world.view!==vh.ProjectDetail&&(this.hiddenObjects[this.world.view]?.map((t=>t.visible=!1)),super.update(this.mesh,this.renderer,this.camera,this.scene),this.hiddenObjects[this.world.view]?.map((t=>t.visible=!0)),this.heightMap.update(this.renderer))}}class Om{constructor(){this.world=new ff,this.percent=document.querySelector(".preloader__percent"),this.bar=document.querySelector(".preloader__progress__front"),this.container=document.querySelector(".preloader")}onAssetLoaded(t){const e=`${Math.round(100*t)}%`;this.percent.innerText=e,this.bar.style.width=e,1===t&&this.destroy()}destroy(){this.container.style.opacity="0",window.setTimeout((()=>{this.container.remove()}),1e3)}}class Nm extends ys{uniforms={uScreen:{value:null},uProgress:{value:0}};constructor({geometry:e,shader:n,options:i}){super(),i&&Object.entries(i).map((([t,e])=>{this.uniforms[t]={value:e}}));let r=new Sn({depthWrite:!1,depthTest:!1,uniforms:this.uniforms,vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\ngl_Position = vec4(position, 1.);\nvUv = uv;\n}"),fragmentShader:n}),s=new _n(e,r);this.add(s)}updateScreen(t){this.uniforms.uScreen.value=t}}class Bm{newline=/\n/;whitespace=/\s/;constructor(t){this.fontData=t.fontData,this.text=t.text,this.size=t.size||1,this.letterSpacing=t.letterSpacing||0,this.wordSpacing=t.wordSpacing||0,this.wordBreak=t.wordBreak||!1,this.lineWidth=t.lineWidth||1/0,this.align=t.align||uh.Left,this.lineHeight=t.lineHeight||1.4,this.parseFont(),this.createGeometry(),this.layout(),this.populateBuffers()}parseFont(){this.glyphs={},this.fontData.chars.forEach((t=>this.glyphs[t.char]=t))}createGeometry(){this.fontData.common.lineHeight,this.fontData.common.base;const t=this.glyphs.A.height;this.scale=this.size/t;const e=this.text.replace(/[ \n]/g,"").length;this.buffers={position:new Float32Array(12*e),uv:new Float32Array(8*e),id:new Float32Array(4*e),index:new Uint16Array(6*e)};for(let t=0;t<e;t++)this.buffers.id.set([t,t,t,t],4*t),this.buffers.index.set([4*t,4*t+2,4*t+1,4*t+1,4*t+2,4*t+3],6*t)}layout(){this.lines=[];let t=0,e=0,n=0,i=new Um;this.lines.push(i);let r=0;for(;t<this.text.length&&r<100;){r++;const s=this.text[t];if(!i.width&&this.whitespace.test(s)){t++,e=t,n=0;continue}if(this.newline.test(s)){t++,i=new Um,this.lines.push(i),e=t,n=0;continue}const o=this.glyphs[s]||this.glyphs[" "];if(i.glyphs.length){const t=i.glyphs[i.glyphs.length-1][0];let e=this.getKernPairOffset(o.id,t.id)*this.scale;i.width+=e,n+=e}i.glyphs.push([o,i.width]);let a=0;if(this.whitespace.test(s)?(e=t,n=0,a+=this.wordSpacing*this.size):a+=this.letterSpacing*this.size,a+=o.xadvance*this.scale,i.width+=a,n+=a,i.width>this.lineWidth){if(this.wordBreak&&i.glyphs.length>1){i.width-=a,i.glyphs.pop(),i=new Um,this.lines.push(i),e=t,n=0;continue}if(!this.wordBreak&&n!==i.width){let r=t-e+1;i.glyphs.splice(-r,r),t=e,i.width-=n,i=new Um,this.lines.push(i),e=t,n=0;continue}}t++,r=0}i.width||this.lines.pop()}getKernPairOffset(t,e){for(let n=0;n<this.fontData.kernings.length;n++){let i=this.fontData.kernings[n];if(!(i.first<t)&&!(i.second<e))return i.first>t||i.first===t&&i.second>e?0:i.amount}return 0}populateBuffers(){const t=this.fontData.common.scaleW,e=this.fontData.common.scaleH;let n=.93*this.size,i=0;for(let r=0;r<this.lines.length;r++){let s=this.lines[r];for(let r=0;r<s.glyphs.length;r++){const o=s.glyphs[r][0];let a=s.glyphs[r][1]+0;if("center"===this.align?a-=.5*s.width:"right"===this.align&&(a-=s.width),this.whitespace.test(o.char))continue;a+=o.xoffset*this.scale,n-=o.yoffset*this.scale;let l=o.width*this.scale,h=o.height*this.scale;this.buffers.position.set([a,n-h,0,a,n,0,a+l,n-h,0,a+l,n,0],12*i);let c=o.x/t,u=o.width/t,d=1-o.y/e,p=o.height/e;this.buffers.uv.set([c,d-p,c,d,c+u,d-p,c+u,d],8*i),n+=o.yoffset*this.scale,i++}n-=this.size*this.lineHeight}this.numLines=this.lines.length,this.height=this.numLines*this.size*this.lineHeight,this.width=Math.max(...this.lines.map((t=>t.width)))}onResize(){this.layout(),this.populateBuffers()}update(t){this.text=t,this.createGeometry(),this.layout(),this.populateBuffers()}updateSize(t,e=this.lineHeight,n){n&&(this.lineWidth=n),this.lineHeight=e,this.size=t;const i=this.glyphs.A.height;this.scale=this.size/i,this.layout(),this.populateBuffers()}}class Um{width=0;glyphs=[]}class Fm extends Qe{setText(t){this.text=new Bm(t),this.setAttribute("position",new He(this.text.buffers.position,3)),this.setAttribute("uv",new He(this.text.buffers.uv,2)),this.setAttribute("id",new He(this.text.buffers.id,1)),this.setIndex(new He(this.text.buffers.index,1))}}class Vm{world=new ff;group=new us;font=this.world.resources.fonts.audiowideRegular;textMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0});iconMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nuniform float uTime;\n\nvarying vec2 vUv;\nvarying float vProgress;\n\nvoid main() {\n    vec3 pos = position;\n    pos.x += 0.2;\n\n    float amp = .4;\n    float duration = 3.;\n    float p = mod(uTime, duration) / duration;\n\n    // linear\n    // float progress = min(2. * p, 2. * (1. - p));\n\n    float progress = pow(sin(p * 3.1415), 2.);\n    progress = max(progress, 0.);\n    pos.x += amp * progress;\n    gl_Position = modelMatrix * vec4(pos, 1.);\n    vUv = uv;\n\n    vProgress = p;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\nvarying float vProgress;\n\nvoid main() {\n    vec2 nUv = vUv;\n    nUv.x = mix(nUv.x, 1. - nUv.x, step(vProgress, 0.49));\n    float fill = texture2D(uMap, nUv).a;\n    gl_FragColor = vec4(vec3(1.), fill +0. );\n}"),uniforms:{uMap:{value:this.world.resources.assets.ghostIcon},uTime:{value:0}},transparent:!0});hover=!1;down=!1;constructor(){this.setEmailText(),this.setCTAText(),this.setGhostIcon()}setEmailText(){const e=new Fm;e.setText({fontData:this.font.data,text:"sergio@azizi.dev"}),e.computeBoundingBox();const n=e.boundingBox.max.x-e.boundingBox.min.x;e.applyMatrix4((new te).makeScale(1/n,1/n,1)),this.email=new _n(e,this.textMaterial),this.email.renderOrder=150,this.group.add(this.email);const i=e.boundingBox.max.y-e.boundingBox.min.y,r=new Fn(1,i),s=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}")});this.touchPlane=new _n(r,s),this.touchPlane.visible=!1,this.touchPlane.position.x=.5,this.email.add(this.touchPlane),this.touchPlane.name="email",this.touchPlane.renderOrder=250}setCTAText(){const t=new Fm;t.setText({fontData:this.font.data,text:"`\nAvailable for freelance work",lineHeight:1.8}),t.computeBoundingBox();const e=t.boundingBox.max.x-t.boundingBox.min.x;t.applyMatrix4((new te).makeScale(1/e,1/e,1)),this.cta=new _n(t,this.textMaterial),this.group.add(this.cta)}setGhostIcon(){const t=new Fn(1,1);this.icon=new _n(t,this.iconMaterial),this.group.add(this.icon)}resize(t){this.group.position.x=t.posX,this.group.position.y=t.posY,this.email.position.x=t.emailOffset,this.email.scale.x=t.emailScaleX,this.email.scale.y=t.emailScaleY,this.cta.scale.x=t.ctaScaleX,this.cta.scale.y=t.ctaScaleY,this.icon.scale.x=t.iconScaleX,this.icon.scale.y=t.iconScaleY}update(t){this.iconMaterial.uniforms.uTime.value=t}}class Hm{world=new ff;group=new us;font=this.world.resources.fonts.audiowideRegular;textMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0,depthTest:!1,depthWrite:!1});underlineMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}"),depthTest:!1,depthWrite:!1});geometry=new Fm;mesh=new _n(this.geometry,this.textMaterial);hover=!1;down=!1;constructor(){this.geometry.setText({fontData:this.font.data,text:"View Projects",align:uh.Center}),this.mesh.name="homeNav",this.group.rotateZ(Math.PI/2),this.group.add(this.mesh),this.group.renderOrder=501,this.geometry.computeBoundingBox();const t=this.geometry.boundingBox.max.x-this.geometry.boundingBox.min.x;this.geometry.applyMatrix4((new te).makeScale(1/t,1/t,1));const e=new _n(new Fn(1,.1/t),this.underlineMaterial);e.name="homeNav",e.position.y=-1/t,this.group.add(e)}onPointermove(){}onPointerup(){}onPointerdown(){}resize(t){this.group.scale.x=t.scaleX,this.group.scale.y=t.scaleY,this.group.position.x=t.posX,this.group.position.y=t.posY}}class Gm extends Im{velocity=new et;mouse=new et;lastMouse=new et;lastTime=null;uniforms={uBuffer:this.texture,uAspect:{value:1},uMouse:{value:this.mouse},uVelocity:{value:this.velocity},uFalloff:{value:0},uAlpha:{value:0},uDissipation:{value:0}};constructor(e){super(),this.uniforms.uFalloff.value=e?.falloff||.15,this.uniforms.uAlpha.value=e?.alpha||1,this.uniforms.uDissipation.value=e?.dissipation||.98,this.material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);\n    gl_Position = vec4(position, 1);\n    vUv = uv;\n}"),fragmentShader:t("precision highp float;\n#define GLSLIFY 1\n\nuniform sampler2D uBuffer;\nuniform float uFalloff;\nuniform float uAlpha;\nuniform float uDissipation;\nuniform float uAspect;\nuniform vec2 uMouse;\nuniform vec2 uMouseUv;\nuniform vec2 uVelocity;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 color = texture2D(uBuffer, vUv) * uDissipation;\n    vec2 cursor = vUv - uMouse;\n    cursor.x *= uAspect;\n    \n    vec3 stamp = vec3(uVelocity * vec2(1, -1), 1.0 - pow(1.0 - min(1.0, length(uVelocity)), 3.0));\n\n    float falloff = smoothstep(uFalloff, 0.0, length(cursor)) * uAlpha;\n    color.rgb = mix(color.rgb, stamp, vec3(falloff));\n    gl_FragColor = color;\n}"),uniforms:this.uniforms,depthWrite:!1,depthTest:!1}),this.mesh=new _n(this.geometry,this.material),this.scene.add(this.mesh)}onPointermove({clientX:t,clientY:e},n){this.mouse.set(n.x,n.y),this.lastTime||(this.lastTime=performance.now(),this.lastMouse.copy({x:t,y:e}));const i=t-this.lastMouse.x,r=e-this.lastMouse.y;this.lastMouse.copy({x:t,y:e});const s=performance.now(),o=Math.max(14,s-this.lastTime);this.lastTime=s,this.velocity.x=i/o,this.velocity.y=r/o,this.velocity.needsUpdate=!0}updateInputs(){this.velocity.needsUpdate||(this.mouse.set(-1,-1),this.velocity.set(0,0),this.lastTime=null),this.velocity.needsUpdate=!1,this.uniforms.uMouse.value.copy(this.mouse),this.uniforms.uVelocity.value.lerp(this.velocity,this.velocity.length()?.5:.1)}update(t){this.updateInputs(),super.update(t)}}var Wm;Wm="#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";var jm;jm="#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";class qm{geometry=new Fm;constructor(e){this.font=e.font,this.lineHeight=e.lineHeight||1.4,this.padding=e.padding||{x:.25,y:.25},this.geometry.setText({fontData:this.font.data,text:e.text,align:uh.Left,lineHeight:this.lineHeight,letterSpacing:-.05}),this.geometry.computeBoundingBox();let n=this.geometry.boundingBox.max.x-this.geometry.boundingBox.min.x,i=this.geometry.boundingBox.max.y-this.geometry.boundingBox.min.y;this.geometryAspect=n/i,this.scale=2/n,this.geometry.text.updateSize(this.scale,this.lineHeight),this.material=new Sn({vertexShader:t(Wm),fragmentShader:t(jm),uniforms:{tMap:{value:this.font.map}},transparent:!0}),this.mesh=new _n(this.geometry,this.material),this.mesh.scale.y=this.geometryAspect,this.mesh.scale.multiplyScalar(1-this.padding.x),this.mesh.position.x=-1+this.padding.x,this.mesh.position.y=1-this.padding.y-.5*this.scale*this.geometryAspect,this.renderTarget=new xt(512,512,{depthBuffer:!1,stencilBuffer:!1,minFilter:f,type:b,format:M,generateMipmaps:!1}),this.texture={value:this.renderTarget.texture},this.scene=new ys,this.scene.add(this.mesh)}createTexture(t,e){const n=t.getRenderTarget();t.setRenderTarget(this.renderTarget),t.render(this.scene,e),this.texture.value=this.renderTarget.texture,t.setRenderTarget(n),t.clear()}}class Xm{world=new ff;scene=this.world.scene;group=new us;raycaster=this.world.raycaster;renderer=this.world.renderer;camera=this.world.camera;flowmap=new Gm;textTexture=new qm({lineHeight:1.5,font:this.world.resources.fonts.anironRegular,text:"Creative\nWeb\nDeveloper"});geometry=new Fn(2,2);material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uFlowmap;\nuniform sampler2D uTextImage;\nvarying vec2 vUv;\n\nvec3 rgb2hsv(vec3 c) {\n    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n    \n    float d = q.x - min(q.w, q.y);\n    float e = 1.0e-10;\n    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n}\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nvec4 getRGB(sampler2D image, vec2 uv, float angle, float amount) {\n    vec2 offset = vec2(cos(angle), sin(angle)) * amount;\n    vec4 r = texture2D(image, uv + offset);\n    vec4 g = texture2D(image, uv);\n\t// g.rgb *= vec3(183./255., 84./255., 255./255.);\n    vec4 b = texture2D(image, uv - offset);\n\n\tvec3 col = vec3(r.r, g.g, b.b);\n\tcol = rgb2hsv(col);\n\tcol.z += 0.4;\n\tcol.x += 0.4;\n\tcol = hsv2rgb(col);\n    return vec4(col, g.a);\n\t\n    // return vec4(g.g, r.r, b.b, g.a);\n    // return vec4(r.r * 183./255., g.g * 84./255., b.b * 255./255., g.a) * 2.;\n    // return vec4(r.r, g.g, b.b, g.a);\n}\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((40.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n\n\tvec3 flow = texture2D(uFlowmap, vUv).rgb;\n\n\tvec2 nUv = vUv;\n\n\t// nUv += 0.15;\n\t// nUv *= 1.5;\n\n\tnUv += flow.rg * -0.05;\n\n\tfloat angle = length(vUv - 0.5);\n\n\tfloat amount = length(flow.rg) * 0.029;\n\n\tvec4 final = getRGB(uTextImage, nUv, angle, amount).rgba;\n\tgl_FragColor = final;\n\n\tvec3 col = final.rgb;\n\n\tfloat tvN = tvNoise(nUv);\n\t\n\tcol = mix(col, vec3(0.4,0.1,0.8), tvN * 0.3);\n\t// col = mix(col, vec3(183./255., 84./255., 255./255.), tvN * 0.3);\n\t// col = mix(col, vec3(0.8, 0.2, 0.1), tvN * 0.3);\n\t// col = mix(vec3(1.), col, tvN * 0.3);\n\n\tgl_FragColor = vec4(col, final.a) + 0.;\n\n\t// gl_FragColor = vec4(1.);\n\t// gl_FragColor = getRGB(uTextImage, vUv, angle, 1.).rgba;\n\n\t// gl_FragColor = vec4(flow, 1.);\n\t// gl_FragColor = texture2D(uTextImage, vUv);\n\t// gl_FragColor = texture2D(uFlowmap, vUv) + 0.5;\n\t// gl_FragColor.a = 1.;\n}"),uniforms:{uFlowmap:this.flowmap.texture,uTextImage:this.textTexture.texture},transparent:!0,depthWrite:!1,depthTest:!1});mesh=new _n(this.geometry,this.material);constructor(){this.textTexture.createTexture(this.renderer,this.camera),this.aspect=this.textTexture.geometryAspect,this.mesh.name="homeTitle",this.mesh.renderOrder=100,this.mesh.position.z=-.01,this.group.add(this.mesh)}onPointermove(t,e){this.flowmap.onPointermove(t,e)}resize(t){this.mesh.position.x=t.posX,this.mesh.position.y=t.posY,this.mesh.scale.x=t.scaleX,this.mesh.scale.y=t.scaleY}update(){this.flowmap.update(this.renderer)}}class Ym{world=new ff;scene=this.world.scene;curlBubble=this.world.curlBubble;raycaster=this.world.raycaster;title=new Xm;contact=new Vm;nav=new Hm;rayOrigin=new Mt(0,0,1);rayTarget=new Mt;resizeSettings={offsetTop:.2,posX:-.3,scale:.75,contactRatio:.8,navSize:.5};constructor(){this.world.water.hiddenObjects[vh.Home]?.push(this.title.mesh,this.contact.group,this.nav.group)}setDebug(){this.debug=this.world.pane.addFolder({title:"homeViewManager",expanded:!1}),this.debug.addInput(this.resizeSettings,"offsetTop",{min:0,max:1,step:.001}).on("change",(()=>this.onResize())),this.debug.addInput(this.resizeSettings,"posX",{min:-1,max:0,step:.001}).on("change",(()=>this.onResize())),this.debug.addInput(this.resizeSettings,"scale",{min:0,max:1,step:.001}).on("change",(()=>this.onResize())),this.debug.addInput(this.resizeSettings,"contactRatio",{min:0,max:1.3,step:.001}).on("change",(()=>this.onResize())),this.debug.addInput(this.resizeSettings,"navSize",{min:0,max:1.3,step:.001}).on("change",(()=>this.onResize()))}onPointermove(t,e){this.rayTarget.set(t.x,t.y,-1),this.raycaster.set(this.rayOrigin,this.rayTarget.normalize());const[n]=this.raycaster.intersectObjects([this.title.mesh,...this.nav.group.children,this.contact.touchPlane]);if(n){const{name:t}=n.object;"homeTitle"===t?(this.title.onPointermove(e,n.uv),(this.nav.hover||this.contact.hover)&&(this.nav.hover=!1,this.contact.hover=!1,document.body.style.cursor="")):"homeNav"===t?this.nav.hover||(this.nav.hover=!0,document.body.style.cursor="pointer"):"email"===t&&(this.contact.hover||(document.body.style.cursor="pointer",this.contact.hover=!0))}else(this.nav.hover||this.contact.hover)&&(this.nav.hover=!1,this.contact.hover=!1,document.body.style.cursor="");this.nav.onPointermove(),this.curlBubble.onPointermove(t)}onPointerdown(){this.nav.hover&&(this.nav.down=!0),this.contact.hover&&(this.contact.down=!0),this.nav.onPointerdown(),this.curlBubble.onPointerdown()}onPointerup(){this.nav.hover&&this.nav.down&&(this.nav.down=!1,this.nav.hover=!1,document.body.style.cursor="",this.world.changeView(vh.Projects)),this.contact.hover&&this.contact.down&&(parent.location="mailto:abc@abc.com"),this.nav.onPointerup(),this.curlBubble.onPointerup()}getSizes(){window.innerWidth,window.innerHeight;const t=window.innerWidth/window.innerHeight;let e={},n={},i={};return e.scaleY=this.resizeSettings.scale,e.scaleX=e.scaleY/t,e.posX=this.resizeSettings.posX*e.scaleX,e.posY=1-.65*e.scaleY-this.resizeSettings.offsetTop,n.ctaScaleX=1.4*e.scaleX*this.resizeSettings.contactRatio,n.ctaScaleY=n.ctaScaleX*t,n.emailScaleX=.8*n.ctaScaleX,n.emailScaleY=n.emailScaleX*t,n.emailOffset=n.ctaScaleX-n.emailScaleX,n.iconScaleX=n.emailOffset,n.iconScaleY=n.iconScaleX*t,n.posX=e.posX-.7*e.scaleX+1.4*e.scaleX*(1-this.resizeSettings.contactRatio),n.posY=e.posY-.9*e.scaleY,i.scaleX=this.resizeSettings.navSize,i.scaleY=this.resizeSettings.navSize/t,i.posX=-e.scaleX*Math.min(.9*t,1.3)+e.posX,i.posY=-.5,{title:e,contact:n,nav:i}}onResize(){const{title:t,contact:e,nav:n}=this.getSizes();this.title.resize(t),this.contact.resize(e),this.nav.resize(n),this.curlBubble.onResize()}onWheel(){this.curlBubble.onWheel()}update(){this.title.update(),this.contact.update(this.world.time),this.curlBubble.update()}show(){this.scene.add(this.title.group),this.scene.add(this.contact.group),this.scene.add(this.nav.group),this.scene.add(this.curlBubble.mesh)}hide(){this.scene.remove(this.title.group),this.scene.remove(this.contact.group),this.scene.remove(this.nav.group),this.scene.remove(this.curlBubble.mesh)}}class Km{group=new us;font=(new ff).resources.fonts.audiowideRegular;material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0});geometry=new Fm;mesh=new _n(this.geometry,this.material);constructor(){this.mesh.name="aboutNav",this.group.position.set(-.85,.5,0),this.group.rotateZ(Math.PI/2),this.group.add(this.mesh),this.geometry.setText({fontData:this.font.data,text:"View Projects",align:uh.Center}),this.geometry.computeBoundingBox();const e=this.geometry.boundingBox.max.x-this.geometry.boundingBox.min.x;this.geometry.applyMatrix4((new te).makeScale(1/e,1/e,1));const n=new _n(new Fn(1,.1/e),new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}")}));n.name="aboutNav",n.position.y=-.75/e,this.group.add(n)}onPointermove(){}onPointerup(){}onPointerdown(){}onResize(){const t=.6/(window.innerWidth/window.innerHeight);this.group.scale.set(.6,t,1)}}class Jm{world=new ff;font=this.world.resources.fonts.anironRegular;group=new us;textMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0,depthWrite:!1,depthTest:!1});geometry1=new Fm;geometry2=new Fm;mesh1=new _n(this.geometry1,this.textMaterial);mesh2=new _n(this.geometry2,this.textMaterial);constructor(){this.group.renderOrder=1e4,this.group.add(this.mesh1),this.group.add(this.mesh2),this.geometry1.setText({fontData:this.font.data,text:"Thanks",align:uh.Right}),this.geometry1.applyMatrix4((new te).makeRotationZ(Math.PI/2)),this.geometry1.applyMatrix4((new te).makeTranslation(-.5,0,0)),this.geometry2.setText({fontData:this.font.data,text:"for stopping by!"}),this.geometry2.applyMatrix4((new te).makeTranslation(.4,-.5,0))}onResize(t){this.group.scale.set(t.scaleX,t.scaleY,1),this.group.position.y=t.posY,this.group.position.x=t.posX,this.mesh1.scale.set(1.5,1.5,1)}}class Zm{world=new ff;group=new us;iconMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uMap, vUv);\n    gl_FragColor = icon;\n}"),depthWrite:!1,depthTest:!1,transparent:!0,uniforms:{uMap:{value:null}}});geometry=new Fn(1,1);constructor(){const{twitterIcon:t,githubIcon:e,linkedinIcon:n}=this.world.resources.assets;this.twitter=new _n(this.geometry,this.iconMaterial.clone()),this.twitter.material.uniforms.uMap.value=t,this.twitter.name="twitter",this.group.add(this.twitter),this.github=new _n(this.geometry,this.iconMaterial.clone()),this.github.material.uniforms.uMap.value=e,this.github.name="github",this.group.add(this.github),this.linkedin=new _n(this.geometry,this.iconMaterial.clone()),this.linkedin.material.uniforms.uMap.value=n,this.linkedin.name="linkedin",this.group.add(this.linkedin)}onResize(){let t=window.innerWidth/window.innerHeight,e=80/window.innerWidth;this.group.scale.set(e,e*t,1),this.group.position.y=e/2*t-1+140/window.innerHeight,this.twitter.position.x=-2,this.github.position.x=-0,this.linkedin.position.x=2}}class $m{world=new ff;font=this.world.resources.fonts.audiowideRegular;group=new us;textMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0,depthWrite:!1,depthTest:!1});iconGeometry=new Fn(1,1);iconMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uMap, vUv);\n    gl_FragColor = icon;\n}"),depthWrite:!1,depthTest:!1,transparent:!0,uniforms:{uMap:{value:null}}});locationGroup=new us;location=new _n(new Fm,this.textMaterial);locationIcon=new _n(this.iconGeometry,this.iconMaterial.clone());cvGroup=new us;cv=new _n(new Fm,this.textMaterial);cvIcon=new _n(this.iconGeometry,this.iconMaterial.clone());emailGroup=new us;email=new _n(new Fm,this.textMaterial);emailIcon=new _n(this.iconGeometry,this.iconMaterial.clone());constructor(){this.group.renderOrder=6001,this.group.add(this.locationGroup),this.group.add(this.cvGroup),this.group.add(this.emailGroup),this.locationGroup.add(this.location),this.locationGroup.add(this.locationIcon),this.cvGroup.add(this.cv),this.cvGroup.add(this.cvIcon),this.emailGroup.add(this.email),this.emailGroup.add(this.emailIcon);const{pinIcon:e,cvIcon:n,emailIcon:i}=this.world.resources.assets;this.location.geometry.setText({fontData:this.font.data,text:"London, UK"}),this.locationIcon.material.uniforms.uMap.value=e,this.cv.geometry.setText({fontData:this.font.data,text:"curriculum vitae"}),this.cvIcon.material.uniforms.uMap.value=n,this.cv.name="cv",this.cvIcon.name="cv",this.email.geometry.setText({fontData:this.font.data,text:"sergio@azizi.dev"}),this.emailIcon.material.uniforms.uMap.value=i,this.email.name="email",this.emailIcon.name="email",this.line=new _n(new Fn(1,1),new Sn({vertexShader:t("#define GLSLIFY 1\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n}"),fragmentShader:t("#define GLSLIFY 1\nvoid main() {\n    gl_FragColor = vec4(1.);\n}")})),this.group.add(this.line)}onResize(){let t=window.innerWidth/window.innerHeight,e=30/window.innerWidth,n=e*t;this.group.scale.set(e,n,1),this.group.position.y=n/2-1+50/window.innerHeight;this.cvIcon.position.x=-1.4,this.cvIcon.scale.set(2,2,1),this.cvGroup.position.x=-10,this.cvGroup.position.y=.5,this.line.position.y=.5,this.line.scale.set(.2,2,1),this.emailIcon.position.x=-1.4,this.emailIcon.scale.set(2,2,1),this.emailGroup.position.x=3,this.emailGroup.position.y=.5,this.locationIcon.position.x=-1.4,this.locationIcon.scale.set(2,2,1),this.locationGroup.position.x=Math.min(window.innerWidth/50,30),this.locationGroup.scale.set(.7,.7,1)}}class Qm{socialIcons=new Zm;footer=new $m;nav=new Km;group=new us;constructor(){this.group.add(this.socialIcons.group),this.group.add(this.footer.group),this.group.add(this.nav.group)}onResize(){this.nav.onResize(),this.socialIcons.onResize(),this.footer.onResize()}}class tf{geometry=new Fm;material=new Sn({vertexShader:t(Wm),fragmentShader:t(jm),uniforms:{tMap:{value:null}},transparent:!0});mesh=new _n(this.geometry,this.material);renderTarget=new xt(512,512,{depthBuffer:!1,stencilBuffer:!1,minFilter:f,type:b,format:M,generateMipmaps:!1});texture={value:this.renderTarget.texture};scene=new ys;constructor(t){this.font=t.font,this.material.uniforms.tMap.value=this.font.map,this.lineHeight=t.lineHeight||1.6,this.scene.add(this.mesh),this.geometry.setText({fontData:this.font.data,text:t.text,align:uh.Left,lineHeight:t.lineHeight||1.6,lineWidth:2-2*t.padding.x});this.geometry.text.updateSize(.11,this.lineHeight),this.geometry.computeBoundingBox();let e=this.geometry.boundingBox.max.y-this.geometry.boundingBox.min.y;this.mesh.position.x=-1+t.padding.x,this.initialOffset=.945-t.padding.y,this.maxScroll=this.initialOffset+e+2*t.padding.y-2,this.mesh.position.y=this.initialOffset}onWheel(t,e,n){const i=eh(this.mesh.position.y+.001*t,this.initialOffset,this.maxScroll);this.mesh.position.y=i,this.createTexture(e,n)}createTexture(t,e){const n=t.getRenderTarget();t.setRenderTarget(this.renderTarget),t.render(this.scene,e),this.texture.value=this.renderTarget.texture,t.setRenderTarget(n),t.clear()}}class ef{world=new ff;geometry=new Fn(1,1);textTexture=new tf({lineHeight:1.6,padding:{x:.2,y:.2},font:this.world.resources.fonts.anironRegular,text:"\n        Lorem Ipsum is simply dummy text of the printing and typesetting industry.\n        Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n`\n\n        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n`\n\n        Here is another paragraph. This probably won't be immediately visible but that is fine.\n`\n\n        Also, look this, Heyyy, hoo.\n        "});aspect=2;material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 newPos = position;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uTextMap;\nuniform sampler2D uDummy;\nuniform vec2 uMouse;\nuniform float uAspect;\nuniform float uDistortion;\nuniform float uInfluence;\nuniform float uTest;\nuniform float uProgress;\n\nvarying vec2 vUv;\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((40.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n    vec2 dist = uMouse - vUv;\n    vec2 dist2 = dist * vec2(uAspect, 1.);\n    float len = length(dist2);\n    float influence = clamp(uDistortion - pow(1. / uInfluence * len, 5.) , 0., 1.);\n    vec2 lensUv = vUv + dist * influence;\n\n    float influence2 = influence - clamp(uDistortion - pow(10. / (uInfluence * 0.9) * len, 5.) , 0., 4.);\n    float influence3 = influence - clamp(uDistortion - pow(10. / (uInfluence * 0.85) * len, 5.) , 0., 4.);\n\n    vec4 text = texture2D(uTextMap, lensUv);\n    vec4 bg = vec4(vec3(tvNoise(vUv) * (1.3 - uProgress)), 0.5 + (1. - uProgress));\n    gl_FragColor = mix(bg, text, text.a);\n\n    float yDist = abs(vUv.y - 0.5) * 2.;\n    float border = smoothstep(uProgress - 0.04 / uProgress, uProgress, yDist);\n    gl_FragColor = mix(gl_FragColor, vec4(1.), border);\n\n    gl_FragColor *= step(yDist, uProgress);\n\n}"),uniforms:{uTextMap:this.textTexture.texture,uMouse:{value:new et},uAspect:{value:this.aspect},uDistortion:{value:.5},uInfluence:{value:.25},uTest:{value:.48},uProgress:{value:0}},transparent:!0,depthTest:!1});mesh=new _n(this.geometry,this.material);constructor(){this.mesh.name="screen"}onPointermove(t){this.material.uniforms.uMouse.value=t}onWheel(t,e,n){this.textTexture.onWheel(t,e,n)}onTextureChange(t){this.material.uniforms.uTextMap=t}onResize(t){this.mesh.scale.set(t.scaleX,t.scaleY,1),this.mesh.position.y=t.posY,this.material.uniforms.uAspect.value=t.aspect}}class nf{world=new ff;scene=this.world.scene;renderer=this.world.renderer;camera=this.world.camera;screen=new ef;greeting=new Jm;overlay=new Qm;raycaster=this.world.raycaster;rayOrigin=new Mt(0,0,1);rayTarget=new Mt;constructor(){this.screen.textTexture.createTexture(this.renderer,this.camera),this.world.water.hiddenObjects[vh.Projects]?.push(this.overlay.group)}setDebug(){this.debug=this.world.pane.addFolder({title:"about view"}),this.screenDebug()}screenDebug(){const t=this.debug.addFolder({title:"screen"});t.addInput(this.screen.material.uniforms.uDistortion,"value",{min:0,max:1,step:.001,label:"distortion"}),t.addInput(this.screen.material.uniforms.uInfluence,"value",{min:0,max:1,step:.001,label:"influence"}),t.addInput(this.screen.material.uniforms.uTest,"value",{min:-1,max:.5,step:.001,label:"test"}),t.addInput(this.screen.material.uniforms.uProgress,"value",{min:0,max:1,step:.001,label:"progress"}),t.addInput(this.screen.mesh.scale,"x",{label:"scale",min:0,max:2,step:.001}).on("change",(()=>{this.screen.mesh.scale.y=this.screen.mesh.scale.x/this.screen.aspect})),t.addInput(this.screen,"aspect",{min:1,max:3,step:.001}).on("change",(()=>{this.screen.mesh.scale.y=this.screen.mesh.scale.x/this.screen.aspect,this.screen.material.uniforms.uAspect.value=this.screen.aspect,this.screen.textTexture.createTexture(this.renderer,this.camera)}))}onPointerdown(){this.hover&&(this.down=!0)}onPointermove(t){if(this.down)return;const[e]=this.raycaster.intersectObject(this.screen.mesh);e&&this.screen.onPointermove(e.uv),this.rayTarget.set(t.x,t.y,-1).normalize(),this.raycaster.set(this.rayOrigin,this.rayTarget);const[n]=this.raycaster.intersectObjects(this.overlay.group.children);if(n){const{name:t}=n.object;this.target=t,this.hover=!0,document.body.style.cursor="pointer"}else this.hover=!1,document.body.style.cursor=""}onPointerup(){if(!this.down)return;let t;switch(this.down=!1,document.body.style.cursor="",this.target){case"twitter":t="https://twitter.com/checo272",window.open(t,"_blank")?.focus();break;case"github":t="https://github.com/arcaneCheco",window.open(t,"_blank")?.focus();break;case"linkedin":t="https://www.linkedin.com/in/sergio-azizi/",window.open(t,"_blank")?.focus();break;case"email":parent.location="mailto:abc@abc.com";break;case"cv":t="https://pdfhost.io/v/6LGrrqvCt_CV",window.open(t,"_blank")?.focus();break;case"aboutNav":this.world.changeView(vh.Projects)}}onWheel({deltaY:t}){this.screen.onWheel(t,this.renderer,this.camera)}getSizes(){const t=window.innerWidth/window.innerHeight,e={};e.aspect=t,e.scaleY=Math.min(500/window.innerHeight,.8),e.scaleY=500/window.innerHeight,e.scaleX=t*e.scaleY,e.scaleX=1.2,e.scaleY=.5625*e.scaleX,e.posY=e.scaleY/1.9,e.posY=0,e.posY=.12;const n={scaleX:.06};return n.scaleY=n.scaleX,n.posX=.52*-e.scaleX,n.posY=e.posY+e.scaleY/2+1.2*n.scaleX,n.mesh1posX=-e.scaleX/2-n.scaleX/2,{screen:e,greeting:n}}onResize(){const{screen:t,greeting:e}=this.getSizes();this.screen.onResize(t),this.greeting.onResize(e),this.overlay.onResize()}update(){}}class rf extends _n{uniforms={uColor:{value:new Mt},uProgress:{value:0},uMap:{value:null},uStroke:{value:.1},uPadding:{value:.1},uTime:{value:0}};constructor({title:e,category:n,index:i,font:r,baseWidth:s,color:o}){super(new Fm,new Sn({vertexShader:t("#define GLSLIFY 1\nattribute vec2 boundingUv;\n\nvarying vec2 vUv;\nvarying vec2 bUv;\n\nvec2 rotate(vec2 v, float a) {\n\tfloat s = sin(a);\n\tfloat c = cos(a);\n\tmat2 m = mat2(c, -s, s, c);\n\treturn m * v;\n}\n\nmat4 rotationMatrix(vec3 axis, float angle) {\n    axis = normalize(axis);\n    float s = sin(angle);\n    float c = cos(angle);\n    float oc = 1.0 - c;\n    \n    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,\n                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,\n                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,\n                0.0,                                0.0,                                0.0,                                1.0);\n}\n\nvec3 rotate(vec3 v, vec3 axis, float angle) {\n\tmat4 m = rotationMatrix(axis, angle);\n\treturn (m * vec4(v, 1.0)).xyz;\n}\n\nvoid main() {\n    vec3 newPos = position;\n    // newPos = rotate(newPos, vec3(0.,1.,0.), -0.5235987755982988);\n    // newPos = rotate(newPos, vec3(1.,0.,0.), 3.1415/6.);\n\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n    bUv = boundingUv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform vec3 uColor;\nuniform float uActive;\nuniform sampler2D uMap;\nuniform float uStroke;\nuniform float uProgress;\nuniform float uPadding;\nuniform float uTime;\n\nvarying vec2 vUv;\nvarying vec2 bUv;\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 tex = texture2D(tMap, uv).rgb;\n    float signedDist = max(min(tex.r, tex.g), min(max(tex.r, tex.g), tex.b)) - 0.5;\n\n    // TODO: fallback for fwidth for webgl1 (need to enable ext)\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nfloat strokemsdf(sampler2D tMap, vec2 uv, float stroke, float padding) {\n    vec3 tex = texture2D(tMap, uv).rgb;\n    float signedDist = max(min(tex.r, tex.g), min(max(tex.r, tex.g), tex.b)) - 0.5;\n    float t = stroke;\n    float alpha = smoothstep(-t, -t + padding, signedDist) * smoothstep(t, t - padding, signedDist);\n    return alpha;\n}\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((uTime + 10.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n    float fill = msdf(uMap, vUv);\n    float stroke = strokemsdf(uMap, vUv, uStroke, uPadding);\n\n    float alpha = mix(stroke, fill, uProgress);\n    alpha = fill + stroke;\n    alpha = fill * 0.2 + uProgress * 0.4 + stroke * 0.5 + stroke * uProgress;\n\n    float tvNoiseMag = min(2. * uProgress, 2. - 2. * uProgress);\n\n    float tvN = tvNoise(bUv);\n    alpha -= tvN * tvNoiseMag;\n\n    gl_FragColor = vec4(uColor, alpha);\n}"),transparent:!0,depthTest:!1,depthWrite:!1})),this.uniforms.uColor.value=o,this.uniforms.uMap.value=r.map,0===i&&(this.uniforms.uProgress.value=1),this.material.uniforms=this.uniforms,this.setGeometrySpecs({text:e,fontData:r.data,baseWidth:s}),this.setTextBoundingUv(s),this.userData.index=i,this.userData.category=n}setTextBoundingUv(t){const e=this.geometry.attributes.uv.count,n=new Float32Array(2*e),i=this.geometry.attributes.position.array;for(let r=0;r<e;r++){const e=i[3*r];n[2*r]=e/t+.5;const s=i[3*r+1];n[2*r+1]=s/this.geometry.userData.height+.5}this.geometry.setAttribute("boundingUv",new He(n,2))}setGeometrySpecs({text:t,fontData:e,baseWidth:n}){this.geometry.setText({fontData:e,text:t,align:uh.Center,lineWidth:5,lineHeight:1}),this.geometry.computeBoundingBox();const i=this.geometry.boundingBox.max.x-this.geometry.boundingBox.min.x,r=this.geometry.boundingBox.max.y-this.geometry.boundingBox.min.y,s=r/i,o=.5*r-this.geometry.boundingBox.max.y,a=(new te).makeTranslation(0,o,0);this.geometry.applyMatrix4(a);const l=n/i,h=(new te).makeScale(l,l,1);this.geometry.applyMatrix4(h),this.geometry.userData.height=n*s}}class sf{world=new ff;colorGradient=this.world.colorGradient;scene=this.world.scene;scroll={current:0,target:0,active:!1,limitTop:0,limitBottom:0};gap=.5;baseWidth=5;group=new us;outerGroup=new us;initialScrollOffset=1.5;data=this.world.resources.projects;font=this.world.resources.fonts.anironRegular;meshes=this.data.map((({title:t,category:e,index:n})=>new rf({title:t,category:e,index:n,font:this.font,baseWidth:this.baseWidth,color:this.colorGradient.getAt((n+1)/this.data.length)})));constructor(){this.outerGroup.add(this.group),this.group.renderOrder=1e3,this.outerGroup.rotation.y=Math.PI,this.outerGroup.position.z=.3}setDebug(){this.debug=this.world.pane.addFolder({title:"project titles",expanded:!1});const t={value:.1};this.debug.addInput(t,"value",{min:0,max:1,step:.001,label:"stroke"}).on("change",(()=>this.meshes.map((e=>e.material.uniforms.uStroke.value=t.value))));const e={value:0};this.debug.addInput(e,"value",{min:0,max:1,step:.001,label:"progress"}).on("change",(()=>this.meshes.map((t=>t.material.uniforms.uProgress.value=e.value))));const n={value:.1};this.debug.addInput(n,"value",{min:0,max:1,step:.001,label:"padding"}).on("change",(()=>this.meshes.map((t=>t.material.uniforms.uPadding.value=n.value)))),this.debug.addInput(this,"gap",{min:0,max:1,step:.001}).on("change",(()=>{this.setPositionsWithinGroup()})),this.debug.addInput(this.outerGroup.position,"y",{min:0,max:1,step:.001,label:"outerGroup - posY"}),this.debug.addInput(this.group.position,"x",{min:-4,max:0,step:.001,label:"group - posX"})}filterTitles(t){this.meshes.map((e=>{t===xh.All||e.userData.category===t?this.group.add(e):this.group.remove(e)})),this.setPositionsWithinGroup()}setPositionsWithinGroup(){let t=0,e=0;this.group.children.map(((n,i)=>{0===i?(n.position.y=this.initialScrollOffset,n.userData.scrollPosition=n.position.y,t+=n.geometry.userData.height/2+this.gap):(n.position.y=-(t+n.geometry.userData.height/2)+this.initialScrollOffset,n.userData.scrollPosition=n.position.y,e=-n.position.y,t+=n.geometry.userData.height+this.gap)})),this.scroll.limitBottom=e,this.group.position.y=0}onWheel(t){let e=this.group.position.y+.01*t;e=eh(e,this.scroll.limitTop,this.scroll.limitBottom),this.group.position.y=e}onResize(t){this.outerGroup.scale.set(t.scale,t.scale,1),this.group.position.x=t.posX}update(){this.group.children.map((t=>t.material.uniforms.uTime.value=this.world.time))}}class of{world=new ff;font=this.world.resources.fonts.audiowideRegular;group=new us;lineThickness=3;textLineSpacing=5;material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0});navGroup=new us;constructor(){this.group.rotateZ(-Math.PI/2),this.setNavButtons(),this.setLine()}setNavButtons(){this.group.add(this.navGroup);let t=new Fm;t.setText({fontData:this.font.data,text:"Home",align:uh.Left}),this.homeNav=new _n(t,this.material),this.homeNav.name=vh.Home,this.navGroup.add(this.homeNav);let e=new Fm;e.setText({fontData:this.font.data,text:"About",align:uh.Right}),this.aboutNav=new _n(e,this.material),this.aboutNav.name=vh.About,this.navGroup.add(this.aboutNav)}setLine(){let e=new Fn(2,1),n=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}")});this.sideline=new _n(e,n),this.group.add(this.sideline)}onResize(t){this.group.position.x=t.posX,this.sideline.scale.y=t.lineScaleY,this.sideline.scale.x=t.lineScaleX,this.navGroup.position.y=t.navPosY,this.navGroup.scale.y=t.navScaleY,this.navGroup.scale.x=t.navScaleX,this.homeNav.position.x=t.posHome,this.aboutNav.position.x=t.posAbout}}class af extends us{}class lf{world=new ff;font=this.world.resources.fonts.audiowideRegular;material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\nuniform float uActive;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    // vec3 col = vec3(1.);\n    float col = mix(0.5, 1., uActive);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(vec3(col), fill);\n}"),uniforms:{tMap:{value:this.font.map},uActive:{value:!1}},transparent:!0});outerGroup=new us;group=new af;size=150;underlineThickness=.1;gap=1.2;gWidth=0;underlineMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 1.);\n}")});constructor(){this.outerGroup.add(this.group),Object.values(xh).map(((t,e)=>{let n=new Fm;n.setText({fontData:this.font.data,text:t,align:uh.Right}),n.computeBoundingBox();const i=n.boundingBox.max.x-n.boundingBox.min.x;i>this.gWidth&&(this.gWidth=i);let r=new _n(n,this.material.clone());r.name=t,r.position.y=-e*(1+this.gap),this.group.add(r)})),this.underlineButtons()}underlineButtons(){const t=new _n(new Fn(1.05*this.gWidth,this.underlineThickness),this.underlineMaterial);this.group.children.map((e=>{let n=t.clone();n.position.x=.5*this.gWidth-this.gWidth,n.position.y=-.5-this.underlineThickness/2,e.add(n)}))}updateActiveFilter(t){this.activeFilter!==t&&(this.activeFilter=t,this.group.children.map((e=>e.name===t?e.material.uniforms.uActive.value=!0:e.material.uniforms.uActive.value=!1)))}onResize(t){this.outerGroup.position.x=t.posX,this.outerGroup.scale.set(t.scaleX,t.scaleY,1),this.outerGroup.position.y=t.posY}}class hf{world=new ff;scene=this.world.scene;projectScreen=this.world.projectScreen;projectState=this.world.projectState;sky=this.world.sky;water=this.world.water;raycaster=this.world.raycaster;ndcRaycaster=this.world.ndcRaycaster;rayOrigin=new Mt(0,0,1);rayTarget=new Mt;colorGradient=this.world.colorGradient;screenTimeline=Pm.timeline();titlesTimeline=Pm.timeline();titleIndex=-1;titles=new sf;nProjects=this.titles.data.length;nav=new of;filters=new lf;constructor(){this.filterProjects(xh.All),this.world.water.hiddenObjects[vh.Projects]?.push(this.filters.outerGroup,this.nav.group)}setDebug(){}filterProjects(t){this.projectState.filter=t,this.projectState.activeIndices=this.titles.data.filter((e=>t===xh.All||e.category===t)).map((t=>t.index)),this.filters.updateActiveFilter(t),this.titles.filterTitles(t)}setColors(t){this.sky.material.uniforms.uSkyColor.value=t,this.water.uniforms.uFresnelColor.value=t}onActiveChange(t){const e=this.colorGradient.getAt((t+1)/this.nProjects);this.setColors(e),this.projectScreen.onActiveChange({newIndex:t,color:e}),this.projectScreen.timeline.parent&&this.titlesTimeline.clear(),this.titles.meshes.map((e=>{let n=0;e.userData.index===t&&(n=1),this.titlesTimeline.to(e.material.uniforms.uProgress,{value:n,duration:.75,ease:"none"},"0")}))}onPointerdown(){this.projectScreen.onPointerdown(),(this.hover||this.hoverTitles)&&(this.down=!0)}onPointermove(t){if(this.down)return;this.rayTarget.set(t.x,t.y,-1).normalize(),this.ndcRaycaster.set(this.rayOrigin,this.rayTarget);const[e]=this.ndcRaycaster.intersectObjects([...this.filters.group.children,this.nav.homeNav,this.nav.aboutNav]);e?(this.target=e.object.name,this.hover=!0,document.body.style.cursor="pointer"):this.hover=!1,this.projectScreen.onPointermove()}onPointerup(){document.body.style.cursor="",this.projectScreen.onPointerup(),this.hoverTitles&&this.down&&(this.down=!1,this.world.changeView(vh.ProjectDetail)),this.hover&&this.down&&(this.down=!1,this.target in xh?this.filterProjects(this.target):this.world.changeView(this.target))}getSizes(){const t=2/window.innerWidth,e=window.innerWidth/window.innerHeight,n={},i={},r={},s={};n.lineScaleY=this.nav.lineThickness*t,n.lineScaleX=.8;let o=window.innerWidth>750?50:35;n.navScaleY=o/window.innerWidth,n.navScaleX=o/window.innerHeight,n.navPosY=n.navScaleY/2+n.lineScaleY/2+this.nav.textLineSpacing*t;n.posX=40*t-1+n.lineScaleY/2;n.posHome=-n.lineScaleX/n.navScaleX+2/window.innerHeight*10/n.navScaleX,n.posAbout=-n.posHome,i.scaleX=1+.2*e,i.scaleY=1*i.scaleX*.5625;let a=210+8*e;a*=Math.PI/180,i.posX=.65*Math.sin(a),i.posZ=.65*-Math.cos(a),i.rotY=-a,i.aspect=e,r.scale=.1+.05*e,r.posX=-1.4-.2*e;let l=window.innerWidth>750?300:210;return l/=this.filters.gWidth,s.scaleX=l/window.innerWidth,s.scaleY=l/window.innerHeight,s.posX=1-.1*e,s.posY=s.scaleY*(2+this.filters.gap),{projectsNav:n,screen:i,titles:r,filters:s}}onResize(){const{projectsNav:t,screen:e,titles:n,filters:i}=this.getSizes();this.world.view!==vh.ProjectDetail&&this.projectScreen.resizeProjectsView(e),this.titles.onResize(n),this.filters.onResize(i),this.nav.onResize(t)}onWheel({deltaY:t}){this.titles.onWheel(t)}update(){const[t]=this.raycaster.intersectObjects(this.titles.group.children);t?(this.titleIndex=t.object.userData.index,document.body.style.cursor="pointer",this.hoverTitles=!0,this.titleIndex!==this.projectState.target&&this.onActiveChange(this.titleIndex)):(this.hoverTitles=!1,this.hover||(document.body.style.cursor="")),this.titles.update(),this.projectScreen.update()}}class cf{group=new us;scale=1.8;constructor(){this.world=new ff,this.font=this.world.resources.fonts.audiowideRegular,this.linkTex=this.world.resources.assets.linkIcon,this.material=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform float uLineThickness;\nuniform float uLengthBottom;\nuniform float uLengthCorner;\nuniform float uCenterGap;\nuniform float uLengthTop;\nuniform vec2 uResolution;\nuniform float uScale;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec2 halfSize = 0.5 * uResolution;\n\n    vec2 st = (vUv) * uResolution;\n\n    vec2 nt = (vUv - 0.5) * uResolution;\n\n    float strength = step(halfSize.x - uLengthBottom, abs(nt.x)) * step(st.y, uLineThickness);\n\n    float corner = step(halfSize.x - uLengthCorner, abs(nt.x)) * step(uResolution.y - uLineThickness, st.y);\n    corner += step(halfSize.x - uLineThickness, abs(nt.x)) * step(uResolution.y - uLengthCorner, st.y);\n    strength += corner;\n\n    float topLine = step(uCenterGap, abs(nt.x)) * step(abs(nt.x), uCenterGap + uLengthTop) * step(uResolution.y - uLineThickness, st.y);\n\n    strength += topLine;\n\n    vec3 col = vec3 (1.);\n\n    gl_FragColor = vec4(col, strength);\n    // gl_FragColor.a += 0.5;\n}"),uniforms:{uResolution:{value:new et(window.innerWidth/2,window.innerHeight/2)},uLineThickness:{value:1/this.scale},uLengthBottom:{value:250/this.scale},uLengthCorner:{value:150/this.scale},uCenterGap:{value:100/this.scale},uLengthTop:{value:200/this.scale},uScale:{value:this.scale}},transparent:!0,depthWrite:!1}),this.geometry=new Fn(1,1),this.lineMesh=new _n(this.geometry,this.material),this.lineMesh.renderOrder=101,this.lineMesh.scale.set(this.scale,this.scale,1),this.group.add(this.lineMesh),this.setCloseButton(),this.setNavButtons(),this.setVisitButton()}setCloseButton(){let e=new Fn(1,1),n=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform float uSize;\nuniform float uBorderThickness;\nuniform float uBorderStrength;\nuniform float uCrossThickness;\nuniform float uCrossSize;\nuniform float uBackgroundStrength;\n\nvarying vec2 vUv;\n\nvec2 rotate(vec2 v, float a) {\n\tfloat s = sin(a);\n\tfloat c = cos(a);\n\tmat2 m = mat2(c, -s, s, c);\n\treturn m * v;\n}\n\nvoid main() {\n    float strength;\n\n    vec2 nUv = vUv - 0.5;\n    nUv = rotate(nUv, 3.1415 * 0.25);\n    \n    vec2 sUv = nUv * uSize;\n    strength = step(abs(sUv.y), uCrossThickness) + step(abs(sUv.x), uCrossThickness);\n\n    float l = length(sUv);\n\n    strength *= step(l, uCrossSize);\n\n    float border = step(l, 0.5 * uSize);\n\n    float innerBorder = step(l, 0.5 * uSize - 2. * uBorderThickness);\n    border -= innerBorder;\n\n    border *= smoothstep(uBorderStrength, 0., abs(vUv.y - 0.5));\n\n    strength += border;\n\n    gl_FragColor = vec4(vec3(1.), strength);\n\n    float bgStrength = innerBorder * uBackgroundStrength;\n    vec4 bg = vec4(vec3(0.), bgStrength) * uBorderStrength;\n\n    gl_FragColor = mix(bg, gl_FragColor, strength);\n}"),transparent:!0,uniforms:{uSize:{value:200},uBorderThickness:{value:2},uBorderStrength:{value:.7},uCrossThickness:{value:2},uCrossSize:{value:50},uBackgroundStrength:{value:.4}}});this.close=new _n(e,n),this.close.name="close",this.close.renderOrder=102,this.group.add(this.close)}setNavButtons(){this.textMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}"),uniforms:{tMap:{value:this.font.map}},transparent:!0});let e=new Fm;e.setText({fontData:this.font.data,text:"Prev.",align:uh.Left}),this.prevButton=new _n(e,this.textMaterial),this.prevButton.name="prev",this.group.add(this.prevButton);let n=new Fm;n.setText({fontData:this.font.data,text:"Next",align:uh.Right}),this.nextButton=new _n(n,this.textMaterial),this.nextButton.name="next",this.group.add(this.nextButton)}setVisitButton(){this.visitGroup=new us,this.group.add(this.visitGroup);let e=new Fm;e.setText({fontData:this.font.data,text:"Visit",align:uh.Right}),e.computeBoundingBox();e.boundingBox.max.x,e.boundingBox.min.x;this.visitText=new _n(e,this.textMaterial),this.visitText.name="visit",this.visitGroup.add(this.visitText),this.iconMaterial=new Sn({vertexShader:t("#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 newPos = position;\n    newPos.x += 0.5;\n    gl_Position = modelMatrix * vec4(newPos, 1.);\n    vUv = uv;\n}"),fragmentShader:t("#define GLSLIFY 1\nuniform sampler2D uIcon;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uIcon, vUv);\n    gl_FragColor = icon;\n\n    // vec4 shadow = texture2D(uIcon, (vUv - vec2(0.05,-0.05)) * 1.1);\n\n    // shadow = vec4 (vec3(0., 1., 0.), shadow.r);\n\n    // gl_FragColor += shadow;\n}"),uniforms:{uIcon:{value:this.linkTex}},transparent:!0,depthWrite:!1,depthTest:!1});let n=new Fn(1,1);this.visitIcon=new _n(n,this.iconMaterial),this.visitIcon.position.z=.5,this.visitIcon.scale.z=10,this.visitIcon.name="visit",this.visitGroup.add(this.visitIcon)}onResize(){let t=(.98-.5*this.scale)*window.innerHeight;t=Math.max(Math.min(t,100),50);let e=2*t/window.innerWidth,n=2*t/window.innerHeight;this.close.scale.set(e,n,1);let i=.5*this.scale-this.material.uniforms.uLineThickness.value/window.innerHeight;this.close.position.y=i,this.material.uniforms.uResolution.value.set(window.innerWidth/2,window.innerHeight/2),this.material.uniforms.uLengthBottom.value=Math.min(250,window.innerWidth/5)/this.scale,this.material.uniforms.uLengthTop.value=Math.min(200,window.innerWidth/10)/this.scale,this.material.uniforms.uCenterGap.value=.5*t,this.material.uniforms.uLengthCorner.value=.3*this.material.uniforms.uLengthBottom.value;let r=Math.min(75,window.innerWidth/10),s=r/window.innerWidth,o=r/window.innerHeight;const a=.1*this.material.uniforms.uLengthBottom.value;this.prevButton.scale.set(s,o,1);const l=.5*-this.scale+2*a/window.innerWidth,h=.5*-this.scale+.5*o+10/window.innerHeight;this.prevButton.position.set(l,.5*-this.scale+.5*o,0),this.nextButton.scale.set(s,o,1),this.nextButton.position.set(-l,h,0);const c=1.2*s,u=1.2*o;this.visitGroup.scale.set(c,u,1);let d=.5*-this.scale+this.material.uniforms.uLineThickness.value/window.innerHeight+.5*u;this.visitGroup.position.set(.75*c,d,0)}}class uf{world=new ff;scene=this.world.scene;projectState=this.world.projectState;projectScreen=this.world.projectScreen;raycaster=this.world.raycaster;rayOrigin=new Mt(0,0,1);rayTarget=new Mt;overlay=new cf;constructor(){this.world.water.hiddenObjects[vh.Projects]?.push(this.overlay.group)}setDebug(){this.debug=this.world.pane.addFolder({title:"projectDetailViewManager",expanded:!1}),this.overlayDebug()}overlayDebug(){const t=this.debug.addFolder({title:"overlay"});t.addInput(this.overlay.material.uniforms.uLineThickness,"value",{min:1,max:50,step:1,label:"line thickness"}),t.addInput(this.overlay.material.uniforms.uLengthBottom,"value",{min:1,max:1e3,step:1,label:"length bottom"}),t.addInput(this.overlay.material.uniforms.uLengthCorner,"value",{min:1,max:500,step:1,label:"length corner"}),t.addInput(this.overlay.material.uniforms.uCenterGap,"value",{min:0,max:400,step:1,label:"center gap"}),t.addInput(this.overlay.material.uniforms.uLengthTop,"value",{min:1,max:400,step:1,label:"length top"});const e=t.addFolder({title:"closeButton"});e.addInput(this.overlay.close.material.uniforms.uBorderThickness,"value",{min:0,max:30,step:1,label:"border thickness"}),e.addInput(this.overlay.close.material.uniforms.uBorderStrength,"value",{min:0,max:1,step:.001,label:"border strength"}),e.addInput(this.overlay.close.material.uniforms.uCrossThickness,"value",{min:0,max:30,step:1,label:"cross thickness"}),e.addInput(this.overlay.close.material.uniforms.uCrossSize,"value",{min:0,max:100,step:1,label:"cross size"}),e.addInput(this.overlay.close.material.uniforms.uBackgroundStrength,"value",{min:0,max:1,step:.001,label:"background strength"})}onPointermove(t){if(this.down)return;this.projectScreen.onPointermove(),this.rayTarget.set(t.x,t.y,-1).normalize(),this.raycaster.set(this.rayOrigin,this.rayTarget);const[e]=this.raycaster.intersectObjects([this.overlay.close,this.overlay.prevButton,this.overlay.nextButton,...this.overlay.visitGroup.children]);if(e){const{name:t}=e.object;this.target=t,this.hover=!0,document.body.style.cursor="pointer"}else this.hover=!1,document.body.style.cursor=""}onPointerdown(){this.projectScreen.onPointerdown(),this.hover&&(this.down=!0)}onActiveChange(t){let e=0;const n=this.projectState.activeIndices;if("next"===t){const t=Math.max(...n);e=this.projectState.active+1,e=Math.min(e,t),this.projectScreen.timeline.parent&&"next"===this.lastCommand&&(this.projectState.active=e,e++),e=Math.min(e,t),this.lastCommand="next"}else if("prev"===t){const t=Math.min(...n);e=this.projectState.active-1,e=Math.max(e,t),this.projectScreen.timeline.parent&&"prev"===this.lastCommand&&(this.projectState.active=e,e--),e=Math.max(e,t),this.lastCommand="prev"}this.projectScreen.onActiveChange({newIndex:e,color:this.world.colorGradient.getAt((e+1)/5)}),this.world.changeView(vh.ProjectDetail)}onPointerup(){if(this.down)switch(this.down=!1,this.projectScreen.onPointerup(),this.target){case"close":this.world.changeView(vh.Projects);break;case"prev":this.onActiveChange("prev");break;case"next":this.onActiveChange("next")}}getSizes(){const t=window.innerWidth/window.innerHeight,e={};e.aspect=t;const n=.65,i=.5*this.world.camera.fov*Math.PI/180;e.scaleY=1.3*Math.tan(i),e.scaleX=e.scaleY*t;let r=210+8*t;r*=Math.PI/180,e.posX=Math.sin(r)*n,e.posZ=-Math.cos(r)*n,e.rotY=-r,this.world.camera.position.set(0,e.scaleY/2,0);const s=(30+8*t)*(Math.PI/180);return this.world.camera.rotation.set(-Math.PI,s,Math.PI),{screen:e}}onResize(){if(this.world.view===vh.ProjectDetail){const{screen:t}=this.getSizes();this.projectScreen.resizeProjectDetailView(t)}this.overlay.onResize()}onWheel(){}update(){this.projectScreen.update()}}const df=(t,e,n)=>n*t+(1-n)*e;class pf{constructor(t){this.colors=t.map((t=>new ut(t)))}getAt(t){t=eh(t,0,1);const e=Math.floor(t*this.colors.length*.9999),n=eh(e+1,0,this.colors.length-1),i=this.colors[e],r=this.colors[n],s=(t-e/this.colors.length)/(1/this.colors.length),o=new ut;return o.r=df(i.r,r.r,s),o.g=df(i.g,r.g,s),o.b=df(i.b,r.b,s),o}}const mf=["#EDEBE7","#13595A","#DE1408","#161814","#E1610A","#B7BDB3","#9F9772"];class ff{usePost=!1;time=0;viewManagers={};constructor({container:t}={}){if(ff.instance)return ff.instance;ff.instance=this,this.container=t,this.camera=new En(65,1,.001,10),this.colorGradient=new pf(mf),this.renderer=new vs({alpha:!0,powerPreference:"high-performance",antialias:!0}),this.initialHeight=.14,this.projectState={active:0,progress:{value:0},target:0,isTransitioning:{value:!1},min:0,max:5,filter:xh.All,activeIndices:[]},this.mouse=new et,this.scene=new ys,this.raycaster=new Vl,this.ndcRaycaster=new Vl,this.camera.position.set(0,this.initialHeight,1),this.renderer.setPixelRatio(1),this.container.appendChild(this.renderer.domElement),this.init()}async init(){this.preloader=new Om,this.parallax=new Ql,this.sky=new $l,this.post=new Sh,this.curlBubble=new Mh,this.water=new km,this.rotateAlert=new Rm,this.resources=new Lm,this.addListeners(),this.onResize(),this.render(),await this.resources.load(),this.sky.onPreloaded(),this.projectScreen=new Am,this.homeViewManager=new Ym,this.projectsViewManager=new hf,this.projectDetailViewManager=new uf,this.aboutViewManager=new nf,this.viewManagers={Home:this.homeViewManager,ProjectDetail:this.projectDetailViewManager,About:this.aboutViewManager,Projects:this.projectsViewManager},this.transitionManager=new Dm,this.changeView(window.VIEW),this.onResize()}addListeners(){window.addEventListener("resize",this.onResize.bind(this)),window.addEventListener("pointermove",this.onPointermove.bind(this)),window.addEventListener("pointerup",this.onPointerup.bind(this)),window.addEventListener("pointerdown",this.onPointerdown.bind(this)),window.addEventListener("wheel",this.onWheel.bind(this))}changeView(t){if(t===vh.Home&&(this.transitionManager.projectsToHome(),window.history.pushState({},"","/")),t===vh.Projects&&(this.view===vh.Home?this.transitionManager.homeToProjects():this.view===vh.ProjectDetail?this.transitionManager.projectDetailToProjects():this.view===vh.About?this.transitionManager.aboutToProjects():this.transitionManager.homeToProjects(),window.history.pushState({},"","/projects")),t===vh.ProjectDetail){if(window.VIEW===vh.ProjectDetail){const t=this.resources.projects.find((({path:t})=>location.pathname.includes(t)))?.index||0;this.projectState.active=t,this.projectState.target=t,this.projectScreen.onActiveChange({newIndex:t}),window.VIEW=vh.Error,this.transitionManager.homeToProjects(1e-4),window.setTimeout((()=>{this.transitionManager.projectsToProjectDetail()}),75)}else this.view!==vh.ProjectDetail&&this.transitionManager.projectsToProjectDetail();const t=this.resources.projects[this.projectState.target].path;window.history.pushState({},"",t)}t===vh.About&&(this.view,vh.Projects,this.transitionManager.projectsToAbout(),window.history.pushState({},"","/about")),t===vh.Error&&alert("heyy :-)"),this.view=t}worldDebug(){this.debug=this.pane.addFolder({title:"world",expanded:!1}),this.debugCamera(),this.debug.addButton({title:"toggle autoclear"}).on("click",(()=>{this.renderer.autoClear=!this.renderer.autoClear}))}debugCamera(){const t=this.debug.addFolder({title:"camera",expanded:!1});t.addButton({title:"print camera state"}).on("click",(()=>{console.log(this.camera.position.x.toFixed(4),", ",this.camera.position.y.toFixed(4),", ",this.camera.position.z.toFixed(4)),console.log(this.camera.rotation.x.toFixed(4),", ",this.camera.rotation.y.toFixed(4),", ",this.camera.rotation.z.toFixed(4))})),t.addButton({title:"toggle parallax"}).on("click",(()=>{this.parallax.enabled=!this.parallax.enabled})),t.addInput(this,"initialHeight",{min:0,max:.5,step:.001})}setDebug(){this.paneContainer=new(0,Zl.Pane),this.pane=this.paneContainer.addFolder({title:"",expanded:!1}),this.worldDebug(),this.sky&&this.sky.setDebug(),this.curlBubble&&this.curlBubble.setDebug(),this.water&&this.water.setDebug(),this.projectScreen.setDebug(),this.projectsViewManager.setDebug(),this.projectDetailViewManager.setDebug(),this.aboutViewManager.setDebug(),this.homeViewManager.setDebug(),this.post.setDebug(),this.transitionManager.setDebug()}mouseNDC(t){this.mouse.x=2*t.clientX/this.width-1,this.mouse.y=-2*t.clientY/this.height+1}onPointermove(t){this.mouseNDC(t),this.parallax.updateTarget(),this.raycaster.setFromCamera(this.mouse,this.camera),this.sky.onPointermove(),this.water.onPointermove(),this.viewManagers[this.view]?.onPointermove(this.mouse,t)}onPointerdown(){this.sky.onPointerdown(),this.water.onPointerdown(),this.viewManagers[this.view]?.onPointerdown()}onPointerup(){this.sky.onPointerup(),this.water.onPointerup(),this.viewManagers[this.view]?.onPointerup()}onWheel(t){this.sky.onWheel(),this.water.onWheel(),this.viewManagers[this.view]?.onWheel(t)}onResize(){this.width=this.container.offsetWidth,this.height=this.container.offsetHeight,this.renderer.setSize(this.width,this.height),this.camera.aspect=this.width/this.height,this.camera.updateProjectionMatrix(),this.sky.onResize(),this.water.onResize(),this.rotateAlert&&this.rotateAlert.onResize(this.width/this.height),Object.values(this.viewManagers).map((t=>t.onResize()))}update(){this.parallax.update(),this.sky.update(),this.water.update(),this.viewManagers[this.view]?.update()}render(){this.time+=.01633,this.update(),this.usePost?this.post.render():this.renderer.render(this.scene,this.camera),window.requestAnimationFrame(this.render.bind(this))}}new ff({container:document.querySelector("#canvas")})})();
+=======
+*/ /* eslint-disable */ var _config = {
+    autoSleep: 120,
+    force3D: "auto",
+    nullTargetWarn: 1,
+    units: {
+        lineHeight: ""
+    }
+}, _defaults = {
+    duration: .5,
+    overwrite: false,
+    delay: 0
+}, _suppressOverwrites, _reverting, _context, _bigNum = 1e8, _tinyNum = 1 / _bigNum, _2PI = Math.PI * 2, _HALF_PI = _2PI / 4, _gsID = 0, _sqrt = Math.sqrt, _cos = Math.cos, _sin = Math.sin, _isString = function _isString(value) {
+    return typeof value === "string";
+}, _isFunction = function _isFunction(value) {
+    return typeof value === "function";
+}, _isNumber = function _isNumber(value) {
+    return typeof value === "number";
+}, _isUndefined = function _isUndefined(value) {
+    return typeof value === "undefined";
+}, _isObject = function _isObject(value) {
+    return typeof value === "object";
+}, _isNotFalse = function _isNotFalse(value) {
+    return value !== false;
+}, _windowExists = function _windowExists() {
+    return typeof window !== "undefined";
+}, _isFuncOrString = function _isFuncOrString(value) {
+    return _isFunction(value) || _isString(value);
+}, _isTypedArray = typeof ArrayBuffer === "function" && ArrayBuffer.isView || function() {}, // note: IE10 has ArrayBuffer, but NOT ArrayBuffer.isView().
+_isArray = Array.isArray, _strictNumExp = /(?:-?\.?\d|\.)+/gi, //only numbers (including negatives and decimals) but NOT relative values.
+_numExp = /[-+=.]*\d+[.e\-+]*\d*[e\-+]*\d*/g, //finds any numbers, including ones that start with += or -=, negative numbers, and ones in scientific notation like 1e-8.
+_numWithUnitExp = /[-+=.]*\d+[.e-]*\d*[a-z%]*/g, _complexStringNumExp = /[-+=.]*\d+\.?\d*(?:e-|e\+)?\d*/gi, //duplicate so that while we're looping through matches from exec(), it doesn't contaminate the lastIndex of _numExp which we use to search for colors too.
+_relExp = /[+-]=-?[.\d]+/, _delimitedValueExp = /[^,'"\[\]\s]+/gi, // previously /[#\-+.]*\b[a-z\d\-=+%.]+/gi but didn't catch special characters.
+_unitExp = /^[+\-=e\s\d]*\d+[.\d]*([a-z]*|%)\s*$/i, _globalTimeline, _win, _coreInitted, _doc, _globals = {}, _installScope = {}, _coreReady, _install = function _install(scope) {
+    return (_installScope = _merge(scope, _globals)) && gsap;
+}, _missingPlugin = function _missingPlugin(property, value) {
+    return console.warn("Invalid property", property, "set to", value, "Missing plugin? gsap.registerPlugin()");
+}, _warn = function _warn(message, suppress) {
+    return !suppress && console.warn(message);
+}, _addGlobal = function _addGlobal(name, obj) {
+    return name && (_globals[name] = obj) && _installScope && (_installScope[name] = obj) || _globals;
+}, _emptyFunc = function _emptyFunc() {
+    return 0;
+}, _startAtRevertConfig = {
+    suppressEvents: true,
+    isStart: true,
+    kill: false
+}, _revertConfigNoKill = {
+    suppressEvents: true,
+    kill: false
+}, _revertConfig = {
+    suppressEvents: true
+}, _reservedProps = {}, _lazyTweens = [], _lazyLookup = {}, _lastRenderedFrame, _plugins = {}, _effects = {}, _nextGCFrame = 30, _harnessPlugins = [], _callbackNames = "", _harness = function _harness(targets) {
+    var target = targets[0], harnessPlugin, i;
+    _isObject(target) || _isFunction(target) || (targets = [
+        targets
+    ]);
+    if (!(harnessPlugin = (target._gsap || {}).harness)) {
+        // find the first target with a harness. We assume targets passed into an animation will be of similar type, meaning the same kind of harness can be used for them all (performance optimization)
+        i = _harnessPlugins.length;
+        while((i--) && !_harnessPlugins[i].targetTest(target));
+        harnessPlugin = _harnessPlugins[i];
+    }
+    i = targets.length;
+    while(i--)targets[i] && (targets[i]._gsap || (targets[i]._gsap = new GSCache(targets[i], harnessPlugin))) || targets.splice(i, 1);
+    return targets;
+}, _getCache = function _getCache(target) {
+    return target._gsap || _harness(toArray(target))[0]._gsap;
+}, _getProperty = function _getProperty(target, property, v) {
+    return (v = target[property]) && _isFunction(v) ? target[property]() : _isUndefined(v) && target.getAttribute && target.getAttribute(property) || v;
+}, _forEachName = function _forEachName(names, func) {
+    return (names = names.split(",")).forEach(func) || names;
+}, //split a comma-delimited list of names into an array, then run a forEach() function and return the split array (this is just a way to consolidate/shorten some code).
+_round = function _round(value) {
+    return Math.round(value * 100000) / 100000 || 0;
+}, _roundPrecise = function _roundPrecise(value) {
+    return Math.round(value * 10000000) / 10000000 || 0;
+}, // increased precision mostly for timing values.
+_parseRelative = function _parseRelative(start, value) {
+    var operator = value.charAt(0), end = parseFloat(value.substr(2));
+    start = parseFloat(start);
+    return operator === "+" ? start + end : operator === "-" ? start - end : operator === "*" ? start * end : start / end;
+}, _arrayContainsAny = function _arrayContainsAny(toSearch, toFind) {
+    //searches one array to find matches for any of the items in the toFind array. As soon as one is found, it returns true. It does NOT return all the matches; it's simply a boolean search.
+    var l = toFind.length, i = 0;
+    for(; toSearch.indexOf(toFind[i]) < 0 && ++i < l;);
+    return i < l;
+}, _lazyRender = function _lazyRender() {
+    var l = _lazyTweens.length, a = _lazyTweens.slice(0), i, tween;
+    _lazyLookup = {};
+    _lazyTweens.length = 0;
+    for(i = 0; i < l; i++){
+        tween = a[i];
+        tween && tween._lazy && (tween.render(tween._lazy[0], tween._lazy[1], true)._lazy = 0);
+    }
+}, _lazySafeRender = function _lazySafeRender(animation, time, suppressEvents, force) {
+    _lazyTweens.length && _lazyRender();
+    animation.render(time, suppressEvents, force || _reverting && time < 0 && (animation._initted || animation._startAt));
+    _lazyTweens.length && _lazyRender(); //in case rendering caused any tweens to lazy-init, we should render them because typically when someone calls seek() or time() or progress(), they expect an immediate render.
+}, _numericIfPossible = function _numericIfPossible(value) {
+    var n = parseFloat(value);
+    return (n || n === 0) && (value + "").match(_delimitedValueExp).length < 2 ? n : _isString(value) ? value.trim() : value;
+}, _passThrough = function _passThrough(p) {
+    return p;
+}, _setDefaults = function _setDefaults(obj, defaults) {
+    for(var p in defaults)p in obj || (obj[p] = defaults[p]);
+    return obj;
+}, _setKeyframeDefaults = function _setKeyframeDefaults(excludeDuration) {
+    return function(obj, defaults) {
+        for(var p in defaults)p in obj || p === "duration" && excludeDuration || p === "ease" || (obj[p] = defaults[p]);
+    };
+}, _merge = function _merge(base, toMerge) {
+    for(var p in toMerge)base[p] = toMerge[p];
+    return base;
+}, _mergeDeep = function _mergeDeep(base, toMerge) {
+    for(var p in toMerge)p !== "__proto__" && p !== "constructor" && p !== "prototype" && (base[p] = _isObject(toMerge[p]) ? _mergeDeep(base[p] || (base[p] = {}), toMerge[p]) : toMerge[p]);
+    return base;
+}, _copyExcluding = function _copyExcluding(obj, excluding) {
+    var copy = {}, p;
+    for(p in obj)p in excluding || (copy[p] = obj[p]);
+    return copy;
+}, _inheritDefaults = function _inheritDefaults(vars) {
+    var parent = vars.parent || _globalTimeline, func = vars.keyframes ? _setKeyframeDefaults(_isArray(vars.keyframes)) : _setDefaults;
+    if (_isNotFalse(vars.inherit)) while(parent){
+        func(vars, parent.vars.defaults);
+        parent = parent.parent || parent._dp;
+    }
+    return vars;
+}, _arraysMatch = function _arraysMatch(a1, a2) {
+    var i = a1.length, match = i === a2.length;
+    while(match && i-- && a1[i] === a2[i]);
+    return i < 0;
+}, _addLinkedListItem = function _addLinkedListItem(parent, child, firstProp, lastProp, sortBy) {
+    if (firstProp === void 0) firstProp = "_first";
+    if (lastProp === void 0) lastProp = "_last";
+    var prev = parent[lastProp], t;
+    if (sortBy) {
+        t = child[sortBy];
+        while(prev && prev[sortBy] > t)prev = prev._prev;
+    }
+    if (prev) {
+        child._next = prev._next;
+        prev._next = child;
+    } else {
+        child._next = parent[firstProp];
+        parent[firstProp] = child;
+    }
+    if (child._next) child._next._prev = child;
+    else parent[lastProp] = child;
+    child._prev = prev;
+    child.parent = child._dp = parent;
+    return child;
+}, _removeLinkedListItem = function _removeLinkedListItem(parent, child, firstProp, lastProp) {
+    if (firstProp === void 0) firstProp = "_first";
+    if (lastProp === void 0) lastProp = "_last";
+    var prev = child._prev, next = child._next;
+    if (prev) prev._next = next;
+    else if (parent[firstProp] === child) parent[firstProp] = next;
+    if (next) next._prev = prev;
+    else if (parent[lastProp] === child) parent[lastProp] = prev;
+    child._next = child._prev = child.parent = null; // don't delete the _dp just so we can revert if necessary. But parent should be null to indicate the item isn't in a linked list.
+}, _removeFromParent = function _removeFromParent(child, onlyIfParentHasAutoRemove) {
+    child.parent && (!onlyIfParentHasAutoRemove || child.parent.autoRemoveChildren) && child.parent.remove(child);
+    child._act = 0;
+}, _uncache = function _uncache(animation, child) {
+    if (animation && (!child || child._end > animation._dur || child._start < 0)) {
+        // performance optimization: if a child animation is passed in we should only uncache if that child EXTENDS the animation (its end time is beyond the end)
+        var a = animation;
+        while(a){
+            a._dirty = 1;
+            a = a.parent;
+        }
+    }
+    return animation;
+}, _recacheAncestors = function _recacheAncestors(animation) {
+    var parent = animation.parent;
+    while(parent && parent.parent){
+        //sometimes we must force a re-sort of all children and update the duration/totalDuration of all ancestor timelines immediately in case, for example, in the middle of a render loop, one tween alters another tween's timeScale which shoves its startTime before 0, forcing the parent timeline to shift around and shiftChildren() which could affect that next tween's render (startTime). Doesn't matter for the root timeline though.
+        parent._dirty = 1;
+        parent.totalDuration();
+        parent = parent.parent;
+    }
+    return animation;
+}, _rewindStartAt = function _rewindStartAt(tween, totalTime, suppressEvents, force) {
+    return tween._startAt && (_reverting ? tween._startAt.revert(_revertConfigNoKill) : tween.vars.immediateRender && !tween.vars.autoRevert || tween._startAt.render(totalTime, true, force));
+}, _hasNoPausedAncestors = function _hasNoPausedAncestors(animation) {
+    return !animation || animation._ts && _hasNoPausedAncestors(animation.parent);
+}, _elapsedCycleDuration = function _elapsedCycleDuration(animation) {
+    return animation._repeat ? _animationCycle(animation._tTime, animation = animation.duration() + animation._rDelay) * animation : 0;
+}, // feed in the totalTime and cycleDuration and it'll return the cycle (iteration minus 1) and if the playhead is exactly at the very END, it will NOT bump up to the next cycle.
+_animationCycle = function _animationCycle(tTime, cycleDuration) {
+    var whole = Math.floor(tTime /= cycleDuration);
+    return tTime && whole === tTime ? whole - 1 : whole;
+}, _parentToChildTotalTime = function _parentToChildTotalTime(parentTime, child) {
+    return (parentTime - child._start) * child._ts + (child._ts >= 0 ? 0 : child._dirty ? child.totalDuration() : child._tDur);
+}, _setEnd = function _setEnd(animation) {
+    return animation._end = _roundPrecise(animation._start + (animation._tDur / Math.abs(animation._ts || animation._rts || _tinyNum) || 0));
+}, _alignPlayhead = function _alignPlayhead(animation, totalTime) {
+    // adjusts the animation's _start and _end according to the provided totalTime (only if the parent's smoothChildTiming is true and the animation isn't paused). It doesn't do any rendering or forcing things back into parent timelines, etc. - that's what totalTime() is for.
+    var parent = animation._dp;
+    if (parent && parent.smoothChildTiming && animation._ts) {
+        animation._start = _roundPrecise(parent._time - (animation._ts > 0 ? totalTime / animation._ts : ((animation._dirty ? animation.totalDuration() : animation._tDur) - totalTime) / -animation._ts));
+        _setEnd(animation);
+        parent._dirty || _uncache(parent, animation); //for performance improvement. If the parent's cache is already dirty, it already took care of marking the ancestors as dirty too, so skip the function call here.
+    }
+    return animation;
+}, /*
+_totalTimeToTime = (clampedTotalTime, duration, repeat, repeatDelay, yoyo) => {
+	let cycleDuration = duration + repeatDelay,
+		time = _round(clampedTotalTime % cycleDuration);
+	if (time > duration) {
+		time = duration;
+	}
+	return (yoyo && (~~(clampedTotalTime / cycleDuration) & 1)) ? duration - time : time;
+},
+*/ _postAddChecks = function _postAddChecks(timeline, child) {
+    var t;
+    if (child._time || child._initted && !child._dur) {
+        //in case, for example, the _start is moved on a tween that has already rendered. Imagine it's at its end state, then the startTime is moved WAY later (after the end of this timeline), it should render at its beginning.
+        t = _parentToChildTotalTime(timeline.rawTime(), child);
+        if (!child._dur || _clamp(0, child.totalDuration(), t) - child._tTime > _tinyNum) child.render(t, true);
+    } //if the timeline has already ended but the inserted tween/timeline extends the duration, we should enable this timeline again so that it renders properly. We should also align the playhead with the parent timeline's when appropriate.
+    if (_uncache(timeline, child)._dp && timeline._initted && timeline._time >= timeline._dur && timeline._ts) {
+        //in case any of the ancestors had completed but should now be enabled...
+        if (timeline._dur < timeline.duration()) {
+            t = timeline;
+            while(t._dp){
+                t.rawTime() >= 0 && t.totalTime(t._tTime); //moves the timeline (shifts its startTime) if necessary, and also enables it. If it's currently zero, though, it may not be scheduled to render until later so there's no need to force it to align with the current playhead position. Only move to catch up with the playhead.
+                t = t._dp;
+            }
+        }
+        timeline._zTime = -_tinyNum; // helps ensure that the next render() will be forced (crossingStart = true in render()), even if the duration hasn't changed (we're adding a child which would need to get rendered). Definitely an edge case. Note: we MUST do this AFTER the loop above where the totalTime() might trigger a render() because this _addToTimeline() method gets called from the Animation constructor, BEFORE tweens even record their targets, etc. so we wouldn't want things to get triggered in the wrong order.
+    }
+}, _addToTimeline = function _addToTimeline(timeline, child, position, skipChecks) {
+    child.parent && _removeFromParent(child);
+    child._start = _roundPrecise((_isNumber(position) ? position : position || timeline !== _globalTimeline ? _parsePosition(timeline, position, child) : timeline._time) + child._delay);
+    child._end = _roundPrecise(child._start + (child.totalDuration() / Math.abs(child.timeScale()) || 0));
+    _addLinkedListItem(timeline, child, "_first", "_last", timeline._sort ? "_start" : 0);
+    _isFromOrFromStart(child) || (timeline._recent = child);
+    skipChecks || _postAddChecks(timeline, child);
+    timeline._ts < 0 && _alignPlayhead(timeline, timeline._tTime); // if the timeline is reversed and the new child makes it longer, we may need to adjust the parent's _start (push it back)
+    return timeline;
+}, _scrollTrigger = function _scrollTrigger(animation, trigger) {
+    return (_globals.ScrollTrigger || _missingPlugin("scrollTrigger", trigger)) && _globals.ScrollTrigger.create(trigger, animation);
+}, _attemptInitTween = function _attemptInitTween(tween, time, force, suppressEvents, tTime) {
+    _initTween(tween, time, tTime);
+    if (!tween._initted) return 1;
+    if (!force && tween._pt && !_reverting && (tween._dur && tween.vars.lazy !== false || !tween._dur && tween.vars.lazy) && _lastRenderedFrame !== _ticker.frame) {
+        _lazyTweens.push(tween);
+        tween._lazy = [
+            tTime,
+            suppressEvents
+        ];
+        return 1;
+    }
+}, _parentPlayheadIsBeforeStart = function _parentPlayheadIsBeforeStart(_ref) {
+    var parent = _ref.parent;
+    return parent && parent._ts && parent._initted && !parent._lock && (parent.rawTime() < 0 || _parentPlayheadIsBeforeStart(parent));
+}, // check parent's _lock because when a timeline repeats/yoyos and does its artificial wrapping, we shouldn't force the ratio back to 0
+_isFromOrFromStart = function _isFromOrFromStart(_ref2) {
+    var data = _ref2.data;
+    return data === "isFromStart" || data === "isStart";
+}, _renderZeroDurationTween = function _renderZeroDurationTween(tween, totalTime, suppressEvents, force) {
+    var prevRatio = tween.ratio, ratio = totalTime < 0 || !totalTime && (!tween._start && _parentPlayheadIsBeforeStart(tween) && !(!tween._initted && _isFromOrFromStart(tween)) || (tween._ts < 0 || tween._dp._ts < 0) && !_isFromOrFromStart(tween)) ? 0 : 1, // if the tween or its parent is reversed and the totalTime is 0, we should go to a ratio of 0. Edge case: if a from() or fromTo() stagger tween is placed later in a timeline, the "startAt" zero-duration tween could initially render at a time when the parent timeline's playhead is technically BEFORE where this tween is, so make sure that any "from" and "fromTo" startAt tweens are rendered the first time at a ratio of 1.
+    repeatDelay = tween._rDelay, tTime = 0, pt, iteration, prevIteration;
+    if (repeatDelay && tween._repeat) {
+        // in case there's a zero-duration tween that has a repeat with a repeatDelay
+        tTime = _clamp(0, tween._tDur, totalTime);
+        iteration = _animationCycle(tTime, repeatDelay);
+        tween._yoyo && iteration & 1 && (ratio = 1 - ratio);
+        if (iteration !== _animationCycle(tween._tTime, repeatDelay)) {
+            // if iteration changed
+            prevRatio = 1 - ratio;
+            tween.vars.repeatRefresh && tween._initted && tween.invalidate();
+        }
+    }
+    if (ratio !== prevRatio || _reverting || force || tween._zTime === _tinyNum || !totalTime && tween._zTime) {
+        if (!tween._initted && _attemptInitTween(tween, totalTime, force, suppressEvents, tTime)) // if we render the very beginning (time == 0) of a fromTo(), we must force the render (normal tweens wouldn't need to render at a time of 0 when the prevTime was also 0). This is also mandatory to make sure overwriting kicks in immediately.
+        return;
+        prevIteration = tween._zTime;
+        tween._zTime = totalTime || (suppressEvents ? _tinyNum : 0); // when the playhead arrives at EXACTLY time 0 (right on top) of a zero-duration tween, we need to discern if events are suppressed so that when the playhead moves again (next time), it'll trigger the callback. If events are NOT suppressed, obviously the callback would be triggered in this render. Basically, the callback should fire either when the playhead ARRIVES or LEAVES this exact spot, not both. Imagine doing a timeline.seek(0) and there's a callback that sits at 0. Since events are suppressed on that seek() by default, nothing will fire, but when the playhead moves off of that position, the callback should fire. This behavior is what people intuitively expect.
+        suppressEvents || (suppressEvents = totalTime && !prevIteration); // if it was rendered previously at exactly 0 (_zTime) and now the playhead is moving away, DON'T fire callbacks otherwise they'll seem like duplicates.
+        tween.ratio = ratio;
+        tween._from && (ratio = 1 - ratio);
+        tween._time = 0;
+        tween._tTime = tTime;
+        pt = tween._pt;
+        while(pt){
+            pt.r(ratio, pt.d);
+            pt = pt._next;
+        }
+        totalTime < 0 && _rewindStartAt(tween, totalTime, suppressEvents, true);
+        tween._onUpdate && !suppressEvents && _callback(tween, "onUpdate");
+        tTime && tween._repeat && !suppressEvents && tween.parent && _callback(tween, "onRepeat");
+        if ((totalTime >= tween._tDur || totalTime < 0) && tween.ratio === ratio) {
+            ratio && _removeFromParent(tween, 1);
+            if (!suppressEvents && !_reverting) {
+                _callback(tween, ratio ? "onComplete" : "onReverseComplete", true);
+                tween._prom && tween._prom();
+            }
+        }
+    } else if (!tween._zTime) tween._zTime = totalTime;
+}, _findNextPauseTween = function _findNextPauseTween(animation, prevTime, time) {
+    var child;
+    if (time > prevTime) {
+        child = animation._first;
+        while(child && child._start <= time){
+            if (child.data === "isPause" && child._start > prevTime) return child;
+            child = child._next;
+        }
+    } else {
+        child = animation._last;
+        while(child && child._start >= time){
+            if (child.data === "isPause" && child._start < prevTime) return child;
+            child = child._prev;
+        }
+    }
+}, _setDuration = function _setDuration(animation, duration, skipUncache, leavePlayhead) {
+    var repeat = animation._repeat, dur = _roundPrecise(duration) || 0, totalProgress = animation._tTime / animation._tDur;
+    totalProgress && !leavePlayhead && (animation._time *= dur / animation._dur);
+    animation._dur = dur;
+    animation._tDur = !repeat ? dur : repeat < 0 ? 1e10 : _roundPrecise(dur * (repeat + 1) + animation._rDelay * repeat);
+    totalProgress > 0 && !leavePlayhead && _alignPlayhead(animation, animation._tTime = animation._tDur * totalProgress);
+    animation.parent && _setEnd(animation);
+    skipUncache || _uncache(animation.parent, animation);
+    return animation;
+}, _onUpdateTotalDuration = function _onUpdateTotalDuration(animation) {
+    return animation instanceof Timeline ? _uncache(animation) : _setDuration(animation, animation._dur);
+}, _zeroPosition = {
+    _start: 0,
+    endTime: _emptyFunc,
+    totalDuration: _emptyFunc
+}, _parsePosition = function _parsePosition(animation, position, percentAnimation) {
+    var labels = animation.labels, recent = animation._recent || _zeroPosition, clippedDuration = animation.duration() >= _bigNum ? recent.endTime(false) : animation._dur, //in case there's a child that infinitely repeats, users almost never intend for the insertion point of a new child to be based on a SUPER long value like that so we clip it and assume the most recently-added child's endTime should be used instead.
+    i, offset, isPercent;
+    if (_isString(position) && (isNaN(position) || position in labels)) {
+        //if the string is a number like "1", check to see if there's a label with that name, otherwise interpret it as a number (absolute value).
+        offset = position.charAt(0);
+        isPercent = position.substr(-1) === "%";
+        i = position.indexOf("=");
+        if (offset === "<" || offset === ">") {
+            i >= 0 && (position = position.replace(/=/, ""));
+            return (offset === "<" ? recent._start : recent.endTime(recent._repeat >= 0)) + (parseFloat(position.substr(1)) || 0) * (isPercent ? (i < 0 ? recent : percentAnimation).totalDuration() / 100 : 1);
+        }
+        if (i < 0) {
+            position in labels || (labels[position] = clippedDuration);
+            return labels[position];
+        }
+        offset = parseFloat(position.charAt(i - 1) + position.substr(i + 1));
+        if (isPercent && percentAnimation) offset = offset / 100 * (_isArray(percentAnimation) ? percentAnimation[0] : percentAnimation).totalDuration();
+        return i > 1 ? _parsePosition(animation, position.substr(0, i - 1), percentAnimation) + offset : clippedDuration + offset;
+    }
+    return position == null ? clippedDuration : +position;
+}, _createTweenType = function _createTweenType(type, params, timeline) {
+    var isLegacy = _isNumber(params[1]), varsIndex = (isLegacy ? 2 : 1) + (type < 2 ? 0 : 1), vars = params[varsIndex], irVars, parent;
+    isLegacy && (vars.duration = params[1]);
+    vars.parent = timeline;
+    if (type) {
+        irVars = vars;
+        parent = timeline;
+        while(parent && !("immediateRender" in irVars)){
+            // inheritance hasn't happened yet, but someone may have set a default in an ancestor timeline. We could do vars.immediateRender = _isNotFalse(_inheritDefaults(vars).immediateRender) but that'd exact a slight performance penalty because _inheritDefaults() also runs in the Tween constructor. We're paying a small kb price here to gain speed.
+            irVars = parent.vars.defaults || {};
+            parent = _isNotFalse(parent.vars.inherit) && parent.parent;
+        }
+        vars.immediateRender = _isNotFalse(irVars.immediateRender);
+        type < 2 ? vars.runBackwards = 1 : vars.startAt = params[varsIndex - 1]; // "from" vars
+    }
+    return new Tween(params[0], vars, params[varsIndex + 1]);
+}, _conditionalReturn = function _conditionalReturn(value, func) {
+    return value || value === 0 ? func(value) : func;
+}, _clamp = function _clamp(min, max, value) {
+    return value < min ? min : value > max ? max : value;
+}, getUnit = function getUnit(value, v) {
+    return !_isString(value) || !(v = _unitExp.exec(value)) ? "" : v[1];
+}, // note: protect against padded numbers as strings, like "100.100". That shouldn't return "00" as the unit. If it's numeric, return no unit.
+clamp = function clamp(min, max, value) {
+    return _conditionalReturn(value, function(v) {
+        return _clamp(min, max, v);
+    });
+}, _slice = [].slice, _isArrayLike = function _isArrayLike(value, nonEmpty) {
+    return value && _isObject(value) && "length" in value && (!nonEmpty && !value.length || value.length - 1 in value && _isObject(value[0])) && !value.nodeType && value !== _win;
+}, _flatten = function _flatten(ar, leaveStrings, accumulator) {
+    if (accumulator === void 0) accumulator = [];
+    return ar.forEach(function(value) {
+        var _accumulator;
+        return _isString(value) && !leaveStrings || _isArrayLike(value, 1) ? (_accumulator = accumulator).push.apply(_accumulator, toArray(value)) : accumulator.push(value);
+    }) || accumulator;
+}, //takes any value and returns an array. If it's a string (and leaveStrings isn't true), it'll use document.querySelectorAll() and convert that to an array. It'll also accept iterables like jQuery objects.
+toArray = function toArray(value, scope, leaveStrings) {
+    return _context && !scope && _context.selector ? _context.selector(value) : _isString(value) && !leaveStrings && (_coreInitted || !_wake()) ? _slice.call((scope || _doc).querySelectorAll(value), 0) : _isArray(value) ? _flatten(value, leaveStrings) : _isArrayLike(value) ? _slice.call(value, 0) : value ? [
+        value
+    ] : [];
+}, selector = function selector(value) {
+    value = toArray(value)[0] || _warn("Invalid scope") || {};
+    return function(v) {
+        var el = value.current || value.nativeElement || value;
+        return toArray(v, el.querySelectorAll ? el : el === value ? _warn("Invalid scope") || _doc.createElement("div") : value);
+    };
+}, shuffle = function shuffle(a) {
+    return a.sort(function() {
+        return .5 - Math.random();
+    });
+}, // alternative that's a bit faster and more reliably diverse but bigger:   for (let j, v, i = a.length; i; j = Math.floor(Math.random() * i), v = a[--i], a[i] = a[j], a[j] = v); return a;
+//for distributing values across an array. Can accept a number, a function or (most commonly) a function which can contain the following properties: {base, amount, from, ease, grid, axis, length, each}. Returns a function that expects the following parameters: index, target, array. Recognizes the following
+distribute = function distribute(v) {
+    if (_isFunction(v)) return v;
+    var vars = _isObject(v) ? v : {
+        each: v
+    }, //n:1 is just to indicate v was a number; we leverage that later to set v according to the length we get. If a number is passed in, we treat it like the old stagger value where 0.1, for example, would mean that things would be distributed with 0.1 between each element in the array rather than a total "amount" that's chunked out among them all.
+    ease = _parseEase(vars.ease), from = vars.from || 0, base = parseFloat(vars.base) || 0, cache = {}, isDecimal = from > 0 && from < 1, ratios = isNaN(from) || isDecimal, axis = vars.axis, ratioX = from, ratioY = from;
+    if (_isString(from)) ratioX = ratioY = ({
+        center: .5,
+        edges: .5,
+        end: 1
+    })[from] || 0;
+    else if (!isDecimal && ratios) {
+        ratioX = from[0];
+        ratioY = from[1];
+    }
+    return function(i, target, a) {
+        var l = (a || vars).length, distances = cache[l], originX, originY, x, y, d, j, max, min, wrapAt;
+        if (!distances) {
+            wrapAt = vars.grid === "auto" ? 0 : (vars.grid || [
+                1,
+                _bigNum
+            ])[1];
+            if (!wrapAt) {
+                max = -_bigNum;
+                while(max < (max = a[wrapAt++].getBoundingClientRect().left) && wrapAt < l);
+                wrapAt--;
+            }
+            distances = cache[l] = [];
+            originX = ratios ? Math.min(wrapAt, l) * ratioX - .5 : from % wrapAt;
+            originY = wrapAt === _bigNum ? 0 : ratios ? l * ratioY / wrapAt - .5 : from / wrapAt | 0;
+            max = 0;
+            min = _bigNum;
+            for(j = 0; j < l; j++){
+                x = j % wrapAt - originX;
+                y = originY - (j / wrapAt | 0);
+                distances[j] = d = !axis ? _sqrt(x * x + y * y) : Math.abs(axis === "y" ? y : x);
+                d > max && (max = d);
+                d < min && (min = d);
+            }
+            from === "random" && shuffle(distances);
+            distances.max = max - min;
+            distances.min = min;
+            distances.v = l = (parseFloat(vars.amount) || parseFloat(vars.each) * (wrapAt > l ? l - 1 : !axis ? Math.max(wrapAt, l / wrapAt) : axis === "y" ? l / wrapAt : wrapAt) || 0) * (from === "edges" ? -1 : 1);
+            distances.b = l < 0 ? base - l : base;
+            distances.u = getUnit(vars.amount || vars.each) || 0; //unit
+            ease = ease && l < 0 ? _invertEase(ease) : ease;
+        }
+        l = (distances[i] - distances.min) / distances.max || 0;
+        return _roundPrecise(distances.b + (ease ? ease(l) : l) * distances.v) + distances.u; //round in order to work around floating point errors
+    };
+}, _roundModifier = function _roundModifier(v) {
+    //pass in 0.1 get a function that'll round to the nearest tenth, or 5 to round to the closest 5, or 0.001 to the closest 1000th, etc.
+    var p = Math.pow(10, ((v + "").split(".")[1] || "").length); //to avoid floating point math errors (like 24 * 0.1 == 2.4000000000000004), we chop off at a specific number of decimal places (much faster than toFixed())
+    return function(raw) {
+        var n = _roundPrecise(Math.round(parseFloat(raw) / v) * v * p);
+        return (n - n % 1) / p + (_isNumber(raw) ? 0 : getUnit(raw)); // n - n % 1 replaces Math.floor() in order to handle negative values properly. For example, Math.floor(-150.00000000000003) is 151!
+    };
+}, snap = function snap(snapTo, value) {
+    var isArray = _isArray(snapTo), radius, is2D;
+    if (!isArray && _isObject(snapTo)) {
+        radius = isArray = snapTo.radius || _bigNum;
+        if (snapTo.values) {
+            snapTo = toArray(snapTo.values);
+            if (is2D = !_isNumber(snapTo[0])) radius *= radius; //performance optimization so we don't have to Math.sqrt() in the loop.
+        } else snapTo = _roundModifier(snapTo.increment);
+    }
+    return _conditionalReturn(value, !isArray ? _roundModifier(snapTo) : _isFunction(snapTo) ? function(raw) {
+        is2D = snapTo(raw);
+        return Math.abs(is2D - raw) <= radius ? is2D : raw;
+    } : function(raw) {
+        var x = parseFloat(is2D ? raw.x : raw), y = parseFloat(is2D ? raw.y : 0), min = _bigNum, closest = 0, i = snapTo.length, dx, dy;
+        while(i--){
+            if (is2D) {
+                dx = snapTo[i].x - x;
+                dy = snapTo[i].y - y;
+                dx = dx * dx + dy * dy;
+            } else dx = Math.abs(snapTo[i] - x);
+            if (dx < min) {
+                min = dx;
+                closest = i;
+            }
+        }
+        closest = !radius || min <= radius ? snapTo[closest] : raw;
+        return is2D || closest === raw || _isNumber(raw) ? closest : closest + getUnit(raw);
+    });
+}, random = function random(min, max, roundingIncrement, returnFunction) {
+    return _conditionalReturn(_isArray(min) ? !max : roundingIncrement === true ? (roundingIncrement = 0, false) : !returnFunction, function() {
+        return _isArray(min) ? min[~~(Math.random() * min.length)] : (roundingIncrement = roundingIncrement || 1e-5, returnFunction = roundingIncrement < 1 ? Math.pow(10, (roundingIncrement + "").length - 2) : 1) && Math.floor(Math.round((min - roundingIncrement / 2 + Math.random() * (max - min + roundingIncrement * .99)) / roundingIncrement) * roundingIncrement * returnFunction) / returnFunction;
+    });
+}, pipe = function pipe() {
+    for(var _len = arguments.length, functions = new Array(_len), _key = 0; _key < _len; _key++)functions[_key] = arguments[_key];
+    return function(value) {
+        return functions.reduce(function(v, f) {
+            return f(v);
+        }, value);
+    };
+}, unitize = function unitize(func, unit) {
+    return function(value) {
+        return func(parseFloat(value)) + (unit || getUnit(value));
+    };
+}, normalize = function normalize(min, max, value) {
+    return mapRange(min, max, 0, 1, value);
+}, _wrapArray = function _wrapArray(a, wrapper, value) {
+    return _conditionalReturn(value, function(index) {
+        return a[~~wrapper(index)];
+    });
+}, wrap = function wrap(min, max, value) {
+    // NOTE: wrap() CANNOT be an arrow function! A very odd compiling bug causes problems (unrelated to GSAP).
+    var range = max - min;
+    return _isArray(min) ? _wrapArray(min, wrap(0, min.length), max) : _conditionalReturn(value, function(value) {
+        return (range + (value - min) % range) % range + min;
+    });
+}, wrapYoyo = function wrapYoyo(min, max, value) {
+    var range = max - min, total = range * 2;
+    return _isArray(min) ? _wrapArray(min, wrapYoyo(0, min.length - 1), max) : _conditionalReturn(value, function(value) {
+        value = (total + (value - min) % total) % total || 0;
+        return min + (value > range ? total - value : value);
+    });
+}, _replaceRandom = function _replaceRandom(value) {
+    //replaces all occurrences of random(...) in a string with the calculated random value. can be a range like random(-100, 100, 5) or an array like random([0, 100, 500])
+    var prev = 0, s = "", i, nums, end, isArray;
+    while(~(i = value.indexOf("random(", prev))){
+        end = value.indexOf(")", i);
+        isArray = value.charAt(i + 7) === "[";
+        nums = value.substr(i + 7, end - i - 7).match(isArray ? _delimitedValueExp : _strictNumExp);
+        s += value.substr(prev, i - prev) + random(isArray ? nums : +nums[0], isArray ? 0 : +nums[1], +nums[2] || 1e-5);
+        prev = end + 1;
+    }
+    return s + value.substr(prev, value.length - prev);
+}, mapRange = function mapRange(inMin, inMax, outMin, outMax, value) {
+    var inRange = inMax - inMin, outRange = outMax - outMin;
+    return _conditionalReturn(value, function(value) {
+        return outMin + ((value - inMin) / inRange * outRange || 0);
+    });
+}, interpolate = function interpolate(start, end, progress, mutate) {
+    var func = isNaN(start + end) ? 0 : function(p) {
+        return (1 - p) * start + p * end;
+    };
+    if (!func) {
+        var isString = _isString(start), master = {}, p, i, interpolators, l, il;
+        progress === true && (mutate = 1) && (progress = null);
+        if (isString) {
+            start = {
+                p: start
+            };
+            end = {
+                p: end
+            };
+        } else if (_isArray(start) && !_isArray(end)) {
+            interpolators = [];
+            l = start.length;
+            il = l - 2;
+            for(i = 1; i < l; i++)interpolators.push(interpolate(start[i - 1], start[i])); //build the interpolators up front as a performance optimization so that when the function is called many times, it can just reuse them.
+            l--;
+            func = function func(p) {
+                p *= l;
+                var i = Math.min(il, ~~p);
+                return interpolators[i](p - i);
+            };
+            progress = end;
+        } else if (!mutate) start = _merge(_isArray(start) ? [] : {}, start);
+        if (!interpolators) {
+            for(p in end)_addPropTween.call(master, start, p, "get", end[p]);
+            func = function func(p) {
+                return _renderPropTweens(p, master) || (isString ? start.p : start);
+            };
+        }
+    }
+    return _conditionalReturn(progress, func);
+}, _getLabelInDirection = function _getLabelInDirection(timeline, fromTime, backward) {
+    //used for nextLabel() and previousLabel()
+    var labels = timeline.labels, min = _bigNum, p, distance, label;
+    for(p in labels){
+        distance = labels[p] - fromTime;
+        if (distance < 0 === !!backward && distance && min > (distance = Math.abs(distance))) {
+            label = p;
+            min = distance;
+        }
+    }
+    return label;
+}, _callback = function _callback(animation, type, executeLazyFirst) {
+    var v = animation.vars, callback = v[type], prevContext = _context, context = animation._ctx, params, scope, result;
+    if (!callback) return;
+    params = v[type + "Params"];
+    scope = v.callbackScope || animation;
+    executeLazyFirst && _lazyTweens.length && _lazyRender(); //in case rendering caused any tweens to lazy-init, we should render them because typically when a timeline finishes, users expect things to have rendered fully. Imagine an onUpdate on a timeline that reports/checks tweened values.
+    context && (_context = context);
+    result = params ? callback.apply(scope, params) : callback.call(scope);
+    _context = prevContext;
+    return result;
+}, _interrupt = function _interrupt(animation) {
+    _removeFromParent(animation);
+    animation.scrollTrigger && animation.scrollTrigger.kill(!!_reverting);
+    animation.progress() < 1 && _callback(animation, "onInterrupt");
+    return animation;
+}, _quickTween, _createPlugin = function _createPlugin(config) {
+    config = !config.name && config["default"] || config; //UMD packaging wraps things oddly, so for example MotionPathHelper becomes {MotionPathHelper:MotionPathHelper, default:MotionPathHelper}.
+    var name = config.name, isFunc = _isFunction(config), Plugin = name && !isFunc && config.init ? function() {
+        this._props = [];
+    } : config, //in case someone passes in an object that's not a plugin, like CustomEase
+    instanceDefaults = {
+        init: _emptyFunc,
+        render: _renderPropTweens,
+        add: _addPropTween,
+        kill: _killPropTweensOf,
+        modifier: _addPluginModifier,
+        rawVars: 0
+    }, statics = {
+        targetTest: 0,
+        get: 0,
+        getSetter: _getSetter,
+        aliases: {},
+        register: 0
+    };
+    _wake();
+    if (config !== Plugin) {
+        if (_plugins[name]) return;
+        _setDefaults(Plugin, _setDefaults(_copyExcluding(config, instanceDefaults), statics)); //static methods
+        _merge(Plugin.prototype, _merge(instanceDefaults, _copyExcluding(config, statics))); //instance methods
+        _plugins[Plugin.prop = name] = Plugin;
+        if (config.targetTest) {
+            _harnessPlugins.push(Plugin);
+            _reservedProps[name] = 1;
+        }
+        name = (name === "css" ? "CSS" : name.charAt(0).toUpperCase() + name.substr(1)) + "Plugin"; //for the global name. "motionPath" should become MotionPathPlugin
+    }
+    _addGlobal(name, Plugin);
+    config.register && config.register(gsap, Plugin, PropTween);
+}, /*
+ * --------------------------------------------------------------------------------------
+ * COLORS
+ * --------------------------------------------------------------------------------------
+ */ _255 = 255, _colorLookup = {
+    aqua: [
+        0,
+        _255,
+        _255
+    ],
+    lime: [
+        0,
+        _255,
+        0
+    ],
+    silver: [
+        192,
+        192,
+        192
+    ],
+    black: [
+        0,
+        0,
+        0
+    ],
+    maroon: [
+        128,
+        0,
+        0
+    ],
+    teal: [
+        0,
+        128,
+        128
+    ],
+    blue: [
+        0,
+        0,
+        _255
+    ],
+    navy: [
+        0,
+        0,
+        128
+    ],
+    white: [
+        _255,
+        _255,
+        _255
+    ],
+    olive: [
+        128,
+        128,
+        0
+    ],
+    yellow: [
+        _255,
+        _255,
+        0
+    ],
+    orange: [
+        _255,
+        165,
+        0
+    ],
+    gray: [
+        128,
+        128,
+        128
+    ],
+    purple: [
+        128,
+        0,
+        128
+    ],
+    green: [
+        0,
+        128,
+        0
+    ],
+    red: [
+        _255,
+        0,
+        0
+    ],
+    pink: [
+        _255,
+        192,
+        203
+    ],
+    cyan: [
+        0,
+        _255,
+        _255
+    ],
+    transparent: [
+        _255,
+        _255,
+        _255,
+        0
+    ]
+}, // possible future idea to replace the hard-coded color name values - put this in the ticker.wake() where we set the _doc:
+// let ctx = _doc.createElement("canvas").getContext("2d");
+// _forEachName("aqua,lime,silver,black,maroon,teal,blue,navy,white,olive,yellow,orange,gray,purple,green,red,pink,cyan", color => {ctx.fillStyle = color; _colorLookup[color] = splitColor(ctx.fillStyle)});
+_hue = function _hue(h, m1, m2) {
+    h += h < 0 ? 1 : h > 1 ? -1 : 0;
+    return (h * 6 < 1 ? m1 + (m2 - m1) * h * 6 : h < .5 ? m2 : h * 3 < 2 ? m1 + (m2 - m1) * (2 / 3 - h) * 6 : m1) * _255 + .5 | 0;
+}, splitColor = function splitColor(v, toHSL, forceAlpha) {
+    var a = !v ? _colorLookup.black : _isNumber(v) ? [
+        v >> 16,
+        v >> 8 & _255,
+        v & _255
+    ] : 0, r, g, b, h, s, l, max, min, d, wasHSL;
+    if (!a) {
+        if (v.substr(-1) === ",") //sometimes a trailing comma is included and we should chop it off (typically from a comma-delimited list of values like a textShadow:"2px 2px 2px blue, 5px 5px 5px rgb(255,0,0)" - in this example "blue," has a trailing comma. We could strip it out inside parseComplex() but we'd need to do it to the beginning and ending values plus it wouldn't provide protection from other potential scenarios like if the user passes in a similar value.
+        v = v.substr(0, v.length - 1);
+        if (_colorLookup[v]) a = _colorLookup[v];
+        else if (v.charAt(0) === "#") {
+            if (v.length < 6) {
+                //for shorthand like #9F0 or #9F0F (could have alpha)
+                r = v.charAt(1);
+                g = v.charAt(2);
+                b = v.charAt(3);
+                v = "#" + r + r + g + g + b + b + (v.length === 5 ? v.charAt(4) + v.charAt(4) : "");
+            }
+            if (v.length === 9) {
+                // hex with alpha, like #fd5e53ff
+                a = parseInt(v.substr(1, 6), 16);
+                return [
+                    a >> 16,
+                    a >> 8 & _255,
+                    a & _255,
+                    parseInt(v.substr(7), 16) / 255
+                ];
+            }
+            v = parseInt(v.substr(1), 16);
+            a = [
+                v >> 16,
+                v >> 8 & _255,
+                v & _255
+            ];
+        } else if (v.substr(0, 3) === "hsl") {
+            a = wasHSL = v.match(_strictNumExp);
+            if (!toHSL) {
+                h = +a[0] % 360 / 360;
+                s = +a[1] / 100;
+                l = +a[2] / 100;
+                g = l <= .5 ? l * (s + 1) : l + s - l * s;
+                r = l * 2 - g;
+                a.length > 3 && (a[3] *= 1); //cast as number
+                a[0] = _hue(h + 1 / 3, r, g);
+                a[1] = _hue(h, r, g);
+                a[2] = _hue(h - 1 / 3, r, g);
+            } else if (~v.indexOf("=")) {
+                //if relative values are found, just return the raw strings with the relative prefixes in place.
+                a = v.match(_numExp);
+                forceAlpha && a.length < 4 && (a[3] = 1);
+                return a;
+            }
+        } else a = v.match(_strictNumExp) || _colorLookup.transparent;
+        a = a.map(Number);
+    }
+    if (toHSL && !wasHSL) {
+        r = a[0] / _255;
+        g = a[1] / _255;
+        b = a[2] / _255;
+        max = Math.max(r, g, b);
+        min = Math.min(r, g, b);
+        l = (max + min) / 2;
+        if (max === min) h = s = 0;
+        else {
+            d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+            h *= 60;
+        }
+        a[0] = ~~(h + .5);
+        a[1] = ~~(s * 100 + .5);
+        a[2] = ~~(l * 100 + .5);
+    }
+    forceAlpha && a.length < 4 && (a[3] = 1);
+    return a;
+}, _colorOrderData = function _colorOrderData(v) {
+    // strips out the colors from the string, finds all the numeric slots (with units) and returns an array of those. The Array also has a "c" property which is an Array of the index values where the colors belong. This is to help work around issues where there's a mis-matched order of color/numeric data like drop-shadow(#f00 0px 1px 2px) and drop-shadow(0x 1px 2px #f00). This is basically a helper function used in _formatColors()
+    var values = [], c = [], i = -1;
+    v.split(_colorExp).forEach(function(v) {
+        var a = v.match(_numWithUnitExp) || [];
+        values.push.apply(values, a);
+        c.push(i += a.length + 1);
+    });
+    values.c = c;
+    return values;
+}, _formatColors = function _formatColors(s, toHSL, orderMatchData) {
+    var result = "", colors = (s + result).match(_colorExp), type = toHSL ? "hsla(" : "rgba(", i = 0, c, shell, d, l;
+    if (!colors) return s;
+    colors = colors.map(function(color) {
+        return (color = splitColor(color, toHSL, 1)) && type + (toHSL ? color[0] + "," + color[1] + "%," + color[2] + "%," + color[3] : color.join(",")) + ")";
+    });
+    if (orderMatchData) {
+        d = _colorOrderData(s);
+        c = orderMatchData.c;
+        if (c.join(result) !== d.c.join(result)) {
+            shell = s.replace(_colorExp, "1").split(_numWithUnitExp);
+            l = shell.length - 1;
+            for(; i < l; i++)result += shell[i] + (~c.indexOf(i) ? colors.shift() || type + "0,0,0,0)" : (d.length ? d : colors.length ? colors : orderMatchData).shift());
+        }
+    }
+    if (!shell) {
+        shell = s.split(_colorExp);
+        l = shell.length - 1;
+        for(; i < l; i++)result += shell[i] + colors[i];
+    }
+    return result + shell[l];
+}, _colorExp = function() {
+    var s = "(?:\\b(?:(?:rgb|rgba|hsl|hsla)\\(.+?\\))|\\B#(?:[0-9a-f]{3,4}){1,2}\\b", //we'll dynamically build this Regular Expression to conserve file size. After building it, it will be able to find rgb(), rgba(), # (hexadecimal), and named color values like red, blue, purple, etc.,
+    p;
+    for(p in _colorLookup)s += "|" + p + "\\b";
+    return new RegExp(s + ")", "gi");
+}(), _hslExp = /hsl[a]?\(/, _colorStringFilter = function _colorStringFilter(a) {
+    var combined = a.join(" "), toHSL;
+    _colorExp.lastIndex = 0;
+    if (_colorExp.test(combined)) {
+        toHSL = _hslExp.test(combined);
+        a[1] = _formatColors(a[1], toHSL);
+        a[0] = _formatColors(a[0], toHSL, _colorOrderData(a[1])); // make sure the order of numbers/colors match with the END value.
+        return true;
+    }
+}, /*
+ * --------------------------------------------------------------------------------------
+ * TICKER
+ * --------------------------------------------------------------------------------------
+ */ _tickerActive, _ticker = function() {
+    var _getTime = Date.now, _lagThreshold = 500, _adjustedLag = 33, _startTime = _getTime(), _lastUpdate = _startTime, _gap = 1000 / 240, _nextTime = _gap, _listeners = [], _id, _req, _raf, _self, _delta, _i, _tick = function _tick(v) {
+        var elapsed = _getTime() - _lastUpdate, manual = v === true, overlap, dispatch, time, frame;
+        elapsed > _lagThreshold && (_startTime += elapsed - _adjustedLag);
+        _lastUpdate += elapsed;
+        time = _lastUpdate - _startTime;
+        overlap = time - _nextTime;
+        if (overlap > 0 || manual) {
+            frame = ++_self.frame;
+            _delta = time - _self.time * 1000;
+            _self.time = time = time / 1000;
+            _nextTime += overlap + (overlap >= _gap ? 4 : _gap - overlap);
+            dispatch = 1;
+        }
+        manual || (_id = _req(_tick)); //make sure the request is made before we dispatch the "tick" event so that timing is maintained. Otherwise, if processing the "tick" requires a bunch of time (like 15ms) and we're using a setTimeout() that's based on 16.7ms, it'd technically take 31.7ms between frames otherwise.
+        if (dispatch) for(_i = 0; _i < _listeners.length; _i++)// use _i and check _listeners.length instead of a variable because a listener could get removed during the loop, and if that happens to an element less than the current index, it'd throw things off in the loop.
+        _listeners[_i](time, _delta, frame, v);
+    };
+    _self = {
+        time: 0,
+        frame: 0,
+        tick: function tick() {
+            _tick(true);
+        },
+        deltaRatio: function deltaRatio(fps) {
+            return _delta / (1000 / (fps || 60));
+        },
+        wake: function wake() {
+            if (_coreReady) {
+                if (!_coreInitted && _windowExists()) {
+                    _win = _coreInitted = window;
+                    _doc = _win.document || {};
+                    _globals.gsap = gsap;
+                    (_win.gsapVersions || (_win.gsapVersions = [])).push(gsap.version);
+                    _install(_installScope || _win.GreenSockGlobals || !_win.gsap && _win || {});
+                    _raf = _win.requestAnimationFrame;
+                }
+                _id && _self.sleep();
+                _req = _raf || function(f) {
+                    return setTimeout(f, _nextTime - _self.time * 1000 + 1 | 0);
+                };
+                _tickerActive = 1;
+                _tick(2);
+            }
+        },
+        sleep: function sleep() {
+            (_raf ? _win.cancelAnimationFrame : clearTimeout)(_id);
+            _tickerActive = 0;
+            _req = _emptyFunc;
+        },
+        lagSmoothing: function lagSmoothing(threshold, adjustedLag) {
+            _lagThreshold = threshold || 1 / _tinyNum; //zero should be interpreted as basically unlimited
+            _adjustedLag = Math.min(adjustedLag, _lagThreshold, 0);
+        },
+        fps: function fps(_fps) {
+            _gap = 1000 / (_fps || 240);
+            _nextTime = _self.time * 1000 + _gap;
+        },
+        add: function add(callback, once, prioritize) {
+            var func = once ? function(t, d, f, v) {
+                callback(t, d, f, v);
+                _self.remove(func);
+            } : callback;
+            _self.remove(callback);
+            _listeners[prioritize ? "unshift" : "push"](func);
+            _wake();
+            return func;
+        },
+        remove: function remove(callback, i) {
+            ~(i = _listeners.indexOf(callback)) && _listeners.splice(i, 1) && _i >= i && _i--;
+        },
+        _listeners: _listeners
+    };
+    return _self;
+}(), _wake = function _wake() {
+    return !_tickerActive && _ticker.wake();
+}, //also ensures the core classes are initialized.
+/*
+* -------------------------------------------------
+* EASING
+* -------------------------------------------------
+*/ _easeMap = {}, _customEaseExp = /^[\d.\-M][\d.\-,\s]/, _quotesExp = /["']/g, _parseObjectInString = function _parseObjectInString(value) {
+    //takes a string like "{wiggles:10, type:anticipate})" and turns it into a real object. Notice it ends in ")" and includes the {} wrappers. This is because we only use this function for parsing ease configs and prioritized optimization rather than reusability.
+    var obj = {}, split = value.substr(1, value.length - 3).split(":"), key = split[0], i = 1, l = split.length, index, val, parsedVal;
+    for(; i < l; i++){
+        val = split[i];
+        index = i !== l - 1 ? val.lastIndexOf(",") : val.length;
+        parsedVal = val.substr(0, index);
+        obj[key] = isNaN(parsedVal) ? parsedVal.replace(_quotesExp, "").trim() : +parsedVal;
+        key = val.substr(index + 1).trim();
+    }
+    return obj;
+}, _valueInParentheses = function _valueInParentheses(value) {
+    var open = value.indexOf("(") + 1, close = value.indexOf(")"), nested = value.indexOf("(", open);
+    return value.substring(open, ~nested && nested < close ? value.indexOf(")", close + 1) : close);
+}, _configEaseFromString = function _configEaseFromString(name) {
+    //name can be a string like "elastic.out(1,0.5)", and pass in _easeMap as obj and it'll parse it out and call the actual function like _easeMap.Elastic.easeOut.config(1,0.5). It will also parse custom ease strings as long as CustomEase is loaded and registered (internally as _easeMap._CE).
+    var split = (name + "").split("("), ease = _easeMap[split[0]];
+    return ease && split.length > 1 && ease.config ? ease.config.apply(null, ~name.indexOf("{") ? [
+        _parseObjectInString(split[1])
+    ] : _valueInParentheses(name).split(",").map(_numericIfPossible)) : _easeMap._CE && _customEaseExp.test(name) ? _easeMap._CE("", name) : ease;
+}, _invertEase = function _invertEase(ease) {
+    return function(p) {
+        return 1 - ease(1 - p);
+    };
+}, // allow yoyoEase to be set in children and have those affected when the parent/ancestor timeline yoyos.
+_propagateYoyoEase = function _propagateYoyoEase(timeline, isYoyo) {
+    var child = timeline._first, ease;
+    while(child){
+        if (child instanceof Timeline) _propagateYoyoEase(child, isYoyo);
+        else if (child.vars.yoyoEase && (!child._yoyo || !child._repeat) && child._yoyo !== isYoyo) {
+            if (child.timeline) _propagateYoyoEase(child.timeline, isYoyo);
+            else {
+                ease = child._ease;
+                child._ease = child._yEase;
+                child._yEase = ease;
+                child._yoyo = isYoyo;
+            }
+        }
+        child = child._next;
+    }
+}, _parseEase = function _parseEase(ease, defaultEase) {
+    return !ease ? defaultEase : (_isFunction(ease) ? ease : _easeMap[ease] || _configEaseFromString(ease)) || defaultEase;
+}, _insertEase = function _insertEase(names, easeIn, easeOut, easeInOut) {
+    if (easeOut === void 0) easeOut = function easeOut(p) {
+        return 1 - easeIn(1 - p);
+    };
+    if (easeInOut === void 0) easeInOut = function easeInOut(p) {
+        return p < .5 ? easeIn(p * 2) / 2 : 1 - easeIn((1 - p) * 2) / 2;
+    };
+    var ease = {
+        easeIn: easeIn,
+        easeOut: easeOut,
+        easeInOut: easeInOut
+    }, lowercaseName;
+    _forEachName(names, function(name) {
+        _easeMap[name] = _globals[name] = ease;
+        _easeMap[lowercaseName = name.toLowerCase()] = easeOut;
+        for(var p in ease)_easeMap[lowercaseName + (p === "easeIn" ? ".in" : p === "easeOut" ? ".out" : ".inOut")] = _easeMap[name + "." + p] = ease[p];
+    });
+    return ease;
+}, _easeInOutFromOut = function _easeInOutFromOut(easeOut) {
+    return function(p) {
+        return p < .5 ? (1 - easeOut(1 - p * 2)) / 2 : .5 + easeOut((p - .5) * 2) / 2;
+    };
+}, _configElastic = function _configElastic(type, amplitude, period) {
+    var p1 = amplitude >= 1 ? amplitude : 1, //note: if amplitude is < 1, we simply adjust the period for a more natural feel. Otherwise the math doesn't work right and the curve starts at 1.
+    p2 = (period || (type ? .3 : .45)) / (amplitude < 1 ? amplitude : 1), p3 = p2 / _2PI * (Math.asin(1 / p1) || 0), easeOut = function easeOut(p) {
+        return p === 1 ? 1 : p1 * Math.pow(2, -10 * p) * _sin((p - p3) * p2) + 1;
+    }, ease = type === "out" ? easeOut : type === "in" ? function(p) {
+        return 1 - easeOut(1 - p);
+    } : _easeInOutFromOut(easeOut);
+    p2 = _2PI / p2; //precalculate to optimize
+    ease.config = function(amplitude, period) {
+        return _configElastic(type, amplitude, period);
+    };
+    return ease;
+}, _configBack = function _configBack(type, overshoot) {
+    if (overshoot === void 0) overshoot = 1.70158;
+    var easeOut = function easeOut(p) {
+        return p ? --p * p * ((overshoot + 1) * p + overshoot) + 1 : 0;
+    }, ease = type === "out" ? easeOut : type === "in" ? function(p) {
+        return 1 - easeOut(1 - p);
+    } : _easeInOutFromOut(easeOut);
+    ease.config = function(overshoot) {
+        return _configBack(type, overshoot);
+    };
+    return ease;
+}; // a cheaper (kb and cpu) but more mild way to get a parameterized weighted ease by feeding in a value between -1 (easeIn) and 1 (easeOut) where 0 is linear.
+// _weightedEase = ratio => {
+// 	let y = 0.5 + ratio / 2;
+// 	return p => (2 * (1 - p) * p * y + p * p);
+// },
+// a stronger (but more expensive kb/cpu) parameterized weighted ease that lets you feed in a value between -1 (easeIn) and 1 (easeOut) where 0 is linear.
+// _weightedEaseStrong = ratio => {
+// 	ratio = .5 + ratio / 2;
+// 	let o = 1 / 3 * (ratio < .5 ? ratio : 1 - ratio),
+// 		b = ratio - o,
+// 		c = ratio + o;
+// 	return p => p === 1 ? p : 3 * b * (1 - p) * (1 - p) * p + 3 * c * (1 - p) * p * p + p * p * p;
+// };
+_forEachName("Linear,Quad,Cubic,Quart,Quint,Strong", function(name, i) {
+    var power = i < 5 ? i + 1 : i;
+    _insertEase(name + ",Power" + (power - 1), i ? function(p) {
+        return Math.pow(p, power);
+    } : function(p) {
+        return p;
+    }, function(p) {
+        return 1 - Math.pow(1 - p, power);
+    }, function(p) {
+        return p < .5 ? Math.pow(p * 2, power) / 2 : 1 - Math.pow((1 - p) * 2, power) / 2;
+    });
+});
+_easeMap.Linear.easeNone = _easeMap.none = _easeMap.Linear.easeIn;
+_insertEase("Elastic", _configElastic("in"), _configElastic("out"), _configElastic());
+(function(n, c) {
+    var n1 = 1 / c, n2 = 2 * n1, n3 = 2.5 * n1, easeOut = function easeOut(p) {
+        return p < n1 ? n * p * p : p < n2 ? n * Math.pow(p - 1.5 / c, 2) + .75 : p < n3 ? n * (p -= 2.25 / c) * p + .9375 : n * Math.pow(p - 2.625 / c, 2) + .984375;
+    };
+    _insertEase("Bounce", function(p) {
+        return 1 - easeOut(1 - p);
+    }, easeOut);
+})(7.5625, 2.75);
+_insertEase("Expo", function(p) {
+    return p ? Math.pow(2, 10 * (p - 1)) : 0;
+});
+_insertEase("Circ", function(p) {
+    return -(_sqrt(1 - p * p) - 1);
+});
+_insertEase("Sine", function(p) {
+    return p === 1 ? 1 : -_cos(p * _HALF_PI) + 1;
+});
+_insertEase("Back", _configBack("in"), _configBack("out"), _configBack());
+_easeMap.SteppedEase = _easeMap.steps = _globals.SteppedEase = {
+    config: function config(steps, immediateStart) {
+        if (steps === void 0) steps = 1;
+        var p1 = 1 / steps, p2 = steps + (immediateStart ? 0 : 1), p3 = immediateStart ? 1 : 0, max = 1 - _tinyNum;
+        return function(p) {
+            return ((p2 * _clamp(0, max, p) | 0) + p3) * p1;
+        };
+    }
+};
+_defaults.ease = _easeMap["quad.out"];
+_forEachName("onComplete,onUpdate,onStart,onRepeat,onReverseComplete,onInterrupt", function(name) {
+    return _callbackNames += name + "," + name + "Params,";
+});
+var GSCache = function GSCache(target, harness) {
+    this.id = _gsID++;
+    target._gsap = this;
+    this.target = target;
+    this.harness = harness;
+    this.get = harness ? harness.get : _getProperty;
+    this.set = harness ? harness.getSetter : _getSetter;
+};
+var Animation = /*#__PURE__*/ function() {
+    function Animation(vars) {
+        this.vars = vars;
+        this._delay = +vars.delay || 0;
+        if (this._repeat = vars.repeat === Infinity ? -2 : vars.repeat || 0) {
+            // TODO: repeat: Infinity on a timeline's children must flag that timeline internally and affect its totalDuration, otherwise it'll stop in the negative direction when reaching the start.
+            this._rDelay = vars.repeatDelay || 0;
+            this._yoyo = !!vars.yoyo || !!vars.yoyoEase;
+        }
+        this._ts = 1;
+        _setDuration(this, +vars.duration, 1, 1);
+        this.data = vars.data;
+        if (_context) {
+            this._ctx = _context;
+            _context.data.push(this);
+        }
+        _tickerActive || _ticker.wake();
+    }
+    var _proto = Animation.prototype;
+    _proto.delay = function delay(value) {
+        if (value || value === 0) {
+            this.parent && this.parent.smoothChildTiming && this.startTime(this._start + value - this._delay);
+            this._delay = value;
+            return this;
+        }
+        return this._delay;
+    };
+    _proto.duration = function duration(value) {
+        return arguments.length ? this.totalDuration(this._repeat > 0 ? value + (value + this._rDelay) * this._repeat : value) : this.totalDuration() && this._dur;
+    };
+    _proto.totalDuration = function totalDuration(value) {
+        if (!arguments.length) return this._tDur;
+        this._dirty = 0;
+        return _setDuration(this, this._repeat < 0 ? value : (value - this._repeat * this._rDelay) / (this._repeat + 1));
+    };
+    _proto.totalTime = function totalTime(_totalTime, suppressEvents) {
+        _wake();
+        if (!arguments.length) return this._tTime;
+        var parent = this._dp;
+        if (parent && parent.smoothChildTiming && this._ts) {
+            _alignPlayhead(this, _totalTime);
+            !parent._dp || parent.parent || _postAddChecks(parent, this); // edge case: if this is a child of a timeline that already completed, for example, we must re-activate the parent.
+            //in case any of the ancestor timelines had completed but should now be enabled, we should reset their totalTime() which will also ensure that they're lined up properly and enabled. Skip for animations that are on the root (wasteful). Example: a TimelineLite.exportRoot() is performed when there's a paused tween on the root, the export will not complete until that tween is unpaused, but imagine a child gets restarted later, after all [unpaused] tweens have completed. The start of that child would get pushed out, but one of the ancestors may have completed.
+            while(parent && parent.parent){
+                if (parent.parent._time !== parent._start + (parent._ts >= 0 ? parent._tTime / parent._ts : (parent.totalDuration() - parent._tTime) / -parent._ts)) parent.totalTime(parent._tTime, true);
+                parent = parent.parent;
+            }
+            if (!this.parent && this._dp.autoRemoveChildren && (this._ts > 0 && _totalTime < this._tDur || this._ts < 0 && _totalTime > 0 || !this._tDur && !_totalTime)) //if the animation doesn't have a parent, put it back into its last parent (recorded as _dp for exactly cases like this). Limit to parents with autoRemoveChildren (like globalTimeline) so that if the user manually removes an animation from a timeline and then alters its playhead, it doesn't get added back in.
+            _addToTimeline(this._dp, this, this._start - this._delay);
+        }
+        if (this._tTime !== _totalTime || !this._dur && !suppressEvents || this._initted && Math.abs(this._zTime) === _tinyNum || !_totalTime && !this._initted && (this.add || this._ptLookup)) {
+            // check for _ptLookup on a Tween instance to ensure it has actually finished being instantiated, otherwise if this.reverse() gets called in the Animation constructor, it could trigger a render() here even though the _targets weren't populated, thus when _init() is called there won't be any PropTweens (it'll act like the tween is non-functional)
+            this._ts || (this._pTime = _totalTime); // otherwise, if an animation is paused, then the playhead is moved back to zero, then resumed, it'd revert back to the original time at the pause
+            //if (!this._lock) { // avoid endless recursion (not sure we need this yet or if it's worth the performance hit)
+            //   this._lock = 1;
+            _lazySafeRender(this, _totalTime, suppressEvents); //   this._lock = 0;
+        //}
+        }
+        return this;
+    };
+    _proto.time = function time(value, suppressEvents) {
+        return arguments.length ? this.totalTime(Math.min(this.totalDuration(), value + _elapsedCycleDuration(this)) % (this._dur + this._rDelay) || (value ? this._dur : 0), suppressEvents) : this._time; // note: if the modulus results in 0, the playhead could be exactly at the end or the beginning, and we always defer to the END with a non-zero value, otherwise if you set the time() to the very end (duration()), it would render at the START!
+    };
+    _proto.totalProgress = function totalProgress(value, suppressEvents) {
+        return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.ratio;
+    };
+    _proto.progress = function progress(value, suppressEvents) {
+        return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.ratio;
+    };
+    _proto.iteration = function iteration(value, suppressEvents) {
+        var cycleDuration = this.duration() + this._rDelay;
+        return arguments.length ? this.totalTime(this._time + (value - 1) * cycleDuration, suppressEvents) : this._repeat ? _animationCycle(this._tTime, cycleDuration) + 1 : 1;
+    } // potential future addition:
+    ;
+    _proto.timeScale = function timeScale(value) {
+        if (!arguments.length) return this._rts === -_tinyNum ? 0 : this._rts; // recorded timeScale. Special case: if someone calls reverse() on an animation with timeScale of 0, we assign it -_tinyNum to remember it's reversed.
+        if (this._rts === value) return this;
+        var tTime = this.parent && this._ts ? _parentToChildTotalTime(this.parent._time, this) : this._tTime; // make sure to do the parentToChildTotalTime() BEFORE setting the new _ts because the old one must be used in that calculation.
+        // future addition? Up side: fast and minimal file size. Down side: only works on this animation; if a timeline is reversed, for example, its childrens' onReverse wouldn't get called.
+        //(+value < 0 && this._rts >= 0) && _callback(this, "onReverse", true);
+        // prioritize rendering where the parent's playhead lines up instead of this._tTime because there could be a tween that's animating another tween's timeScale in the same rendering loop (same parent), thus if the timeScale tween renders first, it would alter _start BEFORE _tTime was set on that tick (in the rendering loop), effectively freezing it until the timeScale tween finishes.
+        this._rts = +value || 0;
+        this._ts = this._ps || value === -_tinyNum ? 0 : this._rts; // _ts is the functional timeScale which would be 0 if the animation is paused.
+        this.totalTime(_clamp(-this._delay, this._tDur, tTime), true);
+        _setEnd(this); // if parent.smoothChildTiming was false, the end time didn't get updated in the _alignPlayhead() method, so do it here.
+        return _recacheAncestors(this);
+    };
+    _proto.paused = function paused(value) {
+        if (!arguments.length) return this._ps;
+        if (this._ps !== value) {
+            this._ps = value;
+            if (value) {
+                this._pTime = this._tTime || Math.max(-this._delay, this.rawTime()); // if the pause occurs during the delay phase, make sure that's factored in when resuming.
+                this._ts = this._act = 0; // _ts is the functional timeScale, so a paused tween would effectively have a timeScale of 0. We record the "real" timeScale as _rts (recorded time scale)
+            } else {
+                _wake();
+                this._ts = this._rts; //only defer to _pTime (pauseTime) if tTime is zero. Remember, someone could pause() an animation, then scrub the playhead and resume(). If the parent doesn't have smoothChildTiming, we render at the rawTime() because the startTime won't get updated.
+                this.totalTime(this.parent && !this.parent.smoothChildTiming ? this.rawTime() : this._tTime || this._pTime, this.progress() === 1 && Math.abs(this._zTime) !== _tinyNum && (this._tTime -= _tinyNum)); // edge case: animation.progress(1).pause().play() wouldn't render again because the playhead is already at the end, but the call to totalTime() below will add it back to its parent...and not remove it again (since removing only happens upon rendering at a new time). Offsetting the _tTime slightly is done simply to cause the final render in totalTime() that'll pop it off its timeline (if autoRemoveChildren is true, of course). Check to make sure _zTime isn't -_tinyNum to avoid an edge case where the playhead is pushed to the end but INSIDE a tween/callback, the timeline itself is paused thus halting rendering and leaving a few unrendered. When resuming, it wouldn't render those otherwise.
+            }
+        }
+        return this;
+    };
+    _proto.startTime = function startTime(value) {
+        if (arguments.length) {
+            this._start = value;
+            var parent = this.parent || this._dp;
+            parent && (parent._sort || !this.parent) && _addToTimeline(parent, this, value - this._delay);
+            return this;
+        }
+        return this._start;
+    };
+    _proto.endTime = function endTime(includeRepeats) {
+        return this._start + (_isNotFalse(includeRepeats) ? this.totalDuration() : this.duration()) / Math.abs(this._ts || 1);
+    };
+    _proto.rawTime = function rawTime(wrapRepeats) {
+        var parent = this.parent || this._dp; // _dp = detached parent
+        return !parent ? this._tTime : wrapRepeats && (!this._ts || this._repeat && this._time && this.totalProgress() < 1) ? this._tTime % (this._dur + this._rDelay) : !this._ts ? this._tTime : _parentToChildTotalTime(parent.rawTime(wrapRepeats), this);
+    };
+    _proto.revert = function revert(config) {
+        if (config === void 0) config = _revertConfig;
+        var prevIsReverting = _reverting;
+        _reverting = config;
+        if (this._initted || this._startAt) {
+            this.timeline && this.timeline.revert(config);
+            this.totalTime(-0.01, config.suppressEvents);
+        }
+        this.data !== "nested" && config.kill !== false && this.kill();
+        _reverting = prevIsReverting;
+        return this;
+    };
+    _proto.globalTime = function globalTime(rawTime) {
+        var animation = this, time = arguments.length ? rawTime : animation.rawTime();
+        while(animation){
+            time = animation._start + time / (animation._ts || 1);
+            animation = animation._dp;
+        }
+        return !this.parent && this.vars.immediateRender ? -1 : time; // the _startAt tweens for .fromTo() and .from() that have immediateRender should always be FIRST in the timeline (important for Recording.revert())
+    };
+    _proto.repeat = function repeat(value) {
+        if (arguments.length) {
+            this._repeat = value === Infinity ? -2 : value;
+            return _onUpdateTotalDuration(this);
+        }
+        return this._repeat === -2 ? Infinity : this._repeat;
+    };
+    _proto.repeatDelay = function repeatDelay(value) {
+        if (arguments.length) {
+            var time = this._time;
+            this._rDelay = value;
+            _onUpdateTotalDuration(this);
+            return time ? this.time(time) : this;
+        }
+        return this._rDelay;
+    };
+    _proto.yoyo = function yoyo(value) {
+        if (arguments.length) {
+            this._yoyo = value;
+            return this;
+        }
+        return this._yoyo;
+    };
+    _proto.seek = function seek(position, suppressEvents) {
+        return this.totalTime(_parsePosition(this, position), _isNotFalse(suppressEvents));
+    };
+    _proto.restart = function restart(includeDelay, suppressEvents) {
+        return this.play().totalTime(includeDelay ? -this._delay : 0, _isNotFalse(suppressEvents));
+    };
+    _proto.play = function play(from, suppressEvents) {
+        from != null && this.seek(from, suppressEvents);
+        return this.reversed(false).paused(false);
+    };
+    _proto.reverse = function reverse(from, suppressEvents) {
+        from != null && this.seek(from || this.totalDuration(), suppressEvents);
+        return this.reversed(true).paused(false);
+    };
+    _proto.pause = function pause(atTime, suppressEvents) {
+        atTime != null && this.seek(atTime, suppressEvents);
+        return this.paused(true);
+    };
+    _proto.resume = function resume() {
+        return this.paused(false);
+    };
+    _proto.reversed = function reversed(value) {
+        if (arguments.length) {
+            !!value !== this.reversed() && this.timeScale(-this._rts || (value ? -_tinyNum : 0)); // in case timeScale is zero, reversing would have no effect so we use _tinyNum.
+            return this;
+        }
+        return this._rts < 0;
+    };
+    _proto.invalidate = function invalidate() {
+        this._initted = this._act = 0;
+        this._zTime = -_tinyNum;
+        return this;
+    };
+    _proto.isActive = function isActive() {
+        var parent = this.parent || this._dp, start = this._start, rawTime;
+        return !!(!parent || this._ts && this._initted && parent.isActive() && (rawTime = parent.rawTime(true)) >= start && rawTime < this.endTime(true) - _tinyNum);
+    };
+    _proto.eventCallback = function eventCallback(type, callback, params) {
+        var vars = this.vars;
+        if (arguments.length > 1) {
+            if (!callback) delete vars[type];
+            else {
+                vars[type] = callback;
+                params && (vars[type + "Params"] = params);
+                type === "onUpdate" && (this._onUpdate = callback);
+            }
+            return this;
+        }
+        return vars[type];
+    };
+    _proto.then = function then(onFulfilled) {
+        var self = this;
+        return new Promise(function(resolve) {
+            var f = _isFunction(onFulfilled) ? onFulfilled : _passThrough, _resolve = function _resolve() {
+                var _then = self.then;
+                self.then = null; // temporarily null the then() method to avoid an infinite loop (see https://github.com/greensock/GSAP/issues/322)
+                _isFunction(f) && (f = f(self)) && (f.then || f === self) && (self.then = _then);
+                resolve(f);
+                self.then = _then;
+            };
+            if (self._initted && self.totalProgress() === 1 && self._ts >= 0 || !self._tTime && self._ts < 0) _resolve();
+            else self._prom = _resolve;
+        });
+    };
+    _proto.kill = function kill() {
+        _interrupt(this);
+    };
+    return Animation;
+}();
+_setDefaults(Animation.prototype, {
+    _time: 0,
+    _start: 0,
+    _end: 0,
+    _tTime: 0,
+    _tDur: 0,
+    _dirty: 0,
+    _repeat: 0,
+    _yoyo: false,
+    parent: null,
+    _initted: false,
+    _rDelay: 0,
+    _ts: 1,
+    _dp: 0,
+    ratio: 0,
+    _zTime: -_tinyNum,
+    _prom: 0,
+    _ps: false,
+    _rts: 1
+});
+var Timeline = /*#__PURE__*/ function(_Animation) {
+    _inheritsLoose(Timeline, _Animation);
+    function Timeline(vars, position) {
+        var _this;
+        if (vars === void 0) vars = {};
+        _this = _Animation.call(this, vars) || this;
+        _this.labels = {};
+        _this.smoothChildTiming = !!vars.smoothChildTiming;
+        _this.autoRemoveChildren = !!vars.autoRemoveChildren;
+        _this._sort = _isNotFalse(vars.sortChildren);
+        _globalTimeline && _addToTimeline(vars.parent || _globalTimeline, _assertThisInitialized(_this), position);
+        vars.reversed && _this.reverse();
+        vars.paused && _this.paused(true);
+        vars.scrollTrigger && _scrollTrigger(_assertThisInitialized(_this), vars.scrollTrigger);
+        return _this;
+    }
+    var _proto2 = Timeline.prototype;
+    _proto2.to = function to(targets, vars, position) {
+        _createTweenType(0, arguments, this);
+        return this;
+    };
+    _proto2.from = function from(targets, vars, position) {
+        _createTweenType(1, arguments, this);
+        return this;
+    };
+    _proto2.fromTo = function fromTo(targets, fromVars, toVars, position) {
+        _createTweenType(2, arguments, this);
+        return this;
+    };
+    _proto2.set = function set(targets, vars, position) {
+        vars.duration = 0;
+        vars.parent = this;
+        _inheritDefaults(vars).repeatDelay || (vars.repeat = 0);
+        vars.immediateRender = !!vars.immediateRender;
+        new Tween(targets, vars, _parsePosition(this, position), 1);
+        return this;
+    };
+    _proto2.call = function call(callback, params, position) {
+        return _addToTimeline(this, Tween.delayedCall(0, callback, params), position);
+    } //ONLY for backward compatibility! Maybe delete?
+    ;
+    _proto2.staggerTo = function staggerTo(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams) {
+        vars.duration = duration;
+        vars.stagger = vars.stagger || stagger;
+        vars.onComplete = onCompleteAll;
+        vars.onCompleteParams = onCompleteAllParams;
+        vars.parent = this;
+        new Tween(targets, vars, _parsePosition(this, position));
+        return this;
+    };
+    _proto2.staggerFrom = function staggerFrom(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams) {
+        vars.runBackwards = 1;
+        _inheritDefaults(vars).immediateRender = _isNotFalse(vars.immediateRender);
+        return this.staggerTo(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams);
+    };
+    _proto2.staggerFromTo = function staggerFromTo(targets, duration, fromVars, toVars, stagger, position, onCompleteAll, onCompleteAllParams) {
+        toVars.startAt = fromVars;
+        _inheritDefaults(toVars).immediateRender = _isNotFalse(toVars.immediateRender);
+        return this.staggerTo(targets, duration, toVars, stagger, position, onCompleteAll, onCompleteAllParams);
+    };
+    _proto2.render = function render(totalTime, suppressEvents, force) {
+        var prevTime = this._time, tDur = this._dirty ? this.totalDuration() : this._tDur, dur = this._dur, tTime = totalTime <= 0 ? 0 : _roundPrecise(totalTime), // if a paused timeline is resumed (or its _start is updated for another reason...which rounds it), that could result in the playhead shifting a **tiny** amount and a zero-duration child at that spot may get rendered at a different ratio, like its totalTime in render() may be 1e-17 instead of 0, for example.
+        crossingStart = this._zTime < 0 !== totalTime < 0 && (this._initted || !dur), time, child, next, iteration, cycleDuration, prevPaused, pauseTween, timeScale, prevStart, prevIteration, yoyo, isYoyo;
+        this !== _globalTimeline && tTime > tDur && totalTime >= 0 && (tTime = tDur);
+        if (tTime !== this._tTime || force || crossingStart) {
+            if (prevTime !== this._time && dur) {
+                //if totalDuration() finds a child with a negative startTime and smoothChildTiming is true, things get shifted around internally so we need to adjust the time accordingly. For example, if a tween starts at -30 we must shift EVERYTHING forward 30 seconds and move this timeline's startTime backward by 30 seconds so that things align with the playhead (no jump).
+                tTime += this._time - prevTime;
+                totalTime += this._time - prevTime;
+            }
+            time = tTime;
+            prevStart = this._start;
+            timeScale = this._ts;
+            prevPaused = !timeScale;
+            if (crossingStart) {
+                dur || (prevTime = this._zTime); //when the playhead arrives at EXACTLY time 0 (right on top) of a zero-duration timeline, we need to discern if events are suppressed so that when the playhead moves again (next time), it'll trigger the callback. If events are NOT suppressed, obviously the callback would be triggered in this render. Basically, the callback should fire either when the playhead ARRIVES or LEAVES this exact spot, not both. Imagine doing a timeline.seek(0) and there's a callback that sits at 0. Since events are suppressed on that seek() by default, nothing will fire, but when the playhead moves off of that position, the callback should fire. This behavior is what people intuitively expect.
+                (totalTime || !suppressEvents) && (this._zTime = totalTime);
+            }
+            if (this._repeat) {
+                //adjust the time for repeats and yoyos
+                yoyo = this._yoyo;
+                cycleDuration = dur + this._rDelay;
+                if (this._repeat < -1 && totalTime < 0) return this.totalTime(cycleDuration * 100 + totalTime, suppressEvents, force);
+                time = _roundPrecise(tTime % cycleDuration); //round to avoid floating point errors. (4 % 0.8 should be 0 but some browsers report it as 0.79999999!)
+                if (tTime === tDur) {
+                    // the tDur === tTime is for edge cases where there's a lengthy decimal on the duration and it may reach the very end but the time is rendered as not-quite-there (remember, tDur is rounded to 4 decimals whereas dur isn't)
+                    iteration = this._repeat;
+                    time = dur;
+                } else {
+                    iteration = ~~(tTime / cycleDuration);
+                    if (iteration && iteration === tTime / cycleDuration) {
+                        time = dur;
+                        iteration--;
+                    }
+                    time > dur && (time = dur);
+                }
+                prevIteration = _animationCycle(this._tTime, cycleDuration);
+                !prevTime && this._tTime && prevIteration !== iteration && (prevIteration = iteration); // edge case - if someone does addPause() at the very beginning of a repeating timeline, that pause is technically at the same spot as the end which causes this._time to get set to 0 when the totalTime would normally place the playhead at the end. See https://greensock.com/forums/topic/23823-closing-nav-animation-not-working-on-ie-and-iphone-6-maybe-other-older-browser/?tab=comments#comment-113005
+                if (yoyo && iteration & 1) {
+                    time = dur - time;
+                    isYoyo = 1;
+                }
+                /*
+        make sure children at the end/beginning of the timeline are rendered properly. If, for example,
+        a 3-second long timeline rendered at 2.9 seconds previously, and now renders at 3.2 seconds (which
+        would get translated to 2.8 seconds if the timeline yoyos or 0.2 seconds if it just repeats), there
+        could be a callback or a short tween that's at 2.95 or 3 seconds in which wouldn't render. So
+        we need to push the timeline to the end (and/or beginning depending on its yoyo value). Also we must
+        ensure that zero-duration tweens at the very beginning or end of the Timeline work.
+        */ if (iteration !== prevIteration && !this._lock) {
+                    var rewinding = yoyo && prevIteration & 1, doesWrap = rewinding === (yoyo && iteration & 1);
+                    iteration < prevIteration && (rewinding = !rewinding);
+                    prevTime = rewinding ? 0 : dur;
+                    this._lock = 1;
+                    this.render(prevTime || (isYoyo ? 0 : _roundPrecise(iteration * cycleDuration)), suppressEvents, !dur)._lock = 0;
+                    this._tTime = tTime; // if a user gets the iteration() inside the onRepeat, for example, it should be accurate.
+                    !suppressEvents && this.parent && _callback(this, "onRepeat");
+                    this.vars.repeatRefresh && !isYoyo && (this.invalidate()._lock = 1);
+                    if (prevTime && prevTime !== this._time || prevPaused !== !this._ts || this.vars.onRepeat && !this.parent && !this._act) // if prevTime is 0 and we render at the very end, _time will be the end, thus won't match. So in this edge case, prevTime won't match _time but that's okay. If it gets killed in the onRepeat, eject as well.
+                    return this;
+                    dur = this._dur; // in case the duration changed in the onRepeat
+                    tDur = this._tDur;
+                    if (doesWrap) {
+                        this._lock = 2;
+                        prevTime = rewinding ? dur : -0.0001;
+                        this.render(prevTime, true);
+                        this.vars.repeatRefresh && !isYoyo && this.invalidate();
+                    }
+                    this._lock = 0;
+                    if (!this._ts && !prevPaused) return this;
+                     //in order for yoyoEase to work properly when there's a stagger, we must swap out the ease in each sub-tween.
+                    _propagateYoyoEase(this, isYoyo);
+                }
+            }
+            if (this._hasPause && !this._forcing && this._lock < 2) {
+                pauseTween = _findNextPauseTween(this, _roundPrecise(prevTime), _roundPrecise(time));
+                if (pauseTween) tTime -= time - (time = pauseTween._start);
+            }
+            this._tTime = tTime;
+            this._time = time;
+            this._act = !timeScale; //as long as it's not paused, force it to be active so that if the user renders independent of the parent timeline, it'll be forced to re-render on the next tick.
+            if (!this._initted) {
+                this._onUpdate = this.vars.onUpdate;
+                this._initted = 1;
+                this._zTime = totalTime;
+                prevTime = 0; // upon init, the playhead should always go forward; someone could invalidate() a completed timeline and then if they restart(), that would make child tweens render in reverse order which could lock in the wrong starting values if they build on each other, like tl.to(obj, {x: 100}).to(obj, {x: 0}).
+            }
+            if (!prevTime && time && !suppressEvents) {
+                _callback(this, "onStart");
+                if (this._tTime !== tTime) // in case the onStart triggered a render at a different spot, eject. Like if someone did animation.pause(0.5) or something inside the onStart.
+                return this;
+            }
+            if (time >= prevTime && totalTime >= 0) {
+                child = this._first;
+                while(child){
+                    next = child._next;
+                    if ((child._act || time >= child._start) && child._ts && pauseTween !== child) {
+                        if (child.parent !== this) // an extreme edge case - the child's render could do something like kill() the "next" one in the linked list, or reparent it. In that case we must re-initiate the whole render to be safe.
+                        return this.render(totalTime, suppressEvents, force);
+                        child.render(child._ts > 0 ? (time - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (time - child._start) * child._ts, suppressEvents, force);
+                        if (time !== this._time || !this._ts && !prevPaused) {
+                            //in case a tween pauses or seeks the timeline when rendering, like inside of an onUpdate/onComplete
+                            pauseTween = 0;
+                            next && (tTime += this._zTime = -_tinyNum); // it didn't finish rendering, so flag zTime as negative so that so that the next time render() is called it'll be forced (to render any remaining children)
+                            break;
+                        }
+                    }
+                    child = next;
+                }
+            } else {
+                child = this._last;
+                var adjustedTime = totalTime < 0 ? totalTime : time; //when the playhead goes backward beyond the start of this timeline, we must pass that information down to the child animations so that zero-duration tweens know whether to render their starting or ending values.
+                while(child){
+                    next = child._prev;
+                    if ((child._act || adjustedTime <= child._end) && child._ts && pauseTween !== child) {
+                        if (child.parent !== this) // an extreme edge case - the child's render could do something like kill() the "next" one in the linked list, or reparent it. In that case we must re-initiate the whole render to be safe.
+                        return this.render(totalTime, suppressEvents, force);
+                        child.render(child._ts > 0 ? (adjustedTime - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (adjustedTime - child._start) * child._ts, suppressEvents, force || _reverting && (child._initted || child._startAt)); // if reverting, we should always force renders of initted tweens (but remember that .fromTo() or .from() may have a _startAt but not _initted yet). If, for example, a .fromTo() tween with a stagger (which creates an internal timeline) gets reverted BEFORE some of its child tweens render for the first time, it may not properly trigger them to revert.
+                        if (time !== this._time || !this._ts && !prevPaused) {
+                            //in case a tween pauses or seeks the timeline when rendering, like inside of an onUpdate/onComplete
+                            pauseTween = 0;
+                            next && (tTime += this._zTime = adjustedTime ? -_tinyNum : _tinyNum); // it didn't finish rendering, so adjust zTime so that so that the next time render() is called it'll be forced (to render any remaining children)
+                            break;
+                        }
+                    }
+                    child = next;
+                }
+            }
+            if (pauseTween && !suppressEvents) {
+                this.pause();
+                pauseTween.render(time >= prevTime ? 0 : -_tinyNum)._zTime = time >= prevTime ? 1 : -1;
+                if (this._ts) {
+                    //the callback resumed playback! So since we may have held back the playhead due to where the pause is positioned, go ahead and jump to where it's SUPPOSED to be (if no pause happened).
+                    this._start = prevStart; //if the pause was at an earlier time and the user resumed in the callback, it could reposition the timeline (changing its startTime), throwing things off slightly, so we make sure the _start doesn't shift.
+                    _setEnd(this);
+                    return this.render(totalTime, suppressEvents, force);
+                }
+            }
+            this._onUpdate && !suppressEvents && _callback(this, "onUpdate", true);
+            if (tTime === tDur && this._tTime >= this.totalDuration() || !tTime && prevTime) {
+                if (prevStart === this._start || Math.abs(timeScale) !== Math.abs(this._ts)) {
+                    if (!this._lock) {
+                        // remember, a child's callback may alter this timeline's playhead or timeScale which is why we need to add some of these checks.
+                        (totalTime || !dur) && (tTime === tDur && this._ts > 0 || !tTime && this._ts < 0) && _removeFromParent(this, 1); // don't remove if the timeline is reversed and the playhead isn't at 0, otherwise tl.progress(1).reverse() won't work. Only remove if the playhead is at the end and timeScale is positive, or if the playhead is at 0 and the timeScale is negative.
+                        if (!suppressEvents && !(totalTime < 0 && !prevTime) && (tTime || prevTime || !tDur)) {
+                            _callback(this, tTime === tDur && totalTime >= 0 ? "onComplete" : "onReverseComplete", true);
+                            this._prom && !(tTime < tDur && this.timeScale() > 0) && this._prom();
+                        }
+                    }
+                }
+            }
+        }
+        return this;
+    };
+    _proto2.add = function add(child, position) {
+        var _this2 = this;
+        _isNumber(position) || (position = _parsePosition(this, position, child));
+        if (!(child instanceof Animation)) {
+            if (_isArray(child)) {
+                child.forEach(function(obj) {
+                    return _this2.add(obj, position);
+                });
+                return this;
+            }
+            if (_isString(child)) return this.addLabel(child, position);
+            if (_isFunction(child)) child = Tween.delayedCall(0, child);
+            else return this;
+        }
+        return this !== child ? _addToTimeline(this, child, position) : this; //don't allow a timeline to be added to itself as a child!
+    };
+    _proto2.getChildren = function getChildren(nested, tweens, timelines, ignoreBeforeTime) {
+        if (nested === void 0) nested = true;
+        if (tweens === void 0) tweens = true;
+        if (timelines === void 0) timelines = true;
+        if (ignoreBeforeTime === void 0) ignoreBeforeTime = -_bigNum;
+        var a = [], child = this._first;
+        while(child){
+            if (child._start >= ignoreBeforeTime) {
+                if (child instanceof Tween) tweens && a.push(child);
+                else {
+                    timelines && a.push(child);
+                    nested && a.push.apply(a, child.getChildren(true, tweens, timelines));
+                }
+            }
+            child = child._next;
+        }
+        return a;
+    };
+    _proto2.getById = function getById(id) {
+        var animations = this.getChildren(1, 1, 1), i = animations.length;
+        while(i--){
+            if (animations[i].vars.id === id) return animations[i];
+        }
+    };
+    _proto2.remove = function remove(child) {
+        if (_isString(child)) return this.removeLabel(child);
+        if (_isFunction(child)) return this.killTweensOf(child);
+        _removeLinkedListItem(this, child);
+        if (child === this._recent) this._recent = this._last;
+        return _uncache(this);
+    };
+    _proto2.totalTime = function totalTime(_totalTime2, suppressEvents) {
+        if (!arguments.length) return this._tTime;
+        this._forcing = 1;
+        if (!this._dp && this._ts) //special case for the global timeline (or any other that has no parent or detached parent).
+        this._start = _roundPrecise(_ticker.time - (this._ts > 0 ? _totalTime2 / this._ts : (this.totalDuration() - _totalTime2) / -this._ts));
+        _Animation.prototype.totalTime.call(this, _totalTime2, suppressEvents);
+        this._forcing = 0;
+        return this;
+    };
+    _proto2.addLabel = function addLabel(label, position) {
+        this.labels[label] = _parsePosition(this, position);
+        return this;
+    };
+    _proto2.removeLabel = function removeLabel(label) {
+        delete this.labels[label];
+        return this;
+    };
+    _proto2.addPause = function addPause(position, callback, params) {
+        var t = Tween.delayedCall(0, callback || _emptyFunc, params);
+        t.data = "isPause";
+        this._hasPause = 1;
+        return _addToTimeline(this, t, _parsePosition(this, position));
+    };
+    _proto2.removePause = function removePause(position) {
+        var child = this._first;
+        position = _parsePosition(this, position);
+        while(child){
+            if (child._start === position && child.data === "isPause") _removeFromParent(child);
+            child = child._next;
+        }
+    };
+    _proto2.killTweensOf = function killTweensOf(targets, props, onlyActive) {
+        var tweens = this.getTweensOf(targets, onlyActive), i = tweens.length;
+        while(i--)_overwritingTween !== tweens[i] && tweens[i].kill(targets, props);
+        return this;
+    };
+    _proto2.getTweensOf = function getTweensOf(targets, onlyActive) {
+        var a = [], parsedTargets = toArray(targets), child = this._first, isGlobalTime = _isNumber(onlyActive), // a number is interpreted as a global time. If the animation spans
+        children;
+        while(child){
+            if (child instanceof Tween) {
+                if (_arrayContainsAny(child._targets, parsedTargets) && (isGlobalTime ? (!_overwritingTween || child._initted && child._ts) && child.globalTime(0) <= onlyActive && child.globalTime(child.totalDuration()) > onlyActive : !onlyActive || child.isActive())) // note: if this is for overwriting, it should only be for tweens that aren't paused and are initted.
+                a.push(child);
+            } else if ((children = child.getTweensOf(parsedTargets, onlyActive)).length) a.push.apply(a, children);
+            child = child._next;
+        }
+        return a;
+    } // potential future feature - targets() on timelines
+    ;
+    _proto2.tweenTo = function tweenTo(position, vars) {
+        vars = vars || {};
+        var tl = this, endTime = _parsePosition(tl, position), _vars = vars, startAt = _vars.startAt, _onStart = _vars.onStart, onStartParams = _vars.onStartParams, immediateRender = _vars.immediateRender, initted, tween = Tween.to(tl, _setDefaults({
+            ease: vars.ease || "none",
+            lazy: false,
+            immediateRender: false,
+            time: endTime,
+            overwrite: "auto",
+            duration: vars.duration || Math.abs((endTime - (startAt && "time" in startAt ? startAt.time : tl._time)) / tl.timeScale()) || _tinyNum,
+            onStart: function onStart() {
+                tl.pause();
+                if (!initted) {
+                    var duration = vars.duration || Math.abs((endTime - (startAt && "time" in startAt ? startAt.time : tl._time)) / tl.timeScale());
+                    tween._dur !== duration && _setDuration(tween, duration, 0, 1).render(tween._time, true, true);
+                    initted = 1;
+                }
+                _onStart && _onStart.apply(tween, onStartParams || []); //in case the user had an onStart in the vars - we don't want to overwrite it.
+            }
+        }, vars));
+        return immediateRender ? tween.render(0) : tween;
+    };
+    _proto2.tweenFromTo = function tweenFromTo(fromPosition, toPosition, vars) {
+        return this.tweenTo(toPosition, _setDefaults({
+            startAt: {
+                time: _parsePosition(this, fromPosition)
+            }
+        }, vars));
+    };
+    _proto2.recent = function recent() {
+        return this._recent;
+    };
+    _proto2.nextLabel = function nextLabel(afterTime) {
+        if (afterTime === void 0) afterTime = this._time;
+        return _getLabelInDirection(this, _parsePosition(this, afterTime));
+    };
+    _proto2.previousLabel = function previousLabel(beforeTime) {
+        if (beforeTime === void 0) beforeTime = this._time;
+        return _getLabelInDirection(this, _parsePosition(this, beforeTime), 1);
+    };
+    _proto2.currentLabel = function currentLabel(value) {
+        return arguments.length ? this.seek(value, true) : this.previousLabel(this._time + _tinyNum);
+    };
+    _proto2.shiftChildren = function shiftChildren(amount, adjustLabels, ignoreBeforeTime) {
+        if (ignoreBeforeTime === void 0) ignoreBeforeTime = 0;
+        var child = this._first, labels = this.labels, p;
+        while(child){
+            if (child._start >= ignoreBeforeTime) {
+                child._start += amount;
+                child._end += amount;
+            }
+            child = child._next;
+        }
+        if (adjustLabels) {
+            for(p in labels)if (labels[p] >= ignoreBeforeTime) labels[p] += amount;
+        }
+        return _uncache(this);
+    };
+    _proto2.invalidate = function invalidate(soft) {
+        var child = this._first;
+        this._lock = 0;
+        while(child){
+            child.invalidate(soft);
+            child = child._next;
+        }
+        return _Animation.prototype.invalidate.call(this, soft);
+    };
+    _proto2.clear = function clear(includeLabels) {
+        if (includeLabels === void 0) includeLabels = true;
+        var child = this._first, next;
+        while(child){
+            next = child._next;
+            this.remove(child);
+            child = next;
+        }
+        this._dp && (this._time = this._tTime = this._pTime = 0);
+        includeLabels && (this.labels = {});
+        return _uncache(this);
+    };
+    _proto2.totalDuration = function totalDuration(value) {
+        var max = 0, self = this, child = self._last, prevStart = _bigNum, prev, start, parent;
+        if (arguments.length) return self.timeScale((self._repeat < 0 ? self.duration() : self.totalDuration()) / (self.reversed() ? -value : value));
+        if (self._dirty) {
+            parent = self.parent;
+            while(child){
+                prev = child._prev; //record it here in case the tween changes position in the sequence...
+                child._dirty && child.totalDuration(); //could change the tween._startTime, so make sure the animation's cache is clean before analyzing it.
+                start = child._start;
+                if (start > prevStart && self._sort && child._ts && !self._lock) {
+                    //in case one of the tweens shifted out of order, it needs to be re-inserted into the correct position in the sequence
+                    self._lock = 1; //prevent endless recursive calls - there are methods that get triggered that check duration/totalDuration when we add().
+                    _addToTimeline(self, child, start - child._delay, 1)._lock = 0;
+                } else prevStart = start;
+                if (start < 0 && child._ts) {
+                    //children aren't allowed to have negative startTimes unless smoothChildTiming is true, so adjust here if one is found.
+                    max -= start;
+                    if (!parent && !self._dp || parent && parent.smoothChildTiming) {
+                        self._start += start / self._ts;
+                        self._time -= start;
+                        self._tTime -= start;
+                    }
+                    self.shiftChildren(-start, false, -Infinity);
+                    prevStart = 0;
+                }
+                child._end > max && child._ts && (max = child._end);
+                child = prev;
+            }
+            _setDuration(self, self === _globalTimeline && self._time > max ? self._time : max, 1, 1);
+            self._dirty = 0;
+        }
+        return self._tDur;
+    };
+    Timeline.updateRoot = function updateRoot(time) {
+        if (_globalTimeline._ts) {
+            _lazySafeRender(_globalTimeline, _parentToChildTotalTime(time, _globalTimeline));
+            _lastRenderedFrame = _ticker.frame;
+        }
+        if (_ticker.frame >= _nextGCFrame) {
+            _nextGCFrame += _config.autoSleep || 120;
+            var child = _globalTimeline._first;
+            if (!child || !child._ts) {
+                if (_config.autoSleep && _ticker._listeners.length < 2) {
+                    while(child && !child._ts)child = child._next;
+                    child || _ticker.sleep();
+                }
+            }
+        }
+    };
+    return Timeline;
+}(Animation);
+_setDefaults(Timeline.prototype, {
+    _lock: 0,
+    _hasPause: 0,
+    _forcing: 0
+});
+var _addComplexStringPropTween = function _addComplexStringPropTween(target, prop, start, end, setter, stringFilter, funcParam) {
+    //note: we call _addComplexStringPropTween.call(tweenInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+    var pt = new PropTween(this._pt, target, prop, 0, 1, _renderComplexString, null, setter), index = 0, matchIndex = 0, result, startNums, color, endNum, chunk, startNum, hasRandom, a;
+    pt.b = start;
+    pt.e = end;
+    start += ""; //ensure values are strings
+    end += "";
+    if (hasRandom = ~end.indexOf("random(")) end = _replaceRandom(end);
+    if (stringFilter) {
+        a = [
+            start,
+            end
+        ];
+        stringFilter(a, target, prop); //pass an array with the starting and ending values and let the filter do whatever it needs to the values.
+        start = a[0];
+        end = a[1];
+    }
+    startNums = start.match(_complexStringNumExp) || [];
+    while(result = _complexStringNumExp.exec(end)){
+        endNum = result[0];
+        chunk = end.substring(index, result.index);
+        if (color) color = (color + 1) % 5;
+        else if (chunk.substr(-5) === "rgba(") color = 1;
+        if (endNum !== startNums[matchIndex++]) {
+            startNum = parseFloat(startNums[matchIndex - 1]) || 0; //these nested PropTweens are handled in a special way - we'll never actually call a render or setter method on them. We'll just loop through them in the parent complex string PropTween's render method.
+            pt._pt = {
+                _next: pt._pt,
+                p: chunk || matchIndex === 1 ? chunk : ",",
+                //note: SVG spec allows omission of comma/space when a negative sign is wedged between two numbers, like 2.5-5.3 instead of 2.5,-5.3 but when tweening, the negative value may switch to positive, so we insert the comma just in case.
+                s: startNum,
+                c: endNum.charAt(1) === "=" ? _parseRelative(startNum, endNum) - startNum : parseFloat(endNum) - startNum,
+                m: color && color < 4 ? Math.round : 0
+            };
+            index = _complexStringNumExp.lastIndex;
+        }
+    }
+    pt.c = index < end.length ? end.substring(index, end.length) : ""; //we use the "c" of the PropTween to store the final part of the string (after the last number)
+    pt.fp = funcParam;
+    if (_relExp.test(end) || hasRandom) pt.e = 0; //if the end string contains relative values or dynamic random(...) values, delete the end it so that on the final render we don't actually set it to the string with += or -= characters (forces it to use the calculated value).
+    this._pt = pt; //start the linked list with this new PropTween. Remember, we call _addComplexStringPropTween.call(tweenInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+    return pt;
+}, _addPropTween = function _addPropTween(target, prop, start, end, index, targets, modifier, stringFilter, funcParam, optional) {
+    _isFunction(end) && (end = end(index || 0, target, targets));
+    var currentValue = target[prop], parsedStart = start !== "get" ? start : !_isFunction(currentValue) ? currentValue : funcParam ? target[prop.indexOf("set") || !_isFunction(target["get" + prop.substr(3)]) ? prop : "get" + prop.substr(3)](funcParam) : target[prop](), setter = !_isFunction(currentValue) ? _setterPlain : funcParam ? _setterFuncWithParam : _setterFunc, pt;
+    if (_isString(end)) {
+        if (~end.indexOf("random(")) end = _replaceRandom(end);
+        if (end.charAt(1) === "=") {
+            pt = _parseRelative(parsedStart, end) + (getUnit(parsedStart) || 0);
+            if (pt || pt === 0) // to avoid isNaN, like if someone passes in a value like "!= whatever"
+            end = pt;
+        }
+    }
+    if (!optional || parsedStart !== end || _forceAllPropTweens) {
+        if (!isNaN(parsedStart * end) && end !== "") {
+            // fun fact: any number multiplied by "" is evaluated as the number 0!
+            pt = new PropTween(this._pt, target, prop, +parsedStart || 0, end - (parsedStart || 0), typeof currentValue === "boolean" ? _renderBoolean : _renderPlain, 0, setter);
+            funcParam && (pt.fp = funcParam);
+            modifier && pt.modifier(modifier, this, target);
+            return this._pt = pt;
+        }
+        !currentValue && !(prop in target) && _missingPlugin(prop, end);
+        return _addComplexStringPropTween.call(this, target, prop, parsedStart, end, setter, stringFilter || _config.stringFilter, funcParam);
+    }
+}, //creates a copy of the vars object and processes any function-based values (putting the resulting values directly into the copy) as well as strings with "random()" in them. It does NOT process relative values.
+_processVars = function _processVars(vars, index, target, targets, tween) {
+    _isFunction(vars) && (vars = _parseFuncOrString(vars, tween, index, target, targets));
+    if (!_isObject(vars) || vars.style && vars.nodeType || _isArray(vars) || _isTypedArray(vars)) return _isString(vars) ? _parseFuncOrString(vars, tween, index, target, targets) : vars;
+    var copy = {}, p;
+    for(p in vars)copy[p] = _parseFuncOrString(vars[p], tween, index, target, targets);
+    return copy;
+}, _checkPlugin = function _checkPlugin(property, vars, tween, index, target, targets) {
+    var plugin, pt, ptLookup, i;
+    if (_plugins[property] && (plugin = new _plugins[property]()).init(target, plugin.rawVars ? vars[property] : _processVars(vars[property], index, target, targets, tween), tween, index, targets) !== false) {
+        tween._pt = pt = new PropTween(tween._pt, target, property, 0, 1, plugin.render, plugin, 0, plugin.priority);
+        if (tween !== _quickTween) {
+            ptLookup = tween._ptLookup[tween._targets.indexOf(target)]; //note: we can't use tween._ptLookup[index] because for staggered tweens, the index from the fullTargets array won't match what it is in each individual tween that spawns from the stagger.
+            i = plugin._props.length;
+            while(i--)ptLookup[plugin._props[i]] = pt;
+        }
+    }
+    return plugin;
+}, _overwritingTween, //store a reference temporarily so we can avoid overwriting itself.
+_forceAllPropTweens, _initTween = function _initTween(tween, time, tTime) {
+    var vars = tween.vars, ease = vars.ease, startAt = vars.startAt, immediateRender = vars.immediateRender, lazy = vars.lazy, onUpdate = vars.onUpdate, onUpdateParams = vars.onUpdateParams, callbackScope = vars.callbackScope, runBackwards = vars.runBackwards, yoyoEase = vars.yoyoEase, keyframes = vars.keyframes, autoRevert = vars.autoRevert, dur = tween._dur, prevStartAt = tween._startAt, targets = tween._targets, parent = tween.parent, fullTargets = parent && parent.data === "nested" ? parent.vars.targets : targets, autoOverwrite = tween._overwrite === "auto" && !_suppressOverwrites, tl = tween.timeline, cleanVars, i, p, pt, target, hasPriority, gsData, harness, plugin, ptLookup, index, harnessVars, overwritten;
+    tl && (!keyframes || !ease) && (ease = "none");
+    tween._ease = _parseEase(ease, _defaults.ease);
+    tween._yEase = yoyoEase ? _invertEase(_parseEase(yoyoEase === true ? ease : yoyoEase, _defaults.ease)) : 0;
+    if (yoyoEase && tween._yoyo && !tween._repeat) {
+        //there must have been a parent timeline with yoyo:true that is currently in its yoyo phase, so flip the eases.
+        yoyoEase = tween._yEase;
+        tween._yEase = tween._ease;
+        tween._ease = yoyoEase;
+    }
+    tween._from = !tl && !!vars.runBackwards; //nested timelines should never run backwards - the backwards-ness is in the child tweens.
+    if (!tl || keyframes && !vars.stagger) {
+        //if there's an internal timeline, skip all the parsing because we passed that task down the chain.
+        harness = targets[0] ? _getCache(targets[0]).harness : 0;
+        harnessVars = harness && vars[harness.prop]; //someone may need to specify CSS-specific values AND non-CSS values, like if the element has an "x" property plus it's a standard DOM element. We allow people to distinguish by wrapping plugin-specific stuff in a css:{} object for example.
+        cleanVars = _copyExcluding(vars, _reservedProps);
+        if (prevStartAt) {
+            prevStartAt._zTime < 0 && prevStartAt.progress(1); // in case it's a lazy startAt that hasn't rendered yet.
+            time < 0 && runBackwards && immediateRender && !autoRevert ? prevStartAt.render(-1, true) : prevStartAt.revert(runBackwards && dur ? _revertConfigNoKill : _startAtRevertConfig); // if it's a "startAt" (not "from()" or runBackwards: true), we only need to do a shallow revert (keep transforms cached in CSSPlugin)
+            // don't just _removeFromParent(prevStartAt.render(-1, true)) because that'll leave inline styles. We're creating a new _startAt for "startAt" tweens that re-capture things to ensure that if the pre-tween values changed since the tween was created, they're recorded.
+            prevStartAt._lazy = 0;
+        }
+        if (startAt) {
+            _removeFromParent(tween._startAt = Tween.set(targets, _setDefaults({
+                data: "isStart",
+                overwrite: false,
+                parent: parent,
+                immediateRender: true,
+                lazy: _isNotFalse(lazy),
+                startAt: null,
+                delay: 0,
+                onUpdate: onUpdate,
+                onUpdateParams: onUpdateParams,
+                callbackScope: callbackScope,
+                stagger: 0
+            }, startAt))); //copy the properties/values into a new object to avoid collisions, like var to = {x:0}, from = {x:500}; timeline.fromTo(e, from, to).fromTo(e, to, from);
+            time < 0 && (_reverting || !immediateRender && !autoRevert) && tween._startAt.revert(_revertConfigNoKill); // rare edge case, like if a render is forced in the negative direction of a non-initted tween.
+            if (immediateRender) {
+                if (dur && time <= 0 && tTime <= 0) {
+                    // check tTime here because in the case of a yoyo tween whose playhead gets pushed to the end like tween.progress(1), we should allow it through so that the onComplete gets fired properly.
+                    time && (tween._zTime = time);
+                    return; //we skip initialization here so that overwriting doesn't occur until the tween actually begins. Otherwise, if you create several immediateRender:true tweens of the same target/properties to drop into a Timeline, the last one created would overwrite the first ones because they didn't get placed into the timeline yet before the first render occurs and kicks in overwriting.
+                }
+            }
+        } else if (runBackwards && dur) //from() tweens must be handled uniquely: their beginning values must be rendered but we don't want overwriting to occur yet (when time is still 0). Wait until the tween actually begins before doing all the routines like overwriting. At that time, we should render at the END of the tween to ensure that things initialize correctly (remember, from() tweens go backwards)
+        {
+            if (!prevStartAt) {
+                time && (immediateRender = false); //in rare cases (like if a from() tween runs and then is invalidate()-ed), immediateRender could be true but the initial forced-render gets skipped, so there's no need to force the render in this context when the _time is greater than 0
+                p = _setDefaults({
+                    overwrite: false,
+                    data: "isFromStart",
+                    //we tag the tween with as "isFromStart" so that if [inside a plugin] we need to only do something at the very END of a tween, we have a way of identifying this tween as merely the one that's setting the beginning values for a "from()" tween. For example, clearProps in CSSPlugin should only get applied at the very END of a tween and without this tag, from(...{height:100, clearProps:"height", delay:1}) would wipe the height at the beginning of the tween and after 1 second, it'd kick back in.
+                    lazy: immediateRender && _isNotFalse(lazy),
+                    immediateRender: immediateRender,
+                    //zero-duration tweens render immediately by default, but if we're not specifically instructed to render this tween immediately, we should skip this and merely _init() to record the starting values (rendering them immediately would push them to completion which is wasteful in that case - we'd have to render(-1) immediately after)
+                    stagger: 0,
+                    parent: parent //ensures that nested tweens that had a stagger are handled properly, like gsap.from(".class", {y:gsap.utils.wrap([-100,100])})
+                }, cleanVars);
+                harnessVars && (p[harness.prop] = harnessVars); // in case someone does something like .from(..., {css:{}})
+                _removeFromParent(tween._startAt = Tween.set(targets, p));
+                time < 0 && (_reverting ? tween._startAt.revert(_revertConfigNoKill) : tween._startAt.render(-1, true));
+                tween._zTime = time;
+                if (!immediateRender) _initTween(tween._startAt, _tinyNum, _tinyNum); //ensures that the initial values are recorded
+                else if (!time) return;
+            }
+        }
+        tween._pt = tween._ptCache = 0;
+        lazy = dur && _isNotFalse(lazy) || lazy && !dur;
+        for(i = 0; i < targets.length; i++){
+            target = targets[i];
+            gsData = target._gsap || _harness(targets)[i]._gsap;
+            tween._ptLookup[i] = ptLookup = {};
+            _lazyLookup[gsData.id] && _lazyTweens.length && _lazyRender(); //if other tweens of the same target have recently initted but haven't rendered yet, we've got to force the render so that the starting values are correct (imagine populating a timeline with a bunch of sequential tweens and then jumping to the end)
+            index = fullTargets === targets ? i : fullTargets.indexOf(target);
+            if (harness && (plugin = new harness()).init(target, harnessVars || cleanVars, tween, index, fullTargets) !== false) {
+                tween._pt = pt = new PropTween(tween._pt, target, plugin.name, 0, 1, plugin.render, plugin, 0, plugin.priority);
+                plugin._props.forEach(function(name) {
+                    ptLookup[name] = pt;
+                });
+                plugin.priority && (hasPriority = 1);
+            }
+            if (!harness || harnessVars) {
+                for(p in cleanVars)if (_plugins[p] && (plugin = _checkPlugin(p, cleanVars, tween, index, target, fullTargets))) plugin.priority && (hasPriority = 1);
+                else ptLookup[p] = pt = _addPropTween.call(tween, target, p, "get", cleanVars[p], index, fullTargets, 0, vars.stringFilter);
+            }
+            tween._op && tween._op[i] && tween.kill(target, tween._op[i]);
+            if (autoOverwrite && tween._pt) {
+                _overwritingTween = tween;
+                _globalTimeline.killTweensOf(target, ptLookup, tween.globalTime(time)); // make sure the overwriting doesn't overwrite THIS tween!!!
+                overwritten = !tween.parent;
+                _overwritingTween = 0;
+            }
+            tween._pt && lazy && (_lazyLookup[gsData.id] = 1);
+        }
+        hasPriority && _sortPropTweensByPriority(tween);
+        tween._onInit && tween._onInit(tween); //plugins like RoundProps must wait until ALL of the PropTweens are instantiated. In the plugin's init() function, it sets the _onInit on the tween instance. May not be pretty/intuitive, but it's fast and keeps file size down.
+    }
+    tween._onUpdate = onUpdate;
+    tween._initted = (!tween._op || tween._pt) && !overwritten; // if overwrittenProps resulted in the entire tween being killed, do NOT flag it as initted or else it may render for one tick.
+    keyframes && time <= 0 && tl.render(_bigNum, true, true); // if there's a 0% keyframe, it'll render in the "before" state for any staggered/delayed animations thus when the following tween initializes, it'll use the "before" state instead of the "after" state as the initial values.
+}, _updatePropTweens = function _updatePropTweens(tween, property, value, start, startIsRelative, ratio, time) {
+    var ptCache = (tween._pt && tween._ptCache || (tween._ptCache = {}))[property], pt, rootPT, lookup, i;
+    if (!ptCache) {
+        ptCache = tween._ptCache[property] = [];
+        lookup = tween._ptLookup;
+        i = tween._targets.length;
+        while(i--){
+            pt = lookup[i][property];
+            if (pt && pt.d && pt.d._pt) {
+                // it's a plugin, so find the nested PropTween
+                pt = pt.d._pt;
+                while(pt && pt.p !== property && pt.fp !== property)// "fp" is functionParam for things like setting CSS variables which require .setProperty("--var-name", value)
+                pt = pt._next;
+            }
+            if (!pt) {
+                // there is no PropTween associated with that property, so we must FORCE one to be created and ditch out of this
+                // if the tween has other properties that already rendered at new positions, we'd normally have to rewind to put them back like tween.render(0, true) before forcing an _initTween(), but that can create another edge case like tweening a timeline's progress would trigger onUpdates to fire which could move other things around. It's better to just inform users that .resetTo() should ONLY be used for tweens that already have that property. For example, you can't gsap.to(...{ y: 0 }) and then tween.restTo("x", 200) for example.
+                _forceAllPropTweens = 1; // otherwise, when we _addPropTween() and it finds no change between the start and end values, it skips creating a PropTween (for efficiency...why tween when there's no difference?) but in this case we NEED that PropTween created so we can edit it.
+                tween.vars[property] = "+=0";
+                _initTween(tween, time);
+                _forceAllPropTweens = 0;
+                return 1;
+            }
+            ptCache.push(pt);
+        }
+    }
+    i = ptCache.length;
+    while(i--){
+        rootPT = ptCache[i];
+        pt = rootPT._pt || rootPT; // complex values may have nested PropTweens. We only accommodate the FIRST value.
+        pt.s = (start || start === 0) && !startIsRelative ? start : pt.s + (start || 0) + ratio * pt.c;
+        pt.c = value - pt.s;
+        rootPT.e && (rootPT.e = _round(value) + getUnit(rootPT.e)); // mainly for CSSPlugin (end value)
+        rootPT.b && (rootPT.b = pt.s + getUnit(rootPT.b)); // (beginning value)
+    }
+}, _addAliasesToVars = function _addAliasesToVars(targets, vars) {
+    var harness = targets[0] ? _getCache(targets[0]).harness : 0, propertyAliases = harness && harness.aliases, copy, p, i, aliases;
+    if (!propertyAliases) return vars;
+    copy = _merge({}, vars);
+    for(p in propertyAliases)if (p in copy) {
+        aliases = propertyAliases[p].split(",");
+        i = aliases.length;
+        while(i--)copy[aliases[i]] = copy[p];
+    }
+    return copy;
+}, // parses multiple formats, like {"0%": {x: 100}, {"50%": {x: -20}} and { x: {"0%": 100, "50%": -20} }, and an "ease" can be set on any object. We populate an "allProps" object with an Array for each property, like {x: [{}, {}], y:[{}, {}]} with data for each property tween. The objects have a "t" (time), "v", (value), and "e" (ease) property. This allows us to piece together a timeline later.
+_parseKeyframe = function _parseKeyframe(prop, obj, allProps, easeEach) {
+    var ease = obj.ease || easeEach || "power1.inOut", p, a;
+    if (_isArray(obj)) {
+        a = allProps[prop] || (allProps[prop] = []); // t = time (out of 100), v = value, e = ease
+        obj.forEach(function(value, i) {
+            return a.push({
+                t: i / (obj.length - 1) * 100,
+                v: value,
+                e: ease
+            });
+        });
+    } else for(p in obj){
+        a = allProps[p] || (allProps[p] = []);
+        p === "ease" || a.push({
+            t: parseFloat(prop),
+            v: obj[p],
+            e: ease
+        });
+    }
+}, _parseFuncOrString = function _parseFuncOrString(value, tween, i, target, targets) {
+    return _isFunction(value) ? value.call(tween, i, target, targets) : _isString(value) && ~value.indexOf("random(") ? _replaceRandom(value) : value;
+}, _staggerTweenProps = _callbackNames + "repeat,repeatDelay,yoyo,repeatRefresh,yoyoEase,autoRevert", _staggerPropsToSkip = {};
+_forEachName(_staggerTweenProps + ",id,stagger,delay,duration,paused,scrollTrigger", function(name) {
+    return _staggerPropsToSkip[name] = 1;
+});
+var Tween = /*#__PURE__*/ function(_Animation2) {
+    _inheritsLoose(Tween, _Animation2);
+    function Tween(targets, vars, position, skipInherit) {
+        var _this3;
+        if (typeof vars === "number") {
+            position.duration = vars;
+            vars = position;
+            position = null;
+        }
+        _this3 = _Animation2.call(this, skipInherit ? vars : _inheritDefaults(vars)) || this;
+        var _this3$vars = _this3.vars, duration = _this3$vars.duration, delay = _this3$vars.delay, immediateRender = _this3$vars.immediateRender, stagger = _this3$vars.stagger, overwrite = _this3$vars.overwrite, keyframes = _this3$vars.keyframes, defaults = _this3$vars.defaults, scrollTrigger = _this3$vars.scrollTrigger, yoyoEase = _this3$vars.yoyoEase, parent = vars.parent || _globalTimeline, parsedTargets = (_isArray(targets) || _isTypedArray(targets) ? _isNumber(targets[0]) : "length" in vars) ? [
+            targets
+        ] : toArray(targets), tl, i, copy, l, p, curTarget, staggerFunc, staggerVarsToMerge;
+        _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://greensock.com", !_config.nullTargetWarn) || [];
+        _this3._ptLookup = []; //PropTween lookup. An array containing an object for each target, having keys for each tweening property
+        _this3._overwrite = overwrite;
+        if (keyframes || stagger || _isFuncOrString(duration) || _isFuncOrString(delay)) {
+            vars = _this3.vars;
+            tl = _this3.timeline = new Timeline({
+                data: "nested",
+                defaults: defaults || {},
+                targets: parent && parent.data === "nested" ? parent.vars.targets : parsedTargets
+            }); // we need to store the targets because for staggers and keyframes, we end up creating an individual tween for each but function-based values need to know the index and the whole Array of targets.
+            tl.kill();
+            tl.parent = tl._dp = _assertThisInitialized(_this3);
+            tl._start = 0;
+            if (stagger || _isFuncOrString(duration) || _isFuncOrString(delay)) {
+                l = parsedTargets.length;
+                staggerFunc = stagger && distribute(stagger);
+                if (_isObject(stagger)) {
+                    //users can pass in callbacks like onStart/onComplete in the stagger object. These should fire with each individual tween.
+                    for(p in stagger)if (~_staggerTweenProps.indexOf(p)) {
+                        staggerVarsToMerge || (staggerVarsToMerge = {});
+                        staggerVarsToMerge[p] = stagger[p];
+                    }
+                }
+                for(i = 0; i < l; i++){
+                    copy = _copyExcluding(vars, _staggerPropsToSkip);
+                    copy.stagger = 0;
+                    yoyoEase && (copy.yoyoEase = yoyoEase);
+                    staggerVarsToMerge && _merge(copy, staggerVarsToMerge);
+                    curTarget = parsedTargets[i]; //don't just copy duration or delay because if they're a string or function, we'd end up in an infinite loop because _isFuncOrString() would evaluate as true in the child tweens, entering this loop, etc. So we parse the value straight from vars and default to 0.
+                    copy.duration = +_parseFuncOrString(duration, _assertThisInitialized(_this3), i, curTarget, parsedTargets);
+                    copy.delay = (+_parseFuncOrString(delay, _assertThisInitialized(_this3), i, curTarget, parsedTargets) || 0) - _this3._delay;
+                    if (!stagger && l === 1 && copy.delay) {
+                        // if someone does delay:"random(1, 5)", repeat:-1, for example, the delay shouldn't be inside the repeat.
+                        _this3._delay = delay = copy.delay;
+                        _this3._start += delay;
+                        copy.delay = 0;
+                    }
+                    tl.to(curTarget, copy, staggerFunc ? staggerFunc(i, curTarget, parsedTargets) : 0);
+                    tl._ease = _easeMap.none;
+                }
+                tl.duration() ? duration = delay = 0 : _this3.timeline = 0; // if the timeline's duration is 0, we don't need a timeline internally!
+            } else if (keyframes) {
+                _inheritDefaults(_setDefaults(tl.vars.defaults, {
+                    ease: "none"
+                }));
+                tl._ease = _parseEase(keyframes.ease || vars.ease || "none");
+                var time = 0, a, kf, v;
+                if (_isArray(keyframes)) {
+                    keyframes.forEach(function(frame) {
+                        return tl.to(parsedTargets, frame, ">");
+                    });
+                    tl.duration(); // to ensure tl._dur is cached because we tap into it for performance purposes in the render() method.
+                } else {
+                    copy = {};
+                    for(p in keyframes)p === "ease" || p === "easeEach" || _parseKeyframe(p, keyframes[p], copy, keyframes.easeEach);
+                    for(p in copy){
+                        a = copy[p].sort(function(a, b) {
+                            return a.t - b.t;
+                        });
+                        time = 0;
+                        for(i = 0; i < a.length; i++){
+                            kf = a[i];
+                            v = {
+                                ease: kf.e,
+                                duration: (kf.t - (i ? a[i - 1].t : 0)) / 100 * duration
+                            };
+                            v[p] = kf.v;
+                            tl.to(parsedTargets, v, time);
+                            time += v.duration;
+                        }
+                    }
+                    tl.duration() < duration && tl.to({}, {
+                        duration: duration - tl.duration()
+                    }); // in case keyframes didn't go to 100%
+                }
+            }
+            duration || _this3.duration(duration = tl.duration());
+        } else _this3.timeline = 0; //speed optimization, faster lookups (no going up the prototype chain)
+        if (overwrite === true && !_suppressOverwrites) {
+            _overwritingTween = _assertThisInitialized(_this3);
+            _globalTimeline.killTweensOf(parsedTargets);
+            _overwritingTween = 0;
+        }
+        _addToTimeline(parent, _assertThisInitialized(_this3), position);
+        vars.reversed && _this3.reverse();
+        vars.paused && _this3.paused(true);
+        if (immediateRender || !duration && !keyframes && _this3._start === _roundPrecise(parent._time) && _isNotFalse(immediateRender) && _hasNoPausedAncestors(_assertThisInitialized(_this3)) && parent.data !== "nested") {
+            _this3._tTime = -_tinyNum; //forces a render without having to set the render() "force" parameter to true because we want to allow lazying by default (using the "force" parameter always forces an immediate full render)
+            _this3.render(Math.max(0, -delay) || 0); //in case delay is negative
+        }
+        scrollTrigger && _scrollTrigger(_assertThisInitialized(_this3), scrollTrigger);
+        return _this3;
+    }
+    var _proto3 = Tween.prototype;
+    _proto3.render = function render(totalTime, suppressEvents, force) {
+        var prevTime = this._time, tDur = this._tDur, dur = this._dur, isNegative = totalTime < 0, tTime = totalTime > tDur - _tinyNum && !isNegative ? tDur : totalTime < _tinyNum ? 0 : totalTime, time, pt, iteration, cycleDuration, prevIteration, isYoyo, ratio, timeline, yoyoEase;
+        if (!dur) _renderZeroDurationTween(this, totalTime, suppressEvents, force);
+        else if (tTime !== this._tTime || !totalTime || force || !this._initted && this._tTime || this._startAt && this._zTime < 0 !== isNegative) {
+            //this senses if we're crossing over the start time, in which case we must record _zTime and force the render, but we do it in this lengthy conditional way for performance reasons (usually we can skip the calculations): this._initted && (this._zTime < 0) !== (totalTime < 0)
+            time = tTime;
+            timeline = this.timeline;
+            if (this._repeat) {
+                //adjust the time for repeats and yoyos
+                cycleDuration = dur + this._rDelay;
+                if (this._repeat < -1 && isNegative) return this.totalTime(cycleDuration * 100 + totalTime, suppressEvents, force);
+                time = _roundPrecise(tTime % cycleDuration); //round to avoid floating point errors. (4 % 0.8 should be 0 but some browsers report it as 0.79999999!)
+                if (tTime === tDur) {
+                    // the tDur === tTime is for edge cases where there's a lengthy decimal on the duration and it may reach the very end but the time is rendered as not-quite-there (remember, tDur is rounded to 4 decimals whereas dur isn't)
+                    iteration = this._repeat;
+                    time = dur;
+                } else {
+                    iteration = ~~(tTime / cycleDuration);
+                    if (iteration && iteration === tTime / cycleDuration) {
+                        time = dur;
+                        iteration--;
+                    }
+                    time > dur && (time = dur);
+                }
+                isYoyo = this._yoyo && iteration & 1;
+                if (isYoyo) {
+                    yoyoEase = this._yEase;
+                    time = dur - time;
+                }
+                prevIteration = _animationCycle(this._tTime, cycleDuration);
+                if (time === prevTime && !force && this._initted) {
+                    //could be during the repeatDelay part. No need to render and fire callbacks.
+                    this._tTime = tTime;
+                    return this;
+                }
+                if (iteration !== prevIteration) {
+                    timeline && this._yEase && _propagateYoyoEase(timeline, isYoyo); //repeatRefresh functionality
+                    if (this.vars.repeatRefresh && !isYoyo && !this._lock) {
+                        this._lock = force = 1; //force, otherwise if lazy is true, the _attemptInitTween() will return and we'll jump out and get caught bouncing on each tick.
+                        this.render(_roundPrecise(cycleDuration * iteration), true).invalidate()._lock = 0;
+                    }
+                }
+            }
+            if (!this._initted) {
+                if (_attemptInitTween(this, isNegative ? totalTime : time, force, suppressEvents, tTime)) {
+                    this._tTime = 0; // in constructor if immediateRender is true, we set _tTime to -_tinyNum to have the playhead cross the starting point but we can't leave _tTime as a negative number.
+                    return this;
+                }
+                if (prevTime !== this._time) // rare edge case - during initialization, an onUpdate in the _startAt (.fromTo()) might force this tween to render at a different spot in which case we should ditch this render() call so that it doesn't revert the values.
+                return this;
+                if (dur !== this._dur) // while initting, a plugin like InertiaPlugin might alter the duration, so rerun from the start to ensure everything renders as it should.
+                return this.render(totalTime, suppressEvents, force);
+            }
+            this._tTime = tTime;
+            this._time = time;
+            if (!this._act && this._ts) {
+                this._act = 1; //as long as it's not paused, force it to be active so that if the user renders independent of the parent timeline, it'll be forced to re-render on the next tick.
+                this._lazy = 0;
+            }
+            this.ratio = ratio = (yoyoEase || this._ease)(time / dur);
+            if (this._from) this.ratio = ratio = 1 - ratio;
+            if (time && !prevTime && !suppressEvents) {
+                _callback(this, "onStart");
+                if (this._tTime !== tTime) // in case the onStart triggered a render at a different spot, eject. Like if someone did animation.pause(0.5) or something inside the onStart.
+                return this;
+            }
+            pt = this._pt;
+            while(pt){
+                pt.r(ratio, pt.d);
+                pt = pt._next;
+            }
+            timeline && timeline.render(totalTime < 0 ? totalTime : !time && isYoyo ? -_tinyNum : timeline._dur * timeline._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
+            if (this._onUpdate && !suppressEvents) {
+                isNegative && _rewindStartAt(this, totalTime, suppressEvents, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
+                _callback(this, "onUpdate");
+            }
+            this._repeat && iteration !== prevIteration && this.vars.onRepeat && !suppressEvents && this.parent && _callback(this, "onRepeat");
+            if ((tTime === this._tDur || !tTime) && this._tTime === tTime) {
+                isNegative && !this._onUpdate && _rewindStartAt(this, totalTime, true, true);
+                (totalTime || !dur) && (tTime === this._tDur && this._ts > 0 || !tTime && this._ts < 0) && _removeFromParent(this, 1); // don't remove if we're rendering at exactly a time of 0, as there could be autoRevert values that should get set on the next tick (if the playhead goes backward beyond the startTime, negative totalTime). Don't remove if the timeline is reversed and the playhead isn't at 0, otherwise tl.progress(1).reverse() won't work. Only remove if the playhead is at the end and timeScale is positive, or if the playhead is at 0 and the timeScale is negative.
+                if (!suppressEvents && !(isNegative && !prevTime) && (tTime || prevTime || isYoyo)) {
+                    // if prevTime and tTime are zero, we shouldn't fire the onReverseComplete. This could happen if you gsap.to(... {paused:true}).play();
+                    _callback(this, tTime === tDur ? "onComplete" : "onReverseComplete", true);
+                    this._prom && !(tTime < tDur && this.timeScale() > 0) && this._prom();
+                }
+            }
+        }
+        return this;
+    };
+    _proto3.targets = function targets() {
+        return this._targets;
+    };
+    _proto3.invalidate = function invalidate(soft) {
+        // "soft" gives us a way to clear out everything EXCEPT the recorded pre-"from" portion of from() tweens. Otherwise, for example, if you tween.progress(1).render(0, true true).invalidate(), the "from" values would persist and then on the next render, the from() tweens would initialize and the current value would match the "from" values, thus animate from the same value to the same value (no animation). We tap into this in ScrollTrigger's refresh() where we must push a tween to completion and then back again but honor its init state in case the tween is dependent on another tween further up on the page.
+        (!soft || !this.vars.runBackwards) && (this._startAt = 0);
+        this._pt = this._op = this._onUpdate = this._lazy = this.ratio = 0;
+        this._ptLookup = [];
+        this.timeline && this.timeline.invalidate(soft);
+        return _Animation2.prototype.invalidate.call(this, soft);
+    };
+    _proto3.resetTo = function resetTo(property, value, start, startIsRelative) {
+        _tickerActive || _ticker.wake();
+        this._ts || this.play();
+        var time = Math.min(this._dur, (this._dp._time - this._start) * this._ts), ratio;
+        this._initted || _initTween(this, time);
+        ratio = this._ease(time / this._dur); // don't just get tween.ratio because it may not have rendered yet.
+        // possible future addition to allow an object with multiple values to update, like tween.resetTo({x: 100, y: 200}); At this point, it doesn't seem worth the added kb given the fact that most users will likely opt for the convenient gsap.quickTo() way of interacting with this method.
+        // if (_isObject(property)) { // performance optimization
+        // 	for (p in property) {
+        // 		if (_updatePropTweens(this, p, property[p], value ? value[p] : null, start, ratio, time)) {
+        // 			return this.resetTo(property, value, start, startIsRelative); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
+        // 		}
+        // 	}
+        // } else {
+        if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time)) return this.resetTo(property, value, start, startIsRelative); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
+         //}
+        _alignPlayhead(this, 0);
+        this.parent || _addLinkedListItem(this._dp, this, "_first", "_last", this._dp._sort ? "_start" : 0);
+        return this.render(0);
+    };
+    _proto3.kill = function kill(targets, vars) {
+        if (vars === void 0) vars = "all";
+        if (!targets && (!vars || vars === "all")) {
+            this._lazy = this._pt = 0;
+            return this.parent ? _interrupt(this) : this;
+        }
+        if (this.timeline) {
+            var tDur = this.timeline.totalDuration();
+            this.timeline.killTweensOf(targets, vars, _overwritingTween && _overwritingTween.vars.overwrite !== true)._first || _interrupt(this); // if nothing is left tweening, interrupt.
+            this.parent && tDur !== this.timeline.totalDuration() && _setDuration(this, this._dur * this.timeline._tDur / tDur, 0, 1); // if a nested tween is killed that changes the duration, it should affect this tween's duration. We must use the ratio, though, because sometimes the internal timeline is stretched like for keyframes where they don't all add up to whatever the parent tween's duration was set to.
+            return this;
+        }
+        var parsedTargets = this._targets, killingTargets = targets ? toArray(targets) : parsedTargets, propTweenLookup = this._ptLookup, firstPT = this._pt, overwrittenProps, curLookup, curOverwriteProps, props, p, pt, i;
+        if ((!vars || vars === "all") && _arraysMatch(parsedTargets, killingTargets)) {
+            vars === "all" && (this._pt = 0);
+            return _interrupt(this);
+        }
+        overwrittenProps = this._op = this._op || [];
+        if (vars !== "all") {
+            //so people can pass in a comma-delimited list of property names
+            if (_isString(vars)) {
+                p = {};
+                _forEachName(vars, function(name) {
+                    return p[name] = 1;
+                });
+                vars = p;
+            }
+            vars = _addAliasesToVars(parsedTargets, vars);
+        }
+        i = parsedTargets.length;
+        while(i--)if (~killingTargets.indexOf(parsedTargets[i])) {
+            curLookup = propTweenLookup[i];
+            if (vars === "all") {
+                overwrittenProps[i] = vars;
+                props = curLookup;
+                curOverwriteProps = {};
+            } else {
+                curOverwriteProps = overwrittenProps[i] = overwrittenProps[i] || {};
+                props = vars;
+            }
+            for(p in props){
+                pt = curLookup && curLookup[p];
+                if (pt) {
+                    if (!("kill" in pt.d) || pt.d.kill(p) === true) _removeLinkedListItem(this, pt, "_pt");
+                    delete curLookup[p];
+                }
+                if (curOverwriteProps !== "all") curOverwriteProps[p] = 1;
+            }
+        }
+        this._initted && !this._pt && firstPT && _interrupt(this); //if all tweening properties are killed, kill the tween. Without this line, if there's a tween with multiple targets and then you killTweensOf() each target individually, the tween would technically still remain active and fire its onComplete even though there aren't any more properties tweening.
+        return this;
+    };
+    Tween.to = function to(targets, vars) {
+        return new Tween(targets, vars, arguments[2]);
+    };
+    Tween.from = function from(targets, vars) {
+        return _createTweenType(1, arguments);
+    };
+    Tween.delayedCall = function delayedCall(delay, callback, params, scope) {
+        return new Tween(callback, 0, {
+            immediateRender: false,
+            lazy: false,
+            overwrite: false,
+            delay: delay,
+            onComplete: callback,
+            onReverseComplete: callback,
+            onCompleteParams: params,
+            onReverseCompleteParams: params,
+            callbackScope: scope
+        }); // we must use onReverseComplete too for things like timeline.add(() => {...}) which should be triggered in BOTH directions (forward and reverse)
+    };
+    Tween.fromTo = function fromTo(targets, fromVars, toVars) {
+        return _createTweenType(2, arguments);
+    };
+    Tween.set = function set(targets, vars) {
+        vars.duration = 0;
+        vars.repeatDelay || (vars.repeat = 0);
+        return new Tween(targets, vars);
+    };
+    Tween.killTweensOf = function killTweensOf(targets, props, onlyActive) {
+        return _globalTimeline.killTweensOf(targets, props, onlyActive);
+    };
+    return Tween;
+}(Animation);
+_setDefaults(Tween.prototype, {
+    _targets: [],
+    _lazy: 0,
+    _startAt: 0,
+    _op: 0,
+    _onInit: 0
+}); //add the pertinent timeline methods to Tween instances so that users can chain conveniently and create a timeline automatically. (removed due to concerns that it'd ultimately add to more confusion especially for beginners)
+// _forEachName("to,from,fromTo,set,call,add,addLabel,addPause", name => {
+// 	Tween.prototype[name] = function() {
+// 		let tl = new Timeline();
+// 		return _addToTimeline(tl, this)[name].apply(tl, toArray(arguments));
+// 	}
+// });
+//for backward compatibility. Leverage the timeline calls.
+_forEachName("staggerTo,staggerFrom,staggerFromTo", function(name) {
+    Tween[name] = function() {
+        var tl = new Timeline(), params = _slice.call(arguments, 0);
+        params.splice(name === "staggerFromTo" ? 5 : 4, 0, 0);
+        return tl[name].apply(tl, params);
+    };
+});
+/*
+ * --------------------------------------------------------------------------------------
+ * PROPTWEEN
+ * --------------------------------------------------------------------------------------
+ */ var _setterPlain = function _setterPlain(target, property, value) {
+    return target[property] = value;
+}, _setterFunc = function _setterFunc(target, property, value) {
+    return target[property](value);
+}, _setterFuncWithParam = function _setterFuncWithParam(target, property, value, data) {
+    return target[property](data.fp, value);
+}, _setterAttribute = function _setterAttribute(target, property, value) {
+    return target.setAttribute(property, value);
+}, _getSetter = function _getSetter(target, property) {
+    return _isFunction(target[property]) ? _setterFunc : _isUndefined(target[property]) && target.setAttribute ? _setterAttribute : _setterPlain;
+}, _renderPlain = function _renderPlain(ratio, data) {
+    return data.set(data.t, data.p, Math.round((data.s + data.c * ratio) * 1000000) / 1000000, data);
+}, _renderBoolean = function _renderBoolean(ratio, data) {
+    return data.set(data.t, data.p, !!(data.s + data.c * ratio), data);
+}, _renderComplexString = function _renderComplexString(ratio, data) {
+    var pt = data._pt, s = "";
+    if (!ratio && data.b) //b = beginning string
+    s = data.b;
+    else if (ratio === 1 && data.e) //e = ending string
+    s = data.e;
+    else {
+        while(pt){
+            s = pt.p + (pt.m ? pt.m(pt.s + pt.c * ratio) : Math.round((pt.s + pt.c * ratio) * 10000) / 10000) + s; //we use the "p" property for the text inbetween (like a suffix). And in the context of a complex string, the modifier (m) is typically just Math.round(), like for RGB colors.
+            pt = pt._next;
+        }
+        s += data.c; //we use the "c" of the PropTween to store the final chunk of non-numeric text.
+    }
+    data.set(data.t, data.p, s, data);
+}, _renderPropTweens = function _renderPropTweens(ratio, data) {
+    var pt = data._pt;
+    while(pt){
+        pt.r(ratio, pt.d);
+        pt = pt._next;
+    }
+}, _addPluginModifier = function _addPluginModifier(modifier, tween, target, property) {
+    var pt = this._pt, next;
+    while(pt){
+        next = pt._next;
+        pt.p === property && pt.modifier(modifier, tween, target);
+        pt = next;
+    }
+}, _killPropTweensOf = function _killPropTweensOf(property) {
+    var pt = this._pt, hasNonDependentRemaining, next;
+    while(pt){
+        next = pt._next;
+        if (pt.p === property && !pt.op || pt.op === property) _removeLinkedListItem(this, pt, "_pt");
+        else if (!pt.dep) hasNonDependentRemaining = 1;
+        pt = next;
+    }
+    return !hasNonDependentRemaining;
+}, _setterWithModifier = function _setterWithModifier(target, property, value, data) {
+    data.mSet(target, property, data.m.call(data.tween, value, data.mt), data);
+}, _sortPropTweensByPriority = function _sortPropTweensByPriority(parent) {
+    var pt = parent._pt, next, pt2, first, last; //sorts the PropTween linked list in order of priority because some plugins need to do their work after ALL of the PropTweens were created (like RoundPropsPlugin and ModifiersPlugin)
+    while(pt){
+        next = pt._next;
+        pt2 = first;
+        while(pt2 && pt2.pr > pt.pr)pt2 = pt2._next;
+        if (pt._prev = pt2 ? pt2._prev : last) pt._prev._next = pt;
+        else first = pt;
+        if (pt._next = pt2) pt2._prev = pt;
+        else last = pt;
+        pt = next;
+    }
+    parent._pt = first;
+}; //PropTween key: t = target, p = prop, r = renderer, d = data, s = start, c = change, op = overwriteProperty (ONLY populated when it's different than p), pr = priority, _next/_prev for the linked list siblings, set = setter, m = modifier, mSet = modifierSetter (the original setter, before a modifier was added)
+var PropTween = /*#__PURE__*/ function() {
+    function PropTween(next, target, prop, start, change, renderer, data, setter, priority) {
+        this.t = target;
+        this.s = start;
+        this.c = change;
+        this.p = prop;
+        this.r = renderer || _renderPlain;
+        this.d = data || this;
+        this.set = setter || _setterPlain;
+        this.pr = priority || 0;
+        this._next = next;
+        if (next) next._prev = this;
+    }
+    var _proto4 = PropTween.prototype;
+    _proto4.modifier = function modifier(func, tween, target) {
+        this.mSet = this.mSet || this.set; //in case it was already set (a PropTween can only have one modifier)
+        this.set = _setterWithModifier;
+        this.m = func;
+        this.mt = target; //modifier target
+        this.tween = tween;
+    };
+    return PropTween;
+}(); //Initialization tasks
+_forEachName(_callbackNames + "parent,duration,ease,delay,overwrite,runBackwards,startAt,yoyo,immediateRender,repeat,repeatDelay,data,paused,reversed,lazy,callbackScope,stringFilter,id,yoyoEase,stagger,inherit,repeatRefresh,keyframes,autoRevert,scrollTrigger", function(name) {
+    return _reservedProps[name] = 1;
+});
+_globals.TweenMax = _globals.TweenLite = Tween;
+_globals.TimelineLite = _globals.TimelineMax = Timeline;
+_globalTimeline = new Timeline({
+    sortChildren: false,
+    defaults: _defaults,
+    autoRemoveChildren: true,
+    id: "root",
+    smoothChildTiming: true
+});
+_config.stringFilter = _colorStringFilter;
+var _media = [], _listeners = {}, _emptyArray = [], _lastMediaTime = 0, _dispatch = function _dispatch(type) {
+    return (_listeners[type] || _emptyArray).map(function(f) {
+        return f();
+    });
+}, _onMediaChange = function _onMediaChange() {
+    var time = Date.now(), matches = [];
+    if (time - _lastMediaTime > 2) {
+        _dispatch("matchMediaInit");
+        _media.forEach(function(c) {
+            var queries = c.queries, conditions = c.conditions, match, p, anyMatch, toggled;
+            for(p in queries){
+                match = _win.matchMedia(queries[p]).matches; // Firefox doesn't update the "matches" property of the MediaQueryList object correctly - it only does so as it calls its change handler - so we must re-create a media query here to ensure it's accurate.
+                match && (anyMatch = 1);
+                if (match !== conditions[p]) {
+                    conditions[p] = match;
+                    toggled = 1;
+                }
+            }
+            if (toggled) {
+                c.revert();
+                anyMatch && matches.push(c);
+            }
+        });
+        _dispatch("matchMediaRevert");
+        matches.forEach(function(c) {
+            return c.onMatch(c);
+        });
+        _lastMediaTime = time;
+        _dispatch("matchMedia");
+    }
+};
+var Context = /*#__PURE__*/ function() {
+    function Context(func, scope) {
+        this.selector = scope && selector(scope);
+        this.data = [];
+        this._r = []; // returned/cleanup functions
+        this.isReverted = false;
+        func && this.add(func);
+    }
+    var _proto5 = Context.prototype;
+    _proto5.add = function add(name, func, scope) {
+        if (_isFunction(name)) {
+            scope = func;
+            func = name;
+            name = _isFunction;
+        }
+        var self = this, f = function f() {
+            var prev = _context, prevSelector = self.selector, result;
+            prev && prev !== self && prev.data.push(self);
+            scope && (self.selector = selector(scope));
+            _context = self;
+            result = func.apply(self, arguments);
+            _isFunction(result) && self._r.push(result);
+            _context = prev;
+            self.selector = prevSelector;
+            self.isReverted = false;
+            return result;
+        };
+        self.last = f;
+        return name === _isFunction ? f(self) : name ? self[name] = f : f;
+    };
+    _proto5.ignore = function ignore(func) {
+        var prev = _context;
+        _context = null;
+        func(this);
+        _context = prev;
+    };
+    _proto5.getTweens = function getTweens() {
+        var a = [];
+        this.data.forEach(function(e) {
+            return e instanceof Context ? a.push.apply(a, e.getTweens()) : e instanceof Tween && !(e.parent && e.parent.data === "nested") && a.push(e);
+        });
+        return a;
+    };
+    _proto5.clear = function clear() {
+        this._r.length = this.data.length = 0;
+    };
+    _proto5.kill = function kill(revert, matchMedia) {
+        var _this4 = this;
+        if (revert) {
+            var tweens = this.getTweens();
+            this.data.forEach(function(t) {
+                // Flip plugin tweens are very different in that they should actually be pushed to their end. The plugin replaces the timeline's .revert() method to do exactly that. But we also need to remove any of those nested tweens inside the flip timeline so that they don't get individually reverted.
+                if (t.data === "isFlip") {
+                    t.revert();
+                    t.getChildren(true, true, false).forEach(function(tween) {
+                        return tweens.splice(tweens.indexOf(tween), 1);
+                    });
+                }
+            }); // save as an object so that we can cache the globalTime for each tween to optimize performance during the sort
+            tweens.map(function(t) {
+                return {
+                    g: t.globalTime(0),
+                    t: t
+                };
+            }).sort(function(a, b) {
+                return b.g - a.g || -1;
+            }).forEach(function(o) {
+                return o.t.revert(revert);
+            }); // note: all of the _startAt tweens should be reverted in reverse order that thy were created, and they'll all have the same globalTime (-1) so the " || -1" in the sort keeps the order properly.
+            this.data.forEach(function(e) {
+                return !(e instanceof Animation) && e.revert && e.revert(revert);
+            });
+            this._r.forEach(function(f) {
+                return f(revert, _this4);
+            });
+            this.isReverted = true;
+        } else this.data.forEach(function(e) {
+            return e.kill && e.kill();
+        });
+        this.clear();
+        if (matchMedia) {
+            var i = _media.indexOf(this);
+            !!~i && _media.splice(i, 1);
+        }
+    };
+    _proto5.revert = function revert(config) {
+        this.kill(config || {});
+    };
+    return Context;
+}();
+var MatchMedia = /*#__PURE__*/ function() {
+    function MatchMedia(scope) {
+        this.contexts = [];
+        this.scope = scope;
+    }
+    var _proto6 = MatchMedia.prototype;
+    _proto6.add = function add(conditions, func, scope) {
+        _isObject(conditions) || (conditions = {
+            matches: conditions
+        });
+        var context = new Context(0, scope || this.scope), cond = context.conditions = {}, mq, p, active;
+        this.contexts.push(context);
+        func = context.add("onMatch", func);
+        context.queries = conditions;
+        for(p in conditions)if (p === "all") active = 1;
+        else {
+            mq = _win.matchMedia(conditions[p]);
+            if (mq) {
+                _media.indexOf(context) < 0 && _media.push(context);
+                (cond[p] = mq.matches) && (active = 1);
+                mq.addListener ? mq.addListener(_onMediaChange) : mq.addEventListener("change", _onMediaChange);
+            }
+        }
+        active && func(context);
+        return this;
+    } // refresh() {
+    ;
+    _proto6.revert = function revert(config) {
+        this.kill(config || {});
+    };
+    _proto6.kill = function kill(revert) {
+        this.contexts.forEach(function(c) {
+            return c.kill(revert, true);
+        });
+    };
+    return MatchMedia;
+}();
+/*
+ * --------------------------------------------------------------------------------------
+ * GSAP
+ * --------------------------------------------------------------------------------------
+ */ var _gsap = {
+    registerPlugin: function registerPlugin() {
+        for(var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++)args[_key2] = arguments[_key2];
+        args.forEach(function(config) {
+            return _createPlugin(config);
+        });
+    },
+    timeline: function timeline(vars) {
+        return new Timeline(vars);
+    },
+    getTweensOf: function getTweensOf(targets, onlyActive) {
+        return _globalTimeline.getTweensOf(targets, onlyActive);
+    },
+    getProperty: function getProperty(target, property, unit, uncache) {
+        _isString(target) && (target = toArray(target)[0]); //in case selector text or an array is passed in
+        var getter = _getCache(target || {}).get, format = unit ? _passThrough : _numericIfPossible;
+        unit === "native" && (unit = "");
+        return !target ? target : !property ? function(property, unit, uncache) {
+            return format((_plugins[property] && _plugins[property].get || getter)(target, property, unit, uncache));
+        } : format((_plugins[property] && _plugins[property].get || getter)(target, property, unit, uncache));
+    },
+    quickSetter: function quickSetter(target, property, unit) {
+        target = toArray(target);
+        if (target.length > 1) {
+            var setters = target.map(function(t) {
+                return gsap.quickSetter(t, property, unit);
+            }), l = setters.length;
+            return function(value) {
+                var i = l;
+                while(i--)setters[i](value);
+            };
+        }
+        target = target[0] || {};
+        var Plugin = _plugins[property], cache = _getCache(target), p = cache.harness && (cache.harness.aliases || {})[property] || property, // in case it's an alias, like "rotate" for "rotation".
+        setter = Plugin ? function(value) {
+            var p = new Plugin();
+            _quickTween._pt = 0;
+            p.init(target, unit ? value + unit : value, _quickTween, 0, [
+                target
+            ]);
+            p.render(1, p);
+            _quickTween._pt && _renderPropTweens(1, _quickTween);
+        } : cache.set(target, p);
+        return Plugin ? setter : function(value) {
+            return setter(target, p, unit ? value + unit : value, cache, 1);
+        };
+    },
+    quickTo: function quickTo(target, property, vars) {
+        var _merge2;
+        var tween = gsap.to(target, _merge((_merge2 = {}, _merge2[property] = "+=0.1", _merge2.paused = true, _merge2), vars || {})), func = function func(value, start, startIsRelative) {
+            return tween.resetTo(property, value, start, startIsRelative);
+        };
+        func.tween = tween;
+        return func;
+    },
+    isTweening: function isTweening(targets) {
+        return _globalTimeline.getTweensOf(targets, true).length > 0;
+    },
+    defaults: function defaults(value) {
+        value && value.ease && (value.ease = _parseEase(value.ease, _defaults.ease));
+        return _mergeDeep(_defaults, value || {});
+    },
+    config: function config(value) {
+        return _mergeDeep(_config, value || {});
+    },
+    registerEffect: function registerEffect(_ref3) {
+        var name = _ref3.name, effect = _ref3.effect, plugins = _ref3.plugins, defaults = _ref3.defaults, extendTimeline = _ref3.extendTimeline;
+        (plugins || "").split(",").forEach(function(pluginName) {
+            return pluginName && !_plugins[pluginName] && !_globals[pluginName] && _warn(name + " effect requires " + pluginName + " plugin.");
+        });
+        _effects[name] = function(targets, vars, tl) {
+            return effect(toArray(targets), _setDefaults(vars || {}, defaults), tl);
+        };
+        if (extendTimeline) Timeline.prototype[name] = function(targets, vars, position) {
+            return this.add(_effects[name](targets, _isObject(vars) ? vars : (position = vars) && {}, this), position);
+        };
+    },
+    registerEase: function registerEase(name, ease) {
+        _easeMap[name] = _parseEase(ease);
+    },
+    parseEase: function parseEase(ease, defaultEase) {
+        return arguments.length ? _parseEase(ease, defaultEase) : _easeMap;
+    },
+    getById: function getById(id) {
+        return _globalTimeline.getById(id);
+    },
+    exportRoot: function exportRoot(vars, includeDelayedCalls) {
+        if (vars === void 0) vars = {};
+        var tl = new Timeline(vars), child, next;
+        tl.smoothChildTiming = _isNotFalse(vars.smoothChildTiming);
+        _globalTimeline.remove(tl);
+        tl._dp = 0; //otherwise it'll get re-activated when adding children and be re-introduced into _globalTimeline's linked list (then added to itself).
+        tl._time = tl._tTime = _globalTimeline._time;
+        child = _globalTimeline._first;
+        while(child){
+            next = child._next;
+            if (includeDelayedCalls || !(!child._dur && child instanceof Tween && child.vars.onComplete === child._targets[0])) _addToTimeline(tl, child, child._start - child._delay);
+            child = next;
+        }
+        _addToTimeline(_globalTimeline, tl, 0);
+        return tl;
+    },
+    context: function context(func, scope) {
+        return func ? new Context(func, scope) : _context;
+    },
+    matchMedia: function matchMedia(scope) {
+        return new MatchMedia(scope);
+    },
+    matchMediaRefresh: function matchMediaRefresh() {
+        return _media.forEach(function(c) {
+            var cond = c.conditions, found, p;
+            for(p in cond)if (cond[p]) {
+                cond[p] = false;
+                found = 1;
+            }
+            found && c.revert();
+        }) || _onMediaChange();
+    },
+    addEventListener: function addEventListener(type, callback) {
+        var a = _listeners[type] || (_listeners[type] = []);
+        ~a.indexOf(callback) || a.push(callback);
+    },
+    removeEventListener: function removeEventListener(type, callback) {
+        var a = _listeners[type], i = a && a.indexOf(callback);
+        i >= 0 && a.splice(i, 1);
+    },
+    utils: {
+        wrap: wrap,
+        wrapYoyo: wrapYoyo,
+        distribute: distribute,
+        random: random,
+        snap: snap,
+        normalize: normalize,
+        getUnit: getUnit,
+        clamp: clamp,
+        splitColor: splitColor,
+        toArray: toArray,
+        selector: selector,
+        mapRange: mapRange,
+        pipe: pipe,
+        unitize: unitize,
+        interpolate: interpolate,
+        shuffle: shuffle
+    },
+    install: _install,
+    effects: _effects,
+    ticker: _ticker,
+    updateRoot: Timeline.updateRoot,
+    plugins: _plugins,
+    globalTimeline: _globalTimeline,
+    core: {
+        PropTween: PropTween,
+        globals: _addGlobal,
+        Tween: Tween,
+        Timeline: Timeline,
+        Animation: Animation,
+        getCache: _getCache,
+        _removeLinkedListItem: _removeLinkedListItem,
+        reverting: function reverting() {
+            return _reverting;
+        },
+        context: function context(toAdd) {
+            if (toAdd && _context) {
+                _context.data.push(toAdd);
+                toAdd._ctx = _context;
+            }
+            return _context;
+        },
+        suppressOverwrites: function suppressOverwrites(value) {
+            return _suppressOverwrites = value;
+        }
+    }
+};
+_forEachName("to,from,fromTo,delayedCall,set,killTweensOf", function(name) {
+    return _gsap[name] = Tween[name];
+});
+_ticker.add(Timeline.updateRoot);
+_quickTween = _gsap.to({}, {
+    duration: 0
+}); // ---- EXTRA PLUGINS --------------------------------------------------------
+var _getPluginPropTween = function _getPluginPropTween(plugin, prop) {
+    var pt = plugin._pt;
+    while(pt && pt.p !== prop && pt.op !== prop && pt.fp !== prop)pt = pt._next;
+    return pt;
+}, _addModifiers = function _addModifiers(tween, modifiers) {
+    var targets = tween._targets, p, i, pt;
+    for(p in modifiers){
+        i = targets.length;
+        while(i--){
+            pt = tween._ptLookup[i][p];
+            if (pt && (pt = pt.d)) {
+                if (pt._pt) // is a plugin
+                pt = _getPluginPropTween(pt, p);
+                pt && pt.modifier && pt.modifier(modifiers[p], tween, targets[i], p);
+            }
+        }
+    }
+}, _buildModifierPlugin = function _buildModifierPlugin(name, modifier) {
+    return {
+        name: name,
+        rawVars: 1,
+        //don't pre-process function-based values or "random()" strings.
+        init: function init(target, vars, tween) {
+            tween._onInit = function(tween) {
+                var temp, p;
+                if (_isString(vars)) {
+                    temp = {};
+                    _forEachName(vars, function(name) {
+                        return temp[name] = 1;
+                    }); //if the user passes in a comma-delimited list of property names to roundProps, like "x,y", we round to whole numbers.
+                    vars = temp;
+                }
+                if (modifier) {
+                    temp = {};
+                    for(p in vars)temp[p] = modifier(vars[p]);
+                    vars = temp;
+                }
+                _addModifiers(tween, vars);
+            };
+        }
+    };
+}; //register core plugins
+var gsap = _gsap.registerPlugin({
+    name: "attr",
+    init: function init(target, vars, tween, index, targets) {
+        var p, pt, v;
+        this.tween = tween;
+        for(p in vars){
+            v = target.getAttribute(p) || "";
+            pt = this.add(target, "setAttribute", (v || 0) + "", vars[p], index, targets, 0, 0, p);
+            pt.op = p;
+            pt.b = v; // record the beginning value so we can revert()
+            this._props.push(p);
+        }
+    },
+    render: function render(ratio, data) {
+        var pt = data._pt;
+        while(pt){
+            _reverting ? pt.set(pt.t, pt.p, pt.b, pt) : pt.r(ratio, pt.d); // if reverting, go back to the original (pt.b)
+            pt = pt._next;
+        }
+    }
+}, {
+    name: "endArray",
+    init: function init(target, value) {
+        var i = value.length;
+        while(i--)this.add(target, i, target[i] || 0, value[i], 0, 0, 0, 0, 0, 1);
+    }
+}, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap; //to prevent the core plugins from being dropped via aggressive tree shaking, we must include them in the variable declaration in this way.
+Tween.version = Timeline.version = gsap.version = "3.11.2";
+_coreReady = 1;
+_windowExists() && _wake();
+var Power0 = _easeMap.Power0, Power1 = _easeMap.Power1, Power2 = _easeMap.Power2, Power3 = _easeMap.Power3, Power4 = _easeMap.Power4, Linear = _easeMap.Linear, Quad = _easeMap.Quad, Cubic = _easeMap.Cubic, Quart = _easeMap.Quart, Quint = _easeMap.Quint, Strong = _easeMap.Strong, Elastic = _easeMap.Elastic, Back = _easeMap.Back, SteppedEase = _easeMap.SteppedEase, Bounce = _easeMap.Bounce, Sine = _easeMap.Sine, Expo = _easeMap.Expo, Circ = _easeMap.Circ;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"jUeMG":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CSSPlugin", ()=>CSSPlugin);
+parcelHelpers.export(exports, "default", ()=>CSSPlugin);
+parcelHelpers.export(exports, "_getBBox", ()=>_getBBox);
+parcelHelpers.export(exports, "_createElement", ()=>_createElement);
+parcelHelpers.export(exports, "checkPrefix", ()=>_checkPropPrefix);
+/*!
+ * CSSPlugin 3.11.2
+ * https://greensock.com
+ *
+ * Copyright 2008-2022, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/ /* eslint-disable */ var _gsapCoreJs = require("./gsap-core.js");
+var _win, _doc, _docElement, _pluginInitted, _tempDiv, _tempDivStyler, _recentSetterPlugin, _reverting, _windowExists = function _windowExists() {
+    return typeof window !== "undefined";
+}, _transformProps = {}, _RAD2DEG = 180 / Math.PI, _DEG2RAD = Math.PI / 180, _atan2 = Math.atan2, _bigNum = 1e8, _capsExp = /([A-Z])/g, _horizontalExp = /(left|right|width|margin|padding|x)/i, _complexExp = /[\s,\(]\S/, _propertyAliases = {
+    autoAlpha: "opacity,visibility",
+    scale: "scaleX,scaleY",
+    alpha: "opacity"
+}, _renderCSSProp = function _renderCSSProp(ratio, data) {
+    return data.set(data.t, data.p, Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u, data);
+}, _renderPropWithEnd = function _renderPropWithEnd(ratio, data) {
+    return data.set(data.t, data.p, ratio === 1 ? data.e : Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u, data);
+}, _renderCSSPropWithBeginning = function _renderCSSPropWithBeginning(ratio, data) {
+    return data.set(data.t, data.p, ratio ? Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u : data.b, data);
+}, //if units change, we need a way to render the original unit/value when the tween goes all the way back to the beginning (ratio:0)
+_renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
+    var value = data.s + data.c * ratio;
+    data.set(data.t, data.p, ~~(value + (value < 0 ? -0.5 : .5)) + data.u, data);
+}, _renderNonTweeningValue = function _renderNonTweeningValue(ratio, data) {
+    return data.set(data.t, data.p, ratio ? data.e : data.b, data);
+}, _renderNonTweeningValueOnlyAtEnd = function _renderNonTweeningValueOnlyAtEnd(ratio, data) {
+    return data.set(data.t, data.p, ratio !== 1 ? data.b : data.e, data);
+}, _setterCSSStyle = function _setterCSSStyle(target, property, value) {
+    return target.style[property] = value;
+}, _setterCSSProp = function _setterCSSProp(target, property, value) {
+    return target.style.setProperty(property, value);
+}, _setterTransform = function _setterTransform(target, property, value) {
+    return target._gsap[property] = value;
+}, _setterScale = function _setterScale(target, property, value) {
+    return target._gsap.scaleX = target._gsap.scaleY = value;
+}, _setterScaleWithRender = function _setterScaleWithRender(target, property, value, data, ratio) {
+    var cache = target._gsap;
+    cache.scaleX = cache.scaleY = value;
+    cache.renderTransform(ratio, cache);
+}, _setterTransformWithRender = function _setterTransformWithRender(target, property, value, data, ratio) {
+    var cache = target._gsap;
+    cache[property] = value;
+    cache.renderTransform(ratio, cache);
+}, _transformProp = "transform", _transformOriginProp = _transformProp + "Origin", _saveStyle = function _saveStyle(property, isNotCSS) {
+    var _this = this;
+    var target = this.target, style = target.style;
+    if (property in _transformProps) {
+        this.tfm = this.tfm || {};
+        if (property !== "transform") {
+            property = _propertyAliases[property] || property;
+            ~property.indexOf(",") ? property.split(",").forEach(function(a) {
+                return _this.tfm[a] = _get(target, a);
+            }) : this.tfm[property] = target._gsap.x ? target._gsap[property] : _get(target, property); // note: scale would map to "scaleX,scaleY", thus we loop and apply them both.
+        }
+        if (this.props.indexOf(_transformProp) >= 0) return;
+        if (target._gsap.svg) {
+            this.svgo = target.getAttribute("data-svg-origin");
+            this.props.push(_transformOriginProp, isNotCSS, "");
+        }
+        property = _transformProp;
+    }
+    (style || isNotCSS) && this.props.push(property, isNotCSS, style[property]);
+}, _removeIndependentTransforms = function _removeIndependentTransforms(style) {
+    if (style.translate) {
+        style.removeProperty("translate");
+        style.removeProperty("scale");
+        style.removeProperty("rotate");
+    }
+}, _revertStyle = function _revertStyle() {
+    var props = this.props, target = this.target, style = target.style, cache = target._gsap, i, p;
+    for(i = 0; i < props.length; i += 3)// stored like this: property, isNotCSS, value
+    props[i + 1] ? target[props[i]] = props[i + 2] : props[i + 2] ? style[props[i]] = props[i + 2] : style.removeProperty(props[i].replace(_capsExp, "-$1").toLowerCase());
+    if (this.tfm) {
+        for(p in this.tfm)cache[p] = this.tfm[p];
+        if (cache.svg) {
+            cache.renderTransform();
+            target.setAttribute("data-svg-origin", this.svgo || "");
+        }
+        i = _reverting();
+        if (i && !i.isStart && !style[_transformProp]) {
+            _removeIndependentTransforms(style);
+            cache.uncache = 1; // if it's a startAt that's being reverted in the _initTween() of the core, we don't need to uncache transforms. This is purely a performance optimization.
+        }
+    }
+}, _getStyleSaver = function _getStyleSaver(target, properties) {
+    var saver = {
+        target: target,
+        props: [],
+        revert: _revertStyle,
+        save: _saveStyle
+    };
+    properties && properties.split(",").forEach(function(p) {
+        return saver.save(p);
+    });
+    return saver;
+}, _supports3D, _createElement = function _createElement(type, ns) {
+    var e = _doc.createElementNS ? _doc.createElementNS((ns || "http://www.w3.org/1999/xhtml").replace(/^https/, "http"), type) : _doc.createElement(type); //some servers swap in https for http in the namespace which can break things, making "style" inaccessible.
+    return e.style ? e : _doc.createElement(type); //some environments won't allow access to the element's style when created with a namespace in which case we default to the standard createElement() to work around the issue. Also note that when GSAP is embedded directly inside an SVG file, createElement() won't allow access to the style object in Firefox (see https://greensock.com/forums/topic/20215-problem-using-tweenmax-in-standalone-self-containing-svg-file-err-cannot-set-property-csstext-of-undefined/).
+}, _getComputedProperty = function _getComputedProperty(target, property, skipPrefixFallback) {
+    var cs = getComputedStyle(target);
+    return cs[property] || cs.getPropertyValue(property.replace(_capsExp, "-$1").toLowerCase()) || cs.getPropertyValue(property) || !skipPrefixFallback && _getComputedProperty(target, _checkPropPrefix(property) || property, 1) || ""; //css variables may not need caps swapped out for dashes and lowercase.
+}, _prefixes = "O,Moz,ms,Ms,Webkit".split(","), _checkPropPrefix = function _checkPropPrefix(property, element, preferPrefix) {
+    var e = element || _tempDiv, s = e.style, i = 5;
+    if (property in s && !preferPrefix) return property;
+    property = property.charAt(0).toUpperCase() + property.substr(1);
+    while((i--) && !(_prefixes[i] + property in s));
+    return i < 0 ? null : (i === 3 ? "ms" : i >= 0 ? _prefixes[i] : "") + property;
+}, _initCore = function _initCore() {
+    if (_windowExists() && window.document) {
+        _win = window;
+        _doc = _win.document;
+        _docElement = _doc.documentElement;
+        _tempDiv = _createElement("div") || {
+            style: {}
+        };
+        _tempDivStyler = _createElement("div");
+        _transformProp = _checkPropPrefix(_transformProp);
+        _transformOriginProp = _transformProp + "Origin";
+        _tempDiv.style.cssText = "border-width:0;line-height:0;position:absolute;padding:0"; //make sure to override certain properties that may contaminate measurements, in case the user has overreaching style sheets.
+        _supports3D = !!_checkPropPrefix("perspective");
+        _reverting = (0, _gsapCoreJs.gsap).core.reverting;
+        _pluginInitted = 1;
+    }
+}, _getBBoxHack = function _getBBoxHack(swapIfPossible) {
+    //works around issues in some browsers (like Firefox) that don't correctly report getBBox() on SVG elements inside a <defs> element and/or <mask>. We try creating an SVG, adding it to the documentElement and toss the element in there so that it's definitely part of the rendering tree, then grab the bbox and if it works, we actually swap out the original getBBox() method for our own that does these extra steps whenever getBBox is needed. This helps ensure that performance is optimal (only do all these extra steps when absolutely necessary...most elements don't need it).
+    var svg = _createElement("svg", this.ownerSVGElement && this.ownerSVGElement.getAttribute("xmlns") || "http://www.w3.org/2000/svg"), oldParent = this.parentNode, oldSibling = this.nextSibling, oldCSS = this.style.cssText, bbox;
+    _docElement.appendChild(svg);
+    svg.appendChild(this);
+    this.style.display = "block";
+    if (swapIfPossible) try {
+        bbox = this.getBBox();
+        this._gsapBBox = this.getBBox; //store the original
+        this.getBBox = _getBBoxHack;
+    } catch (e) {}
+    else if (this._gsapBBox) bbox = this._gsapBBox();
+    if (oldParent) {
+        if (oldSibling) oldParent.insertBefore(this, oldSibling);
+        else oldParent.appendChild(this);
+    }
+    _docElement.removeChild(svg);
+    this.style.cssText = oldCSS;
+    return bbox;
+}, _getAttributeFallbacks = function _getAttributeFallbacks(target, attributesArray) {
+    var i = attributesArray.length;
+    while(i--){
+        if (target.hasAttribute(attributesArray[i])) return target.getAttribute(attributesArray[i]);
+    }
+}, _getBBox = function _getBBox(target) {
+    var bounds;
+    try {
+        bounds = target.getBBox(); //Firefox throws errors if you try calling getBBox() on an SVG element that's not rendered (like in a <symbol> or <defs>). https://bugzilla.mozilla.org/show_bug.cgi?id=612118
+    } catch (error) {
+        bounds = _getBBoxHack.call(target, true);
+    }
+    bounds && (bounds.width || bounds.height) || target.getBBox === _getBBoxHack || (bounds = _getBBoxHack.call(target, true)); //some browsers (like Firefox) misreport the bounds if the element has zero width and height (it just assumes it's at x:0, y:0), thus we need to manually grab the position in that case.
+    return bounds && !bounds.width && !bounds.x && !bounds.y ? {
+        x: +_getAttributeFallbacks(target, [
+            "x",
+            "cx",
+            "x1"
+        ]) || 0,
+        y: +_getAttributeFallbacks(target, [
+            "y",
+            "cy",
+            "y1"
+        ]) || 0,
+        width: 0,
+        height: 0
+    } : bounds;
+}, _isSVG = function _isSVG(e) {
+    return !!(e.getCTM && (!e.parentNode || e.ownerSVGElement) && _getBBox(e));
+}, //reports if the element is an SVG on which getBBox() actually works
+_removeProperty = function _removeProperty(target, property) {
+    if (property) {
+        var style = target.style;
+        if (property in _transformProps && property !== _transformOriginProp) property = _transformProp;
+        if (style.removeProperty) {
+            if (property.substr(0, 2) === "ms" || property.substr(0, 6) === "webkit") //Microsoft and some Webkit browsers don't conform to the standard of capitalizing the first prefix character, so we adjust so that when we prefix the caps with a dash, it's correct (otherwise it'd be "ms-transform" instead of "-ms-transform" for IE9, for example)
+            property = "-" + property;
+            style.removeProperty(property.replace(_capsExp, "-$1").toLowerCase());
+        } else //note: old versions of IE use "removeAttribute()" instead of "removeProperty()"
+        style.removeAttribute(property);
+    }
+}, _addNonTweeningPT = function _addNonTweeningPT(plugin, target, property, beginning, end, onlySetAtEnd) {
+    var pt = new (0, _gsapCoreJs.PropTween)(plugin._pt, target, property, 0, 1, onlySetAtEnd ? _renderNonTweeningValueOnlyAtEnd : _renderNonTweeningValue);
+    plugin._pt = pt;
+    pt.b = beginning;
+    pt.e = end;
+    plugin._props.push(property);
+    return pt;
+}, _nonConvertibleUnits = {
+    deg: 1,
+    rad: 1,
+    turn: 1
+}, _nonStandardLayouts = {
+    grid: 1,
+    flex: 1
+}, //takes a single value like 20px and converts it to the unit specified, like "%", returning only the numeric amount.
+_convertToUnit = function _convertToUnit(target, property, value, unit) {
+    var curValue = parseFloat(value) || 0, curUnit = (value + "").trim().substr((curValue + "").length) || "px", // some browsers leave extra whitespace at the beginning of CSS variables, hence the need to trim()
+    style = _tempDiv.style, horizontal = _horizontalExp.test(property), isRootSVG = target.tagName.toLowerCase() === "svg", measureProperty = (isRootSVG ? "client" : "offset") + (horizontal ? "Width" : "Height"), amount = 100, toPixels = unit === "px", toPercent = unit === "%", px, parent, cache, isSVG;
+    if (unit === curUnit || !curValue || _nonConvertibleUnits[unit] || _nonConvertibleUnits[curUnit]) return curValue;
+    curUnit !== "px" && !toPixels && (curValue = _convertToUnit(target, property, value, "px"));
+    isSVG = target.getCTM && _isSVG(target);
+    if ((toPercent || curUnit === "%") && (_transformProps[property] || ~property.indexOf("adius"))) {
+        px = isSVG ? target.getBBox()[horizontal ? "width" : "height"] : target[measureProperty];
+        return (0, _gsapCoreJs._round)(toPercent ? curValue / px * amount : curValue / 100 * px);
+    }
+    style[horizontal ? "width" : "height"] = amount + (toPixels ? curUnit : unit);
+    parent = ~property.indexOf("adius") || unit === "em" && target.appendChild && !isRootSVG ? target : target.parentNode;
+    if (isSVG) parent = (target.ownerSVGElement || {}).parentNode;
+    if (!parent || parent === _doc || !parent.appendChild) parent = _doc.body;
+    cache = parent._gsap;
+    if (cache && toPercent && cache.width && horizontal && cache.time === (0, _gsapCoreJs._ticker).time && !cache.uncache) return (0, _gsapCoreJs._round)(curValue / cache.width * amount);
+    else {
+        (toPercent || curUnit === "%") && !_nonStandardLayouts[_getComputedProperty(parent, "display")] && (style.position = _getComputedProperty(target, "position"));
+        parent === target && (style.position = "static"); // like for borderRadius, if it's a % we must have it relative to the target itself but that may not have position: relative or position: absolute in which case it'd go up the chain until it finds its offsetParent (bad). position: static protects against that.
+        parent.appendChild(_tempDiv);
+        px = _tempDiv[measureProperty];
+        parent.removeChild(_tempDiv);
+        style.position = "absolute";
+        if (horizontal && toPercent) {
+            cache = (0, _gsapCoreJs._getCache)(parent);
+            cache.time = (0, _gsapCoreJs._ticker).time;
+            cache.width = parent[measureProperty];
+        }
+    }
+    return (0, _gsapCoreJs._round)(toPixels ? px * curValue / amount : px && curValue ? amount / px * curValue : 0);
+}, _get = function _get(target, property, unit, uncache) {
+    var value;
+    _pluginInitted || _initCore();
+    if (property in _propertyAliases && property !== "transform") {
+        property = _propertyAliases[property];
+        if (~property.indexOf(",")) property = property.split(",")[0];
+    }
+    if (_transformProps[property] && property !== "transform") {
+        value = _parseTransform(target, uncache);
+        value = property !== "transformOrigin" ? value[property] : value.svg ? value.origin : _firstTwoOnly(_getComputedProperty(target, _transformOriginProp)) + " " + value.zOrigin + "px";
+    } else {
+        value = target.style[property];
+        if (!value || value === "auto" || uncache || ~(value + "").indexOf("calc(")) value = _specialProps[property] && _specialProps[property](target, property, unit) || _getComputedProperty(target, property) || (0, _gsapCoreJs._getProperty)(target, property) || (property === "opacity" ? 1 : 0); // note: some browsers, like Firefox, don't report borderRadius correctly! Instead, it only reports every corner like  borderTopLeftRadius
+    }
+    return unit && !~(value + "").trim().indexOf(" ") ? _convertToUnit(target, property, value, unit) + unit : value;
+}, _tweenComplexCSSString = function _tweenComplexCSSString(target, prop, start, end) {
+    // note: we call _tweenComplexCSSString.call(pluginInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+    if (!start || start === "none") {
+        // some browsers like Safari actually PREFER the prefixed property and mis-report the unprefixed value like clipPath (BUG). In other words, even though clipPath exists in the style ("clipPath" in target.style) and it's set in the CSS properly (along with -webkit-clip-path), Safari reports clipPath as "none" whereas WebkitClipPath reports accurately like "ellipse(100% 0% at 50% 0%)", so in this case we must SWITCH to using the prefixed property instead. See https://greensock.com/forums/topic/18310-clippath-doesnt-work-on-ios/
+        var p = _checkPropPrefix(prop, target, 1), s = p && _getComputedProperty(target, p, 1);
+        if (s && s !== start) {
+            prop = p;
+            start = s;
+        } else if (prop === "borderColor") start = _getComputedProperty(target, "borderTopColor"); // Firefox bug: always reports "borderColor" as "", so we must fall back to borderTopColor. See https://greensock.com/forums/topic/24583-how-to-return-colors-that-i-had-after-reverse/
+    }
+    var pt = new (0, _gsapCoreJs.PropTween)(this._pt, target.style, prop, 0, 1, (0, _gsapCoreJs._renderComplexString)), index = 0, matchIndex = 0, a, result, startValues, startNum, color, startValue, endValue, endNum, chunk, endUnit, startUnit, endValues;
+    pt.b = start;
+    pt.e = end;
+    start += ""; // ensure values are strings
+    end += "";
+    if (end === "auto") {
+        target.style[prop] = end;
+        end = _getComputedProperty(target, prop) || end;
+        target.style[prop] = start;
+    }
+    a = [
+        start,
+        end
+    ];
+    (0, _gsapCoreJs._colorStringFilter)(a); // pass an array with the starting and ending values and let the filter do whatever it needs to the values. If colors are found, it returns true and then we must match where the color shows up order-wise because for things like boxShadow, sometimes the browser provides the computed values with the color FIRST, but the user provides it with the color LAST, so flip them if necessary. Same for drop-shadow().
+    start = a[0];
+    end = a[1];
+    startValues = start.match((0, _gsapCoreJs._numWithUnitExp)) || [];
+    endValues = end.match((0, _gsapCoreJs._numWithUnitExp)) || [];
+    if (endValues.length) {
+        while(result = (0, _gsapCoreJs._numWithUnitExp).exec(end)){
+            endValue = result[0];
+            chunk = end.substring(index, result.index);
+            if (color) color = (color + 1) % 5;
+            else if (chunk.substr(-5) === "rgba(" || chunk.substr(-5) === "hsla(") color = 1;
+            if (endValue !== (startValue = startValues[matchIndex++] || "")) {
+                startNum = parseFloat(startValue) || 0;
+                startUnit = startValue.substr((startNum + "").length);
+                endValue.charAt(1) === "=" && (endValue = (0, _gsapCoreJs._parseRelative)(startNum, endValue) + startUnit);
+                endNum = parseFloat(endValue);
+                endUnit = endValue.substr((endNum + "").length);
+                index = (0, _gsapCoreJs._numWithUnitExp).lastIndex - endUnit.length;
+                if (!endUnit) {
+                    //if something like "perspective:300" is passed in and we must add a unit to the end
+                    endUnit = endUnit || (0, _gsapCoreJs._config).units[prop] || startUnit;
+                    if (index === end.length) {
+                        end += endUnit;
+                        pt.e += endUnit;
+                    }
+                }
+                if (startUnit !== endUnit) startNum = _convertToUnit(target, prop, startValue, endUnit) || 0;
+                 // these nested PropTweens are handled in a special way - we'll never actually call a render or setter method on them. We'll just loop through them in the parent complex string PropTween's render method.
+                pt._pt = {
+                    _next: pt._pt,
+                    p: chunk || matchIndex === 1 ? chunk : ",",
+                    //note: SVG spec allows omission of comma/space when a negative sign is wedged between two numbers, like 2.5-5.3 instead of 2.5,-5.3 but when tweening, the negative value may switch to positive, so we insert the comma just in case.
+                    s: startNum,
+                    c: endNum - startNum,
+                    m: color && color < 4 || prop === "zIndex" ? Math.round : 0
+                };
+            }
+        }
+        pt.c = index < end.length ? end.substring(index, end.length) : ""; //we use the "c" of the PropTween to store the final part of the string (after the last number)
+    } else pt.r = prop === "display" && end === "none" ? _renderNonTweeningValueOnlyAtEnd : _renderNonTweeningValue;
+    (0, _gsapCoreJs._relExp).test(end) && (pt.e = 0); //if the end string contains relative values or dynamic random(...) values, delete the end it so that on the final render we don't actually set it to the string with += or -= characters (forces it to use the calculated value).
+    this._pt = pt; //start the linked list with this new PropTween. Remember, we call _tweenComplexCSSString.call(pluginInstance...) to ensure that it's scoped properly. We may call it from within another plugin too, thus "this" would refer to the plugin.
+    return pt;
+}, _keywordToPercent = {
+    top: "0%",
+    bottom: "100%",
+    left: "0%",
+    right: "100%",
+    center: "50%"
+}, _convertKeywordsToPercentages = function _convertKeywordsToPercentages(value) {
+    var split = value.split(" "), x = split[0], y = split[1] || "50%";
+    if (x === "top" || x === "bottom" || y === "left" || y === "right") {
+        //the user provided them in the wrong order, so flip them
+        value = x;
+        x = y;
+        y = value;
+    }
+    split[0] = _keywordToPercent[x] || x;
+    split[1] = _keywordToPercent[y] || y;
+    return split.join(" ");
+}, _renderClearProps = function _renderClearProps(ratio, data) {
+    if (data.tween && data.tween._time === data.tween._dur) {
+        var target = data.t, style = target.style, props = data.u, cache = target._gsap, prop, clearTransforms, i;
+        if (props === "all" || props === true) {
+            style.cssText = "";
+            clearTransforms = 1;
+        } else {
+            props = props.split(",");
+            i = props.length;
+            while(--i > -1){
+                prop = props[i];
+                if (_transformProps[prop]) {
+                    clearTransforms = 1;
+                    prop = prop === "transformOrigin" ? _transformOriginProp : _transformProp;
+                }
+                _removeProperty(target, prop);
+            }
+        }
+        if (clearTransforms) {
+            _removeProperty(target, _transformProp);
+            if (cache) {
+                cache.svg && target.removeAttribute("transform");
+                _parseTransform(target, 1); // force all the cached values back to "normal"/identity, otherwise if there's another tween that's already set to render transforms on this element, it could display the wrong values.
+                cache.uncache = 1;
+                _removeIndependentTransforms(style);
+            }
+        }
+    }
+}, // note: specialProps should return 1 if (and only if) they have a non-zero priority. It indicates we need to sort the linked list.
+_specialProps = {
+    clearProps: function clearProps(plugin, target, property, endValue, tween) {
+        if (tween.data !== "isFromStart") {
+            var pt = plugin._pt = new (0, _gsapCoreJs.PropTween)(plugin._pt, target, property, 0, 0, _renderClearProps);
+            pt.u = endValue;
+            pt.pr = -10;
+            pt.tween = tween;
+            plugin._props.push(property);
+            return 1;
+        }
+    }
+}, /*
+ * --------------------------------------------------------------------------------------
+ * TRANSFORMS
+ * --------------------------------------------------------------------------------------
+ */ _identity2DMatrix = [
+    1,
+    0,
+    0,
+    1,
+    0,
+    0
+], _rotationalProperties = {}, _isNullTransform = function _isNullTransform(value) {
+    return value === "matrix(1, 0, 0, 1, 0, 0)" || value === "none" || !value;
+}, _getComputedTransformMatrixAsArray = function _getComputedTransformMatrixAsArray(target) {
+    var matrixString = _getComputedProperty(target, _transformProp);
+    return _isNullTransform(matrixString) ? _identity2DMatrix : matrixString.substr(7).match((0, _gsapCoreJs._numExp)).map((0, _gsapCoreJs._round));
+}, _getMatrix = function _getMatrix(target, force2D) {
+    var cache = target._gsap || (0, _gsapCoreJs._getCache)(target), style = target.style, matrix = _getComputedTransformMatrixAsArray(target), parent, nextSibling, temp, addedToDOM;
+    if (cache.svg && target.getAttribute("transform")) {
+        temp = target.transform.baseVal.consolidate().matrix; //ensures that even complex values like "translate(50,60) rotate(135,0,0)" are parsed because it mashes it into a matrix.
+        matrix = [
+            temp.a,
+            temp.b,
+            temp.c,
+            temp.d,
+            temp.e,
+            temp.f
+        ];
+        return matrix.join(",") === "1,0,0,1,0,0" ? _identity2DMatrix : matrix;
+    } else if (matrix === _identity2DMatrix && !target.offsetParent && target !== _docElement && !cache.svg) {
+        //note: if offsetParent is null, that means the element isn't in the normal document flow, like if it has display:none or one of its ancestors has display:none). Firefox returns null for getComputedStyle() if the element is in an iframe that has display:none. https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+        //browsers don't report transforms accurately unless the element is in the DOM and has a display value that's not "none". Firefox and Microsoft browsers have a partial bug where they'll report transforms even if display:none BUT not any percentage-based values like translate(-50%, 8px) will be reported as if it's translate(0, 8px).
+        temp = style.display;
+        style.display = "block";
+        parent = target.parentNode;
+        if (!parent || !target.offsetParent) {
+            // note: in 3.3.0 we switched target.offsetParent to _doc.body.contains(target) to avoid [sometimes unnecessary] MutationObserver calls but that wasn't adequate because there are edge cases where nested position: fixed elements need to get reparented to accurately sense transforms. See https://github.com/greensock/GSAP/issues/388 and https://github.com/greensock/GSAP/issues/375
+            addedToDOM = 1; //flag
+            nextSibling = target.nextElementSibling;
+            _docElement.appendChild(target); //we must add it to the DOM in order to get values properly
+        }
+        matrix = _getComputedTransformMatrixAsArray(target);
+        temp ? style.display = temp : _removeProperty(target, "display");
+        if (addedToDOM) nextSibling ? parent.insertBefore(target, nextSibling) : parent ? parent.appendChild(target) : _docElement.removeChild(target);
+    }
+    return force2D && matrix.length > 6 ? [
+        matrix[0],
+        matrix[1],
+        matrix[4],
+        matrix[5],
+        matrix[12],
+        matrix[13]
+    ] : matrix;
+}, _applySVGOrigin = function _applySVGOrigin(target, origin, originIsAbsolute, smooth, matrixArray, pluginToAddPropTweensTo) {
+    var cache = target._gsap, matrix = matrixArray || _getMatrix(target, true), xOriginOld = cache.xOrigin || 0, yOriginOld = cache.yOrigin || 0, xOffsetOld = cache.xOffset || 0, yOffsetOld = cache.yOffset || 0, a = matrix[0], b = matrix[1], c = matrix[2], d = matrix[3], tx = matrix[4], ty = matrix[5], originSplit = origin.split(" "), xOrigin = parseFloat(originSplit[0]) || 0, yOrigin = parseFloat(originSplit[1]) || 0, bounds, determinant, x, y;
+    if (!originIsAbsolute) {
+        bounds = _getBBox(target);
+        xOrigin = bounds.x + (~originSplit[0].indexOf("%") ? xOrigin / 100 * bounds.width : xOrigin);
+        yOrigin = bounds.y + (~(originSplit[1] || originSplit[0]).indexOf("%") ? yOrigin / 100 * bounds.height : yOrigin);
+    } else if (matrix !== _identity2DMatrix && (determinant = a * d - b * c)) {
+        //if it's zero (like if scaleX and scaleY are zero), skip it to avoid errors with dividing by zero.
+        x = xOrigin * (d / determinant) + yOrigin * (-c / determinant) + (c * ty - d * tx) / determinant;
+        y = xOrigin * (-b / determinant) + yOrigin * (a / determinant) - (a * ty - b * tx) / determinant;
+        xOrigin = x;
+        yOrigin = y;
+    }
+    if (smooth || smooth !== false && cache.smooth) {
+        tx = xOrigin - xOriginOld;
+        ty = yOrigin - yOriginOld;
+        cache.xOffset = xOffsetOld + (tx * a + ty * c) - tx;
+        cache.yOffset = yOffsetOld + (tx * b + ty * d) - ty;
+    } else cache.xOffset = cache.yOffset = 0;
+    cache.xOrigin = xOrigin;
+    cache.yOrigin = yOrigin;
+    cache.smooth = !!smooth;
+    cache.origin = origin;
+    cache.originIsAbsolute = !!originIsAbsolute;
+    target.style[_transformOriginProp] = "0px 0px"; //otherwise, if someone sets  an origin via CSS, it will likely interfere with the SVG transform attribute ones (because remember, we're baking the origin into the matrix() value).
+    if (pluginToAddPropTweensTo) {
+        _addNonTweeningPT(pluginToAddPropTweensTo, cache, "xOrigin", xOriginOld, xOrigin);
+        _addNonTweeningPT(pluginToAddPropTweensTo, cache, "yOrigin", yOriginOld, yOrigin);
+        _addNonTweeningPT(pluginToAddPropTweensTo, cache, "xOffset", xOffsetOld, cache.xOffset);
+        _addNonTweeningPT(pluginToAddPropTweensTo, cache, "yOffset", yOffsetOld, cache.yOffset);
+    }
+    target.setAttribute("data-svg-origin", xOrigin + " " + yOrigin);
+}, _parseTransform = function _parseTransform(target, uncache) {
+    var cache = target._gsap || new (0, _gsapCoreJs.GSCache)(target);
+    if ("x" in cache && !uncache && !cache.uncache) return cache;
+    var style = target.style, invertedScaleX = cache.scaleX < 0, px = "px", deg = "deg", cs = getComputedStyle(target), origin = _getComputedProperty(target, _transformOriginProp) || "0", x, y, z, scaleX, scaleY, rotation, rotationX, rotationY, skewX, skewY, perspective, xOrigin, yOrigin, matrix, angle, cos, sin, a, b, c, d, a12, a22, t1, t2, t3, a13, a23, a33, a42, a43, a32;
+    x = y = z = rotation = rotationX = rotationY = skewX = skewY = perspective = 0;
+    scaleX = scaleY = 1;
+    cache.svg = !!(target.getCTM && _isSVG(target));
+    if (cs.translate) {
+        // accommodate independent transforms by combining them into normal ones.
+        if (cs.translate !== "none" || cs.scale !== "none" || cs.rotate !== "none") style[_transformProp] = (cs.translate !== "none" ? "translate3d(" + (cs.translate + " 0 0").split(" ").slice(0, 3).join(", ") + ") " : "") + (cs.rotate !== "none" ? "rotate(" + cs.rotate + ") " : "") + (cs.scale !== "none" ? "scale(" + cs.scale.split(" ").join(",") + ") " : "") + (cs[_transformProp] !== "none" ? cs[_transformProp] : "");
+        style.scale = style.rotate = style.translate = "none";
+    }
+    matrix = _getMatrix(target, cache.svg);
+    if (cache.svg) {
+        if (cache.uncache) {
+            // if cache.uncache is true (and maybe if origin is 0,0), we need to set element.style.transformOrigin = (cache.xOrigin - bbox.x) + "px " + (cache.yOrigin - bbox.y) + "px". Previously we let the data-svg-origin stay instead, but when introducing revert(), it complicated things.
+            t2 = target.getBBox();
+            origin = cache.xOrigin - t2.x + "px " + (cache.yOrigin - t2.y) + "px";
+            t1 = "";
+        } else t1 = !uncache && target.getAttribute("data-svg-origin"); //  Remember, to work around browser inconsistencies we always force SVG elements' transformOrigin to 0,0 and offset the translation accordingly.
+        _applySVGOrigin(target, t1 || origin, !!t1 || cache.originIsAbsolute, cache.smooth !== false, matrix);
+    }
+    xOrigin = cache.xOrigin || 0;
+    yOrigin = cache.yOrigin || 0;
+    if (matrix !== _identity2DMatrix) {
+        a = matrix[0]; //a11
+        b = matrix[1]; //a21
+        c = matrix[2]; //a31
+        d = matrix[3]; //a41
+        x = a12 = matrix[4];
+        y = a22 = matrix[5]; //2D matrix
+        if (matrix.length === 6) {
+            scaleX = Math.sqrt(a * a + b * b);
+            scaleY = Math.sqrt(d * d + c * c);
+            rotation = a || b ? _atan2(b, a) * _RAD2DEG : 0; //note: if scaleX is 0, we cannot accurately measure rotation. Same for skewX with a scaleY of 0. Therefore, we default to the previously recorded value (or zero if that doesn't exist).
+            skewX = c || d ? _atan2(c, d) * _RAD2DEG + rotation : 0;
+            skewX && (scaleY *= Math.abs(Math.cos(skewX * _DEG2RAD)));
+            if (cache.svg) {
+                x -= xOrigin - (xOrigin * a + yOrigin * c);
+                y -= yOrigin - (xOrigin * b + yOrigin * d);
+            } //3D matrix
+        } else {
+            a32 = matrix[6];
+            a42 = matrix[7];
+            a13 = matrix[8];
+            a23 = matrix[9];
+            a33 = matrix[10];
+            a43 = matrix[11];
+            x = matrix[12];
+            y = matrix[13];
+            z = matrix[14];
+            angle = _atan2(a32, a33);
+            rotationX = angle * _RAD2DEG; //rotationX
+            if (angle) {
+                cos = Math.cos(-angle);
+                sin = Math.sin(-angle);
+                t1 = a12 * cos + a13 * sin;
+                t2 = a22 * cos + a23 * sin;
+                t3 = a32 * cos + a33 * sin;
+                a13 = a12 * -sin + a13 * cos;
+                a23 = a22 * -sin + a23 * cos;
+                a33 = a32 * -sin + a33 * cos;
+                a43 = a42 * -sin + a43 * cos;
+                a12 = t1;
+                a22 = t2;
+                a32 = t3;
+            } //rotationY
+            angle = _atan2(-c, a33);
+            rotationY = angle * _RAD2DEG;
+            if (angle) {
+                cos = Math.cos(-angle);
+                sin = Math.sin(-angle);
+                t1 = a * cos - a13 * sin;
+                t2 = b * cos - a23 * sin;
+                t3 = c * cos - a33 * sin;
+                a43 = d * sin + a43 * cos;
+                a = t1;
+                b = t2;
+                c = t3;
+            } //rotationZ
+            angle = _atan2(b, a);
+            rotation = angle * _RAD2DEG;
+            if (angle) {
+                cos = Math.cos(angle);
+                sin = Math.sin(angle);
+                t1 = a * cos + b * sin;
+                t2 = a12 * cos + a22 * sin;
+                b = b * cos - a * sin;
+                a22 = a22 * cos - a12 * sin;
+                a = t1;
+                a12 = t2;
+            }
+            if (rotationX && Math.abs(rotationX) + Math.abs(rotation) > 359.9) {
+                //when rotationY is set, it will often be parsed as 180 degrees different than it should be, and rotationX and rotation both being 180 (it looks the same), so we adjust for that here.
+                rotationX = rotation = 0;
+                rotationY = 180 - rotationY;
+            }
+            scaleX = (0, _gsapCoreJs._round)(Math.sqrt(a * a + b * b + c * c));
+            scaleY = (0, _gsapCoreJs._round)(Math.sqrt(a22 * a22 + a32 * a32));
+            angle = _atan2(a12, a22);
+            skewX = Math.abs(angle) > 0.0002 ? angle * _RAD2DEG : 0;
+            perspective = a43 ? 1 / (a43 < 0 ? -a43 : a43) : 0;
+        }
+        if (cache.svg) {
+            //sense if there are CSS transforms applied on an SVG element in which case we must overwrite them when rendering. The transform attribute is more reliable cross-browser, but we can't just remove the CSS ones because they may be applied in a CSS rule somewhere (not just inline).
+            t1 = target.getAttribute("transform");
+            cache.forceCSS = target.setAttribute("transform", "") || !_isNullTransform(_getComputedProperty(target, _transformProp));
+            t1 && target.setAttribute("transform", t1);
+        }
+    }
+    if (Math.abs(skewX) > 90 && Math.abs(skewX) < 270) {
+        if (invertedScaleX) {
+            scaleX *= -1;
+            skewX += rotation <= 0 ? 180 : -180;
+            rotation += rotation <= 0 ? 180 : -180;
+        } else {
+            scaleY *= -1;
+            skewX += skewX <= 0 ? 180 : -180;
+        }
+    }
+    uncache = uncache || cache.uncache;
+    cache.x = x - ((cache.xPercent = x && (!uncache && cache.xPercent || (Math.round(target.offsetWidth / 2) === Math.round(-x) ? -50 : 0))) ? target.offsetWidth * cache.xPercent / 100 : 0) + px;
+    cache.y = y - ((cache.yPercent = y && (!uncache && cache.yPercent || (Math.round(target.offsetHeight / 2) === Math.round(-y) ? -50 : 0))) ? target.offsetHeight * cache.yPercent / 100 : 0) + px;
+    cache.z = z + px;
+    cache.scaleX = (0, _gsapCoreJs._round)(scaleX);
+    cache.scaleY = (0, _gsapCoreJs._round)(scaleY);
+    cache.rotation = (0, _gsapCoreJs._round)(rotation) + deg;
+    cache.rotationX = (0, _gsapCoreJs._round)(rotationX) + deg;
+    cache.rotationY = (0, _gsapCoreJs._round)(rotationY) + deg;
+    cache.skewX = skewX + deg;
+    cache.skewY = skewY + deg;
+    cache.transformPerspective = perspective + px;
+    if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || 0) style[_transformOriginProp] = _firstTwoOnly(origin);
+    cache.xOffset = cache.yOffset = 0;
+    cache.force3D = (0, _gsapCoreJs._config).force3D;
+    cache.renderTransform = cache.svg ? _renderSVGTransforms : _supports3D ? _renderCSSTransforms : _renderNon3DTransforms;
+    cache.uncache = 0;
+    return cache;
+}, _firstTwoOnly = function _firstTwoOnly(value) {
+    return (value = value.split(" "))[0] + " " + value[1];
+}, //for handling transformOrigin values, stripping out the 3rd dimension
+_addPxTranslate = function _addPxTranslate(target, start, value) {
+    var unit = (0, _gsapCoreJs.getUnit)(start);
+    return (0, _gsapCoreJs._round)(parseFloat(start) + parseFloat(_convertToUnit(target, "x", value + "px", unit))) + unit;
+}, _renderNon3DTransforms = function _renderNon3DTransforms(ratio, cache) {
+    cache.z = "0px";
+    cache.rotationY = cache.rotationX = "0deg";
+    cache.force3D = 0;
+    _renderCSSTransforms(ratio, cache);
+}, _zeroDeg = "0deg", _zeroPx = "0px", _endParenthesis = ") ", _renderCSSTransforms = function _renderCSSTransforms(ratio, cache) {
+    var _ref = cache || this, xPercent = _ref.xPercent, yPercent = _ref.yPercent, x = _ref.x, y = _ref.y, z = _ref.z, rotation = _ref.rotation, rotationY = _ref.rotationY, rotationX = _ref.rotationX, skewX = _ref.skewX, skewY = _ref.skewY, scaleX = _ref.scaleX, scaleY = _ref.scaleY, transformPerspective = _ref.transformPerspective, force3D = _ref.force3D, target = _ref.target, zOrigin = _ref.zOrigin, transforms = "", use3D = force3D === "auto" && ratio && ratio !== 1 || force3D === true; // Safari has a bug that causes it not to render 3D transform-origin values properly, so we force the z origin to 0, record it in the cache, and then do the math here to offset the translate values accordingly (basically do the 3D transform-origin part manually)
+    if (zOrigin && (rotationX !== _zeroDeg || rotationY !== _zeroDeg)) {
+        var angle = parseFloat(rotationY) * _DEG2RAD, a13 = Math.sin(angle), a33 = Math.cos(angle), cos;
+        angle = parseFloat(rotationX) * _DEG2RAD;
+        cos = Math.cos(angle);
+        x = _addPxTranslate(target, x, a13 * cos * -zOrigin);
+        y = _addPxTranslate(target, y, -Math.sin(angle) * -zOrigin);
+        z = _addPxTranslate(target, z, a33 * cos * -zOrigin + zOrigin);
+    }
+    if (transformPerspective !== _zeroPx) transforms += "perspective(" + transformPerspective + _endParenthesis;
+    if (xPercent || yPercent) transforms += "translate(" + xPercent + "%, " + yPercent + "%) ";
+    if (use3D || x !== _zeroPx || y !== _zeroPx || z !== _zeroPx) transforms += z !== _zeroPx || use3D ? "translate3d(" + x + ", " + y + ", " + z + ") " : "translate(" + x + ", " + y + _endParenthesis;
+    if (rotation !== _zeroDeg) transforms += "rotate(" + rotation + _endParenthesis;
+    if (rotationY !== _zeroDeg) transforms += "rotateY(" + rotationY + _endParenthesis;
+    if (rotationX !== _zeroDeg) transforms += "rotateX(" + rotationX + _endParenthesis;
+    if (skewX !== _zeroDeg || skewY !== _zeroDeg) transforms += "skew(" + skewX + ", " + skewY + _endParenthesis;
+    if (scaleX !== 1 || scaleY !== 1) transforms += "scale(" + scaleX + ", " + scaleY + _endParenthesis;
+    target.style[_transformProp] = transforms || "translate(0, 0)";
+}, _renderSVGTransforms = function _renderSVGTransforms(ratio, cache) {
+    var _ref2 = cache || this, xPercent = _ref2.xPercent, yPercent = _ref2.yPercent, x = _ref2.x, y = _ref2.y, rotation = _ref2.rotation, skewX = _ref2.skewX, skewY = _ref2.skewY, scaleX = _ref2.scaleX, scaleY = _ref2.scaleY, target = _ref2.target, xOrigin = _ref2.xOrigin, yOrigin = _ref2.yOrigin, xOffset = _ref2.xOffset, yOffset = _ref2.yOffset, forceCSS = _ref2.forceCSS, tx = parseFloat(x), ty = parseFloat(y), a11, a21, a12, a22, temp;
+    rotation = parseFloat(rotation);
+    skewX = parseFloat(skewX);
+    skewY = parseFloat(skewY);
+    if (skewY) {
+        //for performance reasons, we combine all skewing into the skewX and rotation values. Remember, a skewY of 10 degrees looks the same as a rotation of 10 degrees plus a skewX of 10 degrees.
+        skewY = parseFloat(skewY);
+        skewX += skewY;
+        rotation += skewY;
+    }
+    if (rotation || skewX) {
+        rotation *= _DEG2RAD;
+        skewX *= _DEG2RAD;
+        a11 = Math.cos(rotation) * scaleX;
+        a21 = Math.sin(rotation) * scaleX;
+        a12 = Math.sin(rotation - skewX) * -scaleY;
+        a22 = Math.cos(rotation - skewX) * scaleY;
+        if (skewX) {
+            skewY *= _DEG2RAD;
+            temp = Math.tan(skewX - skewY);
+            temp = Math.sqrt(1 + temp * temp);
+            a12 *= temp;
+            a22 *= temp;
+            if (skewY) {
+                temp = Math.tan(skewY);
+                temp = Math.sqrt(1 + temp * temp);
+                a11 *= temp;
+                a21 *= temp;
+            }
+        }
+        a11 = (0, _gsapCoreJs._round)(a11);
+        a21 = (0, _gsapCoreJs._round)(a21);
+        a12 = (0, _gsapCoreJs._round)(a12);
+        a22 = (0, _gsapCoreJs._round)(a22);
+    } else {
+        a11 = scaleX;
+        a22 = scaleY;
+        a21 = a12 = 0;
+    }
+    if (tx && !~(x + "").indexOf("px") || ty && !~(y + "").indexOf("px")) {
+        tx = _convertToUnit(target, "x", x, "px");
+        ty = _convertToUnit(target, "y", y, "px");
+    }
+    if (xOrigin || yOrigin || xOffset || yOffset) {
+        tx = (0, _gsapCoreJs._round)(tx + xOrigin - (xOrigin * a11 + yOrigin * a12) + xOffset);
+        ty = (0, _gsapCoreJs._round)(ty + yOrigin - (xOrigin * a21 + yOrigin * a22) + yOffset);
+    }
+    if (xPercent || yPercent) {
+        //The SVG spec doesn't support percentage-based translation in the "transform" attribute, so we merge it into the translation to simulate it.
+        temp = target.getBBox();
+        tx = (0, _gsapCoreJs._round)(tx + xPercent / 100 * temp.width);
+        ty = (0, _gsapCoreJs._round)(ty + yPercent / 100 * temp.height);
+    }
+    temp = "matrix(" + a11 + "," + a21 + "," + a12 + "," + a22 + "," + tx + "," + ty + ")";
+    target.setAttribute("transform", temp);
+    forceCSS && (target.style[_transformProp] = temp); //some browsers prioritize CSS transforms over the transform attribute. When we sense that the user has CSS transforms applied, we must overwrite them this way (otherwise some browser simply won't render the transform attribute changes!)
+}, _addRotationalPropTween = function _addRotationalPropTween(plugin, target, property, startNum, endValue) {
+    var cap = 360, isString = (0, _gsapCoreJs._isString)(endValue), endNum = parseFloat(endValue) * (isString && ~endValue.indexOf("rad") ? _RAD2DEG : 1), change = endNum - startNum, finalValue = startNum + change + "deg", direction, pt;
+    if (isString) {
+        direction = endValue.split("_")[1];
+        if (direction === "short") {
+            change %= cap;
+            if (change !== change % (cap / 2)) change += change < 0 ? cap : -cap;
+        }
+        if (direction === "cw" && change < 0) change = (change + cap * _bigNum) % cap - ~~(change / cap) * cap;
+        else if (direction === "ccw" && change > 0) change = (change - cap * _bigNum) % cap - ~~(change / cap) * cap;
+    }
+    plugin._pt = pt = new (0, _gsapCoreJs.PropTween)(plugin._pt, target, property, startNum, change, _renderPropWithEnd);
+    pt.e = finalValue;
+    pt.u = "deg";
+    plugin._props.push(property);
+    return pt;
+}, _assign = function _assign(target, source) {
+    // Internet Explorer doesn't have Object.assign(), so we recreate it here.
+    for(var p in source)target[p] = source[p];
+    return target;
+}, _addRawTransformPTs = function _addRawTransformPTs(plugin, transforms, target) {
+    //for handling cases where someone passes in a whole transform string, like transform: "scale(2, 3) rotate(20deg) translateY(30em)"
+    var startCache = _assign({}, target._gsap), exclude = "perspective,force3D,transformOrigin,svgOrigin", style = target.style, endCache, p, startValue, endValue, startNum, endNum, startUnit, endUnit;
+    if (startCache.svg) {
+        startValue = target.getAttribute("transform");
+        target.setAttribute("transform", "");
+        style[_transformProp] = transforms;
+        endCache = _parseTransform(target, 1);
+        _removeProperty(target, _transformProp);
+        target.setAttribute("transform", startValue);
+    } else {
+        startValue = getComputedStyle(target)[_transformProp];
+        style[_transformProp] = transforms;
+        endCache = _parseTransform(target, 1);
+        style[_transformProp] = startValue;
+    }
+    for(p in _transformProps){
+        startValue = startCache[p];
+        endValue = endCache[p];
+        if (startValue !== endValue && exclude.indexOf(p) < 0) {
+            //tweening to no perspective gives very unintuitive results - just keep the same perspective in that case.
+            startUnit = (0, _gsapCoreJs.getUnit)(startValue);
+            endUnit = (0, _gsapCoreJs.getUnit)(endValue);
+            startNum = startUnit !== endUnit ? _convertToUnit(target, p, startValue, endUnit) : parseFloat(startValue);
+            endNum = parseFloat(endValue);
+            plugin._pt = new (0, _gsapCoreJs.PropTween)(plugin._pt, endCache, p, startNum, endNum - startNum, _renderCSSProp);
+            plugin._pt.u = endUnit || 0;
+            plugin._props.push(p);
+        }
+    }
+    _assign(endCache, startCache);
+}; // handle splitting apart padding, margin, borderWidth, and borderRadius into their 4 components. Firefox, for example, won't report borderRadius correctly - it will only do borderTopLeftRadius and the other corners. We also want to handle paddingTop, marginLeft, borderRightWidth, etc.
+(0, _gsapCoreJs._forEachName)("padding,margin,Width,Radius", function(name, index) {
+    var t = "Top", r = "Right", b = "Bottom", l = "Left", props = (index < 3 ? [
+        t,
+        r,
+        b,
+        l
+    ] : [
+        t + l,
+        t + r,
+        b + r,
+        b + l
+    ]).map(function(side) {
+        return index < 2 ? name + side : "border" + side + name;
+    });
+    _specialProps[index > 1 ? "border" + name : name] = function(plugin, target, property, endValue, tween) {
+        var a, vars;
+        if (arguments.length < 4) {
+            // getter, passed target, property, and unit (from _get())
+            a = props.map(function(prop) {
+                return _get(plugin, prop, property);
+            });
+            vars = a.join(" ");
+            return vars.split(a[0]).length === 5 ? a[0] : vars;
+        }
+        a = (endValue + "").split(" ");
+        vars = {};
+        props.forEach(function(prop, i) {
+            return vars[prop] = a[i] = a[i] || a[(i - 1) / 2 | 0];
+        });
+        plugin.init(target, vars, tween);
+    };
+});
+var CSSPlugin = {
+    name: "css",
+    register: _initCore,
+    targetTest: function targetTest(target) {
+        return target.style && target.nodeType;
+    },
+    init: function init(target, vars, tween, index, targets) {
+        var props = this._props, style = target.style, startAt = tween.vars.startAt, startValue, endValue, endNum, startNum, type, specialProp, p, startUnit, endUnit, relative, isTransformRelated, transformPropTween, cache, smooth, hasPriority, inlineProps;
+        _pluginInitted || _initCore(); // we may call init() multiple times on the same plugin instance, like when adding special properties, so make sure we don't overwrite the revert data or inlineProps
+        this.styles = this.styles || _getStyleSaver(target);
+        inlineProps = this.styles.props;
+        this.tween = tween;
+        for(p in vars){
+            if (p === "autoRound") continue;
+            endValue = vars[p];
+            if ((0, _gsapCoreJs._plugins)[p] && (0, _gsapCoreJs._checkPlugin)(p, vars, tween, index, target, targets)) continue;
+            type = typeof endValue;
+            specialProp = _specialProps[p];
+            if (type === "function") {
+                endValue = endValue.call(tween, index, target, targets);
+                type = typeof endValue;
+            }
+            if (type === "string" && ~endValue.indexOf("random(")) endValue = (0, _gsapCoreJs._replaceRandom)(endValue);
+            if (specialProp) specialProp(this, target, p, endValue, tween) && (hasPriority = 1);
+            else if (p.substr(0, 2) === "--") {
+                //CSS variable
+                startValue = (getComputedStyle(target).getPropertyValue(p) + "").trim();
+                endValue += "";
+                (0, _gsapCoreJs._colorExp).lastIndex = 0;
+                if (!(0, _gsapCoreJs._colorExp).test(startValue)) {
+                    // colors don't have units
+                    startUnit = (0, _gsapCoreJs.getUnit)(startValue);
+                    endUnit = (0, _gsapCoreJs.getUnit)(endValue);
+                }
+                endUnit ? startUnit !== endUnit && (startValue = _convertToUnit(target, p, startValue, endUnit) + endUnit) : startUnit && (endValue += startUnit);
+                this.add(style, "setProperty", startValue, endValue, index, targets, 0, 0, p);
+                props.push(p);
+                inlineProps.push(p, 0, style[p]);
+            } else if (type !== "undefined") {
+                if (startAt && p in startAt) {
+                    // in case someone hard-codes a complex value as the start, like top: "calc(2vh / 2)". Without this, it'd use the computed value (always in px)
+                    startValue = typeof startAt[p] === "function" ? startAt[p].call(tween, index, target, targets) : startAt[p];
+                    (0, _gsapCoreJs._isString)(startValue) && ~startValue.indexOf("random(") && (startValue = (0, _gsapCoreJs._replaceRandom)(startValue));
+                    (0, _gsapCoreJs.getUnit)(startValue + "") || (startValue += (0, _gsapCoreJs._config).units[p] || (0, _gsapCoreJs.getUnit)(_get(target, p)) || ""); // for cases when someone passes in a unitless value like {x: 100}; if we try setting translate(100, 0px) it won't work.
+                    (startValue + "").charAt(1) === "=" && (startValue = _get(target, p)); // can't work with relative values
+                } else startValue = _get(target, p);
+                startNum = parseFloat(startValue);
+                relative = type === "string" && endValue.charAt(1) === "=" && endValue.substr(0, 2);
+                relative && (endValue = endValue.substr(2));
+                endNum = parseFloat(endValue);
+                if (p in _propertyAliases) {
+                    if (p === "autoAlpha") {
+                        //special case where we control the visibility along with opacity. We still allow the opacity value to pass through and get tweened.
+                        if (startNum === 1 && _get(target, "visibility") === "hidden" && endNum) //if visibility is initially set to "hidden", we should interpret that as intent to make opacity 0 (a convenience)
+                        startNum = 0;
+                        inlineProps.push("visibility", 0, style.visibility);
+                        _addNonTweeningPT(this, style, "visibility", startNum ? "inherit" : "hidden", endNum ? "inherit" : "hidden", !endNum);
+                    }
+                    if (p !== "scale" && p !== "transform") {
+                        p = _propertyAliases[p];
+                        ~p.indexOf(",") && (p = p.split(",")[0]);
+                    }
+                }
+                isTransformRelated = p in _transformProps; //--- TRANSFORM-RELATED ---
+                if (isTransformRelated) {
+                    this.styles.save(p);
+                    if (!transformPropTween) {
+                        cache = target._gsap;
+                        cache.renderTransform && !vars.parseTransform || _parseTransform(target, vars.parseTransform); // if, for example, gsap.set(... {transform:"translateX(50vw)"}), the _get() call doesn't parse the transform, thus cache.renderTransform won't be set yet so force the parsing of the transform here.
+                        smooth = vars.smoothOrigin !== false && cache.smooth;
+                        transformPropTween = this._pt = new (0, _gsapCoreJs.PropTween)(this._pt, style, _transformProp, 0, 1, cache.renderTransform, cache, 0, -1); //the first time through, create the rendering PropTween so that it runs LAST (in the linked list, we keep adding to the beginning)
+                        transformPropTween.dep = 1; //flag it as dependent so that if things get killed/overwritten and this is the only PropTween left, we can safely kill the whole tween.
+                    }
+                    if (p === "scale") {
+                        this._pt = new (0, _gsapCoreJs.PropTween)(this._pt, cache, "scaleY", startNum, (relative ? (0, _gsapCoreJs._parseRelative)(startNum, relative + endNum) : endNum) - startNum || 0, _renderCSSProp);
+                        this._pt.u = 0;
+                        props.push("scaleY", p);
+                        p += "X";
+                    } else if (p === "transformOrigin") {
+                        inlineProps.push(_transformOriginProp, 0, style[_transformOriginProp]);
+                        endValue = _convertKeywordsToPercentages(endValue); //in case something like "left top" or "bottom right" is passed in. Convert to percentages.
+                        if (cache.svg) _applySVGOrigin(target, endValue, 0, smooth, 0, this);
+                        else {
+                            endUnit = parseFloat(endValue.split(" ")[2]) || 0; //handle the zOrigin separately!
+                            endUnit !== cache.zOrigin && _addNonTweeningPT(this, cache, "zOrigin", cache.zOrigin, endUnit);
+                            _addNonTweeningPT(this, style, p, _firstTwoOnly(startValue), _firstTwoOnly(endValue));
+                        }
+                        continue;
+                    } else if (p === "svgOrigin") {
+                        _applySVGOrigin(target, endValue, 1, smooth, 0, this);
+                        continue;
+                    } else if (p in _rotationalProperties) {
+                        _addRotationalPropTween(this, cache, p, startNum, relative ? (0, _gsapCoreJs._parseRelative)(startNum, relative + endValue) : endValue);
+                        continue;
+                    } else if (p === "smoothOrigin") {
+                        _addNonTweeningPT(this, cache, "smooth", cache.smooth, endValue);
+                        continue;
+                    } else if (p === "force3D") {
+                        cache[p] = endValue;
+                        continue;
+                    } else if (p === "transform") {
+                        _addRawTransformPTs(this, endValue, target);
+                        continue;
+                    }
+                } else if (!(p in style)) p = _checkPropPrefix(p) || p;
+                if (isTransformRelated || (endNum || endNum === 0) && (startNum || startNum === 0) && !_complexExp.test(endValue) && p in style) {
+                    startUnit = (startValue + "").substr((startNum + "").length);
+                    endNum || (endNum = 0); // protect against NaN
+                    endUnit = (0, _gsapCoreJs.getUnit)(endValue) || (p in (0, _gsapCoreJs._config).units ? (0, _gsapCoreJs._config).units[p] : startUnit);
+                    startUnit !== endUnit && (startNum = _convertToUnit(target, p, startValue, endUnit));
+                    this._pt = new (0, _gsapCoreJs.PropTween)(this._pt, isTransformRelated ? cache : style, p, startNum, (relative ? (0, _gsapCoreJs._parseRelative)(startNum, relative + endNum) : endNum) - startNum, !isTransformRelated && (endUnit === "px" || p === "zIndex") && vars.autoRound !== false ? _renderRoundedCSSProp : _renderCSSProp);
+                    this._pt.u = endUnit || 0;
+                    if (startUnit !== endUnit && endUnit !== "%") {
+                        //when the tween goes all the way back to the beginning, we need to revert it to the OLD/ORIGINAL value (with those units). We record that as a "b" (beginning) property and point to a render method that handles that. (performance optimization)
+                        this._pt.b = startValue;
+                        this._pt.r = _renderCSSPropWithBeginning;
+                    }
+                } else if (!(p in style)) {
+                    if (p in target) //maybe it's not a style - it could be a property added directly to an element in which case we'll try to animate that.
+                    this.add(target, p, startValue || target[p], relative ? relative + endValue : endValue, index, targets);
+                    else {
+                        (0, _gsapCoreJs._missingPlugin)(p, endValue);
+                        continue;
+                    }
+                } else _tweenComplexCSSString.call(this, target, p, startValue, relative ? relative + endValue : endValue);
+                isTransformRelated || (p in style ? inlineProps.push(p, 0, style[p]) : inlineProps.push(p, 1, startValue || target[p]));
+                props.push(p);
+            }
+        }
+        hasPriority && (0, _gsapCoreJs._sortPropTweensByPriority)(this);
+    },
+    render: function render(ratio, data) {
+        if (data.tween._time || !_reverting()) {
+            var pt = data._pt;
+            while(pt){
+                pt.r(ratio, pt.d);
+                pt = pt._next;
+            }
+        } else data.styles.revert();
+    },
+    get: _get,
+    aliases: _propertyAliases,
+    getSetter: function getSetter(target, property, plugin) {
+        //returns a setter function that accepts target, property, value and applies it accordingly. Remember, properties like "x" aren't as simple as target.style.property = value because they've got to be applied to a proxy object and then merged into a transform string in a renderer.
+        var p = _propertyAliases[property];
+        p && p.indexOf(",") < 0 && (property = p);
+        return property in _transformProps && property !== _transformOriginProp && (target._gsap.x || _get(target, "x")) ? plugin && _recentSetterPlugin === plugin ? property === "scale" ? _setterScale : _setterTransform : (_recentSetterPlugin = plugin || {}, property === "scale" ? _setterScaleWithRender : _setterTransformWithRender) : target.style && !(0, _gsapCoreJs._isUndefined)(target.style[property]) ? _setterCSSStyle : ~property.indexOf("-") ? _setterCSSProp : (0, _gsapCoreJs._getSetter)(target, property);
+    },
+    core: {
+        _removeProperty: _removeProperty,
+        _getMatrix: _getMatrix
+    }
+};
+(0, _gsapCoreJs.gsap).utils.checkPrefix = _checkPropPrefix;
+(0, _gsapCoreJs.gsap).core.getStyleSaver = _getStyleSaver;
+(function(positionAndScale, rotation, others, aliases) {
+    var all = (0, _gsapCoreJs._forEachName)(positionAndScale + "," + rotation + "," + others, function(name) {
+        _transformProps[name] = 1;
+    });
+    (0, _gsapCoreJs._forEachName)(rotation, function(name) {
+        (0, _gsapCoreJs._config).units[name] = "deg";
+        _rotationalProperties[name] = 1;
+    });
+    _propertyAliases[all[13]] = positionAndScale + "," + rotation;
+    (0, _gsapCoreJs._forEachName)(aliases, function(name) {
+        var split = name.split(":");
+        _propertyAliases[split[1]] = all[split[0]];
+    });
+})("x,y,z,scale,scaleX,scaleY,xPercent,yPercent", "rotation,rotationX,rotationY,skewX,skewY", "transform,transformOrigin,svgOrigin,force3D,smoothOrigin,transformPerspective", "0:translateX,1:translateY,2:translateZ,8:rotate,8:rotationZ,8:rotateZ,9:rotateX,10:rotateY");
+(0, _gsapCoreJs._forEachName)("x,y,z,top,right,bottom,left,width,height,fontSize,padding,margin,perspective", function(name) {
+    (0, _gsapCoreJs._config).units[name] = "px";
+});
+(0, _gsapCoreJs.gsap).registerPlugin(CSSPlugin);
+
+},{"./gsap-core.js":"4cDHE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3407q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Resources", ()=>Resources);
+var _three = require("three");
+var _app = require("@src/app");
+class Resources {
+    world = new (0, _app.World)();
+    textureLoader = new (0, _three.TextureLoader)();
+    assetsLoaded = 0;
+    progress = 0;
+    preloader = this.world.preloader;
+    projects = [];
+    numAssets = window.PROJECTS.length + Object.keys(window.ASSETS).length + Object.keys(window.FONTS).length;
+    onAssetLoaded() {
+        this.assetsLoaded++;
+        this.progress = this.assetsLoaded / this.numAssets;
+        this.preloader.onAssetLoaded(this.progress);
+    }
+    async loadProjects() {
+        const videoContainer = document.querySelector(".vids");
+        return new Promise((resolve)=>{
+            this.projects = window.PROJECTS.map((entry)=>{
+                const element = document.createElement("video");
+                videoContainer.appendChild(element);
+                element.muted = true;
+                element.src = entry.source;
+                element.autoplay = true;
+                element.playsInline = true;
+                element.crossOrigin = "anonymous";
+                element.width = 500;
+                element.height = 500;
+                element.loop = true;
+                element.style.objectFit = "contain";
+                element.play();
+                const texture = new (0, _three.VideoTexture)(element);
+                this.onAssetLoaded();
+                return {
+                    ...entry,
+                    texture
+                };
+            }).sort((a, b)=>a.index - b.index);
+            resolve();
+        });
+    }
+    async loadFonts() {
+        this.fonts = {};
+        let numFonts = Object.keys(window.FONTS).length;
+        let fontsLoaded = 0;
+        return new Promise((resolve)=>{
+            Object.entries(window.FONTS).map(([name, { map , data  }])=>{
+                this.textureLoader.load(map, (texture)=>{
+                    this.fonts[name] = {
+                        data: data,
+                        map: texture
+                    };
+                    this.onAssetLoaded();
+                    fontsLoaded++;
+                    if (fontsLoaded === numFonts) resolve();
+                });
+            });
+        });
+    }
+    async loadAssets() {
+        this.assets = {};
+        let numAssets = Object.keys(window.ASSETS).length;
+        let assetsLoaded = 0;
+        return new Promise((resolve)=>{
+            Object.entries(window.ASSETS).map(([name, url])=>{
+                this.textureLoader.load(url, (texture)=>{
+                    this.assets[name] = texture;
+                    this.onAssetLoaded();
+                    assetsLoaded++;
+                    if (assetsLoaded === numAssets) resolve();
+                });
+            });
+        });
+    }
+    async load() {
+        await Promise.all([
+            this.loadProjects(),
+            this.loadAssets(),
+            this.loadFonts(), 
+        ]);
+    }
+}
+
+},{"three":"3XrwE","@src/app":"fJe33","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"lA6Bb":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "RotateAlert", ()=>RotateAlert);
+class RotateAlert {
+    container = document.querySelector(".portraitAlert");
+    animateWrapper = document.querySelector(".rotate_device_container");
+    constructor(){}
+    onResize(aspect) {
+        aspect < 1 ? this.activate() : this.deactivate();
+    }
+    activate() {
+        if (this.isActive) return;
+        this.isActive = true;
+        this.container.classList.add("visible");
+        this.animateWrapper.classList.add("active");
+    }
+    deactivate() {
+        if (!this.isActive) return;
+        this.isActive = false;
+        this.container.classList.remove("visible");
+        this.animateWrapper.classList.remove("active");
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"WF4Tj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TransitionManager", ()=>TransitionManager);
+var _gsap = require("gsap");
+var _gsapDefault = parcelHelpers.interopDefault(_gsap);
+var _app = require("@src/app");
+var _types = require("@types");
+class TransitionManager {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    post = this.world.post;
+    projectScreen = this.world.projectScreen;
+    cameraPosition = this.world.camera.position;
+    cameraRotation = this.world.camera.rotation;
+    initialHeight = this.world.initialHeight;
+    homeObjects = [
+        this.world.homeViewManager.title.group,
+        this.world.homeViewManager.contact.group,
+        this.world.homeViewManager.nav.group,
+        this.world.curlBubble.mesh, 
+    ];
+    titlesObject = this.world.projectsViewManager.titles.outerGroup;
+    filtersObject = this.world.projectsViewManager.filters.outerGroup;
+    projectsNavObject = this.world.projectsViewManager.nav.group;
+    projectDetailOverlayObject = this.world.projectDetailViewManager.overlay.group;
+    constructor(){}
+    homeToProjects(test = 1.2) {
+        this.post.activeEffect = (0, _types.TransitionEffect).HomeProjects;
+        const t = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: test,
+                delay: 0,
+                ease: "power1.out"
+            },
+            onStart: ()=>{
+                this.world.usePost = true;
+                // avoid lag by adding screen at beginning;
+                this.projectScreen.uniforms.uOpacity.value = 0;
+                this.projectScreen.uniforms.uIsCurved.value = true;
+                this.scene.add(this.projectScreen.mesh);
+            },
+            onComplete: ()=>{
+                this.post.transitionEffects[(0, _types.TransitionEffect).HomeProjects].uniforms.uProgress.value = 0;
+                this.world.usePost = false;
+            }
+        });
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).HomeProjects].uniforms.uProgress, {
+            value: 1
+        }, 0);
+        t.to(this.cameraPosition, {
+            x: 0,
+            y: this.initialHeight,
+            z: -1
+        }, 0);
+        (0, _gsapDefault.default).delayedCall(t.duration() / 4, ()=>{
+            this.world.sky.mesh.rotation.y = Math.PI;
+            this.scene.remove(...this.homeObjects);
+            this.projectScreen.uniforms.uOpacity.value = 1;
+            this.scene.add(this.titlesObject, this.filtersObject, this.projectsNavObject);
+        });
+    }
+    projectsToHome() {
+        this.post.activeEffect = (0, _types.TransitionEffect).HomeProjects;
+        const t = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: 1.2,
+                delay: 0,
+                ease: "power1.out"
+            },
+            onStart: ()=>{
+                this.world.usePost = true;
+            },
+            onComplete: ()=>{
+                this.post.transitionEffects[(0, _types.TransitionEffect).HomeProjects].uniforms.uProgress.value = 0;
+                this.world.usePost = false;
+            }
+        });
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).HomeProjects].uniforms.uProgress, {
+            value: 1
+        }, 0);
+        t.to(this.cameraPosition, {
+            x: 0,
+            y: this.initialHeight,
+            z: 1
+        }, 0);
+        (0, _gsapDefault.default).delayedCall(t.duration() / 4, ()=>{
+            this.world.sky.mesh.rotation.y = 0;
+            this.scene.remove(this.titlesObject, this.filtersObject, this.projectsNavObject, this.projectScreen.mesh);
+            this.scene.add(...this.homeObjects);
+        });
+    }
+    projectDetailToProjects() {
+        this.projectScreen.uniforms.uvRate.value.set(1, 1);
+        this.projectScreen.uniforms.uIsCurved.value = true;
+        const aspect = window.innerWidth / window.innerHeight;
+        const t = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: 1,
+                delay: 0,
+                ease: "power1.out"
+            },
+            onStart: ()=>this.world.parallax.enabled = true
+        });
+        //camera
+        t.to(this.cameraPosition, {
+            x: 0,
+            y: this.initialHeight,
+            z: -1
+        }, 0);
+        // screen
+        const scaleX = 1 + aspect * 0.2;
+        const scaleY = 1 * scaleX * 0.5625;
+        t.to(this.projectScreen.mesh.scale, {
+            x: scaleX,
+            y: scaleY
+        }, 0);
+        this.scene.add(this.titlesObject, this.filtersObject, this.projectsNavObject);
+        this.scene.remove(this.projectDetailOverlayObject);
+    }
+    projectsToProjectDetail() {
+        this.post.activeEffect = (0, _types.TransitionEffect).ProjectsProjectDetail;
+        const t2 = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: 1.2,
+                delay: 0,
+                ease: "power1.out"
+            },
+            onStart: ()=>{
+                this.world.usePost = true;
+            },
+            onComplete: ()=>{
+                this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsProjectDetail].uniforms.uProgress.value = 0;
+                this.world.usePost = false;
+            }
+        });
+        t2.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsProjectDetail].uniforms.uProgress, {
+            value: 1
+        }, 0);
+        this.world.parallax.enabled = false;
+        const aspect = window.innerWidth / window.innerHeight;
+        this.projectScreen.uniforms.uIsCurved.value = false;
+        if (aspect > 16 / 9) this.projectScreen.uniforms.uvRate.value.set(1, 16 / 9 / aspect);
+        else this.projectScreen.uniforms.uvRate.value.set(aspect / (16 / 9), 1);
+        const t = (0, _gsapDefault.default).timeline({
+            defaults: {
+                duration: 0.8,
+                delay: 0,
+                ease: "power1.in"
+            }
+        });
+        // screen
+        const dist = 0.65;
+        const fov2 = this.world.camera.fov * 0.5 * Math.PI / 180;
+        const scaleY = 2 * dist * Math.tan(fov2); // scaleX = 2*dist*Math.tan(fov/2)
+        const scaleX = scaleY * aspect;
+        t.to(this.projectScreen.mesh.scale, {
+            x: scaleX,
+            y: scaleY
+        }, 0.1);
+        // camera
+        const rotation = (30 + aspect * 8) * (Math.PI / 180);
+        t.to(this.cameraPosition, {
+            x: 0,
+            y: scaleY / 2,
+            z: 0
+        }, 0);
+        t.to(this.cameraRotation, {
+            x: -Math.PI,
+            y: rotation,
+            z: Math.PI * Math.sign(this.cameraRotation.z)
+        }, 0.1);
+        this.scene.remove(this.titlesObject, this.filtersObject, this.projectsNavObject);
+        this.scene.add(this.projectDetailOverlayObject, this.projectScreen.mesh);
+    }
+    projectsToAbout() {
+        this.post.activeEffect = (0, _types.TransitionEffect).ProjectsAbout;
+        const t = (0, _gsapDefault.default).timeline();
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsAbout].uniforms.uProgress, {
+            value: 1,
+            duration: 0.5,
+            onStart: ()=>{
+                this.world.usePost = true;
+            },
+            onComplete: ()=>{
+                this.scene.remove(this.projectScreen.mesh, this.titlesObject, this.filtersObject, this.projectsNavObject);
+            }
+        });
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsAbout].uniforms.uProgress, {
+            value: 0,
+            duration: 0.5,
+            onStart: ()=>{
+                this.scene.add(this.world.aboutViewManager.screen.mesh, this.world.aboutViewManager.greeting.group, this.world.aboutViewManager.overlay.group);
+                this.cameraPosition.set(0, this.initialHeight, 1);
+                this.world.sky.mesh.rotation.y = 0;
+            },
+            onComplete: ()=>{
+                this.world.usePost = false;
+            }
+        });
+        t.to(this.world.aboutViewManager.screen.material.uniforms.uProgress, {
+            delay: 0.5,
+            duration: 0.5,
+            value: 1
+        }, "0");
+    }
+    aboutToProjects() {
+        this.post.activeEffect = (0, _types.TransitionEffect).ProjectsAbout;
+        const t = (0, _gsapDefault.default).timeline();
+        t.to(this.world.aboutViewManager.screen.material.uniforms.uProgress, {
+            duration: 0.5,
+            value: 0
+        }, "0");
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsAbout].uniforms.uProgress, {
+            value: 1,
+            duration: 0.5,
+            onStart: ()=>{
+                this.world.usePost = true;
+            },
+            onComplete: ()=>{
+                this.scene.remove(this.world.aboutViewManager.screen.mesh, this.world.aboutViewManager.greeting.group, this.world.aboutViewManager.overlay.group);
+            }
+        }, "0");
+        t.to(this.post.transitionEffects[(0, _types.TransitionEffect).ProjectsAbout].uniforms.uProgress, {
+            value: 0,
+            duration: 0.5,
+            onStart: ()=>{
+                this.scene.add(this.projectScreen.mesh, this.titlesObject, this.filtersObject, this.projectsNavObject);
+                this.cameraPosition.z = -1;
+                this.world.sky.mesh.rotation.y = Math.PI;
+            },
+            onComplete: ()=>{
+                this.world.usePost = false;
+            }
+        });
+    }
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "transition manager"
+        });
+        this.debug.addButton({
+            title: "home => projects"
+        }).on("click", ()=>this.homeToProjects());
+        this.debug.addButton({
+            title: "projects => projectDetail"
+        }).on("click", ()=>this.projectsToProjectDetail());
+        this.debug.addButton({
+            title: "projectDetail => projects"
+        }).on("click", ()=>this.projectDetailToProjects());
+    }
+}
+
+},{"gsap":"gS77a","@src/app":"fJe33","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"j9YfZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Water", ()=>Water);
+var _app = require("@src/app");
+var _three = require("three");
+var _mirror = require("@utils/Mirror");
+var _mirrorDefault = parcelHelpers.interopDefault(_mirror);
+var _waterHeightMap = require("./WaterHeightMap");
+var _waterHeightMapDefault = parcelHelpers.interopDefault(_waterHeightMap);
+var _vertexGlsl = require("@shaders/water/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/water/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _types = require("@types");
+class Water extends (0, _mirrorDefault.default) {
+    world = new (0, _app.World)();
+    renderer = this.world.renderer;
+    camera = this.world.camera;
+    scene = this.world.scene;
+    raycaster = this.world.raycaster;
+    bounds = 512;
+    scale = 2;
+    heightMap = new (0, _waterHeightMapDefault.default)(this.bounds);
+    geometry = new (0, _three.PlaneGeometry)(this.bounds, this.bounds, this.heightMap.size - 1, this.heightMap.size - 1);
+    uniforms = {
+        uHeightMap: this.heightMap.texture,
+        uBaseColor: {
+            value: new (0, _three.Color)("#f9f9f9")
+        },
+        uFresnelColor: {
+            value: new (0, _three.Color)("#b754ff")
+        },
+        uFresnelPower: {
+            value: 3
+        },
+        uTextureMatrix: {
+            value: this.textureMatrix
+        },
+        uMirrorMap: {
+            value: this.renderTarget.texture
+        }
+    };
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: this.uniforms,
+        defines: {
+            RESOLUTION: this.heightMap.size.toFixed(1),
+            BOUNDS: this.bounds.toFixed(1),
+            SCALE: (this.scale / this.bounds).toFixed(10)
+        }
+    });
+    mesh = new (0, _three.Mesh)(this.geometry, this.material);
+    hiddenObjects = {
+        Home: [],
+        Projects: [],
+        ProjectDetail: [],
+        About: []
+    };
+    constructor(){
+        super();
+        this.mesh.renderOrder = -1;
+        this.mesh.scale.set(this.scale / this.bounds, this.scale / this.bounds, 1);
+        this.mesh.rotation.x = -Math.PI / 2;
+        this.mesh.matrixAutoUpdate = false;
+        this.mesh.updateMatrix();
+        this.scene.add(this.mesh);
+        this.setIntersectionPlane();
+    }
+    setIntersectionPlane() {
+        this.intersectionPlane = new (0, _three.Mesh)(new (0, _three.PlaneGeometry)(this.scale, this.scale, 1, 1), new (0, _three.ShaderMaterial)({
+            visible: false
+        }));
+        this.intersectionPlane.rotation.x = -Math.PI / 2;
+        this.scene.add(this.intersectionPlane);
+        this.intersectionPlane.matrixAutoUpdate = false;
+        this.intersectionPlane.updateMatrix();
+    }
+    onResize() {}
+    onPointerdown() {}
+    onPointermove() {
+        const [intersect] = this.raycaster.intersectObject(this.intersectionPlane);
+        if (intersect) this.heightMap.onPointermove(intersect.uv);
+    }
+    onPointerup() {}
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "water",
+            expanded: false
+        });
+        this.debug.addButton({
+            title: "toggle wireframe"
+        }).on("click", ()=>{
+            this.material.wireframe = !this.material.wireframe;
+        });
+        this.debugHeightMap();
+        this.debugMaterial();
+    }
+    debugHeightMap() {
+        const heightMap = this.debug.addFolder({
+            title: "heightMap",
+            expanded: false
+        });
+        heightMap.addInput(this.heightMap.uniforms.uViscosity, "value", {
+            min: 0,
+            max: 0.999,
+            step: 0.001,
+            label: "viscosity"
+        });
+        heightMap.addInput(this.heightMap.uniforms.uAmplitude, "value", {
+            min: 0,
+            max: 0.999,
+            step: 0.001,
+            label: "amplitude"
+        });
+        heightMap.addInput(this.heightMap.uniforms.uMouseSize, "value", {
+            min: 0,
+            max: 50,
+            step: 0.001,
+            label: "mouseSize"
+        });
+    }
+    debugMaterial() {
+        const material = this.debug.addFolder({
+            title: "material",
+            expanded: true
+        });
+        material.addInput(this.uniforms.uBaseColor, "value", {
+            view: "color",
+            label: "base color"
+        }).on("change", ()=>this.uniforms.uBaseColor.value.multiplyScalar(1 / 255));
+        material.addInput(this.uniforms.uFresnelColor, "value", {
+            view: "color",
+            label: "fresnel color"
+        }).on("change", ()=>this.uniforms.uFresnelColor.value.multiplyScalar(1 / 255));
+        material.addInput(this.uniforms.uFresnelPower, "value", {
+            min: 0,
+            max: 5,
+            step: 0.0001,
+            label: "fresnel power"
+        });
+    }
+    onWheel() {}
+    update() {
+        if (this.world.view === (0, _types.View).ProjectDetail) return;
+        this.hiddenObjects[this.world.view]?.map((object)=>object.visible = false);
+        super.update(this.mesh, this.renderer, this.camera, this.scene);
+        this.hiddenObjects[this.world.view]?.map((object)=>object.visible = true);
+        this.heightMap.update(this.renderer);
+    }
+}
+
+},{"@src/app":"fJe33","three":"3XrwE","@utils/Mirror":"645CP","./WaterHeightMap":"dq6To","@shaders/water/vertex.glsl":"39big","@shaders/water/fragment.glsl":"fmpVD","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"645CP":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _three = require("three");
+class Mirror {
+    mirrorPlane = new (0, _three.Plane)();
+    normal = new (0, _three.Vector3)();
+    mirrorWorldPosition = new (0, _three.Vector3)();
+    cameraWorldPosition = new (0, _three.Vector3)();
+    rotationMatrix = new (0, _three.Matrix4)();
+    lookAtPosition = new (0, _three.Vector3)(0, 0, -1);
+    clipPlane = new (0, _three.Vector4)();
+    view = new (0, _three.Vector3)();
+    target = new (0, _three.Vector3)();
+    q = new (0, _three.Vector4)();
+    textureMatrix = new (0, _three.Matrix4)();
+    mirrorCamera = new (0, _three.PerspectiveCamera)();
+    constructor(options){
+        this.textureWidth = options?.textureWidth || 512;
+        this.textureHeight = options?.textureHeight || 512;
+        this.clipBias = options?.clipBias || 0;
+        this.renderTarget = new (0, _three.WebGLRenderTarget)(this.textureWidth, this.textureHeight);
+    }
+    updateTextureMatrix(object, camera) {
+        this.mirrorWorldPosition.setFromMatrixPosition(object.matrixWorld);
+        this.cameraWorldPosition.setFromMatrixPosition(camera.matrixWorld);
+        this.rotationMatrix.extractRotation(object.matrixWorld);
+        this.normal.set(0, 0, 1);
+        this.normal.applyMatrix4(this.rotationMatrix);
+        this.view.subVectors(this.mirrorWorldPosition, this.cameraWorldPosition);
+        if (this.view.dot(this.normal) > 0) return;
+        this.view.reflect(this.normal).negate();
+        this.view.add(this.mirrorWorldPosition);
+        this.rotationMatrix.extractRotation(camera.matrixWorld);
+        this.lookAtPosition.set(0, 0, -1);
+        this.lookAtPosition.applyMatrix4(this.rotationMatrix);
+        this.lookAtPosition.add(this.cameraWorldPosition);
+        this.target.subVectors(this.mirrorWorldPosition, this.lookAtPosition);
+        this.target.reflect(this.normal).negate();
+        this.target.add(this.mirrorWorldPosition);
+        this.mirrorCamera.position.copy(this.view);
+        this.mirrorCamera.up.set(0, 1, 0);
+        this.mirrorCamera.up.applyMatrix4(this.rotationMatrix);
+        this.mirrorCamera.up.reflect(this.normal);
+        this.mirrorCamera.lookAt(this.target);
+        this.mirrorCamera.far = camera.far;
+        this.mirrorCamera.updateMatrixWorld();
+        this.mirrorCamera.projectionMatrix.copy(camera.projectionMatrix);
+        // Update the texture matrix
+        this.textureMatrix.set(0.5, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0);
+        this.textureMatrix.multiply(this.mirrorCamera.projectionMatrix);
+        this.textureMatrix.multiply(this.mirrorCamera.matrixWorldInverse);
+        this.mirrorPlane.setFromNormalAndCoplanarPoint(this.normal, this.mirrorWorldPosition);
+        this.mirrorPlane.applyMatrix4(this.mirrorCamera.matrixWorldInverse);
+        this.clipPlane.set(this.mirrorPlane.normal.x, this.mirrorPlane.normal.y, this.mirrorPlane.normal.z, this.mirrorPlane.constant);
+        const projectionMatrix = this.mirrorCamera.projectionMatrix;
+        this.q.x = (Math.sign(this.clipPlane.x) + projectionMatrix.elements[8]) / projectionMatrix.elements[0];
+        this.q.y = (Math.sign(this.clipPlane.y) + projectionMatrix.elements[9]) / projectionMatrix.elements[5];
+        this.q.z = -1;
+        this.q.w = (1.0 + projectionMatrix.elements[10]) / projectionMatrix.elements[14];
+        this.clipPlane.multiplyScalar(2.0 / this.clipPlane.dot(this.q));
+        // Replacing the third row of the projection matrix
+        projectionMatrix.elements[2] = this.clipPlane.x;
+        projectionMatrix.elements[6] = this.clipPlane.y;
+        projectionMatrix.elements[10] = this.clipPlane.z + 1.0 - this.clipBias;
+        projectionMatrix.elements[14] = this.clipPlane.w;
+    // eye.setFromMatrixPosition( camera.matrixWorld );
+    }
+    drawTexture(renderer, object, scene) {
+        const currentRenderTarget = renderer.getRenderTarget();
+        object.visible = false;
+        renderer.setRenderTarget(this.renderTarget);
+        renderer.state.buffers.depth.setMask(true);
+        if (renderer.autoClear === false) renderer.clear();
+        renderer.render(scene, this.mirrorCamera);
+        object.visible = true;
+        renderer.setRenderTarget(currentRenderTarget);
+    }
+    update(object, renderer, camera, scene) {
+        this.updateTextureMatrix(object, camera);
+        this.drawTexture(renderer, object, scene);
+    }
+}
+exports.default = Mirror;
+
+},{"three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dq6To":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _three = require("three");
+var _renderBuffer = require("@utils/RenderBuffer");
+var _vertexGlsl = require("@shaders/waterHeightMap/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/waterHeightMap/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+class WaterHeightMap extends (0, _renderBuffer.RenderBuffer) {
+    uniforms = {
+        uBuffer: this.texture,
+        uMouse: {
+            value: new (0, _three.Vector2)(-1, -1)
+        },
+        uAddWave: {
+            value: false
+        },
+        uViscosity: {
+            value: 0.985
+        },
+        uAmplitude: {
+            value: 0.48
+        },
+        uMouseSize: {
+            value: 20
+        }
+    };
+    constructor(bounds){
+        super();
+        this.bounds = bounds;
+        this.material = new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default),
+            uniforms: this.uniforms,
+            defines: {
+                BOUNDS: this.bounds.toFixed(1),
+                RESOLUTION: this.size.toFixed(1),
+                PI: Math.PI.toFixed(8)
+            }
+        });
+        this.mesh = new (0, _three.Mesh)(this.geometry, this.material);
+        this.scene.add(this.mesh);
+    }
+    onPointermove(uv) {
+        this.uniforms.uAddWave.value = true;
+        this.uniforms.uMouse.value.x = uv.x;
+        this.uniforms.uMouse.value.y = uv.y;
+    }
+    update(renderer) {
+        super.update(renderer);
+        this.uniforms.uAddWave.value = false;
+    }
+}
+exports.default = WaterHeightMap;
+
+},{"three":"3XrwE","@utils/RenderBuffer":"4q55M","@shaders/waterHeightMap/vertex.glsl":"03P9i","@shaders/waterHeightMap/fragment.glsl":"zj0CG","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4q55M":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "RenderBuffer", ()=>RenderBuffer);
+var _three = require("three");
+class RenderBuffer {
+    texture = {
+        value: null
+    };
+    scene = new (0, _three.Scene)();
+    geometry = new (0, _three.PlaneGeometry)(2, 2);
+    camera = new (0, _three.PerspectiveCamera)();
+    constructor(props){
+        this.size = props?.size || 128;
+        this.rtOptions = {
+            minFilter: (0, _three.LinearFilter),
+            type: (0, _three.FloatType),
+            magFilter: (0, _three.LinearFilter),
+            format: (0, _three.RGBAFormat),
+            generateMipmaps: false,
+            stencilBuffer: false,
+            depthBuffer: false,
+            ...props?.rtOptions
+        };
+        this.read = new (0, _three.WebGLRenderTarget)(this.size, this.size, this.rtOptions);
+        this.write = new (0, _three.WebGLRenderTarget)(this.size, this.size, this.rtOptions);
+        this.swap();
+    }
+    swap() {
+        let temp = this.read;
+        this.read = this.write;
+        this.write = temp;
+        this.texture.value = this.read.texture;
+    }
+    update(renderer) {
+        const currentRenderTarget = renderer.getRenderTarget();
+        renderer.setRenderTarget(this.write);
+        renderer.render(this.scene, this.camera);
+        renderer.setRenderTarget(currentRenderTarget);
+        renderer.clear();
+        this.swap();
+    }
+}
+
+},{"three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"03P9i":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = vec4( position, 1.0 );\n    vUv = uv;\n}";
+
+},{}],"zj0CG":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uBuffer;\nuniform vec2 uMouse;\nuniform float uAddWave;\nuniform float uViscosity;\nuniform float uMouseSize;\nuniform float uAmplitude;\n\nvarying vec2 vUv;\n\nvec4 waves2() {\n    vec2 cellSize = 1.0 /vec2(RESOLUTION);\n    vec3 e = vec3(cellSize, 0.);\n\n    vec4 heightmapValue = texture2D(uBuffer, vUv);\n\n    float t = texture2D(uBuffer, vUv-e.zy).x;\n    float r = texture2D(uBuffer, vUv-e.xz).x;\n    float b = texture2D(uBuffer, vUv+e.xz).x;\n    float l = texture2D(uBuffer, vUv+e.zy).x;\n\n    float newHeight = ( ( t + b + r +l ) * 0.5 - heightmapValue.y ) * uViscosity;\n\n    float mouseSize = uMouseSize / BOUNDS;\n    float mousePhase = clamp( length( vUv - uMouse ) * PI / mouseSize, 0.0, PI );\n\n    newHeight += uAddWave * (( cos( mousePhase ) + 1.0 )) * uAmplitude;\n\n    heightmapValue.y = heightmapValue.x;\n    heightmapValue.x = newHeight;\n\n    return heightmapValue;\n}\n\nvoid main() {\n    gl_FragColor = waves2();\n}\n\n// uniform sampler2D uBuffer;\n// uniform vec2 uMouse;\n// uniform vec2 uResolution;\n// uniform float uAddWave;\n// uniform float uViscosity;\n// uniform float uDisipation;\n// uniform float uMouseSize;\n// uniform float uWaveGradient;\n// uniform float uFrequency;\n// uniform float uMinWaveSize;\n// uniform float uTransitionTime;\n// uniform float uTransitionSpeed;\n// uniform float uWaveMagnitude;\n// uniform float uMouseSize;\n\n// // temp\n// uniform float uTime;\n\n// varying vec2 vUv;\n\n// vec4 waves() {\n//     vec2 cellSize = 1.0 / vec2(128.);\n//     vec3 e = vec3(cellSize, 0.);\n//     vec2 mouse = vUv - uMouse;\n\n//     vec4 heightmapValue = texture2D(uBuffer, vUv);\n\n//     float t = texture2D(uBuffer, vUv-e.zy).x;\n//     float r = texture2D(uBuffer, vUv-e.xz).x;\n//     float b = texture2D(uBuffer, vUv+e.xz).x;\n//     float l = texture2D(uBuffer, vUv+e.zy).x;\n\n//     float newHeight = uViscosity * ((t + r + b + l) * 0.5 - heightmapValue.y);\n\n//     float mouseSize = uMouseSize;\n//     float mousePhase = uAddWave * smoothstep(uMinWaveSize + abs(sin(uTime*uFrequency) * uWaveGradient), .0, length(mouse) / mouseSize) * uWaveMagnitude; \n//     // float mousePhase = mix(0., uAddWave, smoothstep(0., uTransitionTime + 2., + uTime*uTransitionSpeed)) * smoothstep(uMinWaveSize + abs(cos(uTime*uFrequency + 1.) * uWaveGradient), .0, length(mouse) / uMouseSize) * uWaveMagnitude; \n//     // float mousePhase = uAddWave * min(((uTime - uTransitionTime) * uTransitionSpeed), 1.) * smoothstep(uMinWaveSize + abs(cos(uTime*uFrequency + 1.) * uWaveGradient), .0, length(mouse) / uMouseSize) * uWaveMagnitude; \n//     // make add wave a transtion\n//     // maybe somthing like\n//     // smoothstep()\n\n//     // // mode2\n//     // mousePhase = clamp( length( mouse ) * PI / uMouseSize, 0.0, PI * 5. );\n//     // mousePhase = ( cos( mousePhase ) + 1.0 ) * 0.38 * uAddWave;\n\n//     float amp = 1.;\n//     newHeight += mousePhase * amp;\n\n//     heightmapValue.y = heightmapValue.x;\n//     heightmapValue.x = newHeight;\n\n//     return heightmapValue;\n// }";
+
+},{}],"39big":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uHeightMap;\nuniform mat4 uTextureMatrix;\n\nvarying vec4 vMirrorCoord;\nvarying vec3 vWorldNormal;\nvarying vec3 vViewDirection;\n\nfloat heightSample(vec2 st) {\n    return texture2D(uHeightMap, st).x;\n}\n\nvec3 getNormal() {\n    vec2 cellSize = 1. / vec2(RESOLUTION);\n    vec3 e = vec3(cellSize, 0.);\n    float unitResolution = RESOLUTION / BOUNDS;\n    return  normalize(vec3(\n					(heightSample(uv - e.xz) - heightSample(uv + e.xz)) * unitResolution,\n                    (heightSample(uv - e.yz) - heightSample(uv + e.yz)) * unitResolution,\n					SCALE));\n}\n\nvoid main() {\n    vec4 worldPosition = modelMatrix * vec4(position, 1.0);\n\n    vMirrorCoord = uTextureMatrix * worldPosition;\n\n    vec3 objectNormal = getNormal();\n\n    vWorldNormal = normalize(modelMatrix * vec4(objectNormal, 0.0)).xyz;\n    vViewDirection = normalize(cameraPosition - worldPosition.xyz);\n    // vViewDirection = normalize(vec3(1., 0.65, -0.9) - worldPosition.xyz);\n\n    float heightValue = heightSample(uv) * SCALE;\n    vec3 newPos = vec3(position.x, position.y, heightValue);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n}";
+
+},{}],"fmpVD":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uMirrorMap;\nuniform vec3 uBaseColor;\nuniform vec3 uFresnelColor;\nuniform float uFresnelPower;\n\nvarying vec4 vMirrorCoord;\nvarying vec3 vWorldNormal;\nvarying vec3 vViewDirection;\n\n// void sunLight( const vec3 surfaceNormal, const vec3 eyeDirection, float shiny, float spec, float diffuse, inout vec3 diffuseColor, inout vec3 specularColor ) {\n//     vec3 reflection = normalize( reflect( -sunDirection, surfaceNormal ) );\n//     float direction = max( 0.0, dot( eyeDirection, reflection ) );\n//     specularColor += pow( direction, shiny ) * sunColor * spec;\n//     diffuseColor += max( dot( sunDirection, surfaceNormal ), 0.0 ) * sunColor * diffuse;\n// }\n\nfloat blendOverlay( float base, float blend ) {\n    return( base < 0.5 ? ( 2.0 * base * blend ) : ( 1.0 - 2.0 * ( 1.0 - base ) * ( 1.0 - blend ) ) );\n}\n\nvec3 blendOverlay( vec3 base, vec3 blend ) {\n    return vec3( blendOverlay( base.r, blend.r ), blendOverlay( base.g, blend.g ), blendOverlay( base.b, blend.b ) );\n}\n\nvoid main() {\n    vec3 mirrorSample = vec3( texture2D( uMirrorMap, vMirrorCoord.xy / vMirrorCoord.w ) );\n\n    float fresnelFactor = abs(dot(vViewDirection, vWorldNormal));\n    float inversefresnelFactor = 1.0 - fresnelFactor;\n\n    fresnelFactor = pow(fresnelFactor, uFresnelPower);\n    inversefresnelFactor = pow(inversefresnelFactor, uFresnelPower);\n\n    vec3 fresnel = fresnelFactor * uBaseColor + inversefresnelFactor * uFresnelColor;\n\n    vec3 color = blendOverlay(fresnel, mirrorSample);\n\n    gl_FragColor = vec4(color, 1.);\n}";
+
+},{}],"62Wb3":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Preloader", ()=>Preloader);
+var _app = require("@src/app");
+class Preloader {
+    constructor(){
+        this.world = new (0, _app.World)();
+        this.percent = document.querySelector(".preloader__percent");
+        this.bar = document.querySelector(".preloader__progress__front");
+        this.container = document.querySelector(".preloader");
+    }
+    onAssetLoaded(progress) {
+        const val = `${Math.round(progress * 100)}%`;
+        this.percent.innerText = val;
+        this.bar.style.width = val;
+        if (progress === 1) this.destroy();
+    }
+    destroy() {
+        this.container.style.opacity = "0";
+        window.setTimeout(()=>{
+            this.container.remove();
+        }, 1000);
+    }
+}
+
+},{"@src/app":"fJe33","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"7x7ci":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TransitionScene", ()=>TransitionScene);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/post/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+class TransitionScene extends (0, _three.Scene) {
+    uniforms = {
+        uScreen: {
+            value: null
+        },
+        uProgress: {
+            value: 0
+        }
+    };
+    constructor({ geometry , shader , options  }){
+        super();
+        options && Object.entries(options).map(([name, value])=>{
+            this.uniforms[name] = {
+                value
+            };
+        });
+        let material = new (0, _three.ShaderMaterial)({
+            depthWrite: false,
+            depthTest: false,
+            uniforms: this.uniforms,
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: shader
+        });
+        let mesh = new (0, _three.Mesh)(geometry, material);
+        this.add(mesh);
+    }
+    updateScreen(texture) {
+        this.uniforms.uScreen.value = texture;
+    }
+}
+
+},{"three":"3XrwE","@shaders/post/vertex.glsl":"5j0nl","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"5j0nl":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\ngl_Position = vec4(position, 1.);\nvUv = uv;\n}";
+
+},{}],"7m3pU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HomeViewManager", ()=>(0, _homeViewManager.HomeViewManager));
+parcelHelpers.export(exports, "AboutViewManager", ()=>(0, _aboutViewManager.AboutViewManager));
+parcelHelpers.export(exports, "ProjectsViewManager", ()=>(0, _projectsViewManager.ProjectsViewManager));
+parcelHelpers.export(exports, "ProjectDetailViewManager", ()=>(0, _projectDetailViewManager.ProjectDetailViewManager));
+var _homeViewManager = require("./home/HomeViewManager");
+var _aboutViewManager = require("./about/AboutViewManager");
+var _projectsViewManager = require("./projects/ProjectsViewManager");
+var _projectDetailViewManager = require("./projectDetail/ProjectDetailViewManager");
+
+},{"./home/HomeViewManager":"dBqdt","./about/AboutViewManager":"bok5i","./projects/ProjectsViewManager":"jeIUy","./projectDetail/ProjectDetailViewManager":"7rjaB","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dBqdt":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HomeViewManager", ()=>HomeViewManager);
+var _app = require("@src//app");
+var _components = require("./components");
+var _types = require("@types");
+var _three = require("three");
+class HomeViewManager {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    curlBubble = this.world.curlBubble;
+    raycaster = this.world.raycaster;
+    title = new (0, _components.Title)();
+    contact = new (0, _components.Contact)();
+    nav = new (0, _components.Nav)();
+    rayOrigin = new (0, _three.Vector3)(0, 0, 1);
+    rayTarget = new (0, _three.Vector3)();
+    resizeSettings = {
+        offsetTop: 0.2,
+        posX: -0.3,
+        scale: 0.75,
+        contactRatio: 0.8,
+        navSize: 0.5
+    };
+    constructor(){
+        this.world.water.hiddenObjects[(0, _types.View).Home]?.push(this.title.mesh, this.contact.group, this.nav.group);
+    }
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "homeViewManager",
+            expanded: false
+        });
+        this.debug.addInput(this.resizeSettings, "offsetTop", {
+            min: 0,
+            max: 1,
+            step: 0.001
+        }).on("change", ()=>this.onResize());
+        this.debug.addInput(this.resizeSettings, "posX", {
+            min: -1,
+            max: 0,
+            step: 0.001
+        }).on("change", ()=>this.onResize());
+        this.debug.addInput(this.resizeSettings, "scale", {
+            min: 0,
+            max: 1,
+            step: 0.001
+        }).on("change", ()=>this.onResize());
+        this.debug.addInput(this.resizeSettings, "contactRatio", {
+            min: 0,
+            max: 1.3,
+            step: 0.001
+        }).on("change", ()=>this.onResize());
+        this.debug.addInput(this.resizeSettings, "navSize", {
+            min: 0,
+            max: 1.3,
+            step: 0.001
+        }).on("change", ()=>this.onResize());
+    }
+    onPointermove(mouse, e) {
+        this.rayTarget.set(mouse.x, mouse.y, -1);
+        this.raycaster.set(this.rayOrigin, this.rayTarget.normalize());
+        const [hit] = this.raycaster.intersectObjects([
+            this.title.mesh,
+            ...this.nav.group.children,
+            this.contact.touchPlane, 
+        ]);
+        if (hit) {
+            const { name  } = hit.object;
+            if (name === "homeTitle") {
+                this.title.onPointermove(e, hit.uv);
+                if (this.nav.hover || this.contact.hover) {
+                    this.nav.hover = false;
+                    this.contact.hover = false;
+                    document.body.style.cursor = "";
+                }
+            } else if (name === "homeNav") {
+                if (!this.nav.hover) {
+                    this.nav.hover = true;
+                    document.body.style.cursor = "pointer";
+                }
+            } else if (name === "email") {
+                if (!this.contact.hover) {
+                    document.body.style.cursor = "pointer";
+                    this.contact.hover = true;
+                }
+            }
+        } else if (this.nav.hover || this.contact.hover) {
+            this.nav.hover = false;
+            this.contact.hover = false;
+            document.body.style.cursor = "";
+        }
+        this.nav.onPointermove();
+        this.curlBubble.onPointermove(mouse);
+    }
+    onPointerdown() {
+        this.nav.hover && (this.nav.down = true);
+        this.contact.hover && (this.contact.down = true);
+        this.nav.onPointerdown();
+        this.curlBubble.onPointerdown();
+    }
+    onPointerup() {
+        if (this.nav.hover && this.nav.down) {
+            this.nav.down = false;
+            this.nav.hover = false;
+            document.body.style.cursor = "";
+            this.world.changeView((0, _types.View).Projects);
+        }
+        if (this.contact.hover && this.contact.down) parent.location = "mailto:abc@abc.com";
+        this.nav.onPointerup();
+        this.curlBubble.onPointerup();
+    }
+    getSizes() {
+        const widthRatio = 2 / window.innerWidth;
+        const heightRatio = 2 / window.innerHeight;
+        const aspect = window.innerWidth / window.innerHeight;
+        let title = {};
+        let contact = {};
+        let nav = {};
+        // title
+        title.scaleY = this.resizeSettings.scale;
+        title.scaleX = title.scaleY / aspect;
+        title.posX = this.resizeSettings.posX * title.scaleX;
+        title.posY = 1 - title.scaleY * 0.65 - this.resizeSettings.offsetTop;
+        //contact
+        contact.ctaScaleX = title.scaleX * 1.4 * this.resizeSettings.contactRatio;
+        contact.ctaScaleY = contact.ctaScaleX * aspect;
+        contact.emailScaleX = contact.ctaScaleX * 0.8;
+        contact.emailScaleY = contact.emailScaleX * aspect;
+        contact.emailOffset = contact.ctaScaleX - contact.emailScaleX;
+        contact.iconScaleX = contact.emailOffset;
+        contact.iconScaleY = contact.iconScaleX * aspect;
+        contact.posX = title.posX - title.scaleX * 0.7 + title.scaleX * 1.4 * (1 - this.resizeSettings.contactRatio);
+        contact.posY = title.posY - title.scaleY * 0.9;
+        nav.scaleX = this.resizeSettings.navSize;
+        nav.scaleY = this.resizeSettings.navSize / aspect;
+        nav.posX = -title.scaleX * Math.min(aspect * 0.9, 1.3) + title.posX;
+        nav.posY = -0.5;
+        return {
+            title,
+            contact,
+            nav
+        };
+    }
+    onResize() {
+        const { title , contact , nav  } = this.getSizes();
+        this.title.resize(title);
+        this.contact.resize(contact);
+        this.nav.resize(nav);
+        this.curlBubble.onResize();
+    }
+    onWheel() {
+        this.curlBubble.onWheel();
+    }
+    update() {
+        this.title.update();
+        this.contact.update(this.world.time);
+        this.curlBubble.update();
+    }
+    show() {
+        this.scene.add(this.title.group);
+        this.scene.add(this.contact.group);
+        this.scene.add(this.nav.group);
+        this.scene.add(this.curlBubble.mesh);
+    }
+    hide() {
+        this.scene.remove(this.title.group);
+        this.scene.remove(this.contact.group);
+        this.scene.remove(this.nav.group);
+        this.scene.remove(this.curlBubble.mesh);
+    }
+}
+
+},{"@src//app":"fJe33","./components":"8gGVP","@types":"4mCt6","three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"8gGVP":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Contact", ()=>(0, _contact.Contact));
+parcelHelpers.export(exports, "Nav", ()=>(0, _nav.Nav));
+parcelHelpers.export(exports, "Title", ()=>(0, _title.Title));
+var _contact = require("./Contact");
+var _nav = require("./Nav");
+var _title = require("./Title");
+
+},{"./Contact":"ge1ES","./Nav":"lhHvG","./Title":"kjPlz","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"ge1ES":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Contact", ()=>Contact);
+var _app = require("@src/app");
+var _three = require("three");
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _vertexGlsl = require("@shaders/homeContact/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/homeContact/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/homeContact/touchPlane/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/homeContact/touchPlane/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _vertexGlsl2 = require("@shaders/ghostIcon/vertex.glsl");
+var _vertexGlslDefault2 = parcelHelpers.interopDefault(_vertexGlsl2);
+var _fragmentGlsl2 = require("@shaders/ghostIcon/fragment.glsl");
+var _fragmentGlslDefault2 = parcelHelpers.interopDefault(_fragmentGlsl2);
+class Contact {
+    world = new (0, _app.World)();
+    group = new (0, _three.Group)();
+    font = this.world.resources.fonts.audiowideRegular;
+    textMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true
+    });
+    iconMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault2.default),
+        fragmentShader: (0, _fragmentGlslDefault2.default),
+        uniforms: {
+            uMap: {
+                value: this.world.resources.assets.ghostIcon
+            },
+            uTime: {
+                value: 0
+            }
+        },
+        transparent: true
+    });
+    hover = false;
+    down = false;
+    constructor(){
+        this.setEmailText();
+        this.setCTAText();
+        this.setGhostIcon();
+    }
+    setEmailText() {
+        const geometry = new (0, _textGeometryDefault.default)();
+        geometry.setText({
+            fontData: this.font.data,
+            text: "sergio@azizi.dev"
+        });
+        geometry.computeBoundingBox();
+        const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+        geometry.applyMatrix4(new (0, _three.Matrix4)().makeScale(1 / width, 1 / width, 1));
+        this.email = new (0, _three.Mesh)(geometry, this.textMaterial);
+        this.email.renderOrder = 150;
+        this.group.add(this.email);
+        // set touchPlane
+        const height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+        const g = new (0, _three.PlaneGeometry)(1, height);
+        const m = new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault1.default),
+            fragmentShader: (0, _fragmentGlslDefault1.default)
+        });
+        this.touchPlane = new (0, _three.Mesh)(g, m);
+        this.touchPlane.visible = false;
+        this.touchPlane.position.x = 0.5;
+        this.email.add(this.touchPlane);
+        this.touchPlane.name = "email";
+        this.touchPlane.renderOrder = 250;
+    }
+    setCTAText() {
+        const geometry = new (0, _textGeometryDefault.default)();
+        geometry.setText({
+            fontData: this.font.data,
+            text: "`\nAvailable for freelance work",
+            lineHeight: 1.8
+        });
+        geometry.computeBoundingBox();
+        const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+        geometry.applyMatrix4(new (0, _three.Matrix4)().makeScale(1 / width, 1 / width, 1));
+        this.cta = new (0, _three.Mesh)(geometry, this.textMaterial);
+        this.group.add(this.cta);
+    }
+    setGhostIcon() {
+        const geometry = new (0, _three.PlaneGeometry)(1, 1);
+        this.icon = new (0, _three.Mesh)(geometry, this.iconMaterial);
+        this.group.add(this.icon);
+    }
+    resize(sizes) {
+        this.group.position.x = sizes.posX;
+        this.group.position.y = sizes.posY;
+        this.email.position.x = sizes.emailOffset;
+        this.email.scale.x = sizes.emailScaleX;
+        this.email.scale.y = sizes.emailScaleY;
+        this.cta.scale.x = sizes.ctaScaleX;
+        this.cta.scale.y = sizes.ctaScaleY;
+        this.icon.scale.x = sizes.iconScaleX;
+        this.icon.scale.y = sizes.iconScaleY;
+    }
+    update(time) {
+        this.iconMaterial.uniforms.uTime.value = time;
+    }
+}
+
+},{"@src/app":"fJe33","three":"3XrwE","@utils/TextGeometry":"4GUSA","@shaders/homeContact/vertex.glsl":"fJWaM","@shaders/homeContact/fragment.glsl":"hAETn","@shaders/homeContact/touchPlane/vertex.glsl":"ebf4d","@shaders/homeContact/touchPlane/fragment.glsl":"l5rg2","@shaders/ghostIcon/vertex.glsl":"1zbbd","@shaders/ghostIcon/fragment.glsl":"cxeLb","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4GUSA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _three = require("three");
+var _text = require("./Text");
+class TextGeometry extends (0, _three.BufferGeometry) {
+    setText(opt) {
+        this.text = new (0, _text.Text)(opt);
+        this.setAttribute("position", new (0, _three.BufferAttribute)(this.text.buffers["position"], 3));
+        this.setAttribute("uv", new (0, _three.BufferAttribute)(this.text.buffers["uv"], 2));
+        this.setAttribute("id", new (0, _three.BufferAttribute)(this.text.buffers["id"], 1));
+        this.setIndex(new (0, _three.BufferAttribute)(this.text.buffers["index"], 1));
+    }
+} // let upperX, lowerX, upperY, lowerY;
+ // for (let index = 0; index < text.buffers.position.length / 3; index++) {
+ //   const x = text.buffers.position[index * 3];
+ //   const y = text.buffers.position[index * 3 + 1];
+ //   if (index === 0) {
+ //     upperX = x;
+ //     lowerX = x;
+ //     upperY = y;
+ //     lowerY = y;
+ //     continue;
+ //   }
+ //   if (x < lowerX) lowerX = x;
+ //   if (x > upperX) upperX = x;
+ //   if (y < lowerY) lowerY = y;
+ //   if (y > upperY) upperY = y;
+ // }
+ // console.log(lowerX, upperX, lowerY, upperY);
+ // const width = upperX - lowerX;
+ // const height = upperY - lowerY;
+ // const toScale = (1 * text.numLines) / height;
+ // console.log(width, height);
+ // const center = new THREE.Vector3(
+ //   width / 2 + lowerX,
+ //   height / 2 + lowerY,
+ //   0
+ // ).multiplyScalar(toScale);
+ // console.log(center);
+ // mesh.position.y = -center.y;
+ // mesh.position.x = -center.x;
+ // console.log(mesh.position);
+ // mesh.scale.multiplyScalar(toScale);
+ // const dummy = new THREE.Mesh(
+ //   new THREE.PlaneGeometry(1, 1),
+ //   new THREE.MeshBasicMaterial()
+ // );
+ // this.scene.add(dummy);
+exports.default = TextGeometry;
+
+},{"three":"3XrwE","./Text":"eGpOa","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"eGpOa":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Text", ()=>Text);
+var _types = require("@types");
+class Text {
+    newline = /\n/;
+    whitespace = /\s/;
+    constructor(props){
+        this.fontData = props.fontData;
+        this.text = props.text;
+        this.size = props.size || 1;
+        this.letterSpacing = props.letterSpacing || 0;
+        this.wordSpacing = props.wordSpacing || 0;
+        this.wordBreak = props.wordBreak || false;
+        this.lineWidth = props.lineWidth || Infinity;
+        this.align = props.align || (0, _types.TextAlign).Left;
+        this.lineHeight = props.lineHeight || 1.4;
+        this.parseFont();
+        this.createGeometry();
+        this.layout();
+        this.populateBuffers();
+    }
+    parseFont() {
+        this.glyphs = {};
+        this.fontData.chars.forEach((d)=>this.glyphs[d.char] = d);
+    }
+    createGeometry() {
+        const fontHeight = this.fontData.common.lineHeight;
+        const baseline = this.fontData.common.base;
+        const heightA = this.glyphs["A"].height;
+        // Use baseline so that actual text height is as close to 'size' value as possible
+        // this.scale = this.size / baseline;
+        this.scale = this.size / heightA;
+        // this.scale = 1;
+        // Strip spaces and newlines to get actual character length for buffers
+        const chars = this.text.replace(/[ \n]/g, "");
+        const numChars = chars.length;
+        // Create output buffers
+        this.buffers = {
+            position: new Float32Array(numChars * 12),
+            uv: new Float32Array(numChars * 8),
+            id: new Float32Array(numChars * 4),
+            index: new Uint16Array(numChars * 6)
+        };
+        // Set values for buffers that don't require calculation
+        for(let i = 0; i < numChars; i++){
+            this.buffers.id.set([
+                i,
+                i,
+                i,
+                i
+            ], i * 4);
+            this.buffers.index.set([
+                i * 4,
+                i * 4 + 2,
+                i * 4 + 1,
+                i * 4 + 1,
+                i * 4 + 2,
+                i * 4 + 3
+            ], i * 6);
+        }
+    }
+    layout() {
+        this.lines = [];
+        let cursor = 0;
+        let wordCursor = 0;
+        let wordWidth = 0;
+        let line = new TextLine();
+        this.lines.push(line);
+        let maxTimes = 100;
+        let count = 0;
+        while(cursor < this.text.length && count < maxTimes){
+            count++;
+            const char = this.text[cursor];
+            // Skip whitespace at start of line
+            if (!line.width && this.whitespace.test(char)) {
+                cursor++;
+                wordCursor = cursor;
+                wordWidth = 0;
+                continue;
+            }
+            // If newline char, skip to next line
+            if (this.newline.test(char)) {
+                cursor++;
+                line = new TextLine();
+                this.lines.push(line);
+                wordCursor = cursor;
+                wordWidth = 0;
+                continue;
+            }
+            const glyph = this.glyphs[char] || this.glyphs[" "];
+            // Find any applicable kern pairs
+            if (line.glyphs.length) {
+                const prevGlyph = line.glyphs[line.glyphs.length - 1][0];
+                let kern = this.getKernPairOffset(glyph.id, prevGlyph.id) * this.scale;
+                line.width += kern;
+                wordWidth += kern;
+            }
+            // add char to line
+            line.glyphs.push([
+                glyph,
+                line.width
+            ]);
+            // calculate advance for next glyph
+            let advance = 0;
+            // If whitespace, update location of current word for line breaks
+            if (this.whitespace.test(char)) {
+                wordCursor = cursor;
+                wordWidth = 0;
+                // Add wordspacing
+                advance += this.wordSpacing * this.size;
+            } else // Add letterspacing
+            advance += this.letterSpacing * this.size;
+            advance += glyph.xadvance * this.scale;
+            line.width += advance;
+            wordWidth += advance;
+            // If width defined
+            if (line.width > this.lineWidth) {
+                // If can break words, undo latest glyph if line not empty and create new line
+                if (this.wordBreak && line.glyphs.length > 1) {
+                    line.width -= advance;
+                    line.glyphs.pop();
+                    line = new TextLine();
+                    this.lines.push(line);
+                    wordCursor = cursor;
+                    wordWidth = 0;
+                    continue;
+                // If not first word, undo current word and cursor and create new line
+                } else if (!this.wordBreak && wordWidth !== line.width) {
+                    let numGlyphs = cursor - wordCursor + 1;
+                    line.glyphs.splice(-numGlyphs, numGlyphs);
+                    cursor = wordCursor;
+                    line.width -= wordWidth;
+                    line = new TextLine();
+                    this.lines.push(line);
+                    wordCursor = cursor;
+                    wordWidth = 0;
+                    continue;
+                }
+            }
+            cursor++;
+            // Reset infinite loop catch
+            count = 0;
+        }
+        // Remove last line if empty
+        if (!line.width) this.lines.pop();
+    }
+    getKernPairOffset(id1, id2) {
+        for(let i = 0; i < this.fontData.kernings.length; i++){
+            let k = this.fontData.kernings[i];
+            if (k.first < id1) continue;
+            if (k.second < id2) continue;
+            if (k.first > id1) return 0;
+            if (k.first === id1 && k.second > id2) return 0;
+            return k.amount;
+        }
+        return 0;
+    }
+    populateBuffers() {
+        const texW = this.fontData.common.scaleW;
+        const texH = this.fontData.common.scaleH;
+        // For all fonts tested, a little offset was needed to be right on the baseline, hence 0.07.
+        let xOffset = 0;
+        let y = 0.93 * this.size;
+        let j = 0;
+        for(let lineIndex = 0; lineIndex < this.lines.length; lineIndex++){
+            let line = this.lines[lineIndex];
+            for(let i = 0; i < line.glyphs.length; i++){
+                const glyph = line.glyphs[i][0];
+                let x = line.glyphs[i][1] + xOffset;
+                if (this.align === "center") x -= line.width * 0.5;
+                else if (this.align === "right") x -= line.width;
+                // If space, don't add to geometry
+                if (this.whitespace.test(glyph.char)) continue;
+                // Apply char sprite offsets
+                x += glyph.xoffset * this.scale;
+                y -= glyph.yoffset * this.scale;
+                // each letter is a quad. axis bottom left
+                let w = glyph.width * this.scale;
+                let h = glyph.height * this.scale;
+                this.buffers.position.set([
+                    x,
+                    y - h,
+                    0,
+                    x,
+                    y,
+                    0,
+                    x + w,
+                    y - h,
+                    0,
+                    x + w,
+                    y,
+                    0
+                ], j * 12);
+                let u = glyph.x / texW;
+                let uw = glyph.width / texW;
+                let v = 1.0 - glyph.y / texH;
+                let vh = glyph.height / texH;
+                this.buffers.uv.set([
+                    u,
+                    v - vh,
+                    u,
+                    v,
+                    u + uw,
+                    v - vh,
+                    u + uw,
+                    v
+                ], j * 8);
+                // Reset cursor to baseline
+                y += glyph.yoffset * this.scale;
+                j++;
+            }
+            y -= this.size * this.lineHeight;
+        }
+        // plublic properties
+        // _this.buffers = buffers;
+        this.numLines = this.lines.length;
+        this.height = this.numLines * this.size * this.lineHeight;
+        this.width = Math.max(...this.lines.map((line)=>line.width));
+    }
+    onResize() {
+        // this.width = width;
+        this.layout();
+        this.populateBuffers();
+    }
+    update(text) {
+        this.text = text;
+        this.createGeometry();
+        this.layout();
+        this.populateBuffers();
+    }
+    updateSize(size, lineHeight = this.lineHeight, lineWidth) {
+        if (lineWidth) this.lineWidth = lineWidth;
+        this.lineHeight = lineHeight;
+        this.size = size;
+        const heightA = this.glyphs["A"].height;
+        this.scale = this.size / heightA;
+        this.layout();
+        this.populateBuffers();
+    }
+}
+class TextLine {
+    width = 0;
+    glyphs = [];
+}
+
+},{"@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"fJWaM":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"hAETn":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"ebf4d":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"l5rg2":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}";
+
+},{}],"1zbbd":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform float uTime;\n\nvarying vec2 vUv;\nvarying float vProgress;\n\nvoid main() {\n    vec3 pos = position;\n    pos.x += 0.2;\n\n    float amp = .4;\n    float duration = 3.;\n    float p = mod(uTime, duration) / duration;\n\n    // linear\n    // float progress = min(2. * p, 2. * (1. - p));\n\n    float progress = pow(sin(p * 3.1415), 2.);\n    progress = max(progress, 0.);\n    pos.x += amp * progress;\n    gl_Position = modelMatrix * vec4(pos, 1.);\n    vUv = uv;\n\n    vProgress = p;\n}";
+
+},{}],"cxeLb":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\nvarying float vProgress;\n\nvoid main() {\n    vec2 nUv = vUv;\n    nUv.x = mix(nUv.x, 1. - nUv.x, step(vProgress, 0.49));\n    float fill = texture2D(uMap, nUv).a;\n    gl_FragColor = vec4(vec3(1.), fill +0. );\n}";
+
+},{}],"lhHvG":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Nav", ()=>Nav);
+var _vertexGlsl = require("@shaders/homeNav/underline/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/homeNav/underline/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/homeNav/text/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/homeNav/text/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _types = require("@types");
+var _app = require("@src/app");
+var _three = require("three");
+class Nav {
+    world = new (0, _app.World)();
+    group = new (0, _three.Group)();
+    font = this.world.resources.fonts.audiowideRegular;
+    textMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault1.default),
+        fragmentShader: (0, _fragmentGlslDefault1.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true,
+        depthTest: false,
+        depthWrite: false
+    });
+    underlineMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        depthTest: false,
+        depthWrite: false
+    });
+    geometry = new (0, _textGeometryDefault.default)();
+    mesh = new (0, _three.Mesh)(this.geometry, this.textMaterial);
+    hover = false;
+    down = false;
+    constructor(){
+        this.geometry.setText({
+            fontData: this.font.data,
+            text: "View Projects",
+            align: (0, _types.TextAlign).Center
+        });
+        this.mesh.name = "homeNav";
+        this.group.rotateZ(Math.PI / 2);
+        this.group.add(this.mesh);
+        this.group.renderOrder = 501;
+        this.geometry.computeBoundingBox();
+        const width = this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+        this.geometry.applyMatrix4(new (0, _three.Matrix4)().makeScale(1 / width, 1 / width, 1));
+        const underline = new (0, _three.Mesh)(new (0, _three.PlaneGeometry)(1, 0.1 / width), this.underlineMaterial);
+        underline.name = "homeNav";
+        underline.position.y = -1 / width;
+        this.group.add(underline);
+    }
+    onPointermove() {}
+    onPointerup() {}
+    onPointerdown() {}
+    resize(sizes) {
+        this.group.scale.x = sizes.scaleX;
+        this.group.scale.y = sizes.scaleY;
+        this.group.position.x = sizes.posX;
+        this.group.position.y = sizes.posY;
+    }
+}
+
+},{"@shaders/homeNav/underline/vertex.glsl":"hXcwL","@shaders/homeNav/underline/fragment.glsl":"ej4pa","@shaders/homeNav/text/vertex.glsl":"guLZ8","@shaders/homeNav/text/fragment.glsl":"daP8Q","@utils/TextGeometry":"4GUSA","@types":"4mCt6","@src/app":"fJe33","three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"hXcwL":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"ej4pa":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}";
+
+},{}],"guLZ8":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"daP8Q":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"kjPlz":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Title", ()=>Title);
+var _app = require("@src/app");
+var _flowmap = require("@utils/Flowmap");
+var _textTexture = require("@utils/TextTexture");
+var _textTextureDefault = parcelHelpers.interopDefault(_textTexture);
+var _vertexGlsl = require("@shaders/homeTitle/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/homeTitle/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _three = require("three");
+class Title {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    group = new (0, _three.Group)();
+    raycaster = this.world.raycaster;
+    renderer = this.world.renderer;
+    camera = this.world.camera;
+    flowmap = new (0, _flowmap.Flowmap)();
+    textTexture = new (0, _textTextureDefault.default)({
+        lineHeight: 1.5,
+        font: this.world.resources.fonts.anironRegular,
+        text: "Creative\nWeb\nDeveloper"
+    });
+    geometry = new (0, _three.PlaneGeometry)(2, 2);
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            uFlowmap: this.flowmap.texture,
+            uTextImage: this.textTexture.texture
+        },
+        transparent: true,
+        depthWrite: false,
+        depthTest: false
+    });
+    mesh = new (0, _three.Mesh)(this.geometry, this.material);
+    constructor(){
+        this.textTexture.createTexture(this.renderer, this.camera);
+        this.aspect = this.textTexture.geometryAspect;
+        this.mesh.name = "homeTitle";
+        this.mesh.renderOrder = 100;
+        this.mesh.position.z = -0.01;
+        this.group.add(this.mesh);
+    }
+    onPointermove(e, uv) {
+        this.flowmap.onPointermove(e, uv);
+    }
+    resize(sizes) {
+        this.mesh.position.x = sizes.posX;
+        this.mesh.position.y = sizes.posY;
+        this.mesh.scale.x = sizes.scaleX;
+        this.mesh.scale.y = sizes.scaleY;
+    }
+    update() {
+        this.flowmap.update(this.renderer);
+    }
+}
+
+},{"@src/app":"fJe33","@utils/Flowmap":"36l3v","@utils/TextTexture":"a7e4W","@shaders/homeTitle/vertex.glsl":"lJdjb","@shaders/homeTitle/fragment.glsl":"7ID5p","three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"36l3v":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Flowmap", ()=>Flowmap);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/flowmap/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/flowmap/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _renderBuffer = require("./RenderBuffer");
+class Flowmap extends (0, _renderBuffer.RenderBuffer) {
+    velocity = new (0, _three.Vector2)();
+    mouse = new (0, _three.Vector2)();
+    lastMouse = new (0, _three.Vector2)();
+    lastTime = null;
+    uniforms = {
+        uBuffer: this.texture,
+        uAspect: {
+            value: 1
+        },
+        uMouse: {
+            value: this.mouse
+        },
+        uVelocity: {
+            value: this.velocity
+        },
+        uFalloff: {
+            value: 0
+        },
+        uAlpha: {
+            value: 0
+        },
+        uDissipation: {
+            value: 0
+        }
+    };
+    constructor(props){
+        super();
+        this.uniforms.uFalloff.value = props?.falloff || 0.15;
+        this.uniforms.uAlpha.value = props?.alpha || 1;
+        this.uniforms.uDissipation.value = props?.dissipation || 0.98;
+        this.material = new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default),
+            uniforms: this.uniforms,
+            depthWrite: false,
+            depthTest: false
+        });
+        this.mesh = new (0, _three.Mesh)(this.geometry, this.material);
+        this.scene.add(this.mesh);
+    }
+    onPointermove({ clientX , clientY  }, uv) {
+        this.mouse.set(uv.x, uv.y);
+        // Calculate velocity
+        if (!this.lastTime) {
+            this.lastTime = performance.now();
+            this.lastMouse.copy({
+                x: clientX,
+                y: clientY
+            });
+        }
+        const deltaX = clientX - this.lastMouse.x;
+        const deltaY = clientY - this.lastMouse.y;
+        this.lastMouse.copy({
+            x: clientX,
+            y: clientY
+        });
+        const time = performance.now();
+        // Avoid dividing by 0
+        const delta = Math.max(14, time - this.lastTime);
+        this.lastTime = time;
+        this.velocity.x = deltaX / delta;
+        this.velocity.y = deltaY / delta;
+        // Flag update to prevent hanging velocity values when not moving
+        this.velocity.needsUpdate = true;
+    }
+    updateInputs() {
+        // Reset velocity when mouse not moving
+        if (!this.velocity.needsUpdate) {
+            this.mouse.set(-1, -1);
+            this.velocity.set(0, 0);
+            this.lastTime = null;
+        }
+        this.velocity.needsUpdate = false;
+        // Update flowmap inputs
+        this.uniforms.uMouse.value.copy(this.mouse);
+        // Ease velocity input, slower when fading out
+        this.uniforms.uVelocity.value.lerp(this.velocity, this.velocity.length() ? 0.5 : 0.1);
+    }
+    update(renderer) {
+        this.updateInputs();
+        super.update(renderer);
+    }
+}
+
+},{"three":"3XrwE","@shaders/flowmap/vertex.glsl":"axVBC","@shaders/flowmap/fragment.glsl":"fkiB8","./RenderBuffer":"4q55M","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"axVBC":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);\n    gl_Position = vec4(position, 1);\n    vUv = uv;\n}";
+
+},{}],"fkiB8":[function(require,module,exports) {
+module.exports = "precision highp float;\n#define GLSLIFY 1\n\nuniform sampler2D uBuffer;\nuniform float uFalloff;\nuniform float uAlpha;\nuniform float uDissipation;\nuniform float uAspect;\nuniform vec2 uMouse;\nuniform vec2 uMouseUv;\nuniform vec2 uVelocity;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 color = texture2D(uBuffer, vUv) * uDissipation;\n    vec2 cursor = vUv - uMouse;\n    cursor.x *= uAspect;\n    \n    vec3 stamp = vec3(uVelocity * vec2(1, -1), 1.0 - pow(1.0 - min(1.0, length(uVelocity)), 3.0));\n\n    float falloff = smoothstep(uFalloff, 0.0, length(cursor)) * uAlpha;\n    color.rgb = mix(color.rgb, stamp, vec3(falloff));\n    gl_FragColor = color;\n}";
+
+},{}],"a7e4W":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _three = require("three");
+var _textGeometry = require("./TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _vertexGlsl = require("@shaders/basicText/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/basicText/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _types = require("@types");
+class TextTexture {
+    geometry = new (0, _textGeometryDefault.default)();
+    constructor(props){
+        this.font = props.font;
+        this.lineHeight = props.lineHeight || 1.4;
+        this.padding = props.padding || {
+            x: 0.25,
+            y: 0.25
+        };
+        this.geometry.setText({
+            fontData: this.font.data,
+            text: props.text,
+            align: (0, _types.TextAlign).Left,
+            lineHeight: this.lineHeight,
+            letterSpacing: -0.05
+        });
+        this.geometry.computeBoundingBox();
+        let width = this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+        let height = this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y;
+        this.geometryAspect = width / height;
+        this.scale = 2 / width;
+        this.geometry.text.updateSize(this.scale, this.lineHeight);
+        this.material = new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default),
+            uniforms: {
+                tMap: {
+                    value: this.font.map
+                }
+            },
+            transparent: true
+        });
+        this.mesh = new (0, _three.Mesh)(this.geometry, this.material);
+        this.mesh.scale.y = this.geometryAspect;
+        this.mesh.scale.multiplyScalar(1 - this.padding.x);
+        this.mesh.position.x = -1 + this.padding.x;
+        this.mesh.position.y = 1 - this.padding.y - this.scale * 0.5 * this.geometryAspect;
+        this.renderTarget = new (0, _three.WebGLRenderTarget)(512, 512, {
+            depthBuffer: false,
+            stencilBuffer: false,
+            minFilter: (0, _three.LinearFilter),
+            type: (0, _three.HalfFloatType),
+            format: (0, _three.RGBAFormat),
+            generateMipmaps: false
+        });
+        this.texture = {
+            value: this.renderTarget.texture
+        };
+        this.scene = new (0, _three.Scene)();
+        this.scene.add(this.mesh);
+    }
+    createTexture(renderer, camera) {
+        const currentRenderTarget = renderer.getRenderTarget();
+        renderer.setRenderTarget(this.renderTarget);
+        renderer.render(this.scene, camera);
+        this.texture.value = this.renderTarget.texture;
+        renderer.setRenderTarget(currentRenderTarget);
+        renderer.clear();
+    }
+}
+exports.default = TextTexture;
+
+},{"three":"3XrwE","./TextGeometry":"4GUSA","@shaders/basicText/vertex.glsl":"lkqRb","@shaders/basicText/fragment.glsl":"afmXF","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"lkqRb":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"afmXF":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"lJdjb":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"7ID5p":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uFlowmap;\nuniform sampler2D uTextImage;\nvarying vec2 vUv;\n\nvec3 rgb2hsv(vec3 c) {\n    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n    \n    float d = q.x - min(q.w, q.y);\n    float e = 1.0e-10;\n    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n}\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nvec4 getRGB(sampler2D image, vec2 uv, float angle, float amount) {\n    vec2 offset = vec2(cos(angle), sin(angle)) * amount;\n    vec4 r = texture2D(image, uv + offset);\n    vec4 g = texture2D(image, uv);\n	// g.rgb *= vec3(183./255., 84./255., 255./255.);\n    vec4 b = texture2D(image, uv - offset);\n\n	vec3 col = vec3(r.r, g.g, b.b);\n	col = rgb2hsv(col);\n	col.z += 0.4;\n	col.x += 0.4;\n	col = hsv2rgb(col);\n    return vec4(col, g.a);\n	\n    // return vec4(g.g, r.r, b.b, g.a);\n    // return vec4(r.r * 183./255., g.g * 84./255., b.b * 255./255., g.a) * 2.;\n    // return vec4(r.r, g.g, b.b, g.a);\n}\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((40.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n\n	vec3 flow = texture2D(uFlowmap, vUv).rgb;\n\n	vec2 nUv = vUv;\n\n	// nUv += 0.15;\n	// nUv *= 1.5;\n\n	nUv += flow.rg * -0.05;\n\n	float angle = length(vUv - 0.5);\n\n	float amount = length(flow.rg) * 0.029;\n\n	vec4 final = getRGB(uTextImage, nUv, angle, amount).rgba;\n	gl_FragColor = final;\n\n	vec3 col = final.rgb;\n\n	float tvN = tvNoise(nUv);\n	\n	col = mix(col, vec3(0.4,0.1,0.8), tvN * 0.3);\n	// col = mix(col, vec3(183./255., 84./255., 255./255.), tvN * 0.3);\n	// col = mix(col, vec3(0.8, 0.2, 0.1), tvN * 0.3);\n	// col = mix(vec3(1.), col, tvN * 0.3);\n\n	gl_FragColor = vec4(col, final.a) + 0.;\n\n	// gl_FragColor = vec4(1.);\n	// gl_FragColor = getRGB(uTextImage, vUv, angle, 1.).rgba;\n\n	// gl_FragColor = vec4(flow, 1.);\n	// gl_FragColor = texture2D(uTextImage, vUv);\n	// gl_FragColor = texture2D(uFlowmap, vUv) + 0.5;\n	// gl_FragColor.a = 1.;\n}";
+
+},{}],"bok5i":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AboutViewManager", ()=>AboutViewManager);
+var _three = require("three");
+var _app = require("@src/app");
+var _components = require("./components");
+var _types = require("@types");
+class AboutViewManager {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    renderer = this.world.renderer;
+    camera = this.world.camera;
+    screen = new (0, _components.Screen)();
+    greeting = new (0, _components.Greeting)();
+    overlay = new (0, _components.Overlay)();
+    raycaster = this.world.raycaster;
+    rayOrigin = new (0, _three.Vector3)(0, 0, 1);
+    rayTarget = new (0, _three.Vector3)();
+    constructor(){
+        this.screen.textTexture.createTexture(this.renderer, this.camera);
+        this.world.water.hiddenObjects[(0, _types.View).Projects]?.push(this.overlay.group);
+    }
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "about view"
+        });
+        this.screenDebug();
+    }
+    screenDebug() {
+        const screen = this.debug.addFolder({
+            title: "screen"
+        });
+        screen.addInput(this.screen.material.uniforms.uDistortion, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "distortion"
+        });
+        screen.addInput(this.screen.material.uniforms.uInfluence, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "influence"
+        });
+        screen.addInput(this.screen.material.uniforms.uTest, "value", {
+            min: -1,
+            max: 0.5,
+            step: 0.001,
+            label: "test"
+        });
+        screen.addInput(this.screen.material.uniforms.uProgress, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "progress"
+        });
+        screen.addInput(this.screen.mesh.scale, "x", {
+            label: "scale",
+            min: 0,
+            max: 2,
+            step: 0.001
+        }).on("change", ()=>{
+            this.screen.mesh.scale.y = this.screen.mesh.scale.x / this.screen.aspect;
+        });
+        screen.addInput(this.screen, "aspect", {
+            min: 1,
+            max: 3,
+            step: 0.001
+        }).on("change", ()=>{
+            this.screen.mesh.scale.y = this.screen.mesh.scale.x / this.screen.aspect;
+            this.screen.material.uniforms.uAspect.value = this.screen.aspect;
+            this.screen.textTexture.createTexture(this.renderer, this.camera);
+        });
+    }
+    onPointerdown() {
+        if (!this.hover) return;
+        this.down = true;
+    }
+    onPointermove(mouse) {
+        if (this.down) return;
+        const [hitScreen] = this.raycaster.intersectObject(this.screen.mesh);
+        if (hitScreen) this.screen.onPointermove(hitScreen.uv);
+        this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
+        this.raycaster.set(this.rayOrigin, this.rayTarget);
+        const [hit] = this.raycaster.intersectObjects(this.overlay.group.children);
+        if (hit) {
+            const { name  } = hit.object;
+            this.target = name;
+            this.hover = true;
+            document.body.style.cursor = "pointer";
+        } else {
+            this.hover = false;
+            document.body.style.cursor = "";
+        }
+    }
+    onPointerup() {
+        if (!this.down) return;
+        this.down = false;
+        document.body.style.cursor = "";
+        let url;
+        switch(this.target){
+            case "twitter":
+                url = "https://twitter.com/checo272";
+                window.open(url, "_blank")?.focus();
+                break;
+            case "github":
+                url = "https://github.com/arcaneCheco";
+                window.open(url, "_blank")?.focus();
+                break;
+            case "linkedin":
+                url = "https://www.linkedin.com/in/sergio-azizi/";
+                window.open(url, "_blank")?.focus();
+                break;
+            case "email":
+                parent.location = "mailto:abc@abc.com";
+                break;
+            case "cv":
+                url = "https://pdfhost.io/v/6LGrrqvCt_CV";
+                window.open(url, "_blank")?.focus();
+                break;
+            case "aboutNav":
+                this.world.changeView((0, _types.View).Projects);
+                break;
+            default:
+                break;
+        }
+    }
+    onWheel({ deltaY  }) {
+        this.screen.onWheel(deltaY, this.renderer, this.camera);
+    }
+    getSizes() {
+        const aspect = window.innerWidth / window.innerHeight;
+        // screen
+        const screen = {};
+        screen.aspect = aspect;
+        screen.scaleY = Math.min(500 / window.innerHeight, 0.8);
+        screen.scaleY = 500 / window.innerHeight;
+        screen.scaleX = aspect * screen.scaleY;
+        screen.scaleX = 1.2;
+        screen.scaleY = screen.scaleX * 0.5625;
+        screen.posY = screen.scaleY / 1.9;
+        screen.posY = 0;
+        screen.posY = 0.12;
+        const greeting = {};
+        greeting.scaleX = 0.06;
+        greeting.scaleY = greeting.scaleX;
+        greeting.posX = -screen.scaleX * 0.52;
+        greeting.posY = screen.posY + screen.scaleY / 2 + greeting.scaleX * 1.2;
+        greeting.mesh1posX = -screen.scaleX / 2 - greeting.scaleX / 2;
+        return {
+            screen,
+            greeting
+        };
+    // greeting;
+    }
+    onResize() {
+        const { screen , greeting  } = this.getSizes();
+        this.screen.onResize(screen);
+        this.greeting.onResize(greeting);
+        this.overlay.onResize();
+    }
+    update() {
+    // this.screen.textTexture.createTexture(this.renderer, this.camera);
+    }
+}
+
+},{"three":"3XrwE","@src/app":"fJe33","./components":"4h5eM","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4h5eM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Nav", ()=>(0, _nav.Nav));
+parcelHelpers.export(exports, "Greeting", ()=>(0, _greeting.Greeting));
+parcelHelpers.export(exports, "SocialIcons", ()=>(0, _socialIcons.SocialIcons));
+parcelHelpers.export(exports, "Footer", ()=>(0, _footer.Footer));
+parcelHelpers.export(exports, "Overlay", ()=>(0, _overlay.Overlay));
+parcelHelpers.export(exports, "Screen", ()=>(0, _screen.Screen));
+var _nav = require("./Nav");
+var _greeting = require("./Greeting");
+var _socialIcons = require("./SocialIcons");
+var _footer = require("./Footer");
+var _overlay = require("./Overlay");
+var _screen = require("./Screen");
+
+},{"./Nav":"b2kHu","./Greeting":"fStde","./SocialIcons":"aQsVM","./Footer":"fZudh","./Overlay":"8u6R2","./Screen":"3cWAl","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"b2kHu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Nav", ()=>Nav);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/aboutNav/underline/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/aboutNav/underline/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/aboutNav/text/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/aboutNav/text/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _types = require("@types");
+var _app = require("@src/app");
+class Nav {
+    group = new (0, _three.Group)();
+    font = new (0, _app.World)().resources.fonts.audiowideRegular;
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault1.default),
+        fragmentShader: (0, _fragmentGlslDefault1.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true
+    });
+    geometry = new (0, _textGeometryDefault.default)();
+    mesh = new (0, _three.Mesh)(this.geometry, this.material);
+    constructor(){
+        this.mesh.name = "aboutNav";
+        this.group.position.set(-0.85, 0.5, 0);
+        this.group.rotateZ(Math.PI / 2);
+        this.group.add(this.mesh);
+        this.geometry.setText({
+            fontData: this.font.data,
+            text: "View Projects",
+            align: (0, _types.TextAlign).Center
+        });
+        this.geometry.computeBoundingBox();
+        const width = this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+        this.geometry.applyMatrix4(new (0, _three.Matrix4)().makeScale(1 / width, 1 / width, 1));
+        const underline = new (0, _three.Mesh)(new (0, _three.PlaneGeometry)(1, 0.1 / width), new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default)
+        }));
+        underline.name = "aboutNav";
+        underline.position.y = -0.75 / width;
+        this.group.add(underline);
+    }
+    onPointermove() {}
+    onPointerup() {}
+    onPointerdown() {}
+    onResize() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const scaleX = 0.6;
+        const scaleY = scaleX / aspect;
+        this.group.scale.set(scaleX, scaleY, 1);
+    }
+}
+
+},{"three":"3XrwE","@shaders/aboutNav/underline/vertex.glsl":"8ZXmi","@shaders/aboutNav/underline/fragment.glsl":"7P5ef","@shaders/aboutNav/text/vertex.glsl":"2aExc","@shaders/aboutNav/text/fragment.glsl":"kwPkX","@utils/TextGeometry":"4GUSA","@types":"4mCt6","@src/app":"fJe33","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"8ZXmi":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"7P5ef":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}";
+
+},{}],"2aExc":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"kwPkX":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"fStde":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Greeting", ()=>Greeting);
+var _three = require("three");
+var _app = require("@src/app");
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _vertexGlsl = require("@shaders/aboutGreeting/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/aboutGreeting/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _types = require("@types");
+class Greeting {
+    world = new (0, _app.World)();
+    font = this.world.resources.fonts.anironRegular;
+    group = new (0, _three.Group)();
+    textMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true,
+        depthWrite: false,
+        depthTest: false
+    });
+    geometry1 = new (0, _textGeometryDefault.default)();
+    geometry2 = new (0, _textGeometryDefault.default)();
+    mesh1 = new (0, _three.Mesh)(this.geometry1, this.textMaterial);
+    mesh2 = new (0, _three.Mesh)(this.geometry2, this.textMaterial);
+    constructor(){
+        this.group.renderOrder = 10000;
+        this.group.add(this.mesh1);
+        this.group.add(this.mesh2);
+        this.geometry1.setText({
+            fontData: this.font.data,
+            text: "Thanks",
+            align: (0, _types.TextAlign).Right
+        });
+        this.geometry1.applyMatrix4(new (0, _three.Matrix4)().makeRotationZ(Math.PI / 2));
+        this.geometry1.applyMatrix4(new (0, _three.Matrix4)().makeTranslation(-0.5, 0, 0));
+        this.geometry2.setText({
+            fontData: this.font.data,
+            text: "for stopping by!"
+        });
+        this.geometry2.applyMatrix4(new (0, _three.Matrix4)().makeTranslation(0.4, -0.5, 0));
+    }
+    onResize(sizes) {
+        this.group.scale.set(sizes.scaleX, sizes.scaleY, 1);
+        this.group.position.y = sizes.posY;
+        this.group.position.x = sizes.posX;
+        // this.group.position.x = sizes.mesh1posX;
+        // this.mesh1.rotation.z = Math.PI / 2;
+        this.mesh1.scale.set(1.5, 1.5, 1);
+    // this.mesh2.position.y = this.g1Width * sizes.scaleY;
+    // let scale = 0.03;
+    // this.mesh1.position.y = 0.17;
+    // this.mesh1.position.x = -0.2 - scale * 0.5 - 0.003;
+    // this.mesh1.scale.setScalar(scale);
+    // let scale2 = 0.02;
+    // this.mesh2.position.x = -0.2 + 0.003;
+    // this.mesh2.position.y = 0.288;
+    // this.mesh2.scale.setScalar(scale2);
+    }
+}
+
+},{"three":"3XrwE","@src/app":"fJe33","@utils/TextGeometry":"4GUSA","@shaders/aboutGreeting/vertex.glsl":"g8p63","@shaders/aboutGreeting/fragment.glsl":"ftOTe","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"g8p63":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"ftOTe":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"aQsVM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "SocialIcons", ()=>SocialIcons);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/aboutIcons/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/aboutIcons/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _app = require("@src/app");
+class SocialIcons {
+    world = new (0, _app.World)();
+    group = new (0, _three.Group)();
+    iconMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        depthWrite: false,
+        depthTest: false,
+        transparent: true,
+        uniforms: {
+            uMap: {
+                value: null
+            }
+        }
+    });
+    geometry = new (0, _three.PlaneGeometry)(1, 1);
+    constructor(){
+        // this.group.position.z = 0.1;
+        const { twitterIcon , githubIcon , linkedinIcon  } = this.world.resources.assets;
+        this.twitter = new (0, _three.Mesh)(this.geometry, this.iconMaterial.clone());
+        this.twitter.material.uniforms.uMap.value = twitterIcon;
+        this.twitter.name = "twitter";
+        this.group.add(this.twitter);
+        this.github = new (0, _three.Mesh)(this.geometry, this.iconMaterial.clone());
+        this.github.material.uniforms.uMap.value = githubIcon;
+        this.github.name = "github";
+        this.group.add(this.github);
+        this.linkedin = new (0, _three.Mesh)(this.geometry, this.iconMaterial.clone());
+        this.linkedin.material.uniforms.uMap.value = linkedinIcon;
+        this.linkedin.name = "linkedin";
+        this.group.add(this.linkedin);
+    }
+    onResize() {
+        let aspect = window.innerWidth / window.innerHeight;
+        let scale = 80 / window.innerWidth;
+        this.group.scale.set(scale, scale * aspect, 1);
+        this.group.position.y = -1 + scale / 2 * aspect + 140 / window.innerHeight;
+        this.twitter.position.x = -2;
+        this.github.position.x = -0;
+        this.linkedin.position.x = 2;
+    }
+}
+
+},{"three":"3XrwE","@shaders/aboutIcons/vertex.glsl":"29Ks9","@shaders/aboutIcons/fragment.glsl":"ckEUw","@src/app":"fJe33","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"29Ks9":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"ckEUw":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uMap, vUv);\n    gl_FragColor = icon;\n}";
+
+},{}],"fZudh":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Footer", ()=>Footer);
+var _three = require("three");
+var _app = require("@src/app");
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _vertexGlsl = require("@shaders/aboutFooter/text/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/aboutFooter/text/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/aboutFooter/icons/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/aboutFooter/icons/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _vertexGlsl2 = require("@shaders/aboutFooter/line/vertex.glsl");
+var _vertexGlslDefault2 = parcelHelpers.interopDefault(_vertexGlsl2);
+var _fragmentGlsl2 = require("@shaders/aboutFooter/line/fragment.glsl");
+var _fragmentGlslDefault2 = parcelHelpers.interopDefault(_fragmentGlsl2);
+class Footer {
+    world = new (0, _app.World)();
+    font = this.world.resources.fonts.audiowideRegular;
+    group = new (0, _three.Group)();
+    textMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true,
+        depthWrite: false,
+        depthTest: false
+    });
+    iconGeometry = new (0, _three.PlaneGeometry)(1, 1);
+    iconMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault1.default),
+        fragmentShader: (0, _fragmentGlslDefault1.default),
+        depthWrite: false,
+        depthTest: false,
+        transparent: true,
+        uniforms: {
+            uMap: {
+                value: null
+            }
+        }
+    });
+    locationGroup = new (0, _three.Group)();
+    location = new (0, _three.Mesh)(new (0, _textGeometryDefault.default)(), this.textMaterial);
+    locationIcon = new (0, _three.Mesh)(this.iconGeometry, this.iconMaterial.clone());
+    cvGroup = new (0, _three.Group)();
+    cv = new (0, _three.Mesh)(new (0, _textGeometryDefault.default)(), this.textMaterial);
+    cvIcon = new (0, _three.Mesh)(this.iconGeometry, this.iconMaterial.clone());
+    emailGroup = new (0, _three.Group)();
+    email = new (0, _three.Mesh)(new (0, _textGeometryDefault.default)(), this.textMaterial);
+    emailIcon = new (0, _three.Mesh)(this.iconGeometry, this.iconMaterial.clone());
+    constructor(){
+        this.group.renderOrder = 6001;
+        this.group.add(this.locationGroup);
+        this.group.add(this.cvGroup);
+        this.group.add(this.emailGroup);
+        this.locationGroup.add(this.location);
+        this.locationGroup.add(this.locationIcon);
+        this.cvGroup.add(this.cv);
+        this.cvGroup.add(this.cvIcon);
+        this.emailGroup.add(this.email);
+        this.emailGroup.add(this.emailIcon);
+        const { pinIcon , cvIcon , emailIcon  } = this.world.resources.assets;
+        this.location.geometry.setText({
+            fontData: this.font.data,
+            text: "London, UK"
+        });
+        this.locationIcon.material.uniforms.uMap.value = pinIcon;
+        this.cv.geometry.setText({
+            fontData: this.font.data,
+            text: "curriculum vitae"
+        });
+        this.cvIcon.material.uniforms.uMap.value = cvIcon;
+        this.cv.name = "cv";
+        this.cvIcon.name = "cv";
+        this.email.geometry.setText({
+            fontData: this.font.data,
+            text: "sergio@azizi.dev"
+        });
+        this.emailIcon.material.uniforms.uMap.value = emailIcon;
+        this.email.name = "email";
+        this.emailIcon.name = "email";
+        this.line = new (0, _three.Mesh)(new (0, _three.PlaneGeometry)(1, 1), new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault2.default),
+            fragmentShader: (0, _fragmentGlslDefault2.default)
+        }));
+        this.group.add(this.line);
+    }
+    onResize() {
+        let aspect = window.innerWidth / window.innerHeight;
+        let groupScaleX = 30 / window.innerWidth;
+        let groupScaleY = groupScaleX * aspect;
+        this.group.scale.set(groupScaleX, groupScaleY, 1);
+        this.group.position.y = -1 + groupScaleY / 2 + 50 / window.innerHeight;
+        let iconScale = 2;
+        this.cvIcon.position.x = -0.7 * iconScale;
+        this.cvIcon.scale.set(iconScale, iconScale, 1);
+        this.cvGroup.position.x = -10;
+        this.cvGroup.position.y = 0.25 * iconScale;
+        this.line.position.y = 0.25 * iconScale;
+        this.line.scale.set(0.2, 2, 1);
+        this.emailIcon.position.x = -0.7 * iconScale;
+        this.emailIcon.scale.set(iconScale, iconScale, 1);
+        this.emailGroup.position.x = 3;
+        this.emailGroup.position.y = 0.25 * iconScale;
+        this.locationIcon.position.x = -0.7 * iconScale;
+        this.locationIcon.scale.set(iconScale, iconScale, 1);
+        this.locationGroup.position.x = Math.min(window.innerWidth / 50, 30);
+        // this.locationGroup.position.x = 15 + aspect * 2.5;
+        this.locationGroup.scale.set(0.7, 0.7, 1);
+    // this.cvGroup.position.y = 0.25 * iconScale;
+    // this.locationGroup.position.x = 8;
+    // this.locationIcon.position.x = -7;
+    // this.locationIcon.scale.multiplyScalar(2);
+    // this.cvGroup.position.x = -8;
+    // this.cvIcon.position.x = -7;
+    // this.cvIcon.scale.multiplyScalar(2);
+    }
+}
+
+},{"three":"3XrwE","@src/app":"fJe33","@utils/TextGeometry":"4GUSA","@shaders/aboutFooter/text/vertex.glsl":"3VFOe","@shaders/aboutFooter/text/fragment.glsl":"45xti","@shaders/aboutFooter/icons/vertex.glsl":"jNk0o","@shaders/aboutFooter/icons/fragment.glsl":"iBECs","@shaders/aboutFooter/line/vertex.glsl":"a7mqC","@shaders/aboutFooter/line/fragment.glsl":"9JLsZ","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3VFOe":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"45xti":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"jNk0o":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"iBECs":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uMap;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uMap, vUv);\n    gl_FragColor = icon;\n}";
+
+},{}],"a7mqC":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n}";
+
+},{}],"9JLsZ":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvoid main() {\n    gl_FragColor = vec4(1.);\n}";
+
+},{}],"8u6R2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Overlay", ()=>Overlay);
+var _three = require("three");
+var _ = require(".");
+class Overlay {
+    socialIcons = new (0, _.SocialIcons)();
+    footer = new (0, _.Footer)();
+    nav = new (0, _.Nav)();
+    group = new (0, _three.Group)();
+    constructor(){
+        this.group.add(this.socialIcons.group);
+        this.group.add(this.footer.group);
+        this.group.add(this.nav.group);
+    }
+    onResize() {
+        this.nav.onResize();
+        this.socialIcons.onResize();
+        this.footer.onResize();
+    }
+}
+
+},{"three":"3XrwE",".":"4h5eM","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"3cWAl":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Screen", ()=>Screen);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/aboutScreen/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/aboutScreen/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _textTexture = require("./TextTexture");
+var _textTextureDefault = parcelHelpers.interopDefault(_textTexture);
+var _app = require("@src/app");
+class Screen {
+    world = new (0, _app.World)();
+    geometry = new (0, _three.PlaneGeometry)(1, 1);
+    textTexture = new (0, _textTextureDefault.default)({
+        lineHeight: 1.6,
+        padding: {
+            x: 0.2,
+            y: 0.2
+        },
+        font: this.world.resources.fonts.anironRegular,
+        text: `
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry*s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n\`\n
+        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n\`\n
+        Here is another paragraph. This probably won't be immediately visible but that is fine.\n\`\n
+        Also, look this, Heyyy, hoo.
+        `
+    });
+    aspect = 2;
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            uTextMap: this.textTexture.texture,
+            uMouse: {
+                value: new (0, _three.Vector2)()
+            },
+            uAspect: {
+                value: this.aspect
+            },
+            uDistortion: {
+                value: 0.5
+            },
+            uInfluence: {
+                value: 0.25
+            },
+            uTest: {
+                value: 0.48
+            },
+            uProgress: {
+                value: 0
+            }
+        },
+        transparent: true,
+        depthTest: false
+    });
+    mesh = new (0, _three.Mesh)(this.geometry, this.material);
+    constructor(){
+        this.mesh.name = "screen";
+    }
+    onPointermove(uv) {
+        this.material.uniforms.uMouse.value = uv;
+    }
+    onWheel(deltaY, renderer, camera) {
+        this.textTexture.onWheel(deltaY, renderer, camera);
+    }
+    onTextureChange(texture) {
+        this.material.uniforms.uTextMap = texture;
+    }
+    onResize(sizes) {
+        this.mesh.scale.set(sizes.scaleX, sizes.scaleY, 1);
+        this.mesh.position.y = sizes.posY;
+        this.material.uniforms.uAspect.value = sizes.aspect;
+    }
+}
+
+},{"three":"3XrwE","@shaders/aboutScreen/vertex.glsl":"lDhhR","@shaders/aboutScreen/fragment.glsl":"9DzCx","./TextTexture":"8zWjn","@src/app":"fJe33","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"lDhhR":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 newPos = position;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n}";
+
+},{}],"9DzCx":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uTextMap;\nuniform sampler2D uDummy;\nuniform vec2 uMouse;\nuniform float uAspect;\nuniform float uDistortion;\nuniform float uInfluence;\nuniform float uTest;\nuniform float uProgress;\n\nvarying vec2 vUv;\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((40.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n    vec2 dist = uMouse - vUv;\n    vec2 dist2 = dist * vec2(uAspect, 1.);\n    float len = length(dist2);\n    float influence = clamp(uDistortion - pow(1. / uInfluence * len, 5.) , 0., 1.);\n    vec2 lensUv = vUv + dist * influence;\n\n    float influence2 = influence - clamp(uDistortion - pow(10. / (uInfluence * 0.9) * len, 5.) , 0., 4.);\n    float influence3 = influence - clamp(uDistortion - pow(10. / (uInfluence * 0.85) * len, 5.) , 0., 4.);\n\n    vec4 text = texture2D(uTextMap, lensUv);\n    vec4 bg = vec4(vec3(tvNoise(vUv) * (1.3 - uProgress)), 0.5 + (1. - uProgress));\n    gl_FragColor = mix(bg, text, text.a);\n\n    float yDist = abs(vUv.y - 0.5) * 2.;\n    float border = smoothstep(uProgress - 0.04 / uProgress, uProgress, yDist);\n    gl_FragColor = mix(gl_FragColor, vec4(1.), border);\n\n    gl_FragColor *= step(yDist, uProgress);\n\n}";
+
+},{}],"8zWjn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _vertexGlsl = require("@shaders/basicText/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/basicText/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _mathUtils = require("three/src/math/MathUtils");
+var _types = require("@types");
+var _three = require("three");
+class TextTexture {
+    geometry = new (0, _textGeometryDefault.default)();
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            tMap: {
+                value: null
+            }
+        },
+        transparent: true
+    });
+    mesh = new (0, _three.Mesh)(this.geometry, this.material);
+    renderTarget = new (0, _three.WebGLRenderTarget)(512, 512, {
+        depthBuffer: false,
+        stencilBuffer: false,
+        minFilter: (0, _three.LinearFilter),
+        type: (0, _three.HalfFloatType),
+        format: (0, _three.RGBAFormat),
+        generateMipmaps: false
+    });
+    texture = {
+        value: this.renderTarget.texture
+    };
+    scene = new (0, _three.Scene)();
+    constructor(props){
+        this.font = props.font;
+        this.material.uniforms.tMap.value = this.font.map;
+        this.lineHeight = props.lineHeight || 1.6;
+        this.scene.add(this.mesh);
+        this.geometry.setText({
+            fontData: this.font.data,
+            text: props.text,
+            align: (0, _types.TextAlign).Left,
+            lineHeight: props.lineHeight || 1.6,
+            lineWidth: 2 - props.padding.x * 2
+        });
+        let fontSize = 0.11;
+        this.geometry.text.updateSize(fontSize, this.lineHeight);
+        this.geometry.computeBoundingBox();
+        let height = this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y;
+        this.mesh.position.x = -1 + props.padding.x;
+        this.initialOffset = 1 - fontSize * 0.5 - props.padding.y;
+        this.maxScroll = this.initialOffset + height + props.padding.y * 2 - 2;
+        this.mesh.position.y = this.initialOffset;
+    }
+    onWheel(deltaY, renderer, camera) {
+        const newPos = (0, _mathUtils.clamp)(this.mesh.position.y + deltaY * 0.001, this.initialOffset, this.maxScroll);
+        this.mesh.position.y = newPos;
+        this.createTexture(renderer, camera);
+    }
+    createTexture(renderer, camera) {
+        const currentRenderTarget = renderer.getRenderTarget();
+        renderer.setRenderTarget(this.renderTarget);
+        renderer.render(this.scene, camera);
+        this.texture.value = this.renderTarget.texture;
+        renderer.setRenderTarget(currentRenderTarget);
+        renderer.clear();
+    }
+}
+exports.default = TextTexture;
+
+},{"@utils/TextGeometry":"4GUSA","@shaders/basicText/vertex.glsl":"lkqRb","@shaders/basicText/fragment.glsl":"afmXF","three/src/math/MathUtils":"gMBZj","@types":"4mCt6","three":"3XrwE","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"jeIUy":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ProjectsViewManager", ()=>ProjectsViewManager);
+var _app = require("@src/app");
+var _three = require("three");
+var _gsap = require("gsap");
+var _gsapDefault = parcelHelpers.interopDefault(_gsap);
+var _components = require("./components");
+var _types = require("@types");
+class ProjectsViewManager {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    projectScreen = this.world.projectScreen;
+    projectState = this.world.projectState;
+    sky = this.world.sky;
+    water = this.world.water;
+    raycaster = this.world.raycaster;
+    ndcRaycaster = this.world.ndcRaycaster;
+    rayOrigin = new (0, _three.Vector3)(0, 0, 1);
+    rayTarget = new (0, _three.Vector3)();
+    colorGradient = this.world.colorGradient;
+    screenTimeline = (0, _gsapDefault.default).timeline();
+    titlesTimeline = (0, _gsapDefault.default).timeline();
+    titleIndex = -1;
+    titles = new (0, _components.Titles)();
+    nProjects = this.titles.data.length;
+    nav = new (0, _components.Nav)();
+    filters = new (0, _components.Filters)();
+    constructor(){
+        this.filterProjects((0, _types.ProjectCategory).All);
+        this.world.water.hiddenObjects[(0, _types.View).Projects]?.push(this.filters.outerGroup, this.nav.group);
+    }
+    setDebug() {}
+    filterProjects(category) {
+        this.projectState.filter = category;
+        this.projectState.activeIndices = this.titles.data.filter((entry)=>category === (0, _types.ProjectCategory).All || entry.category === category).map((entry)=>entry.index);
+        this.filters.updateActiveFilter(category);
+        this.titles.filterTitles(category);
+    }
+    setColors(color) {
+        this.sky.material.uniforms.uSkyColor.value = color;
+        this.water.uniforms.uFresnelColor.value = color;
+    }
+    onActiveChange(newIndex) {
+        const color = this.colorGradient.getAt((newIndex + 1) / this.nProjects);
+        this.setColors(color);
+        this.projectScreen.onActiveChange({
+            newIndex,
+            color
+        });
+        // titles
+        if (this.projectScreen.timeline.parent) this.titlesTimeline.clear();
+        this.titles.meshes.map((mesh)=>{
+            let target = 0;
+            if (mesh.userData.index === newIndex) target = 1;
+            this.titlesTimeline.to(mesh.material.uniforms.uProgress, {
+                value: target,
+                duration: 0.75,
+                ease: "none"
+            }, "0");
+        });
+    }
+    onPointerdown() {
+        this.projectScreen.onPointerdown();
+        if (this.hover || this.hoverTitles) this.down = true;
+    }
+    onPointermove(mouse) {
+        if (this.down) return;
+        this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
+        this.ndcRaycaster.set(this.rayOrigin, this.rayTarget);
+        const [hit] = this.ndcRaycaster.intersectObjects([
+            ...this.filters.group.children,
+            this.nav.homeNav,
+            this.nav.aboutNav, 
+        ]);
+        if (hit) {
+            this.target = hit.object.name;
+            this.hover = true;
+            document.body.style.cursor = "pointer";
+        } else this.hover = false;
+        this.projectScreen.onPointermove();
+    }
+    onPointerup() {
+        document.body.style.cursor = "";
+        this.projectScreen.onPointerup();
+        if (this.hoverTitles && this.down) {
+            this.down = false;
+            this.world.changeView((0, _types.View).ProjectDetail);
+        }
+        if (this.hover && this.down) {
+            this.down = false;
+            if (this.target in (0, _types.ProjectCategory)) this.filterProjects(this.target);
+            else this.world.changeView(this.target);
+        }
+    }
+    getSizes() {
+        const widthRatio = 2 / window.innerWidth;
+        const aspect = window.innerWidth / window.innerHeight;
+        const projectsNav = {};
+        const screen = {};
+        const titles = {};
+        const filters = {};
+        // nav
+        projectsNav.lineScaleY = this.nav.lineThickness * widthRatio;
+        projectsNav.lineScaleX = 0.8;
+        let navScale = window.innerWidth > 750 ? 50 : 35;
+        projectsNav.navScaleY = navScale / window.innerWidth;
+        projectsNav.navScaleX = navScale / window.innerHeight;
+        projectsNav.navPosY = projectsNav.navScaleY / 2 + projectsNav.lineScaleY / 2 + this.nav.textLineSpacing * widthRatio;
+        let offsetLeft = 40;
+        projectsNav.posX = -1 + offsetLeft * widthRatio + projectsNav.lineScaleY / 2;
+        let verticalOffset = 10;
+        projectsNav.posHome = -projectsNav.lineScaleX / projectsNav.navScaleX + verticalOffset * (2 / window.innerHeight) / projectsNav.navScaleX;
+        projectsNav.posAbout = -projectsNav.posHome;
+        // screen
+        screen.scaleX = 1 + aspect * 0.2;
+        screen.scaleY = 1 * screen.scaleX * 0.5625;
+        const distanceFromCenter = 0.65;
+        let offset = 210 + aspect * 8; // 30
+        offset *= Math.PI / 180;
+        screen.posX = Math.sin(offset) * distanceFromCenter;
+        screen.posZ = -Math.cos(offset) * distanceFromCenter;
+        screen.rotY = -offset;
+        screen.aspect = aspect;
+        //titles
+        titles.scale = 0.1 + aspect * 0.05;
+        titles.posX = -1.4 - aspect * 0.2;
+        // filters
+        let scale = window.innerWidth > 750 ? 300 : 210;
+        scale /= this.filters.gWidth;
+        filters.scaleX = scale / window.innerWidth;
+        filters.scaleY = scale / window.innerHeight;
+        filters.posX = 1 - 0.1 * aspect;
+        filters.posY = filters.scaleY * (2 + this.filters.gap);
+        return {
+            projectsNav,
+            screen,
+            titles,
+            filters
+        };
+    }
+    onResize() {
+        const { projectsNav , screen , titles , filters  } = this.getSizes();
+        if (this.world.view !== (0, _types.View).ProjectDetail) this.projectScreen.resizeProjectsView(screen);
+        this.titles.onResize(titles);
+        this.filters.onResize(filters);
+        this.nav.onResize(projectsNav);
+    }
+    onWheel({ deltaY  }) {
+        this.titles.onWheel(deltaY);
+    }
+    update() {
+        const [hitTitles] = this.raycaster.intersectObjects(this.titles.group.children);
+        if (hitTitles) {
+            this.titleIndex = hitTitles.object.userData.index;
+            document.body.style.cursor = "pointer";
+            this.hoverTitles = true;
+            if (this.titleIndex !== this.projectState.target) this.onActiveChange(this.titleIndex);
+        } else {
+            this.hoverTitles = false;
+            if (!this.hover) document.body.style.cursor = "";
+        }
+        this.titles.update();
+        this.projectScreen.update();
+    }
+}
+
+},{"@src/app":"fJe33","three":"3XrwE","gsap":"gS77a","./components":"4KWqa","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4KWqa":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Titles", ()=>(0, _titles.Titles));
+parcelHelpers.export(exports, "Nav", ()=>(0, _nav.Nav));
+parcelHelpers.export(exports, "Filters", ()=>(0, _filters.Filters));
+var _titles = require("./Titles");
+var _nav = require("./Nav");
+var _filters = require("./Filters");
+
+},{"./Titles":"6Mk0r","./Nav":"gt2DC","./Filters":"d17d0","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"6Mk0r":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Titles", ()=>Titles);
+var _three = require("three");
+var _app = require("@src/app");
+var _mathUtils = require("three/src/math/MathUtils");
+var _types = require("@types");
+var _titleMesh = require("./TitleMesh");
+class Titles {
+    world = new (0, _app.World)();
+    colorGradient = this.world.colorGradient;
+    scene = this.world.scene;
+    scroll = {
+        current: 0,
+        target: 0,
+        active: false,
+        limitTop: 0,
+        limitBottom: 0
+    };
+    gap = 0.5;
+    baseWidth = 5;
+    group = new _three.Group();
+    outerGroup = new _three.Group();
+    initialScrollOffset = 1.5;
+    data = this.world.resources.projects;
+    font = this.world.resources.fonts.anironRegular;
+    meshes = this.data.map(({ title , category , index  })=>new (0, _titleMesh.TitleMesh)({
+            title,
+            category,
+            index,
+            font: this.font,
+            baseWidth: this.baseWidth,
+            color: this.colorGradient.getAt((index + 1) / this.data.length)
+        }));
+    constructor(){
+        this.outerGroup.add(this.group);
+        this.group.renderOrder = 1000;
+        this.outerGroup.rotation.y = Math.PI;
+        this.outerGroup.position.z = 0.3;
+    }
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "project titles",
+            expanded: false
+        });
+        const stroke = {
+            value: 0.1
+        };
+        this.debug.addInput(stroke, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "stroke"
+        }).on("change", ()=>this.meshes.map((mesh)=>mesh.material.uniforms.uStroke.value = stroke.value));
+        const progress = {
+            value: 0
+        };
+        this.debug.addInput(progress, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "progress"
+        }).on("change", ()=>this.meshes.map((mesh)=>mesh.material.uniforms.uProgress.value = progress.value));
+        const padding = {
+            value: 0.1
+        };
+        this.debug.addInput(padding, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "padding"
+        }).on("change", ()=>this.meshes.map((mesh)=>mesh.material.uniforms.uPadding.value = padding.value));
+        this.debug.addInput(this, "gap", {
+            min: 0,
+            max: 1,
+            step: 0.001
+        }).on("change", ()=>{
+            this.setPositionsWithinGroup();
+        });
+        this.debug.addInput(this.outerGroup.position, "y", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "outerGroup - posY"
+        });
+        this.debug.addInput(this.group.position, "x", {
+            min: -4,
+            max: 0,
+            step: 0.001,
+            label: "group - posX"
+        });
+    }
+    filterTitles(category) {
+        this.meshes.map((mesh)=>{
+            if (category === (0, _types.ProjectCategory).All || mesh.userData.category === category) this.group.add(mesh);
+            else this.group.remove(mesh);
+        });
+        this.setPositionsWithinGroup();
+    }
+    setPositionsWithinGroup() {
+        let currentOffset = 0;
+        let limitOffset = 0;
+        this.group.children.map((mesh, i)=>{
+            if (i === 0) {
+                mesh.position.y = this.initialScrollOffset;
+                mesh.userData.scrollPosition = mesh.position.y;
+                currentOffset += mesh.geometry.userData.height / 2 + this.gap;
+            } else {
+                mesh.position.y = -(currentOffset + mesh.geometry.userData.height / 2) + this.initialScrollOffset;
+                mesh.userData.scrollPosition = mesh.position.y;
+                limitOffset = -mesh.position.y; // only need position of last item in list
+                currentOffset += mesh.geometry.userData.height + this.gap;
+            }
+        });
+        this.scroll.limitBottom = limitOffset;
+        this.group.position.y = 0;
+    }
+    onWheel(deltaY) {
+        let newPosition = this.group.position.y + deltaY * 0.01;
+        newPosition = (0, _mathUtils.clamp)(newPosition, this.scroll.limitTop, this.scroll.limitBottom);
+        this.group.position.y = newPosition;
+    }
+    onResize(sizes) {
+        this.outerGroup.scale.set(sizes.scale, sizes.scale, 1);
+        this.group.position.x = sizes.posX;
+    }
+    update() {
+        this.group.children.map((mesh)=>mesh.material.uniforms.uTime.value = this.world.time);
+    }
+}
+
+},{"three":"3XrwE","@src/app":"fJe33","three/src/math/MathUtils":"gMBZj","@types":"4mCt6","./TitleMesh":"jcZUy","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"jcZUy":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TitleMesh", ()=>TitleMesh);
+var _textGeometry = require("@src/utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/projectTitle/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/projectTitle/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _types = require("@types");
+class TitleMesh extends (0, _three.Mesh) {
+    uniforms = {
+        uColor: {
+            value: new (0, _three.Vector3)()
+        },
+        uProgress: {
+            value: 0
+        },
+        uMap: {
+            value: null
+        },
+        uStroke: {
+            value: 0.1
+        },
+        uPadding: {
+            value: 0.1
+        },
+        uTime: {
+            value: 0
+        }
+    };
+    constructor({ title , category , index , font , baseWidth , color  }){
+        super(new (0, _textGeometryDefault.default)(), new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default),
+            transparent: true,
+            depthTest: false,
+            depthWrite: false
+        }));
+        this.uniforms.uColor.value = color;
+        this.uniforms.uMap.value = font.map;
+        if (index === 0) this.uniforms.uProgress.value = 1;
+        this.material.uniforms = this.uniforms;
+        this.setGeometrySpecs({
+            text: title,
+            fontData: font.data,
+            baseWidth
+        });
+        this.setTextBoundingUv(baseWidth);
+        this.userData.index = index;
+        this.userData.category = category;
+    // const m = new THREE.Mesh(
+    //   new THREE.PlaneGeometry(this.baseWidth, geometry.userData.height),
+    //   new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.5 })
+    // );
+    // mesh.add(m);
+    }
+    setTextBoundingUv(baseWidth) {
+        const count = this.geometry.attributes.uv.count;
+        const bUvArray = new Float32Array(count * 2);
+        const positions = this.geometry.attributes.position.array;
+        for(let i = 0; i < count; i++){
+            const posX = positions[i * 3];
+            bUvArray[i * 2] = posX / baseWidth + 0.5;
+            const posY = positions[i * 3 + 1];
+            bUvArray[i * 2 + 1] = posY / this.geometry.userData.height + 0.5;
+        }
+        this.geometry.setAttribute("boundingUv", new (0, _three.BufferAttribute)(bUvArray, 2));
+    }
+    setGeometrySpecs({ text , fontData , baseWidth  }) {
+        this.geometry.setText({
+            fontData,
+            text: text,
+            align: (0, _types.TextAlign).Center,
+            lineWidth: 5,
+            lineHeight: 1
+        });
+        this.geometry.computeBoundingBox();
+        const width = this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x;
+        const height = this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y;
+        const aspect = height / width;
+        // center text mesh on yAxis
+        const offset = height * 0.5 - this.geometry.boundingBox.max.y;
+        const offsetMatrix = new (0, _three.Matrix4)().makeTranslation(0, offset, 0);
+        this.geometry.applyMatrix4(offsetMatrix);
+        // make width uniform
+        const scale = baseWidth / width;
+        const scaleMatrix = new (0, _three.Matrix4)().makeScale(scale, scale, 1);
+        this.geometry.applyMatrix4(scaleMatrix);
+        this.geometry.userData.height = baseWidth * aspect;
+    }
+}
+
+},{"@src/utils/TextGeometry":"4GUSA","three":"3XrwE","@shaders/projectTitle/vertex.glsl":"dohOo","@shaders/projectTitle/fragment.glsl":"bJdN6","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dohOo":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nattribute vec2 boundingUv;\n\nvarying vec2 vUv;\nvarying vec2 bUv;\n\nvec2 rotate(vec2 v, float a) {\n	float s = sin(a);\n	float c = cos(a);\n	mat2 m = mat2(c, -s, s, c);\n	return m * v;\n}\n\nmat4 rotationMatrix(vec3 axis, float angle) {\n    axis = normalize(axis);\n    float s = sin(angle);\n    float c = cos(angle);\n    float oc = 1.0 - c;\n    \n    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,\n                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,\n                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,\n                0.0,                                0.0,                                0.0,                                1.0);\n}\n\nvec3 rotate(vec3 v, vec3 axis, float angle) {\n	mat4 m = rotationMatrix(axis, angle);\n	return (m * vec4(v, 1.0)).xyz;\n}\n\nvoid main() {\n    vec3 newPos = position;\n    // newPos = rotate(newPos, vec3(0.,1.,0.), -0.5235987755982988);\n    // newPos = rotate(newPos, vec3(1.,0.,0.), 3.1415/6.);\n\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);\n    vUv = uv;\n    bUv = boundingUv;\n}";
+
+},{}],"bJdN6":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform vec3 uColor;\nuniform float uActive;\nuniform sampler2D uMap;\nuniform float uStroke;\nuniform float uProgress;\nuniform float uPadding;\nuniform float uTime;\n\nvarying vec2 vUv;\nvarying vec2 bUv;\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 tex = texture2D(tMap, uv).rgb;\n    float signedDist = max(min(tex.r, tex.g), min(max(tex.r, tex.g), tex.b)) - 0.5;\n\n    // TODO: fallback for fwidth for webgl1 (need to enable ext)\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nfloat strokemsdf(sampler2D tMap, vec2 uv, float stroke, float padding) {\n    vec3 tex = texture2D(tMap, uv).rgb;\n    float signedDist = max(min(tex.r, tex.g), min(max(tex.r, tex.g), tex.b)) - 0.5;\n    float t = stroke;\n    float alpha = smoothstep(-t, -t + padding, signedDist) * smoothstep(t, t - padding, signedDist);\n    return alpha;\n}\n\nconst float e = 2.7182818284590452353602874713527;\n\nfloat tvNoise(vec2 texCoord)\n{\n    float G = e + ((uTime + 10.) * 2.1);\n    vec2 r = (G * sin(G * texCoord.xy));\n    return fract(r.x * r.y * (1.0 + texCoord.x));\n}\n\nvoid main() {\n    float fill = msdf(uMap, vUv);\n    float stroke = strokemsdf(uMap, vUv, uStroke, uPadding);\n\n    float alpha = mix(stroke, fill, uProgress);\n    alpha = fill + stroke;\n    alpha = fill * 0.2 + uProgress * 0.4 + stroke * 0.5 + stroke * uProgress;\n\n    float tvNoiseMag = min(2. * uProgress, 2. - 2. * uProgress);\n\n    float tvN = tvNoise(bUv);\n    alpha -= tvN * tvNoiseMag;\n\n    gl_FragColor = vec4(uColor, alpha);\n}";
+
+},{}],"gt2DC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Nav", ()=>Nav);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/projectsNav/sideline/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/projectsNav/sideline/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/projectsNav/text/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/projectsNav/text/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _app = require("@src/app");
+var _types = require("@types");
+class Nav {
+    world = new (0, _app.World)();
+    font = this.world.resources.fonts.audiowideRegular;
+    group = new (0, _three.Group)();
+    lineThickness = 3;
+    textLineSpacing = 5;
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault1.default),
+        fragmentShader: (0, _fragmentGlslDefault1.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            }
+        },
+        transparent: true
+    });
+    navGroup = new (0, _three.Group)();
+    constructor(){
+        this.group.rotateZ(-Math.PI / 2);
+        this.setNavButtons();
+        this.setLine();
+    }
+    setNavButtons() {
+        this.group.add(this.navGroup);
+        let homeGeometry = new (0, _textGeometryDefault.default)();
+        homeGeometry.setText({
+            fontData: this.font.data,
+            text: "Home",
+            align: (0, _types.TextAlign).Left
+        });
+        this.homeNav = new (0, _three.Mesh)(homeGeometry, this.material);
+        this.homeNav.name = (0, _types.View).Home;
+        this.navGroup.add(this.homeNav);
+        let aboutGeometry = new (0, _textGeometryDefault.default)();
+        aboutGeometry.setText({
+            fontData: this.font.data,
+            text: "About",
+            align: (0, _types.TextAlign).Right
+        });
+        this.aboutNav = new (0, _three.Mesh)(aboutGeometry, this.material);
+        this.aboutNav.name = (0, _types.View).About;
+        this.navGroup.add(this.aboutNav);
+    }
+    setLine() {
+        let lineGeometry = new (0, _three.PlaneGeometry)(2, 1);
+        let lineMaterial = new (0, _three.ShaderMaterial)({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default)
+        });
+        this.sideline = new (0, _three.Mesh)(lineGeometry, lineMaterial);
+        this.group.add(this.sideline);
+    }
+    onResize(sizes) {
+        this.group.position.x = sizes.posX;
+        this.sideline.scale.y = sizes.lineScaleY;
+        this.sideline.scale.x = sizes.lineScaleX;
+        this.navGroup.position.y = sizes.navPosY;
+        this.navGroup.scale.y = sizes.navScaleY;
+        this.navGroup.scale.x = sizes.navScaleX;
+        this.homeNav.position.x = sizes.posHome;
+        this.aboutNav.position.x = sizes.posAbout;
+    }
+}
+
+},{"three":"3XrwE","@shaders/projectsNav/sideline/vertex.glsl":"e5Pzv","@shaders/projectsNav/sideline/fragment.glsl":"5DOA5","@shaders/projectsNav/text/vertex.glsl":"2Ybnp","@shaders/projectsNav/text/fragment.glsl":"bExKR","@utils/TextGeometry":"4GUSA","@src/app":"fJe33","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"e5Pzv":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"5DOA5":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 0.5);\n}";
+
+},{}],"2Ybnp":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"bExKR":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"d17d0":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Filters", ()=>Filters);
+var _three = require("three");
+var _types = require("@types");
+var _app = require("@src/app");
+var _vertexGlsl = require("@shaders/projectFilters/text/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/projectFilters/text/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/projectFilters/underline/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/projectFilters/underline/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+class FilterGroup extends (0, _three.Group) {
+}
+class Filters {
+    world = new (0, _app.World)();
+    font = this.world.resources.fonts.audiowideRegular;
+    material = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault.default),
+        fragmentShader: (0, _fragmentGlslDefault.default),
+        uniforms: {
+            tMap: {
+                value: this.font.map
+            },
+            uActive: {
+                value: false
+            }
+        },
+        transparent: true
+    });
+    outerGroup = new (0, _three.Group)();
+    group = new FilterGroup();
+    size = 150;
+    underlineThickness = 0.1;
+    gap = 1.2;
+    gWidth = 0;
+    underlineMaterial = new (0, _three.ShaderMaterial)({
+        vertexShader: (0, _vertexGlslDefault1.default),
+        fragmentShader: (0, _fragmentGlslDefault1.default)
+    });
+    constructor(){
+        this.outerGroup.add(this.group);
+        Object.values((0, _types.ProjectCategory)).map((category, i)=>{
+            let geometry = new (0, _textGeometryDefault.default)();
+            geometry.setText({
+                fontData: this.font.data,
+                text: category,
+                align: (0, _types.TextAlign).Right
+            });
+            geometry.computeBoundingBox();
+            const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+            if (width > this.gWidth) this.gWidth = width;
+            let mesh = new (0, _three.Mesh)(geometry, this.material.clone());
+            mesh.name = category;
+            mesh.position.y = -i * (1 + this.gap);
+            this.group.add(mesh);
+        });
+        this.underlineButtons();
+    }
+    underlineButtons() {
+        const m = new (0, _three.Mesh)(new (0, _three.PlaneGeometry)(this.gWidth * 1.05, this.underlineThickness), this.underlineMaterial);
+        this.group.children.map((child)=>{
+            let line = m.clone();
+            line.position.x = this.gWidth * 0.5 - this.gWidth;
+            line.position.y = -0.5 - this.underlineThickness / 2;
+            child.add(line);
+        });
+    }
+    updateActiveFilter(filter) {
+        if (this.activeFilter === filter) return;
+        this.activeFilter = filter;
+        this.group.children.map((mesh)=>mesh.name === filter ? mesh.material.uniforms.uActive.value = true : mesh.material.uniforms.uActive.value = false);
+    }
+    onResize(sizes) {
+        this.outerGroup.position.x = sizes.posX;
+        this.outerGroup.scale.set(sizes.scaleX, sizes.scaleY, 1);
+        this.outerGroup.position.y = sizes.posY;
+    }
+}
+
+},{"three":"3XrwE","@types":"4mCt6","@src/app":"fJe33","@shaders/projectFilters/text/vertex.glsl":"4u4jY","@shaders/projectFilters/text/fragment.glsl":"bM4eH","@shaders/projectFilters/underline/vertex.glsl":"5C7Zr","@shaders/projectFilters/underline/fragment.glsl":"f9iI8","@utils/TextGeometry":"4GUSA","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"4u4jY":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"bM4eH":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\nuniform float uActive;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    // vec3 col = vec3(1.);\n    float col = mix(0.5, 1., uActive);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(vec3(col), fill);\n}";
+
+},{}],"5C7Zr":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"f9iI8":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_FragColor = vec4(vec3(1.), 1.);\n}";
+
+},{}],"7rjaB":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ProjectDetailViewManager", ()=>ProjectDetailViewManager);
+var _types = require("@types");
+var _three = require("three");
+var _app = require("@src/app");
+var _overlay = require("./Overlay");
+class ProjectDetailViewManager {
+    world = new (0, _app.World)();
+    scene = this.world.scene;
+    projectState = this.world.projectState;
+    projectScreen = this.world.projectScreen;
+    raycaster = this.world.raycaster;
+    rayOrigin = new (0, _three.Vector3)(0, 0, 1);
+    rayTarget = new (0, _three.Vector3)();
+    overlay = new (0, _overlay.Overlay)();
+    constructor(){
+        this.world.water.hiddenObjects[(0, _types.View).Projects]?.push(this.overlay.group);
+    }
+    setDebug() {
+        this.debug = this.world.pane.addFolder({
+            title: "projectDetailViewManager",
+            expanded: false
+        });
+        this.overlayDebug();
+    }
+    overlayDebug() {
+        const overlay = this.debug.addFolder({
+            title: "overlay"
+        });
+        overlay.addInput(this.overlay.material.uniforms.uLineThickness, "value", {
+            min: 1,
+            max: 50,
+            step: 1,
+            label: "line thickness"
+        });
+        overlay.addInput(this.overlay.material.uniforms.uLengthBottom, "value", {
+            min: 1,
+            max: 1000,
+            step: 1,
+            label: "length bottom"
+        });
+        overlay.addInput(this.overlay.material.uniforms.uLengthCorner, "value", {
+            min: 1,
+            max: 500,
+            step: 1,
+            label: "length corner"
+        });
+        overlay.addInput(this.overlay.material.uniforms.uCenterGap, "value", {
+            min: 0,
+            max: 400,
+            step: 1,
+            label: "center gap"
+        });
+        overlay.addInput(this.overlay.material.uniforms.uLengthTop, "value", {
+            min: 1,
+            max: 400,
+            step: 1,
+            label: "length top"
+        });
+        const close = overlay.addFolder({
+            title: "closeButton"
+        });
+        close.addInput(this.overlay.close.material.uniforms.uBorderThickness, "value", {
+            min: 0,
+            max: 30,
+            step: 1,
+            label: "border thickness"
+        });
+        close.addInput(this.overlay.close.material.uniforms.uBorderStrength, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "border strength"
+        });
+        close.addInput(this.overlay.close.material.uniforms.uCrossThickness, "value", {
+            min: 0,
+            max: 30,
+            step: 1,
+            label: "cross thickness"
+        });
+        close.addInput(this.overlay.close.material.uniforms.uCrossSize, "value", {
+            min: 0,
+            max: 100,
+            step: 1,
+            label: "cross size"
+        });
+        close.addInput(this.overlay.close.material.uniforms.uBackgroundStrength, "value", {
+            min: 0,
+            max: 1,
+            step: 0.001,
+            label: "background strength"
+        });
+    }
+    onPointermove(mouse) {
+        if (this.down) return;
+        this.projectScreen.onPointermove();
+        this.rayTarget.set(mouse.x, mouse.y, -1).normalize();
+        this.raycaster.set(this.rayOrigin, this.rayTarget);
+        const [hit] = this.raycaster.intersectObjects([
+            this.overlay.close,
+            this.overlay.prevButton,
+            this.overlay.nextButton,
+            ...this.overlay.visitGroup.children, 
+        ]);
+        if (hit) {
+            const { name  } = hit.object;
+            this.target = name;
+            this.hover = true;
+            document.body.style.cursor = "pointer";
+        } else {
+            this.hover = false;
+            document.body.style.cursor = "";
+        }
+    }
+    onPointerdown() {
+        this.projectScreen.onPointerdown();
+        if (this.hover) this.down = true;
+    }
+    onActiveChange(command) {
+        let target = 0;
+        const activeIndices = this.projectState.activeIndices;
+        if (command === "next") {
+            const maxIndex = Math.max(...activeIndices);
+            target = this.projectState.active + 1;
+            target = Math.min(target, maxIndex);
+            if (this.projectScreen.timeline.parent && this.lastCommand === "next") {
+                this.projectState.active = target;
+                target++;
+            }
+            target = Math.min(target, maxIndex);
+            this.lastCommand = "next";
+        } else if (command === "prev") {
+            const minIndex = Math.min(...activeIndices);
+            target = this.projectState.active - 1;
+            target = Math.max(target, minIndex);
+            if (this.projectScreen.timeline.parent && this.lastCommand === "prev") {
+                this.projectState.active = target;
+                target--;
+            }
+            target = Math.max(target, minIndex);
+            this.lastCommand = "prev";
+        }
+        this.projectScreen.onActiveChange({
+            newIndex: target,
+            color: this.world.colorGradient.getAt((target + 1) / 5)
+        });
+        this.world.changeView((0, _types.View).ProjectDetail);
+    }
+    onPointerup() {
+        if (!this.down) return;
+        this.down = false;
+        this.projectScreen.onPointerup();
+        switch(this.target){
+            case "close":
+                this.world.changeView((0, _types.View).Projects);
+                break;
+            case "prev":
+                this.onActiveChange("prev");
+                break;
+            case "next":
+                this.onActiveChange("next");
+                break;
+            case "visit":
+                break;
+            default:
+                break;
+        }
+    }
+    getSizes() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const screen = {};
+        screen.aspect = aspect;
+        const dist = 0.65;
+        const fov2 = this.world.camera.fov * 0.5 * Math.PI / 180;
+        screen.scaleY = 2 * dist * Math.tan(fov2);
+        screen.scaleX = screen.scaleY * aspect;
+        // this.projectScreen.mesh.scale.set(screen.scaleX, screen.scaleY, 1);
+        let offset = 210 + aspect * 8; // 30
+        offset *= Math.PI / 180;
+        screen.posX = Math.sin(offset) * dist;
+        screen.posZ = -Math.cos(offset) * dist;
+        // this.projectScreen.mesh.position.set(screen.posX, 0, screen.posZ);
+        screen.rotY = -offset;
+        // this.projectScreen.mesh.rotation.y = screen.rotY;
+        this.world.camera.position.set(0, screen.scaleY / 2, 0);
+        const rotation = (30 + aspect * 8) * (Math.PI / 180);
+        this.world.camera.rotation.set(-Math.PI, rotation, Math.PI);
+        return {
+            screen
+        };
+    }
+    onResize() {
+        if (this.world.view === (0, _types.View).ProjectDetail) {
+            const { screen  } = this.getSizes();
+            this.projectScreen.resizeProjectDetailView(screen);
+        }
+        //resize overlay
+        this.overlay.onResize();
+    }
+    onWheel() {}
+    update() {
+        this.projectScreen.update();
+    }
+}
+
+},{"@types":"4mCt6","three":"3XrwE","@src/app":"fJe33","./Overlay":"18w4f","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"18w4f":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Overlay", ()=>Overlay);
+var _three = require("three");
+var _vertexGlsl = require("@shaders/projectDetailOverlay/line/vertex.glsl");
+var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
+var _fragmentGlsl = require("@shaders/projectDetailOverlay/line/fragment.glsl");
+var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
+var _vertexGlsl1 = require("@shaders/projectDetailOverlay/close/vertex.glsl");
+var _vertexGlslDefault1 = parcelHelpers.interopDefault(_vertexGlsl1);
+var _fragmentGlsl1 = require("@shaders/projectDetailOverlay/close/fragment.glsl");
+var _fragmentGlslDefault1 = parcelHelpers.interopDefault(_fragmentGlsl1);
+var _vertexGlsl2 = require("@shaders/projectDetailOverlay/text/vertex.glsl");
+var _vertexGlslDefault2 = parcelHelpers.interopDefault(_vertexGlsl2);
+var _fragmentGlsl2 = require("@shaders/projectDetailOverlay/text/fragment.glsl");
+var _fragmentGlslDefault2 = parcelHelpers.interopDefault(_fragmentGlsl2);
+var _vertexGlsl3 = require("@shaders/projectDetailOverlay/icon/vertex.glsl");
+var _vertexGlslDefault3 = parcelHelpers.interopDefault(_vertexGlsl3);
+var _fragmentGlsl3 = require("@shaders/projectDetailOverlay/icon/fragment.glsl");
+var _fragmentGlslDefault3 = parcelHelpers.interopDefault(_fragmentGlsl3);
+var _textGeometry = require("@utils/TextGeometry");
+var _textGeometryDefault = parcelHelpers.interopDefault(_textGeometry);
+var _app = require("@src/app");
+var _types = require("@types");
+class Overlay {
+    group = new _three.Group();
+    scale = 1.8;
+    constructor(){
+        this.world = new (0, _app.World)();
+        this.font = this.world.resources.fonts.audiowideRegular;
+        this.linkTex = this.world.resources.assets.linkIcon;
+        this.material = new _three.ShaderMaterial({
+            vertexShader: (0, _vertexGlslDefault.default),
+            fragmentShader: (0, _fragmentGlslDefault.default),
+            uniforms: {
+                uResolution: {
+                    value: new _three.Vector2(window.innerWidth / 2, window.innerHeight / 2)
+                },
+                uLineThickness: {
+                    value: 1 / this.scale
+                },
+                uLengthBottom: {
+                    value: 250 / this.scale
+                },
+                uLengthCorner: {
+                    value: 150 / this.scale
+                },
+                uCenterGap: {
+                    value: 100 / this.scale
+                },
+                uLengthTop: {
+                    value: 200 / this.scale
+                },
+                uScale: {
+                    value: this.scale
+                }
+            },
+            transparent: true,
+            depthWrite: false
+        });
+        this.geometry = new _three.PlaneGeometry(1, 1);
+        this.lineMesh = new _three.Mesh(this.geometry, this.material);
+        this.lineMesh.renderOrder = 101;
+        // this.si
+        this.lineMesh.scale.set(this.scale, this.scale, 1);
+        this.group.add(this.lineMesh);
+        this.setCloseButton();
+        this.setNavButtons();
+        this.setVisitButton();
+    }
+    setCloseButton() {
+        let size = 100;
+        let geometry = new _three.PlaneGeometry(1, 1);
+        let material = new _three.ShaderMaterial({
+            vertexShader: (0, _vertexGlslDefault1.default),
+            fragmentShader: (0, _fragmentGlslDefault1.default),
+            transparent: true,
+            // depthWrite: false,
+            uniforms: {
+                uSize: {
+                    value: 2 * size
+                },
+                uBorderThickness: {
+                    value: 2
+                },
+                uBorderStrength: {
+                    value: 0.7
+                },
+                uCrossThickness: {
+                    value: 2
+                },
+                uCrossSize: {
+                    value: 50
+                },
+                uBackgroundStrength: {
+                    value: 0.4
+                }
+            }
+        });
+        this.close = new _three.Mesh(geometry, material);
+        this.close.name = "close";
+        this.close.renderOrder = 102;
+        this.group.add(this.close);
+    }
+    setNavButtons() {
+        this.textMaterial = new _three.ShaderMaterial({
+            vertexShader: (0, _vertexGlslDefault2.default),
+            fragmentShader: (0, _fragmentGlslDefault2.default),
+            uniforms: {
+                tMap: {
+                    value: this.font.map
+                }
+            },
+            transparent: true
+        });
+        let prevGeometry = new (0, _textGeometryDefault.default)();
+        prevGeometry.setText({
+            fontData: this.font.data,
+            text: "Prev.",
+            align: (0, _types.TextAlign).Left
+        });
+        this.prevButton = new _three.Mesh(prevGeometry, this.textMaterial);
+        this.prevButton.name = "prev";
+        this.group.add(this.prevButton);
+        let nextGeometry = new (0, _textGeometryDefault.default)();
+        nextGeometry.setText({
+            fontData: this.font.data,
+            text: "Next",
+            align: (0, _types.TextAlign).Right
+        });
+        this.nextButton = new _three.Mesh(nextGeometry, this.textMaterial);
+        this.nextButton.name = "next";
+        this.group.add(this.nextButton);
+    }
+    setVisitButton() {
+        this.visitGroup = new _three.Group();
+        this.group.add(this.visitGroup);
+        let visitGeometry = new (0, _textGeometryDefault.default)();
+        visitGeometry.setText({
+            fontData: this.font.data,
+            text: "Visit",
+            align: (0, _types.TextAlign).Right
+        });
+        visitGeometry.computeBoundingBox();
+        let textWidth = visitGeometry.boundingBox.max.x - visitGeometry.boundingBox.min.x;
+        this.visitText = new _three.Mesh(visitGeometry, this.textMaterial);
+        this.visitText.name = "visit";
+        this.visitGroup.add(this.visitText);
+        this.iconMaterial = new _three.ShaderMaterial({
+            vertexShader: (0, _vertexGlslDefault3.default),
+            fragmentShader: (0, _fragmentGlslDefault3.default),
+            uniforms: {
+                uIcon: {
+                    value: this.linkTex
+                }
+            },
+            transparent: true,
+            depthWrite: false,
+            depthTest: false
+        });
+        let iconGeometry = new _three.PlaneGeometry(1, 1);
+        this.visitIcon = new _three.Mesh(iconGeometry, this.iconMaterial);
+        this.visitIcon.position.z = 0.5;
+        this.visitIcon.scale.z = 10;
+        this.visitIcon.name = "visit";
+        this.visitGroup.add(this.visitIcon);
+    }
+    onResize() {
+        //closeButton
+        let sizeClose = (0.98 - 0.5 * this.scale) * window.innerHeight;
+        sizeClose = Math.max(Math.min(sizeClose, 100), 50);
+        let scaleXClose = sizeClose * 2 / window.innerWidth;
+        let scaleY = sizeClose * 2 / window.innerHeight;
+        this.close.scale.set(scaleXClose, scaleY, 1);
+        let closePosY = this.scale * 0.5 - this.material.uniforms.uLineThickness.value / window.innerHeight;
+        this.close.position.y = closePosY;
+        // lines
+        this.material.uniforms.uResolution.value.set(window.innerWidth / 2, window.innerHeight / 2);
+        this.material.uniforms.uLengthBottom.value = Math.min(250, window.innerWidth / 5) / this.scale;
+        this.material.uniforms.uLengthTop.value = Math.min(200, window.innerWidth / 10) / this.scale;
+        this.material.uniforms.uCenterGap.value = sizeClose * 0.5;
+        this.material.uniforms.uLengthCorner.value = this.material.uniforms.uLengthBottom.value * 0.3;
+        // nav buttons;
+        let navScale = Math.min(75, window.innerWidth / 10);
+        let navScaleX = navScale / window.innerWidth;
+        let navScaleY = navScale / window.innerHeight;
+        const navButtonOffset = this.material.uniforms.uLengthBottom.value * 0.1;
+        this.prevButton.scale.set(navScaleX, navScaleY, 1);
+        const navPosX = -this.scale * 0.5 + navButtonOffset * 2 / window.innerWidth;
+        const navPosY = -this.scale * 0.5 + navScaleY * 0.5 + 10 / window.innerHeight;
+        this.prevButton.position.set(navPosX, -this.scale * 0.5 + navScaleY * 0.5, 0);
+        this.nextButton.scale.set(navScaleX, navScaleY, 1);
+        this.nextButton.position.set(-navPosX, navPosY, 0);
+        // visitGroup
+        const visitScaleX = navScaleX * 1.2;
+        const visitScaleY = navScaleY * 1.2;
+        this.visitGroup.scale.set(visitScaleX, visitScaleY, 1);
+        let visitPosY = -this.scale * 0.5 + this.material.uniforms.uLineThickness.value / window.innerHeight + visitScaleY * 0.5;
+        this.visitGroup.position.set(visitScaleX * 0.75, visitPosY, 0);
+    }
+}
+
+},{"three":"3XrwE","@shaders/projectDetailOverlay/line/vertex.glsl":"6km2r","@shaders/projectDetailOverlay/line/fragment.glsl":"2PA9n","@shaders/projectDetailOverlay/close/vertex.glsl":"4FedQ","@shaders/projectDetailOverlay/close/fragment.glsl":"9dbBn","@shaders/projectDetailOverlay/text/vertex.glsl":"2xO4O","@shaders/projectDetailOverlay/text/fragment.glsl":"5Lua9","@shaders/projectDetailOverlay/icon/vertex.glsl":"5tvRh","@shaders/projectDetailOverlay/icon/fragment.glsl":"jaw4s","@utils/TextGeometry":"4GUSA","@src/app":"fJe33","@types":"4mCt6","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"6km2r":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"2PA9n":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform float uLineThickness;\nuniform float uLengthBottom;\nuniform float uLengthCorner;\nuniform float uCenterGap;\nuniform float uLengthTop;\nuniform vec2 uResolution;\nuniform float uScale;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec2 halfSize = 0.5 * uResolution;\n\n    vec2 st = (vUv) * uResolution;\n\n    vec2 nt = (vUv - 0.5) * uResolution;\n\n    float strength = step(halfSize.x - uLengthBottom, abs(nt.x)) * step(st.y, uLineThickness);\n\n    float corner = step(halfSize.x - uLengthCorner, abs(nt.x)) * step(uResolution.y - uLineThickness, st.y);\n    corner += step(halfSize.x - uLineThickness, abs(nt.x)) * step(uResolution.y - uLengthCorner, st.y);\n    strength += corner;\n\n    float topLine = step(uCenterGap, abs(nt.x)) * step(abs(nt.x), uCenterGap + uLengthTop) * step(uResolution.y - uLineThickness, st.y);\n\n    strength += topLine;\n\n    vec3 col = vec3 (1.);\n\n    gl_FragColor = vec4(col, strength);\n    // gl_FragColor.a += 0.5;\n}";
+
+},{}],"4FedQ":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"9dbBn":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform float uSize;\nuniform float uBorderThickness;\nuniform float uBorderStrength;\nuniform float uCrossThickness;\nuniform float uCrossSize;\nuniform float uBackgroundStrength;\n\nvarying vec2 vUv;\n\nvec2 rotate(vec2 v, float a) {\n	float s = sin(a);\n	float c = cos(a);\n	mat2 m = mat2(c, -s, s, c);\n	return m * v;\n}\n\nvoid main() {\n    float strength;\n\n    vec2 nUv = vUv - 0.5;\n    nUv = rotate(nUv, 3.1415 * 0.25);\n    \n    vec2 sUv = nUv * uSize;\n    strength = step(abs(sUv.y), uCrossThickness) + step(abs(sUv.x), uCrossThickness);\n\n    float l = length(sUv);\n\n    strength *= step(l, uCrossSize);\n\n    float border = step(l, 0.5 * uSize);\n\n    float innerBorder = step(l, 0.5 * uSize - 2. * uBorderThickness);\n    border -= innerBorder;\n\n    border *= smoothstep(uBorderStrength, 0., abs(vUv.y - 0.5));\n\n    strength += border;\n\n    gl_FragColor = vec4(vec3(1.), strength);\n\n    float bgStrength = innerBorder * uBackgroundStrength;\n    vec4 bg = vec4(vec3(0.), bgStrength) * uBorderStrength;\n\n    gl_FragColor = mix(bg, gl_FragColor, strength);\n}";
+
+},{}],"2xO4O":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    gl_Position = modelMatrix * vec4(position, 1.);\n    vUv = uv;\n}";
+
+},{}],"5Lua9":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D tMap;\n\nvarying vec2 vUv;\n\nfloat median(float r, float g, float b) {\n  return max(min(r, g), min(max(r, g), b));\n}\n\nfloat msdf(sampler2D tMap, vec2 uv) {\n    vec3 font = texture2D(tMap, uv).rgb;\n    float signedDist = median(font.r, font.g, font.b) - 0.5;\n\n    float d = fwidth(signedDist);\n    float alpha = smoothstep(-d, d, signedDist);\n    if (alpha < 0.01) discard;\n    return alpha;\n}\n\nvoid main() {\n    vec3 col = vec3(1.);\n    float fill = msdf(tMap, vUv);\n    gl_FragColor = vec4(col, fill);\n}";
+
+},{}],"5tvRh":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n    vec3 newPos = position;\n    newPos.x += 0.5;\n    gl_Position = modelMatrix * vec4(newPos, 1.);\n    vUv = uv;\n}";
+
+},{}],"jaw4s":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uIcon;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 icon = texture2D(uIcon, vUv);\n    gl_FragColor = icon;\n\n    // vec4 shadow = texture2D(uIcon, (vUv - vec2(0.05,-0.05)) * 1.1);\n\n    // shadow = vec4 (vec3(0., 1., 0.), shadow.r);\n\n    // gl_FragColor += shadow;\n}";
+
+},{}],"3t7Pp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "GradientLinear", ()=>GradientLinear);
+var _three = require("three");
+var _mathUtils = require("three/src/math/MathUtils");
+const mix = (x, y, r)=>{
+    return r * x + (1 - r) * y;
+};
+class GradientLinear {
+    constructor(colors){
+        this.colors = colors.map((c)=>new (0, _three.Color)(c));
+    }
+    getAt(t) {
+        t = (0, _mathUtils.clamp)(t, 0, 1);
+        const from = Math.floor(t * this.colors.length * 0.9999);
+        const to = (0, _mathUtils.clamp)(from + 1, 0, this.colors.length - 1);
+        const fc = this.colors[from];
+        const ft = this.colors[to];
+        const p = (t - from / this.colors.length) / (1 / this.colors.length);
+        const res = new (0, _three.Color)();
+        res.r = mix(fc.r, ft.r, p);
+        res.g = mix(fc.g, ft.g, p);
+        res.b = mix(fc.b, ft.b, p);
+        return res;
+    }
+}
+
+},{"three":"3XrwE","three/src/math/MathUtils":"gMBZj","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"fPNKv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "warm", ()=>warm);
+parcelHelpers.export(exports, "natural", ()=>natural);
+parcelHelpers.export(exports, "natural2", ()=>natural2);
+parcelHelpers.export(exports, "circus", ()=>circus);
+parcelHelpers.export(exports, "seaside", ()=>seaside);
+parcelHelpers.export(exports, "warm2", ()=>warm2);
+parcelHelpers.export(exports, "warm3", ()=>warm3);
+parcelHelpers.export(exports, "circus2", ()=>circus2);
+const warm = [
+    "#FF2000",
+    "#FF5900",
+    "#FE9100",
+    "#FEFDFC",
+    "#FEC194",
+    "#FE9F5B", 
+];
+const natural = [
+    "#FF6D00",
+    "#FBF8EB",
+    "#008B99",
+    "#F8E1A6",
+    "#FDA81F",
+    "#B80A01",
+    "#480D07", 
+];
+const natural2 = [
+    "#EF2006",
+    "#350000",
+    "#A11104",
+    "#ED5910",
+    "#F1B52E",
+    "#7B5614",
+    "#F7F1AC", 
+];
+const circus = [
+    "#F62D62",
+    "#FFFFFF",
+    "#FDB600",
+    "#F42D2D",
+    "#544C98",
+    "#ECACBC", 
+];
+const seaside = [
+    "#FEB019",
+    "#F46002",
+    "#E1E7F1",
+    "#0A1D69",
+    "#138FE2",
+    "#0652C4",
+    "#D23401",
+    "#B0A12F", 
+];
+const warm2 = [
+    "#FFFEFE",
+    "#0D0211",
+    "#FBCEA0",
+    "#FFAD5D",
+    "#530E1D",
+    "#FE9232",
+    "#B93810",
+    "#907996", 
+];
+const warm3 = [
+    "#EDEBE7",
+    "#13595A",
+    "#DE1408",
+    "#161814",
+    "#E1610A",
+    "#B7BDB3",
+    "#9F9772", 
+];
+const circus2 = [
+    "#F62D62",
+    "#FFFFFF",
+    "#FDB600",
+    "#F42D2D",
+    "#544C98",
+    "#ECACBC", 
+];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["c8kBf","fJe33"], "fJe33", "parcelRequire65f9")
+
+>>>>>>> master

@@ -1,15 +1,15 @@
 * {
   box-sizing: border-box;
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 body {
+  background: black;
+  overflow: hidden;
+  position: fixed;
   width: 100vw;
   height: 100vh;
-  background: #000;
-  position: fixed;
-  overflow: hidden;
 }
 
 #canvas {
@@ -20,13 +20,13 @@ body {
 .portraitAlert {
   width: 100%;
   height: 100%;
-  z-index: 1;
-  background-color: #fff;
-  flex-direction: column;
+  position: fixed;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+  background-color: white;
+  flex-direction: column;
   display: none;
-  position: fixed;
 }
 
 .rotate_device_container {
@@ -34,8 +34,8 @@ body {
 }
 
 .rotate_device__p {
-  margin-bottom: 40px;
   font-size: 18px;
+  margin-bottom: 40px;
   position: relative;
 }
 
@@ -48,12 +48,12 @@ body {
   height: 175px;
   width: 175px;
   position: absolute;
-  top: 0;
   left: 0;
+  top: 0;
 }
 
 .active {
-  animation: 2s cubic-bezier(.455, .03, .515, .955) infinite rotate;
+  animation: rotate 2s cubic-bezier(.455,.03,.515,.955) 0s infinite;
 }
 
 @keyframes rotate {
@@ -62,19 +62,19 @@ body {
   }
 
   50% {
+    transform: rotate(-90deg);
     opacity: 1;
-    transform: rotate(-90deg);
   }
-
+  
   75% {
-    opacity: 0;
     transform: rotate(-90deg);
+    opacity: 0;
   }
-
+  
   76% {
     transform: rotate(0);
   }
-
+  
   100% {
     opacity: 1;
     transform: rotate(0);
@@ -88,20 +88,20 @@ body {
 .preloader {
   width: 100%;
   height: 100%;
+  position: absolute;
   z-index: 1;
   transition: opacity 1s;
-  position: absolute;
 }
 
 .preloader__wrapper {
   width: 100%;
   height: 100%;
-  color: #fff;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  color: white;
   font-size: xx-large;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .preloader__progress {
@@ -111,41 +111,41 @@ body {
 
 .preloader__progress__back {
   width: 100%;
+  background-color: grey;
+  border-color: grey;
   height: 3px;
-  background-color: gray;
-  border-color: gray;
   position: absolute;
 }
 
 .preloader__progress__front {
+  position: absolute;
   height: 3px;
   width: 0%;
-  background: #f60d54;
-  border-color: #f60d54;
-  position: absolute;
+  border-color: #f60d54 ;
+  background: #f60d54 ;
 }
 
 .wip {
+  position: absolute;
   opacity: 0;
   width: 100%;
   height: 100%;
-  cursor: pointer;
   transition: opacity 2s;
-  position: absolute;
+  cursor: pointer;
 }
 
 .wip__wrapper {
-  color: #fff;
-  width: 300px;
-  max-width: 30%;
-  background-color: #0008;
-  border: 1px solid #fff8;
+  background-color: #00000088;
   border-radius: 3px;
-  padding: 20px;
+  color: white;
   font-size: 13px;
-  position: absolute;
   bottom: 20px;
   right: 20px;
+  position: absolute;
+  width: 300px;
+  max-width: 30%;
+  padding: 20px;
+  border: 1px solid #ffffff88;
 }
 
 wip__text {
@@ -162,16 +162,16 @@ wip__text {
 }
 
 .wip__overlay {
+  position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
   display: flex;
-  position: absolute;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
+  font-size: 16px;
+  opacity: 0;
 }
 
 .wip__overlay:hover {
@@ -181,4 +181,3 @@ wip__text {
 .wip__onclick {
   display: none;
 }
-
