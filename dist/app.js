@@ -142,11 +142,11 @@
       this[globalName] = mainExports;
     }
   }
-})({"1SneK":[function(require,module,exports) {
+})({"c8kBf":[function(require,module,exports) {
 "use strict";
 var global = arguments[3];
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 61193;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "42036d7a98ade5a7";
 module.bundle.HMR_BUNDLE_ID = "bfcbaa651269b41d";
@@ -580,6 +580,11 @@ class World {
         this.renderer.setPixelRatio(1);
         this.container.appendChild(this.renderer.domElement);
         this.init();
+        const wip = document.querySelector(".wip");
+        window.setTimeout(()=>{
+            wip?.classList.add("wip__visible");
+        }, 2000);
+        wip.onclick = ()=>wip.classList.add("wip__onclick");
     }
     async init() {
         this.preloader = new (0, _components.Preloader)();
@@ -46660,5 +46665,5 @@ const circus2 = [
     "#ECACBC", 
 ];
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["1SneK","fJe33"], "fJe33", "parcelRequire65f9")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["c8kBf","fJe33"], "fJe33", "parcelRequire65f9")
 

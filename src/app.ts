@@ -127,6 +127,12 @@ export class World implements _World {
     this.container.appendChild(this.renderer.domElement);
 
     this.init();
+
+    const wip = document.querySelector<HTMLDivElement>(".wip")!;
+    window.setTimeout(() => {
+      wip?.classList.add("wip__visible");
+    }, 2000);
+    wip.onclick = () => wip.classList.add("wip__onclick");
   }
 
   async init() {

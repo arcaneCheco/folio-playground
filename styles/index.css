@@ -124,3 +124,60 @@ body {
   border-color: #f60d54 ;
   background: #f60d54 ;
 }
+
+.wip {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 2s;
+  cursor: pointer;
+}
+
+.wip__wrapper {
+  background-color: #00000088;
+  border-radius: 3px;
+  color: white;
+  font-size: 13px;
+  bottom: 20px;
+  right: 20px;
+  position: absolute;
+  width: 300px;
+  max-width: 30%;
+  padding: 20px;
+  border: 1px solid #ffffff88;
+}
+
+wip__text {
+  transition: filter 1.5s;
+}
+
+.wip__wrapper:hover > .wip__text {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+}
+
+.wip__visible {
+  opacity: 1;
+}
+
+.wip__overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  opacity: 0;
+}
+
+.wip__overlay:hover {
+  opacity: 1;
+}
+
+.wip__onclick {
+  display: none;
+}
