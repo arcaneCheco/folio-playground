@@ -11,6 +11,7 @@ export class AboutViewManager implements _AboutViewManager {
   camera = this.world.camera;
   screen = new Screen();
   greeting = new Greeting();
+  // @ts-ignore 
   overlay = new Overlay();
   raycaster = this.world.raycaster;
   rayOrigin = new Vector3(0, 0, 1);

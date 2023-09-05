@@ -202,9 +202,10 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
         this.onActiveChange("next");
         break;
       case "visit":
-        // const url = this.world.data[this.activeProjectState.active].link;
-        // console.log(url);
-        // window.open(url, "_blank").focus();
+        const url = this.world.projectScreen.data[this.projectState.active].demo;
+        if (url) {
+          window.open(url, "_blank")?.focus();
+        }
         break;
       default:
         break;
@@ -250,7 +251,7 @@ export class ProjectDetailViewManager implements _ProjectDetailViewManager {
     this.overlay.onResize();
   }
 
-  onWheel() {}
+  onWheel() { }
 
   update() {
     this.projectScreen.update();

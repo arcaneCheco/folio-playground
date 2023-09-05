@@ -3,6 +3,7 @@ import { SocialIcons, Nav, Footer } from ".";
 import { _AboutOverlay } from "@types";
 
 export class Overlay implements _AboutOverlay {
+  // @ts-ignore 
   socialIcons = new SocialIcons();
   footer = new Footer();
   nav = new Nav();

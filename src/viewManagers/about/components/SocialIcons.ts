@@ -4,6 +4,7 @@ import fragmentShader from "@shaders/aboutIcons/fragment.glsl";
 import { World } from "@src/app";
 import { _AboutSocialIcons } from "@types";
 
+// @ts-ignore 
 export class SocialIcons implements _AboutSocialIcons {
   world = new World();
   group = new Group();
@@ -18,7 +19,7 @@ export class SocialIcons implements _AboutSocialIcons {
     },
   });
   geometry = new PlaneGeometry(1, 1);
-  twitter: Mesh<PlaneGeometry, ShaderMaterial>;
+  // twitter: Mesh<PlaneGeometry, ShaderMaterial>;
   github: Mesh<PlaneGeometry, ShaderMaterial>;
   linkedin: Mesh<PlaneGeometry, ShaderMaterial>;
   constructor() {
@@ -27,10 +28,10 @@ export class SocialIcons implements _AboutSocialIcons {
     const { twitterIcon, githubIcon, linkedinIcon } =
       this.world.resources.assets;
 
-    this.twitter = new Mesh(this.geometry, this.iconMaterial.clone());
-    this.twitter.material.uniforms.uMap.value = twitterIcon;
-    this.twitter.name = "twitter";
-    this.group.add(this.twitter);
+    // this.twitter = new Mesh(this.geometry, this.iconMaterial.clone());
+    // this.twitter.material.uniforms.uMap.value = twitterIcon;
+    // this.twitter.name = "twitter";
+    // this.group.add(this.twitter);
 
     this.github = new Mesh(this.geometry, this.iconMaterial.clone());
     this.github.material.uniforms.uMap.value = githubIcon;
@@ -50,8 +51,8 @@ export class SocialIcons implements _AboutSocialIcons {
     this.group.position.y =
       -1 + (scale / 2) * aspect + 140 / window.innerHeight;
 
-    this.twitter.position.x = -2;
-    this.github.position.x = -0;
-    this.linkedin.position.x = 2;
+    // this.twitter.position.x = -2;
+    this.github.position.x = -1;
+    this.linkedin.position.x = 1;
   }
 }

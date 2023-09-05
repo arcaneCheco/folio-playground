@@ -162,6 +162,7 @@ export class World implements _World {
     this.homeViewManager = new HomeViewManager();
     this.projectsViewManager = new ProjectsViewManager();
     this.projectDetailViewManager = new ProjectDetailViewManager();
+    // @ts-ignore 
     this.aboutViewManager = new AboutViewManager();
 
     this.viewManagers = {
